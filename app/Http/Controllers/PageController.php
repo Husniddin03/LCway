@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favorite;
 use App\Models\LearningCenter;
 use App\Models\Subject;
 use Illuminate\Http\Request;
@@ -57,6 +58,7 @@ class PageController extends Controller
 
     public function searchMap(Request $request)
     {
+
         $validated = $request->validate([
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',

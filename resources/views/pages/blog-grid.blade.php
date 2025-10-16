@@ -306,6 +306,74 @@
                                     @endif
                                 </div>
                             </div>
+
+
+                            <style>
+                                .favorite {
+                                    display: flex;
+                                    flex-direction: row;
+                                    align-items: center;
+                                    gap: 15px;
+                                    margin-top: 20px;
+                                }
+
+                                .favorite .stars {
+                                    display: flex;
+                                    justify-content: center;
+                                    gap: 5px;
+                                    font-size: 40px;
+                                    cursor: pointer;
+                                    position: relative;
+                                }
+
+                                .favorite .star {
+                                    color: #ddd;
+                                    transition: color 0.2s ease;
+                                    user-select: none;
+                                    position: relative;
+                                }
+
+                                .favorite .star.full {
+                                    color: #ffc107;
+                                }
+
+                                .favorite .star.half {
+                                    background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
+                                    -webkit-background-clip: text;
+                                    -webkit-text-fill-color: transparent;
+                                }
+
+                                .favorite .result {
+                                    font-size: 18px;
+                                    color: #667eea;
+                                    font-weight: bold;
+                                    min-height: 30px;
+                                }
+                            </style>
+
+                            @php
+                                $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
+                            @endphp
+
+                            <h4 class="favorite">
+                                <div class="stars" id="rating1">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @php
+                                            $diff = $average - $i;
+                                        @endphp
+                                        <span
+                                            class="star {{ $average >= $i ? 'full' : ($diff > -1 && $diff < 0 ? 'half' : '') }}">
+                                            ★
+                                        </span>
+                                    @endfor
+                                </div>
+                                <div class="result">{{ $average }}</div>
+                            </h4>
+
+
+
+
+
                             <h4 class="ek tj ml il kk wm xl eq lb">
                                 <a
                                     href="{{ route('blog-single', $LearningCenter->id) }}">{{ $LearningCenter->name }}</a>
@@ -388,31 +456,3 @@
     <!-- ===== Blog Grid End ===== -->
 
 </x-layout>
-
-
-{{-- <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const images = document.querySelectorAll('img.lazy-img');
-
-        const options = {
-            root: null,
-            rootMargin: "300px 0px", // 300px oldin yuklaydi
-            threshold: 0
-        };
-
-        const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.classList.remove('lazy-img');
-                    obs.unobserve(img);
-                }
-            });
-        }, options);
-
-        images.forEach(img => {
-            observer.observe(img);
-        });
-    });
-</script> --}}

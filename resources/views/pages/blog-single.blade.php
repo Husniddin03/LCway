@@ -179,7 +179,6 @@
                                             </a>
                                         </li>
                                     @endif
-                                    <li>{{ $connection->connection->name }}</li>
                                 </ul>
                             @endforeach
                         </ul>
@@ -220,7 +219,7 @@
                     </div>
 
                     <div class="animate_top fb">
-                        <h4 class="tj kk wm qb">
+                        <h4 class="tj kk wm qb ta-c">
                             Fanlar</h4>
 
                         <ul
@@ -280,7 +279,7 @@
                     </div>
 
                     <div class="animate_top">
-                        <h4 class="tj kk wm qb">Ustozlar</h4>
+                        <h4 class="tj kk wm qb ta-c">Ustozlar</h4>
 
                         <div style="max-width:900px; margin:0 auto; padding:20px; font-family:'Segoe UI', sans-serif;">
 
@@ -358,7 +357,7 @@
 
                     </div>
 
-                    <div
+                    <div class="animate_top"
                         style="z-index:1; padding:20px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); background-color:#f9f9f9; max-width:900px; margin:0 auto;">
                         <h4
                             style="font-size:22px; font-weight:600; color:#2c3e50; margin-bottom:16px; text-align:center;">
@@ -376,8 +375,171 @@
 
 
 
+
                     <div id="comment" class="animate_top">
-                        <h4 class="tj kk wm qb">Izohlar</h4>
+
+                        <style>
+                            .favorite {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                gap: 15px;
+                                margin-top: 20px
+                            }
+
+                            .favorite .rating-label {
+                                color: #666;
+                                font-size: 24px;
+                            }
+
+                            .favorite .stars {
+                                display: flex;
+                                justify-content: center;
+                                gap: 10px;
+                                font-size: 40px;
+                                cursor: pointer;
+                            }
+
+                            .favorite .star {
+                                color: #ddd;
+                                transition: all 0.2s ease;
+                                user-select: none;
+                            }
+
+                            .favorite .star:hover,
+                            .favorite .star.hover {
+                                color: #ffc107;
+                                transform: scale(1.2);
+                            }
+
+                            .favorite .star.active {
+                                color: #ffc107;
+                            }
+
+                            .favorite .result {
+                                font-size: 18px;
+                                color: #667eea;
+                                font-weight: bold;
+                                min-height: 30px;
+                            }
+                        </style>
+
+                        <h4 class="favorite">
+                            <span class="rating-label">Markazni baholang:</span>
+                            <div class="stars" id="rating1" data-center-id="{{ $LearningCenter->id }}">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                            <div class="result" id="result1"></div>
+                        </h4>
+
+                        <script>
+                            const ratings = {};
+
+                            function initRating(ratingId, resultId) {
+                                const starsContainer = document.getElementById(ratingId);
+                                const stars = starsContainer.querySelectorAll('.star');
+
+                                stars.forEach(star => {
+                                    star.addEventListener('mouseenter', () => {
+                                        const value = star.dataset.value;
+                                        highlightStars(stars, value);
+                                    });
+
+                                    star.addEventListener('click', () => {
+                                        const value = star.dataset.value;
+                                        const centerId = starsContainer.dataset.centerId;
+                                        ratings[ratingId] = value;
+
+                                        // Yulduzlarni yangilash
+                                        stars.forEach(s => {
+                                            if (s.dataset.value <= value) {
+                                                s.classList.add('active');
+                                            } else {
+                                                s.classList.remove('active');
+                                            }
+                                        });
+
+                                        updateResult(resultId, value);
+
+                                        // POST so‘rov yuborish
+                                        sendRating(centerId, value);
+                                    });
+                                });
+
+                                starsContainer.addEventListener('mouseleave', () => {
+                                    const savedRating = ratings[ratingId];
+                                    if (savedRating) {
+                                        highlightStars(stars, savedRating);
+                                    } else {
+                                        stars.forEach(s => s.classList.remove('hover'));
+                                    }
+                                });
+                            }
+
+                            function highlightStars(stars, value) {
+                                stars.forEach(star => {
+                                    if (star.dataset.value <= value) {
+                                        star.classList.add('hover');
+                                    } else {
+                                        star.classList.remove('hover');
+                                    }
+                                });
+                            }
+
+                            function updateResult(resultId, value) {
+                                const resultEl = document.getElementById(resultId);
+                                const ratings_text = ['Juda yomon', 'Yomon', "O'rtacha", 'Yaxshi', 'Ajoyib'];
+                                resultEl.textContent = `${value} ⭐ - ${ratings_text[value - 1]}`;
+                            }
+
+                            // Reytingni serverga yuboruvchi funksiya
+                            function sendRating(centerId, value) {
+                                fetch('/comment/favoriteStore', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Accept': 'application/json', // Laravelga JSON kutayotganimizni aytadi
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        },
+                                        body: JSON.stringify({
+                                            rating: value,
+                                            learning_centers_id: centerId
+                                        })
+                                    })
+                                    .then(async response => {
+                                        const text = await response.text(); // avval text oling
+                                        console.log('Raw response text:', text);
+
+                                        try {
+                                            const data = JSON.parse(text); // keyin JSON.parse
+                                            if (!response.ok) {
+                                                // server 4xx/5xx kod qaytargan bo'lishi mumkin
+                                                console.error('Server returned error:', data);
+                                            } else {
+                                                console.log('Reyting yuborildi:', data);
+                                            }
+                                        } catch (err) {
+                                            // Agar JSON.parse xato bersa — text ichida nimadir noto'g'ri
+                                            console.error('JSON.parse xatosi — server noto\'g\'ri javob yubordi:', err);
+                                            console.error('Server returned raw text:', text);
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Fetch xatosi:', error);
+                                    });
+                            }
+
+
+                            initRating('rating1', 'result1');
+                        </script>
+
+
+
+                        <h4 class="tj kk wm qb ta-c">Izohlar</h4>
                         <form action="{{ route('comment.store') }}" method="POST" class="mb-6">
                             @csrf
                             <input style="padding-right: 20px" type="hidden" name="learning_centers_id"
@@ -455,6 +617,17 @@
                             </div>
                         </div>
                     </div>
+
+                    @guest
+                        <div class="tc wf ig pb no animate_top" style="margin-top: 20px; text-align: center">
+                            <a href="{{ route('signin') }}"
+                                :class="{ 'nk yl': page === 'home', 'ok': page === 'home' && stickyMenu }"
+                                class="ek pk xl">Sign In</a>
+                            <a href="{{ route('signup') }}"
+                                :class="{ 'hh/[0.15]': page === 'home', 'sh': page === 'home' && stickyMenu }"
+                                class="lk gh dk rg tc wf xf _l gi hi">Sign Up</a>
+                        </div>
+                    @endguest
 
                 </div>
             </div>

@@ -219,7 +219,7 @@
 
                             <div class="edu-center-field-group edu-center-half">
                                 <label class="edu-center-label">Narxi (oyiga)</label>
-                                <input type="text" name="subjects[0][price]" class="edu-center-input"
+                                <input type="number" name="subjects[0][price]" class="edu-center-input"
                                     placeholder="Masalan: 1000000">
                                 @error('subjects.0.price')
                                     <div style="color: red">{{ $message }}</div>

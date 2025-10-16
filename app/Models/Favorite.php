@@ -9,7 +9,9 @@ class Favorite extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['usersId', 'learning_center_id', 'rating'];
+    protected $table = 'favorites';
+
+    protected $fillable = ['users_id', 'learning_centers_id', 'rating'];
 
     public function user()
     {
@@ -18,6 +20,6 @@ class Favorite extends Model
 
     public function learningCenter()
     {
-        return $this->belongsTo(LearningCenter::class, 'learning_center_id');
+        return $this->belongsTo(LearningCenter::class, 'learning_centers_id');
     }
 }

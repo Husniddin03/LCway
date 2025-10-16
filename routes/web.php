@@ -37,4 +37,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/subject/store/{id}', [SubjectController::class, 'store'])->name('subject.storeid');
     Route::resource('subject', SubjectController::class);
     Route::post('comment/store', [CommentController::class, 'store'])->name('comment.store');
+    Route::post('comment/favoriteStore', [CommentController::class, 'favoriteStore'])->name('comment.favoriteStore');
 });

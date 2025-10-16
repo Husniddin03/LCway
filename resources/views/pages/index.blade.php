@@ -33,7 +33,7 @@
                             tanlash!</a>
 
                         <span class="tc sf">
-                            <a href="#!" class="inline-block ek xj kk wm"> (+998) 77 025
+                            <a href="#!" class="inline-block ek xj kk wm"> +998 77 025
                                 026 77 </a>
                             <span class="inline-block">Har qanday savol yoki muammo uchun</span>
                         </span>

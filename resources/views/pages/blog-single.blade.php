@@ -15,11 +15,74 @@
                     <div
                         class="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10">
                         <a href="{{ $LearningCenter->logo }}" data-fslightbox class="vc wf hg mb">
-                            <img style="width: 100%" src="{{ $LearningCenter->logo }}" alt="Blog" />
+                            <img style="width: 100% !important" src="{{ $LearningCenter->logo }}" alt="Blog" />
                         </a>
 
                         <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">
                             {{ $LearningCenter->name }}
+
+                            <style>
+                                .favorite1 {
+                                    display: flex;
+                                    flex-direction: row;
+                                    align-items: center;
+                                    gap: 15px;
+                                    margin-top: 20px;
+                                    margin-bottom: 20px
+                                }
+
+                                .favorite1 .stars {
+                                    display: flex;
+                                    justify-content: center;
+                                    gap: 5px;
+                                    font-size: 40px;
+                                    cursor: pointer;
+                                    position: relative;
+                                }
+
+                                .favorite1 .star {
+                                    color: #ddd;
+                                    transition: color 0.2s ease;
+                                    user-select: none;
+                                    position: relative;
+                                }
+
+                                .favorite1 .star.full {
+                                    color: #ffc107;
+                                }
+
+                                .favorite1 .star.half {
+                                    background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
+                                    -webkit-background-clip: text;
+                                    -webkit-text-fill-color: transparent;
+                                }
+
+                                .favorite1 .result {
+                                    font-size: 18px;
+                                    color: #667eea;
+                                    font-weight: bold;
+                                    min-height: 30px;
+                                }
+                            </style>
+
+                            @php
+                                $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
+                            @endphp
+
+                            <h4 class="favorite1">
+                                <div class="stars" id="rating1">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @php
+                                            $diff = $average - $i;
+                                        @endphp
+                                        <span
+                                            class="star {{ $average >= $i ? 'full' : ($diff > -1 && $diff < 0 ? 'half' : '') }}">
+                                            ★
+                                        </span>
+                                    @endfor
+                                </div>
+                                <div class="result">{{ $average }}</div>
+                            </h4>
                         </h2>
 
                         <ul class="tc uf cg 2xl:ud-gap-15 fb">

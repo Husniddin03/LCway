@@ -57,11 +57,10 @@
                         max-height: 0;
                         overflow: hidden;
                         transition: max-height 0.5s ease;
-                        margin-bottom: 40px;
                     }
 
                     #map-container.active {
-                        max-height: 600px;
+                        max-height: 700px;
                         margin-top: 10px;
                     }
 
@@ -71,11 +70,21 @@
                         border-radius: 10px;
                     }
 
+                    .map-form{
+                        display: flex;
+                    }
+
+                    @media (max-width: 768px){
+                        .map-form{
+                            flex-direction: column;
+                        }
+                    }
                     .location-inputs {
                         margin-top: 10px;
                         display: grid;
                         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
                         gap: 10px;
+                        margin-bottom: 40px;
                     }
 
                     .location-inputs input,
@@ -93,23 +102,23 @@
 
                 <div id="map-container">
                     <div id="map"></div>
-                    <form action="{{ route('searchMap') }}" method="POST" class="location-inputs">
+                    <form class="map-form location-inputs" action="{{ route('searchMap') }}" method="POST">
                         @csrf
-                        <input type="text" id="address" placeholder="Manzil">
-                        <input hidden type="text" id="location" placeholder="Google Maps URL">
-                        <input hidden name="latitude" type="text" id="latitude" placeholder="Latitude">
-                        <input hidden name="longitude" type="text" id="longitude" placeholder="Longitude">
-                        <select name="subject_id" id="subject" value="{{ old('subject_id') }}">
+                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="text" id="address" placeholder="Manzil">
+                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden type="text" id="location" placeholder="Google Maps URL">
+                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden name="latitude" type="text" id="latitude" placeholder="Latitude">
+                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden name="longitude" type="text" id="longitude" placeholder="Longitude">
+                        <select class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" name="subject_id" id="subject" value="{{ old('subject_id') }}">
                             <option value="" disabled selected>Fanni tanlang...</option>
                             @foreach ($subjects as $subject)
                                 <option value="{{ $subject->id }}">{{ $subject->name }}</option>
                             @endforeach
                         </select>
-                        <input type="number" name="radius" id="radius" placeholder="Radius (km)" min="1"
-                            max="1000">
-                        <input type="number" name="maxPrice" id="maxPrice" placeholder="Maksimal narx (so'm)"
+                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="number" name="radius" id="radius" placeholder="Radius (km)" min="1"
+                            max="10000">
+                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="number" name="maxPrice" id="maxPrice" placeholder="Maksimal narx (so'm)"
                             min="0">
-                        <button type="submit">Yuborish</button>
+                        <button class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" style="background-color: blue; color: white" type="submit">Yuborish</button>
                     </form>
                 </div>
 

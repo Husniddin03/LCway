@@ -12,6 +12,7 @@ use App\Models\Subject;
 use App\Models\SubjectsOfLearningCenter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
@@ -132,19 +133,9 @@ class CourseController extends Controller
 
     public function show($id)
     {
-        $center = LearningCenter::with([
-            'user',
-            'images',
-            'subjects',
-            'comments',
-            'calendar',
-            'teachers',
-            'favorites',
-            'connections',
-            'needTeachers'
-        ])->findOrFail($id);
+        $LearningCenter = LearningCenter::findOrFail($id);
 
-        return view('pages.blog-single', compact('center'));
+        return view('pages.blog-single', compact('LearningCenter'));
     }
 
 
@@ -166,7 +157,7 @@ class CourseController extends Controller
             'region'       => 'nullable|string|max:255',
             'address'      => 'nullable|string|max:255',
             'location'     => 'nullable|string|max:255',
-            'usersId'      => 'required|exists:users,id',
+            'users_id'      => 'required|exists:users,id',
             'studentCount' => 'nullable|integer',
         ]);
 
@@ -187,6 +178,9 @@ class CourseController extends Controller
     public function destroy($id)
     {
         $center = LearningCenter::findOrFail($id);
+        if (! Gate::allows('update-post', $center->users_id)) {
+            abort(403);
+        }
 
         // Markaz logosi
         if ($center->logo && Storage::disk('public')->exists($center->logo)) {

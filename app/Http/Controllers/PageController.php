@@ -58,7 +58,6 @@ class PageController extends Controller
 
     public function searchMap(Request $request)
     {
-
         $validated = $request->validate([
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
@@ -67,21 +66,17 @@ class PageController extends Controller
             'maxPrice' => 'nullable|numeric',
         ]);
 
-        // dd($request->all());
-
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
-        $radius = $request->input('radius'); // km
+        $radius = $request->input('radius');
         $subject_id = $request->input('subject_id');
         $maxPrice = $request->input('maxPrice');
 
         $LearningCentersLocation = LearningCenter::all();
-
         $filteredCenters = collect();
 
         foreach ($LearningCentersLocation as $LearningCenter) {
             $coords = explode(',', $LearningCenter->location);
-
             if (count($coords) < 2) {
                 $LearningCenter->distance = null;
                 continue;
@@ -89,7 +84,6 @@ class PageController extends Controller
 
             $lat = (float) trim($coords[0]);
             $lng = (float) trim($coords[1]);
-
             $distance = 6371 * acos(
                 cos(deg2rad($latitude)) * cos(deg2rad($lat)) *
                     cos(deg2rad($lng) - deg2rad($longitude)) +
@@ -98,17 +92,23 @@ class PageController extends Controller
 
             $LearningCenter->distance = round($distance, 2);
 
-            if (
-                ($radius === null || $distance <= $radius) &&
-                ($subject_id === null || $LearningCenter->subjects->contains('id', $subject_id)) &&
-                ($maxPrice === null || $LearningCenter->subjects->some(fn($s) => $s->price <= $maxPrice))
-            ) {
+            // Filter conditions
+            $passRadiusFilter = $radius === null || $distance <= $radius;
+
+            // Check if subject exists in this learning center
+            $passSubjectFilter = $subject_id === null ||
+                $LearningCenter->subjects->contains('subject_id', $subject_id);
+
+            // Check if price is within max price for that subject
+            $passPriceFilter = $maxPrice === null ||
+                $LearningCenter->subjects->where('subject_id', $subject_id)->first()?->price <= $maxPrice;
+
+            if ($passRadiusFilter && $passSubjectFilter && $passPriceFilter) {
                 $filteredCenters->push($LearningCenter);
             }
         }
 
         $LearningCenters = $filteredCenters->sortBy('distance')->values();
-
         $subjects = Subject::all();
 
         return view('pages.blog-grid', compact('LearningCenters', 'subjects'));

@@ -98,27 +98,25 @@
                                 </span> <a target="_blank" style="color: cornflowerblue"
                                     href="{{ $LearningCenter->location }}">{{ $LearningCenter->address }}</a>
                             </li>
-                            <li
-                                style="background:linear-gradient(to right, #e3f2fd, #bbdefb); padding:16px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); margin-bottom:12px; list-style:none; font-family:'Segoe UI', sans-serif; font-size:16px; color:#1a237e;">
-                                @if ($LearningCenter->needTeachers->count() > 0)
-                                    <span
-                                        style="font-weight:600; font-size:18px; color:#0d47a1; display:block; margin-bottom:8px;">📢
-                                        Elonlar:</span>
-                                    <span style="display:block; margin-bottom:6px;">🧑‍🏫 O'qituvchi kerak:</span>
-                                    @foreach ($LearningCenter->needTeachers as $needTeacher)
-                                        <a href="{{ route('teacher.announcement', $LearningCenter->id) }}"
-                                            style="display:inline-block; margin:4px 6px 4px 0; padding:6px 12px; background-color:#e8f0fe; color:#1565c0; border-radius:6px; text-decoration:none; font-weight:500; transition:background-color 0.3s ease;"
-                                            onmouseover="this.style.backgroundColor='#d0e3fc'"
-                                            onmouseout="this.style.backgroundColor='#e8f0fe'">
-                                            {{ $needTeacher->subject->name }}
-                                        </a>
-                                    @endforeach
-                                @else
-                                    <span
-                                        style="font-weight:600; font-size:18px; color:#0d47a1; display:block; margin-bottom:8px;">📢
-                                        Elonlar:</span>
-                                    <span style="display:block; margin-bottom:6px;">Hozircha elonlar yo'q</span>
-                                @endif
+                            <li>
+                                <div class="bb ze mb">
+                                    <!-- Service Item -->
+                                    <div class="animate_top" style="width: 100%">
+                                        <div
+                                            style="display: flex; flex-direction: row; align-content: center; align-items: center">
+                                            <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
+                                                src="{{ asset('images/3d-speaker.png') }}" alt="Icon" />
+                                            <h4 style="height: 2rem" class="ek zj kk wm nb _b">O'qituvchi kerak</h4>
+                                        </div>
+                                        @if ($LearningCenter->needTeachers->count() > 0)
+                                            @foreach ($LearningCenter->needTeachers as $teacher)
+                                                <p>{{ $teacher->subject->name }} - {{ $teacher->description }}</p>
+                                            @endforeach
+                                        @else
+                                            <p>Hozicha elon berilmagan!</p>
+                                        @endif
+                                    </div>
+                                </div>
                             </li>
 
 

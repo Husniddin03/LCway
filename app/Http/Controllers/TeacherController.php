@@ -64,10 +64,13 @@ class TeacherController extends Controller
     {
         $request->merge(['learning_center_id' => $id]);
 
-        NeedTeacher::create([
-            'learning_center_id' => $request->learning_center_id,
-            'subject_id' => $request->subject_id,
+        $validate = $request->validate([
+            'learning_center_id' => 'required|exists:learning_centers,id',
+            'subject_id' => 'required|exists:subjects,id',
+            'description' => 'nullable|string'
         ]);
+
+        NeedTeacher::create($validate);
     
         return redirect()->route('blog-single', $id)->with('success', 'E\'lon muvaffaqiyatli yangilandi');
     }

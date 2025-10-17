@@ -33,7 +33,9 @@
                     </div>
                     <div class="fb">
                         <h4 class="wj kk wm cc">Mavjud fanlar.</h4>
-                        <p><a style="color: blue" href="{{ route('subject.create','id='. $LearningCenter->id) }}">+ Fan qo'shish</a></p>
+                        <p><a style="color: blue" href="{{ route('subject.create', 'id=' . $LearningCenter->id) }}">+
+                                Fan
+                                qo'shish</a></p>
 
                         @foreach ($LearningCenter->subjects as $subject)
                             <p><a href="#!">{{ $subject->subject->name }}</a></p>
@@ -88,8 +90,8 @@
                 </div>
 
                 <div class="animate_top w-full nn/5 vo/3 vk sg hh sm yh tq">
-                    <form action="{{ route('teacher.add_announcement', ['id' => $LearningCenter->id]) }}" method="POST"
-                        enctype="multipart/form-data" class="fb">
+                    <form action="{{ route('teacher.add_announcement', ['id' => $LearningCenter->id]) }}"
+                        method="POST" enctype="multipart/form-data" class="fb">
                         @csrf
 
                         <div class="tc sf yo ap zf ep qb">
@@ -108,6 +110,12 @@
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
+                        </div>
+
+                        <div class="fb">
+                            <label class="rc ac" for="message">Qiqacha tavsif bering!</label>
+                            <textarea placeholder="Qiqacha tavsif bering.." rows="4" name="message" id="message"
+                                class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 ci"></textarea>
                         </div>
 
                         <div class="tc xf">

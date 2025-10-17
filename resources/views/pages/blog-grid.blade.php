@@ -70,15 +70,16 @@
                         border-radius: 10px;
                     }
 
-                    .map-form{
+                    .map-form {
                         display: flex;
                     }
 
-                    @media (max-width: 768px){
-                        .map-form{
+                    @media (max-width: 768px) {
+                        .map-form {
                             flex-direction: column;
                         }
                     }
+
                     .location-inputs {
                         margin-top: 10px;
                         display: grid;
@@ -104,21 +105,27 @@
                     <div id="map"></div>
                     <form class="map-form location-inputs" action="{{ route('searchMap') }}" method="POST">
                         @csrf
-                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="text" id="address" placeholder="Manzil">
-                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden type="text" id="location" placeholder="Google Maps URL">
-                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden name="latitude" type="text" id="latitude" placeholder="Latitude">
-                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden name="longitude" type="text" id="longitude" placeholder="Longitude">
-                        <select class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" name="subject_id" id="subject" value="{{ old('subject_id') }}">
+                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="text" id="address"
+                            placeholder="Manzil">
+                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden type="text"
+                            id="location" placeholder="Google Maps URL">
+                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden name="latitude"
+                            type="text" id="latitude" placeholder="Latitude">
+                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden name="longitude"
+                            type="text" id="longitude" placeholder="Longitude">
+                        <select class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" name="subject_id" id="subject"
+                            value="{{ old('subject_id') }}">
                             <option value="" disabled selected>Fanni tanlang...</option>
                             @foreach ($subjects as $subject)
                                 <option value="{{ $subject->id }}">{{ $subject->name }}</option>
                             @endforeach
                         </select>
-                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="number" name="radius" id="radius" placeholder="Radius (km)" min="1"
-                            max="10000">
-                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="number" name="maxPrice" id="maxPrice" placeholder="Maksimal narx (so'm)"
-                            min="0">
-                        <button class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" style="background-color: blue; color: white" type="submit">Yuborish</button>
+                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="number" name="radius"
+                            id="radius" placeholder="Radius (km)" min="1" max="10000">
+                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="number" name="maxPrice"
+                            id="maxPrice" placeholder="Maksimal narx (so'm)" min="0">
+                        <button class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi"
+                            style="background-color: blue; color: white" type="submit">Yuborish</button>
                     </form>
                 </div>
 
@@ -311,7 +318,7 @@
                                     @if (isset($LearningCenter->distance))
                                         <p>{{ $LearningCenter->distance }} km</p>
                                     @else
-                                        <p>Masofa ma'lum emas</p>
+                                        <p>Masofani bilish uchun xaritadan joyni tanlang!</p>
                                     @endif
                                 </div>
                             </div>
@@ -387,73 +394,23 @@
                                 <a
                                     href="{{ route('blog-single', $LearningCenter->id) }}">{{ $LearningCenter->name }}</a>
                             </h4>
-                            <div
-                                style="background:#ffffff; padding:20px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08); margin-bottom:16px; margin-top:16px; border-left:4px solid #2196f3; font-family:'Segoe UI', Tahoma, sans-serif; font-size:15px; color:#333;">
-                                @if ($LearningCenter->needTeachers->count() > 0)
+                            <div class="bb ze mb">
+                                <!-- Service Item -->
+                                <div class="animate_top" style="width: 100%">
                                     <div
-                                        style="display:flex; align-items:center; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #f5f5f5;">
-                                        <div
-                                            style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); width:48px; height:48px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-right:12px; box-shadow:0 4px 12px rgba(102,126,234,0.3);">
-                                            <span style="font-size:24px;">📢</span>
-                                        </div>
-                                        <div>
-                                            <h3 style="margin:0; font-size:20px; font-weight:700; color:#1a1a1a;">
-                                                E'lonlar</h3>
-                                            <p style="margin:4px 0 0 0; font-size:13px; color:#757575;">Mavjud ish
-                                                o'rinlari</p>
-                                        </div>
+                                        style="display: flex; flex-direction: row; align-content: center; align-items: center">
+                                        <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
+                                            src="{{ asset('images/3d-speaker.png') }}" alt="Icon" />
+                                        <h4 style="height: 2rem" class="ek zj kk wm nb _b">O'qituvchi kerak</h4>
                                     </div>
-
-                                    <div
-                                        style="background:#f8f9fa; padding:12px; border-radius:8px; margin-bottom:12px;">
-                                        <span
-                                            style="display:flex; align-items:center; font-weight:600; color:#424242; font-size:15px;">
-                                            <span style="margin-right:8px;">🧑‍🏫</span>
-                                            O'qituvchi kerak
-                                        </span>
-                                    </div>
-
-                                    <div style="display:flex; flex-wrap:wrap; gap:10px;">
-                                        @foreach ($LearningCenter->needTeachers as $needTeacher)
-                                            <a href="{{ route('teacher.announcement', $LearningCenter->id) }}"
-                                                style="display:inline-flex; align-items:center; padding:10px 16px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:#ffffff; border-radius:8px; text-decoration:none; font-weight:600; font-size:14px; transition:all 0.3s ease; box-shadow:0 2px 8px rgba(102,126,234,0.25);"
-                                                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102,126,234,0.4)'"
-                                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(102,126,234,0.25)'">
-                                                <span style="margin-right:6px;">📚</span>
-                                                {{ $needTeacher->subject->name }}
-                                            </a>
+                                    @if ($LearningCenter->needTeachers->count() > 0)
+                                        @foreach ($LearningCenter->needTeachers as $teacher)
+                                            <p>{{ $teacher->subject->name }}</p>
                                         @endforeach
-                                    </div>
-
-                                    <div style="margin-top:16px; padding-top:12px; border-top:1px solid #e0e0e0;">
-                                        <p style="margin:0; font-size:13px; color:#757575; text-align:center;">
-                                            ⏰ Yangi e'lonlar muntazam yangilanadi
-                                        </p>
-                                    </div>
-                                @else
-                                    <div
-                                        style="display:flex; align-items:center; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #f5f5f5;">
-                                        <div
-                                            style="background:linear-gradient(135deg, #bdbdbd 0%, #9e9e9e 100%); width:48px; height:48px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-right:12px;">
-                                            <span style="font-size:24px;">📢</span>
-                                        </div>
-                                        <div>
-                                            <h3 style="margin:0; font-size:20px; font-weight:700; color:#1a1a1a;">
-                                                E'lonlar</h3>
-                                            <p style="margin:4px 0 0 0; font-size:13px; color:#757575;">Hozirgi holat
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        style="text-align:center; padding:30px 20px; background:#f8f9fa; border-radius:8px; border:2px dashed #e0e0e0;">
-                                        <div style="font-size:48px; margin-bottom:12px;">📭</div>
-                                        <p style="margin:0; font-size:16px; font-weight:600; color:#616161;">Hozircha
-                                            e'lonlar yo'q</p>
-                                        <p style="margin:8px 0 0 0; font-size:13px; color:#9e9e9e;">Yangi e'lonlar tez
-                                            orada paydo bo'ladi</p>
-                                    </div>
-                                @endif
+                                    @else
+                                        <p>Hozicha elon berilmagan!</p>
+                                    @endif
+                                </div>
                             </div>
 
                         </div>

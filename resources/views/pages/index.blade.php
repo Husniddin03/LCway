@@ -899,7 +899,7 @@
 
                         <div class="fb">
                             <label class="rc ac" for="message">Xabar</label>
-                            <textarea placeholder="Xabar.." rows="4" name="message" id="message"
+                            <textarea placeholder="Xabar.." rows="4" name="description" id="message"
                                 class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 ci"></textarea>
                         </div>
 

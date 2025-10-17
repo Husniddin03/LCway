@@ -31,7 +31,7 @@
                                     margin-bottom: 20px
                                 }
 
-                                .favorite1 .stars {
+                                .favorite1 .stars1 {
                                     display: flex;
                                     justify-content: center;
                                     gap: 5px;
@@ -40,24 +40,24 @@
                                     position: relative;
                                 }
 
-                                .favorite1 .star {
+                                .favorite1 .star1 {
                                     color: #ddd;
                                     transition: color 0.2s ease;
                                     user-select: none;
                                     position: relative;
                                 }
 
-                                .favorite1 .star.full {
+                                .favorite1 .star1.full {
                                     color: #ffc107;
                                 }
 
-                                .favorite1 .star.half {
+                                .favorite1 .star1.half {
                                     background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
                                     -webkit-background-clip: text;
                                     -webkit-text-fill-color: transparent;
                                 }
 
-                                .favorite1 .result {
+                                .favorite1 .result1 {
                                     font-size: 18px;
                                     color: #667eea;
                                     font-weight: bold;
@@ -70,18 +70,18 @@
                             @endphp
 
                             <h4 class="favorite1">
-                                <div class="stars" id="rating1">
+                                <div class="stars1" id="rating11">
                                     @for ($i = 1; $i <= 5; $i++)
                                         @php
                                             $diff = $average - $i;
                                         @endphp
                                         <span
-                                            class="star {{ $average >= $i ? 'full' : ($diff > -1 && $diff < 0 ? 'half' : '') }}">
+                                            class="star1 {{ $average >= $i ? 'full' : ($diff > -1 && $diff < 0 ? 'half' : '') }}">
                                             ★
                                         </span>
                                     @endfor
                                 </div>
-                                <div class="result">{{ $average }}</div>
+                                <div class="result1">{{ $average }}</div>
                             </h4>
                         </h2>
 
@@ -96,31 +96,31 @@
                                 </span> {{ $LearningCenter->type }}</li>
                             <li><span class="rc kk wm"> Manzil:
                                 </span> <a target="_blank" style="color: cornflowerblue"
-                                    href="{{ $LearningCenter->location }}">{{ $LearningCenter->address }}</a>
+                                    href="https://www.google.com/maps?q={{ $LearningCenter->location }}">{{ $LearningCenter->address }}</a>
                             </li>
-                            <li>
-                                <div class="bb ze mb">
-                                    <!-- Service Item -->
-                                    <div class="animate_top" style="width: 100%">
-                                        <div
-                                            style="display: flex; flex-direction: row; align-content: center; align-items: center">
-                                            <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
-                                                src="{{ asset('images/3d-speaker.png') }}" alt="Icon" />
-                                            <h4 style="height: 2rem" class="ek zj kk wm nb _b">O'qituvchi kerak</h4>
-                                        </div>
-                                        @if ($LearningCenter->needTeachers->count() > 0)
-                                            @foreach ($LearningCenter->needTeachers as $teacher)
-                                                <p>{{ $teacher->subject->name }} - {{ $teacher->description }}</p>
-                                            @endforeach
-                                        @else
-                                            <p>Hozicha elon berilmagan!</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            </li>
-
-
                         </ul>
+
+                        <div class="bb ze mb">
+                            <!-- Service Item -->
+                            <div class="animate_top" style="width: 100%">
+                                <div
+                                    style="display: flex; flex-direction: row; align-content: center; align-items: center">
+                                    <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
+                                        src="{{ asset('images/3d-speaker.png') }}" alt="Icon" />
+                                    <h4 style="height: 2rem" class="ek zj kk wm nb _b">O'qituvchi kerak</h4>
+                                </div>
+                                @if ($LearningCenter->needTeachers->count() > 0)
+                                    @foreach ($LearningCenter->needTeachers as $teacher)
+                                        <p><span style="color: brown">{{ $teacher->subject->name }}</span> -
+                                            {{ $teacher->description }}</p>
+                                    @endforeach
+                                @else
+                                    <p>Hozicha elon berilmagan!</p>
+                                @endif
+                            </div>
+                        </div>
+
+
 
                         <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">
                             {{ $LearningCenter->name }} haqida qisqacha malumot:
@@ -142,49 +142,24 @@
                             {{ $LearningCenter->name }} kun tartibi.
                         </h2>
 
-                        <div
-                            style="width:100%; overflow-x:auto; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); margin-top:20px;">
-                            <table
-                                style="min-width:600px; width:100%; border-collapse:collapse; font-family:'Segoe UI', sans-serif; font-size:15px; text-align:center;">
-                                <thead style="background:linear-gradient(to right, #e0f7fa, #b2ebf2); color:#004d40;">
-                                    <tr>
-                                        <th style="padding:12px; border:1px solid #ccc;">#</th>
-                                        <th style="padding:12px; border:1px solid #ccc;">Dushanba</th>
-                                        <th style="padding:12px; border:1px solid #ccc;">Seshanba</th>
-                                        <th style="padding:12px; border:1px solid #ccc;">Chorshanba</th>
-                                        <th style="padding:12px; border:1px solid #ccc;">Payshanba</th>
-                                        <th style="padding:12px; border:1px solid #ccc;">Juma</th>
-                                        <th style="padding:12px; border:1px solid #ccc;">Shanba</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr style="background-color:#fff;"
-                                        onmouseover="this.style.backgroundColor='#f1f8e9'"
-                                        onmouseout="this.style.backgroundColor='#fff'">
-                                        <td
-                                            style="padding:10px; border:1px solid #ddd; font-weight:bold; color:#00796b;">
-                                            Ochilishi</td>
-                                        @foreach ($LearningCenter->calendar as $calendar)
-                                            <td style="padding:10px; border:1px solid #ddd; color:#333;">
-                                                {{ \Carbon\Carbon::parse($calendar->open_time)->format('H:i') }}</td>
-                                        @endforeach
-                                    </tr>
-                                    <tr style="background-color:#fff;"
-                                        onmouseover="this.style.backgroundColor='#f1f8e9'"
-                                        onmouseout="this.style.backgroundColor='#fff'">
-                                        <td
-                                            style="padding:10px; border:1px solid #ddd; font-weight:bold; color:#d32f2f;">
-                                            Yopilishi</td>
-                                        @foreach ($LearningCenter->calendar as $calendar)
-                                            <td style="padding:10px; border:1px solid #ddd; color:#333;">
-                                                {{ \Carbon\Carbon::parse($calendar->close_time)->format('H:i') }}</td>
-                                        @endforeach
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="bb ze mb en">
+                            <div class="wc qf pn xo ng">
+                                <!-- Service Item -->
+                                @foreach ($LearningCenter->calendar as $calendar)
+                                    <div class="animate_top sg pi ml il am cn _m"
+                                        style="display: flex; flex-direction: row; align-items: center">
+                                        <?php $image = strtolower($calendar->calendar->weekdays); ?>
+                                        <div><img style="width: 3rem; height: 3rem; margin-right: 2rem"
+                                                src='{{ asset("images/$image.png") }}' alt="Icon" /></div>
+                                        <div>
+                                            <h4 class="ek zj kk wm nb _b">{{ $calendar->calendar->weekdays }}</h4>
+                                            <p>{{ date('H:i', strtotime($calendar->open_time)) }} -
+                                                {{ date('H:i', strtotime($calendar->close_time)) }}</p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
-
-
 
                         <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb qb">
                             {{ $LearningCenter->name }} bilan bog'lanish.
@@ -243,7 +218,362 @@
                                 </ul>
                             @endforeach
                         </ul>
+                        <div class="animate_top" style="margin-top: 1rem">
+                            <h4 class="tj kk wm qb ta-c">Ustozlar</h4>
+                            <div
+                                style="max-width:900px; margin:0 auto; padding:20px; font-family:'Segoe UI', sans-serif;">
 
+                                @auth
+                                    @if (Auth::user()->id == $LearningCenter->user->id)
+                                        <div
+                                            style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:20px;">
+                                            <h6 style="font-size:16px; font-weight:600;">
+                                                <a href="{{ route('teacher.create', 'id=' . $LearningCenter->id) }}"
+                                                    :class="{
+                                                        'hh/[0.15]': page === 'home',
+                                                        'sh': page === 'home' &&
+                                                            stickyMenu
+                                                    }"
+                                                    class="lk gh dk rg tc wf xf _l gi hi">
+                                                    ➕
+                                                </a>
+                                            </h6>
+                                            <h6 style="font-size:16px; font-weight:600;">
+                                                <a href="{{ route('teacher.announcement', $LearningCenter->id) }}"
+                                                    :class="{
+                                                        'hh/[0.15]': page === 'home',
+                                                        'sh': page === 'home' &&
+                                                            stickyMenu
+                                                    }"
+                                                    class="lk gh dk rg tc wf xf _l gi hi">
+                                                    📢
+                                                </a>
+                                            </h6>
+                                        </div>
+                                    @endif
+                                @endauth
+
+                                <hr style="margin:16px 0;">
+
+
+                                @foreach ($LearningCenter->teachers as $teacher)
+                                    <div class="tc uf zo ap zf bp" style="align-items: center">
+                                        <div class="tc zo ap zf bp"
+                                            style="display: flex; align-items: center; margin-bottom: 2rem">
+                                            <!-- Small Features Item -->
+                                            @if (isset($teacher->photo))
+                                                <div class="tc wf xf cf ae cd rg mh"
+                                                    style="width: 3rem; height: 3rem;">
+                                                    <img style="border-radius: 50%" src="{{ $teacher->photo }}"
+                                                        alt="Icon" />
+                                                </div>
+                                            @else
+                                                <div class="tc wf xf cf ae cd rg mh"
+                                                    style="width: 3rem; height: 3rem;">
+                                                    <img style="border-radius: 50%"
+                                                        src="https://ui-avatars.com/api/?name={{ $teacher->name }}&background=random&size=64"
+                                                        alt="Icon" />
+                                                </div>
+                                            @endif
+                                            <div>
+                                                <h4 class="ek yj go kk wm xb">{{ $teacher->name }}</h4>
+                                                <p style="color: brown">{{ $teacher->subject->name }}</p>
+                                                <p>{{ $teacher->about }}</p>
+                                            </div>
+                                        </div>
+
+                                        @auth
+                                            @if (Auth::user()->id == $LearningCenter->user->id)
+                                                <form id="delete-{{ $teacher->id }}"
+                                                    action="{{ route('teacher.destroy', $teacher->id) }}" method="post"
+                                                    onsubmit="return confirm('Rostdan ham {{ $teacher->name }}ni o‘chirilsinmi?');"
+                                                    style="margin-left:10px;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" style="font-size: 1rem">❌</button>
+                                                </form>
+                                            @endif
+                                        @endauth
+                                    </div>
+                                @endforeach
+
+                            </div>
+
+                            <hr style="margin:16px 0;">
+                        </div>
+                        <div class="animate_top">
+                            <h4 class="tj kk wm qb ta-c">Joylashuv</h4>
+
+                            <div>
+                                <iframe style="width: 100%; height: 20rem; border-radius: 0.5rem"
+                                    src="https://www.google.com/maps?q={{ $LearningCenter->location }}&hl=uz&z=14&output=embed"
+                                    allowfullscreen loading="lazy">
+                                </iframe>
+                            </div>
+                        </div>
+
+
+
+
+                        @auth
+                            <div id="comment" class="animate_top">
+
+                                <style>
+                                    .favorite {
+                                        display: flex;
+                                        flex-direction: column;
+                                        align-items: center;
+                                        gap: 15px;
+                                        margin-top: 20px
+                                    }
+
+                                    .favorite .rating-label {
+                                        color: #666;
+                                        font-size: 24px;
+                                    }
+
+                                    .favorite .stars {
+                                        display: flex;
+                                        justify-content: center;
+                                        gap: 10px;
+                                        font-size: 40px;
+                                        cursor: pointer;
+                                    }
+
+                                    .favorite .star {
+                                        color: #ddd;
+                                        transition: all 0.2s ease;
+                                        user-select: none;
+                                    }
+
+                                    .favorite .star:hover,
+                                    .favorite .star.hover {
+                                        color: #ffc107;
+                                        transform: scale(1.2);
+                                    }
+
+                                    .favorite .star.active {
+                                        color: #ffc107;
+                                    }
+
+                                    .favorite .result {
+                                        font-size: 18px;
+                                        color: #667eea;
+                                        font-weight: bold;
+                                        min-height: 30px;
+                                    }
+                                </style>
+
+                                <h4 class="favorite">
+                                    <span class="rating-label">Markazni baholang:</span>
+                                    <div class="stars" id="rating1" data-center-id="{{ $LearningCenter->id }}">
+                                        <span class="star" data-value="1">★</span>
+                                        <span class="star" data-value="2">★</span>
+                                        <span class="star" data-value="3">★</span>
+                                        <span class="star" data-value="4">★</span>
+                                        <span class="star" data-value="5">★</span>
+                                    </div>
+                                    <div class="result" id="result1"></div>
+                                </h4>
+
+                                <script>
+                                    const ratings = {};
+
+                                    function initRating(ratingId, resultId) {
+                                        const starsContainer = document.getElementById(ratingId);
+                                        const stars = starsContainer.querySelectorAll('.star');
+
+                                        stars.forEach(star => {
+                                            star.addEventListener('mouseenter', () => {
+                                                const value = star.dataset.value;
+                                                highlightStars(stars, value);
+                                            });
+
+                                            star.addEventListener('click', () => {
+                                                const value = star.dataset.value;
+                                                const centerId = starsContainer.dataset.centerId;
+                                                ratings[ratingId] = value;
+
+                                                // Yulduzlarni yangilash
+                                                stars.forEach(s => {
+                                                    if (s.dataset.value <= value) {
+                                                        s.classList.add('active');
+                                                    } else {
+                                                        s.classList.remove('active');
+                                                    }
+                                                });
+
+                                                updateResult(resultId, value);
+
+                                                // POST so‘rov yuborish
+                                                sendRating(centerId, value);
+                                            });
+                                        });
+
+                                        starsContainer.addEventListener('mouseleave', () => {
+                                            const savedRating = ratings[ratingId];
+                                            if (savedRating) {
+                                                highlightStars(stars, savedRating);
+                                            } else {
+                                                stars.forEach(s => s.classList.remove('hover'));
+                                            }
+                                        });
+                                    }
+
+                                    function highlightStars(stars, value) {
+                                        stars.forEach(star => {
+                                            if (star.dataset.value <= value) {
+                                                star.classList.add('hover');
+                                            } else {
+                                                star.classList.remove('hover');
+                                            }
+                                        });
+                                    }
+
+                                    function updateResult(resultId, value) {
+                                        const resultEl = document.getElementById(resultId);
+                                        const ratings_text = ['Juda yomon', 'Yomon', "O'rtacha", 'Yaxshi', 'Ajoyib'];
+                                        resultEl.textContent = `${value} ⭐ - ${ratings_text[value - 1]}`;
+                                    }
+
+                                    // Reytingni serverga yuboruvchi funksiya
+                                    function sendRating(centerId, value) {
+                                        fetch('/comment/favoriteStore', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'Accept': 'application/json', // Laravelga JSON kutayotganimizni aytadi
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                },
+                                                body: JSON.stringify({
+                                                    rating: value,
+                                                    learning_centers_id: centerId
+                                                })
+                                            })
+                                            .then(async response => {
+                                                const text = await response.text(); // avval text oling
+                                                console.log('Raw response text:', text);
+
+                                                try {
+                                                    const data = JSON.parse(text); // keyin JSON.parse
+                                                    if (!response.ok) {
+                                                        // server 4xx/5xx kod qaytargan bo'lishi mumkin
+                                                        console.error('Server returned error:', data);
+                                                    } else {
+                                                        console.log('Reyting yuborildi:', data);
+                                                    }
+                                                } catch (err) {
+                                                    // Agar JSON.parse xato bersa — text ichida nimadir noto'g'ri
+                                                    console.error('JSON.parse xatosi — server noto\'g\'ri javob yubordi:', err);
+                                                    console.error('Server returned raw text:', text);
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error('Fetch xatosi:', error);
+                                            });
+                                    }
+
+
+                                    initRating('rating1', 'result1');
+                                </script>
+
+
+
+                                <h4 class="tj kk wm qb ta-c">Izohlar</h4>
+                                <form action="{{ route('comment.store') }}" method="POST" class="mb-6">
+                                    @csrf
+                                    <input style="padding-right: 20px" type="hidden" name="learning_centers_id"
+                                        value="{{ $LearningCenter->id }}">
+                                    <div class="i">
+                                        <input name="comment" type="text"
+                                            placeholder="{{ $LearningCenter->name }} haqida fikringizni qoldiring..."
+                                            class="vd sm _g ch pm vk xm rg gm dm/40 dn/40 li mi" />
+
+                                        <button type="submit" class="h r q _h">
+                                            <svg class="th ul ml il" width="21" height="21" viewBox="0 0 24 24"
+                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z"
+                                                    fill="currentColor" />
+                                            </svg>
+                                        </button>
+
+                                    </div>
+                                </form>
+                                <div>
+
+                                    <!-- Slider main container -->
+                                    <div style="margin-top: 20px" class="swiper testimonial-01">
+                                        <p>Jami izohlar {{ $LearningCenter->comments->count() }}</p>
+                                        <div class="swiper-wrapper">
+                                            @foreach ($LearningCenter->comments->reverse() as $comment)
+                                                <!-- Slides -->
+                                                <div class="swiper-slide">
+                                                    <div class="i hh rm sg vk xm bi qj">
+                                                        <div class="tc sf rn tn un zf dp">
+                                                            <div>
+                                                                <p class="ek ik xj _p kc fb">
+                                                                    {{ $comment->comment }}
+                                                                </p>
+
+                                                                <div class="tc yf vf">
+                                                                    <div>
+                                                                        <span
+                                                                            class="rc ek xj kk wm zb">{{ $comment->user->name }}</span>
+                                                                        <span
+                                                                            class="rc">{{ $comment->user->email }}</span>
+                                                                    </div>
+
+                                                                </div>
+                                                                <img class="rk" src="images/brand-light-02.svg')}}"
+                                                                    alt="{{ $comment->created_at->diffForHumans() }}" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        @if ($LearningCenter->comments->count() > 1)
+                                            <!-- If we need navigation -->
+                                            <div class="tc wf xf fg jb">
+                                                <div
+                                                    class="swiper-button-prev c tc wf xf ie ld rg _g dh pf ml vr hh rm tl zm rl ym">
+                                                    <svg class="th lm" width="14" height="14"
+                                                        viewBox="0 0 14 14" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M3.52366 7.83336L7.99366 12.3034L6.81533 13.4817L0.333663 7.00002L6.81533 0.518357L7.99366 1.69669L3.52366 6.16669L13.667 6.16669L13.667 7.83336L3.52366 7.83336Z"
+                                                            fill="" />
+                                                    </svg>
+                                                </div>
+                                                <div
+                                                    class="swiper-button-next c tc wf xf ie ld rg _g dh pf ml vr hh rm tl zm rl ym">
+                                                    <svg class="th lm" width="14" height="14"
+                                                        viewBox="0 0 14 14" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.4763 6.16664L6.00634 1.69664L7.18467 0.518311L13.6663 6.99998L7.18467 13.4816L6.00634 12.3033L10.4763 7.83331H0.333008V6.16664H10.4763Z"
+                                                            fill="" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endauth
+
+                        @guest
+
+                        <h4 style="margin-top: 3rem">O'z fikringizni qoldirish uchun ro'yxatdan o'ting!</h4>
+                            <div class="tc wf ig pb no animate_top" style="margin-top: 20px; text-align: center">
+                                <a href="{{ route('signin') }}"
+                                    :class="{ 'nk yl': page === 'home', 'ok': page === 'home' && stickyMenu }"
+                                    class="ek pk xl">Sign In</a>
+                                <a href="{{ route('signup') }}"
+                                    :class="{ 'hh/[0.15]': page === 'home', 'sh': page === 'home' && stickyMenu }"
+                                    class="lk gh dk rg tc wf xf _l gi hi">Sign Up</a>
+                            </div>
+                        @endguest
 
                     </div>
                     {{-- <form id="update-{{ $LearningCenter->id }}"
@@ -280,6 +610,8 @@
                     </div>
 
                     <div class="animate_top fb">
+                        <hr style="margin:16px 0;">
+
                         <h4 class="tj kk wm qb ta-c">
                             Fanlar</h4>
 
@@ -288,22 +620,37 @@
 
                             @auth
                                 @if (Auth::user()->id == $LearningCenter->user->id)
-                                    <li
-                                        style="margin-bottom:16px; padding:12px 16px; background-color:#e3f2fd; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); text-align:center;">
+                                    <li>
                                         <a href="{{ route('subject.create', 'id=' . $LearningCenter->id) }}"
-                                            style="text-decoration:none; color:#1565c0; font-weight:600;">➕ Fan
-                                            qo'shish</a>
+                                            :class="{
+                                                'hh/[0.15]': page === 'home',
+                                                'sh': page === 'home' &&
+                                                    stickyMenu
+                                            }"
+                                            class="lk gh dk rg tc wf xf _l gi hi">
+                                            ➕
+                                        </a>
                                     </li>
                                 @endif
                             @endauth
 
+                            <hr style="margin:16px 0;">
                             @foreach ($LearningCenter->subjects as $subject)
-                                <hr style="border:none; border-top:1px solid #ddd; margin:12px 0;">
-                                <li
-                                    style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; padding:12px 16px; background-color:#f9f9f9; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.05); margin-bottom:8px;">
-                                    <a href="#!" style="text-decoration:none; color:#2c3e50; font-weight:500;">
-                                        📘 {{ $subject->subject->name }} — {{ $subject->price }} so'm
-                                    </a>
+                                <div class="tc uf zo ap zf bp" style="align-items: center">
+                                    <div class="tc zo ap zf bp"
+                                        style="display: flex; align-items: center; margin-bottom: 2rem">
+                                        <!-- Small Features Item -->
+
+                                        <div class="tc wf xf cf ae cd rg mh" style="width: 3rem; height: 3rem;">
+                                            <img style="border-radius: 50%; width: 3rem; height: 3rem;"
+                                                src="https://ui-avatars.com/api/?name={{ $subject->subject->name }}&background=random&size=64"
+                                                alt="Icon" />
+                                        </div>
+                                        <div>
+                                            <h4 class="ek yj go kk wm xb">{{ $subject->subject->name }}</h4>
+                                            <p>{{ $subject->price }}</p>
+                                        </div>
+                                    </div>
 
                                     @auth
                                         @if (Auth::user()->id == $LearningCenter->user->id)
@@ -313,382 +660,17 @@
                                                 style="margin-left:10px;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit"
-                                                    style="background:none; border:none; cursor:pointer;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"
-                                                        viewBox="0 0 100 100">
-                                                        <path fill="#f37e98"
-                                                            d="M25,30l3.645,47.383C28.845,79.988,31.017,82,33.63,82h32.74c2.613,0,4.785-2.012,4.985-4.617L75,30">
-                                                        </path>
-                                                        <path fill="#f15b6c"
-                                                            d="M77 24h-4l-1.835-3.058C70.442 19.737 69.14 19 67.735 19h-35.47c-1.405 0-2.707.737-3.43 1.942L27 24h-4c-1.657 0-3 1.343-3 3s1.343 3 3 3h54c1.657 0 3-1.343 3-3S78.657 24 77 24z">
-                                                        </path>
-                                                        <path fill="#1f212b"
-                                                            d="M66.37 83H33.63c-3.116 0-5.744-2.434-5.982-5.54l-3.645-47.383 1.994-.154 3.645 47.384C29.801 79.378 31.553 81 33.63 81H66.37c2.077 0 3.829-1.622 3.988-3.692l3.645-47.385 1.994.154-3.645 47.384C72.113 80.566 69.485 83 66.37 83z">
-                                                        </path>
-                                                    </svg>
-                                                </button>
+                                                <button type="submit" style="font-size: 1rem">❌</button>
                                             </form>
                                         @endif
                                     @endauth
-                                </li>
+                                </div>
                             @endforeach
 
-                            <hr style="border:none; border-top:1px solid #ddd; margin:16px 0;">
+                            <hr>
                         </ul>
 
                     </div>
-
-                    <div class="animate_top">
-                        <h4 class="tj kk wm qb ta-c">Ustozlar</h4>
-
-                        <div style="max-width:900px; margin:0 auto; padding:20px; font-family:'Segoe UI', sans-serif;">
-
-                            @auth
-                                @if (Auth::user()->id == $LearningCenter->user->id)
-                                    <div
-                                        style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:20px;">
-                                        <h6 style="font-size:16px; font-weight:600;">
-                                            <a href="{{ route('teacher.create', 'id=' . $LearningCenter->id) }}"
-                                                style="text-decoration:none; color:#1565c0; background-color:#e3f2fd; padding:8px 16px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.1); display:inline-block;">
-                                                ➕ Ustoz qo'shish
-                                            </a>
-                                        </h6>
-                                        <h6 style="font-size:16px; font-weight:600;">
-                                            <a href="{{ route('teacher.announcement', $LearningCenter->id) }}"
-                                                style="text-decoration:none; color:#2e7d32; background-color:#c8e6c9; padding:8px 16px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.1); display:inline-block;">
-                                                📣 Ustoz kerak
-                                            </a>
-                                        </h6>
-                                    </div>
-                                @endif
-                            @endauth
-
-                            @foreach ($LearningCenter->teachers as $teacher)
-                                <div
-                                    style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; background-color:#f9f9f9; border-radius:10px; padding:12px 16px; margin-bottom:12px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
-
-                                    <div style="display:flex; align-items:center; gap:12px;">
-                                        @if (isset($teacher->photo))
-                                            <img src="{{ $teacher->photo }}" alt="Teacher"
-                                                style="border-radius:50%; width:50px; height:50px; border:3px solid #4f46e5;" />
-                                        @else
-                                            <img src="https://ui-avatars.com/api/?name={{ $teacher->name }}&background=random&size=64"
-                                                alt="Avatar"
-                                                style="border-radius:50%; width:50px; height:50px; border:3px solid #4f46e5;" />
-                                        @endif
-
-                                        <h5 style="margin:0; font-size:16px; font-weight:500; color:#2c3e50;">
-                                            <a href="#!" style="text-decoration:none; color:inherit;">
-                                                {{ $teacher->name }} — {{ $teacher->subject->name }}
-                                            </a>
-                                        </h5>
-                                    </div>
-
-                                    @auth
-                                        @if (Auth::user()->id == $LearningCenter->user->id)
-                                            <form id="delete-{{ $teacher->id }}"
-                                                action="{{ route('teacher.destroy', $teacher->id) }}" method="post"
-                                                onsubmit="return confirm('Rostdan ham {{ $teacher->name }}ni o‘chirilsinmi?');"
-                                                style="margin-left:10px;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    style="background:none; border:none; cursor:pointer;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"
-                                                        viewBox="0 0 100 100">
-                                                        <path fill="#f37e98"
-                                                            d="M25,30l3.645,47.383C28.845,79.988,31.017,82,33.63,82h32.74c2.613,0,4.785-2.012,4.985-4.617L75,30">
-                                                        </path>
-                                                        <path fill="#f15b6c"
-                                                            d="M77 24h-4l-1.835-3.058C70.442 19.737 69.14 19 67.735 19h-35.47c-1.405 0-2.707.737-3.43 1.942L27 24h-4c-1.657 0-3 1.343-3 3s1.343 3 3 3h54c1.657 0 3-1.343 3-3S78.657 24 77 24z">
-                                                        </path>
-                                                        <path fill="#1f212b"
-                                                            d="M66.37 83H33.63c-3.116 0-5.744-2.434-5.982-5.54l-3.645-47.383 1.994-.154 3.645 47.384C29.801 79.378 31.553 81 33.63 81H66.37c2.077 0 3.829-1.622 3.988-3.692l3.645-47.385 1.994.154-3.645 47.384C72.113 80.566 69.485 83 66.37 83z">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                            </form>
-                                        @endif
-                                    @endauth
-                                </div>
-                            @endforeach
-
-                        </div>
-
-                    </div>
-
-                    <div class="animate_top"
-                        style="z-index:1; padding:20px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); background-color:#f9f9f9; max-width:900px; margin:0 auto;">
-                        <h4
-                            style="font-size:22px; font-weight:600; color:#2c3e50; margin-bottom:16px; text-align:center;">
-                            Joylashuv</h4>
-
-                        <div
-                            style="position:relative; width:100%; height:0; padding-bottom:56.25%; border-radius:10px; overflow:hidden;">
-                            <iframe
-                                src="https://www.google.com/maps?q={{ $LearningCenter->location }}&hl=uz&z=14&output=embed"
-                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
-                                allowfullscreen loading="lazy">
-                            </iframe>
-                        </div>
-                    </div>
-
-
-
-
-                    <div id="comment" class="animate_top">
-
-                        <style>
-                            .favorite {
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                                gap: 15px;
-                                margin-top: 20px
-                            }
-
-                            .favorite .rating-label {
-                                color: #666;
-                                font-size: 24px;
-                            }
-
-                            .favorite .stars {
-                                display: flex;
-                                justify-content: center;
-                                gap: 10px;
-                                font-size: 40px;
-                                cursor: pointer;
-                            }
-
-                            .favorite .star {
-                                color: #ddd;
-                                transition: all 0.2s ease;
-                                user-select: none;
-                            }
-
-                            .favorite .star:hover,
-                            .favorite .star.hover {
-                                color: #ffc107;
-                                transform: scale(1.2);
-                            }
-
-                            .favorite .star.active {
-                                color: #ffc107;
-                            }
-
-                            .favorite .result {
-                                font-size: 18px;
-                                color: #667eea;
-                                font-weight: bold;
-                                min-height: 30px;
-                            }
-                        </style>
-
-                        <h4 class="favorite">
-                            <span class="rating-label">Markazni baholang:</span>
-                            <div class="stars" id="rating1" data-center-id="{{ $LearningCenter->id }}">
-                                <span class="star" data-value="1">★</span>
-                                <span class="star" data-value="2">★</span>
-                                <span class="star" data-value="3">★</span>
-                                <span class="star" data-value="4">★</span>
-                                <span class="star" data-value="5">★</span>
-                            </div>
-                            <div class="result" id="result1"></div>
-                        </h4>
-
-                        <script>
-                            const ratings = {};
-
-                            function initRating(ratingId, resultId) {
-                                const starsContainer = document.getElementById(ratingId);
-                                const stars = starsContainer.querySelectorAll('.star');
-
-                                stars.forEach(star => {
-                                    star.addEventListener('mouseenter', () => {
-                                        const value = star.dataset.value;
-                                        highlightStars(stars, value);
-                                    });
-
-                                    star.addEventListener('click', () => {
-                                        const value = star.dataset.value;
-                                        const centerId = starsContainer.dataset.centerId;
-                                        ratings[ratingId] = value;
-
-                                        // Yulduzlarni yangilash
-                                        stars.forEach(s => {
-                                            if (s.dataset.value <= value) {
-                                                s.classList.add('active');
-                                            } else {
-                                                s.classList.remove('active');
-                                            }
-                                        });
-
-                                        updateResult(resultId, value);
-
-                                        // POST so‘rov yuborish
-                                        sendRating(centerId, value);
-                                    });
-                                });
-
-                                starsContainer.addEventListener('mouseleave', () => {
-                                    const savedRating = ratings[ratingId];
-                                    if (savedRating) {
-                                        highlightStars(stars, savedRating);
-                                    } else {
-                                        stars.forEach(s => s.classList.remove('hover'));
-                                    }
-                                });
-                            }
-
-                            function highlightStars(stars, value) {
-                                stars.forEach(star => {
-                                    if (star.dataset.value <= value) {
-                                        star.classList.add('hover');
-                                    } else {
-                                        star.classList.remove('hover');
-                                    }
-                                });
-                            }
-
-                            function updateResult(resultId, value) {
-                                const resultEl = document.getElementById(resultId);
-                                const ratings_text = ['Juda yomon', 'Yomon', "O'rtacha", 'Yaxshi', 'Ajoyib'];
-                                resultEl.textContent = `${value} ⭐ - ${ratings_text[value - 1]}`;
-                            }
-
-                            // Reytingni serverga yuboruvchi funksiya
-                            function sendRating(centerId, value) {
-                                fetch('/comment/favoriteStore', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'Accept': 'application/json', // Laravelga JSON kutayotganimizni aytadi
-                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                        },
-                                        body: JSON.stringify({
-                                            rating: value,
-                                            learning_centers_id: centerId
-                                        })
-                                    })
-                                    .then(async response => {
-                                        const text = await response.text(); // avval text oling
-                                        console.log('Raw response text:', text);
-
-                                        try {
-                                            const data = JSON.parse(text); // keyin JSON.parse
-                                            if (!response.ok) {
-                                                // server 4xx/5xx kod qaytargan bo'lishi mumkin
-                                                console.error('Server returned error:', data);
-                                            } else {
-                                                console.log('Reyting yuborildi:', data);
-                                            }
-                                        } catch (err) {
-                                            // Agar JSON.parse xato bersa — text ichida nimadir noto'g'ri
-                                            console.error('JSON.parse xatosi — server noto\'g\'ri javob yubordi:', err);
-                                            console.error('Server returned raw text:', text);
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Fetch xatosi:', error);
-                                    });
-                            }
-
-
-                            initRating('rating1', 'result1');
-                        </script>
-
-
-
-                        <h4 class="tj kk wm qb ta-c">Izohlar</h4>
-                        <form action="{{ route('comment.store') }}" method="POST" class="mb-6">
-                            @csrf
-                            <input style="padding-right: 20px" type="hidden" name="learning_centers_id"
-                                value="{{ $LearningCenter->id }}">
-                            <div class="i">
-                                <input name="comment" type="text"
-                                    placeholder="{{ $LearningCenter->name }} haqida fikringizni qoldiring..."
-                                    class="vd sm _g ch pm vk xm rg gm dm/40 dn/40 li mi" />
-
-                                <button type="submit" class="h r q _h">
-                                    <svg class="th ul ml il" width="21" height="21" viewBox="0 0 24 24"
-                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor" />
-                                    </svg>
-                                </button>
-
-                            </div>
-                        </form>
-                        <div>
-
-                            <!-- Slider main container -->
-                            <div style="margin-top: 20px" class="swiper testimonial-01">
-                                <p>Jami izohlar {{ $LearningCenter->comments->count() }}</p>
-                                <div class="swiper-wrapper">
-                                    @foreach ($LearningCenter->comments->reverse() as $comment)
-                                        <!-- Slides -->
-                                        <div class="swiper-slide">
-                                            <div class="i hh rm sg vk xm bi qj">
-                                                <div class="tc sf rn tn un zf dp">
-                                                    <div>
-                                                        <p class="ek ik xj _p kc fb">
-                                                            {{ $comment->comment }}
-                                                        </p>
-
-                                                        <div class="tc yf vf">
-                                                            <div>
-                                                                <span
-                                                                    class="rc ek xj kk wm zb">{{ $comment->user->name }}</span>
-                                                                <span
-                                                                    class="rc">{{ $comment->user->email }}</span>
-                                                            </div>
-
-                                                        </div>
-                                                        <img class="rk" src="images/brand-light-02.svg')}}"
-                                                            alt="{{ $comment->created_at->diffForHumans() }}" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                                @if ($LearningCenter->comments->count() > 1)
-                                    <!-- If we need navigation -->
-                                    <div class="tc wf xf fg jb">
-                                        <div
-                                            class="swiper-button-prev c tc wf xf ie ld rg _g dh pf ml vr hh rm tl zm rl ym">
-                                            <svg class="th lm" width="14" height="14" viewBox="0 0 14 14"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M3.52366 7.83336L7.99366 12.3034L6.81533 13.4817L0.333663 7.00002L6.81533 0.518357L7.99366 1.69669L3.52366 6.16669L13.667 6.16669L13.667 7.83336L3.52366 7.83336Z"
-                                                    fill="" />
-                                            </svg>
-                                        </div>
-                                        <div
-                                            class="swiper-button-next c tc wf xf ie ld rg _g dh pf ml vr hh rm tl zm rl ym">
-                                            <svg class="th lm" width="14" height="14" viewBox="0 0 14 14"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M10.4763 6.16664L6.00634 1.69664L7.18467 0.518311L13.6663 6.99998L7.18467 13.4816L6.00634 12.3033L10.4763 7.83331H0.333008V6.16664H10.4763Z"
-                                                    fill="" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    @guest
-                        <div class="tc wf ig pb no animate_top" style="margin-top: 20px; text-align: center">
-                            <a href="{{ route('signin') }}"
-                                :class="{ 'nk yl': page === 'home', 'ok': page === 'home' && stickyMenu }"
-                                class="ek pk xl">Sign In</a>
-                            <a href="{{ route('signup') }}"
-                                :class="{ 'hh/[0.15]': page === 'home', 'sh': page === 'home' && stickyMenu }"
-                                class="lk gh dk rg tc wf xf _l gi hi">Sign Up</a>
-                        </div>
-                    @endguest
 
                 </div>
             </div>

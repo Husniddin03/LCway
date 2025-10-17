@@ -22,7 +22,8 @@ class NeedTeacherFactory extends Factory
 
         return [
             'learning_center_id' => LearningCenter::factory(),
-            'subject_id' => Subject::inRandomOrder()->first()->id
+            'subject_id' => Subject::inRandomOrder()->first()->id,
+            'description' => fake()->paragraph(5),
         ];
     }
 }

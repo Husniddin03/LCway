@@ -131,7 +131,7 @@
 
                         <div class="fb">
                             <label class="rc ac" for="message">Ustoz haida (ixtiyoriy)</label>
-                            <textarea placeholder="Message" rows="4" name="message" id="message"
+                            <textarea placeholder="Message" rows="4" name="about" id="message"
                                 class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 ci"></textarea>
                             @error('message')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>

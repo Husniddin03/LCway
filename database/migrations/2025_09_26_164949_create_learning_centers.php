@@ -120,7 +120,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('learning_center_id');
             $table->unsignedBigInteger('subject_id');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
 
             $table->foreign('learning_center_id')->references('id')->on('learning_centers')->onDelete('cascade');

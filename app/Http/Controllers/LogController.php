@@ -28,7 +28,7 @@ class LogController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('index')->with('success', 'User registered successfully');
+        return redirect()->intended(back()->getTargetUrl());
     }
 
     /**
@@ -45,8 +45,7 @@ class LogController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            return redirect()->route('index')->with('success', 'Logged in successfully');
-            
+            return redirect()->intended(back()->getTargetUrl());
         }
 
         return back()->withErrors([

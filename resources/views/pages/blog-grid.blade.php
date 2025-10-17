@@ -282,18 +282,60 @@
                     <p>{{ $LearningCenters->count() }} ta o'quv markaz topildi</p>
                 </div>
             </div>
+
+            <style>
+                .favorite {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 15px;
+                    margin-top: 20px;
+                }
+
+                .favorite .stars {
+                    display: flex;
+                    justify-content: center;
+                    gap: 5px;
+                    font-size: 40px;
+                    cursor: pointer;
+                    position: relative;
+                }
+
+                .favorite .star {
+                    color: #ddd;
+                    transition: color 0.2s ease;
+                    user-select: none;
+                    position: relative;
+                }
+
+                .favorite .star.full {
+                    color: #ffc107;
+                }
+
+                .favorite .star.half {
+                    background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+
+                .favorite .result {
+                    font-size: 18px;
+                    color: #667eea;
+                    font-weight: bold;
+                    min-height: 30px;
+                }
+
+                .standard-img {
+                    aspect-ratio: 4 / 3;
+                    object-fit: cover;
+                    width: 100%;
+                    height: auto;
+                }
+            </style>
             <div class="wc qf pn xo zf iq">
                 <!-- Blog Item -->
                 @foreach ($LearningCenters as $LearningCenter)
-                    <div loading="lezi" class="animate_top sg vk rm xm">
-                        <style>
-                            .standard-img {
-                                aspect-ratio: 4 / 3;
-                                object-fit: cover;
-                                width: 100%;
-                                height: auto;
-                            }
-                        </style>
+                    <div id="{{ $LearningCenter->id }}" loading="lezi" class="animate_top sg vk rm xm">
 
                         <div class="c rc i z-1 pg">
                             <img class="standard-img lazy-img" src="{{ $LearningCenter->logo }}" alt="Blog" />
@@ -324,48 +366,7 @@
                             </div>
 
 
-                            <style>
-                                .favorite {
-                                    display: flex;
-                                    flex-direction: row;
-                                    align-items: center;
-                                    gap: 15px;
-                                    margin-top: 20px;
-                                }
 
-                                .favorite .stars {
-                                    display: flex;
-                                    justify-content: center;
-                                    gap: 5px;
-                                    font-size: 40px;
-                                    cursor: pointer;
-                                    position: relative;
-                                }
-
-                                .favorite .star {
-                                    color: #ddd;
-                                    transition: color 0.2s ease;
-                                    user-select: none;
-                                    position: relative;
-                                }
-
-                                .favorite .star.full {
-                                    color: #ffc107;
-                                }
-
-                                .favorite .star.half {
-                                    background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
-                                    -webkit-background-clip: text;
-                                    -webkit-text-fill-color: transparent;
-                                }
-
-                                .favorite .result {
-                                    font-size: 18px;
-                                    color: #667eea;
-                                    font-weight: bold;
-                                    min-height: 30px;
-                                }
-                            </style>
 
                             @php
                                 $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
@@ -420,5 +421,6 @@
         </div>
     </section>
     <!-- ===== Blog Grid End ===== -->
+
 
 </x-layout>

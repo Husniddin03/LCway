@@ -6,19 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $title ?? 'Todo Manager' }}</title>
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="images/lcwayfavicon.png">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 
 <body x-data="{ page: 'signup', 'darkMode': true, 'stickyMenu': false, 'navigationOpen': false, 'scrollTop': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
-$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'b eh': darkMode === true }">
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'b eh': darkMode === false }">
 
     <!-- ===== Header Start ===== -->
     <header class="g s r vd ya cj" :class="{ 'hh sm _k dj bl ll': stickyMenu }"
         @scroll.window="stickyMenu = (window.pageYOffset > 20) ? true : false">
         <div class="bb ze ki xn 2xl:ud-px-0 oo wf yf i">
             <div class="vd to/4 tc wf yf">
-                <a href="{{ route('index') }}">
+                <a style="width: 50px" href="{{ route('index') }}">
                     <style>
                         @media (max-width: 768px) {
                             .log {
@@ -27,10 +27,10 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                             }
                         }
                     </style>
-                    <img style="width: 80px; height: 80px; border-radius: 50%" class="om log"
-                        src="{{ asset('images/lcwaylogo.png') }}" alt="Logo Light" />
-                    <img style="width: 80px; height: 80px; border-radius: 50%" class="xc nm log"
-                        src="{{ asset('images/lcwaylogo.png') }}" alt="Logo Dark" />
+                    <img style="width: 100%; border-radius: 50%" class="om log"
+                        src="{{ asset('images/lcwayfavicon.png') }}" alt="Logo Light" />
+                    <img style="width: 100%; border-radius: 50%" class="xc nm log"
+                        src="{{ asset('images/lcwayfavicon.png') }}" alt="Logo Dark" />
                 </a>
 
                 <!-- Hamburger Toggle BTN -->
@@ -60,12 +60,12 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                     <ul class="tc _o sf yo cg ep">
                         <li><a href="{{ route('index') }}" class="xl"
                                 :class="{ 'mk': page === 'home' }">Asosiy</a></li>
-                        <li><a href="{{ route('index') }}#features" class="xl">Biz haqimizda</a></li>
+                        <li><a href="{{ route('blog-grid') }}" class="xl">O'quv markazlar</a></li>
+                        <li><a href="{{ route('course.create') }}" class="xl">O'quv markaz qo'shish</a></li>
                         <li class="c i" x-data="{ dropdown: false }">
                             <a href="#!" class="xl tc wf yf bg" @click.prevent="dropdown = !dropdown"
                                 :class="{
-                                    'mk': page === 'blog-grid' || page === 'blog-single' || page === 'signin' ||
-                                        page === 'signup' || page === 'create'
+                                    'mk': page === 'index' || page === 'index'
                                 }">
                                 Sahifalar
 
@@ -78,16 +78,15 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
                             <!-- Dropdown Start -->
                             <ul class="a" :class="{ 'tc': dropdown }">
-                                <li><a href="{{ route('blog-grid') }}" class="xl"
-                                        :class="{ 'mk': page === 'blog-grid' }">O'quv markazlar
+                                <li><a href="{{ route('index') }}#features" class="xl"
+                                        :class="{ 'mk': page === 'index' }">Biz haqimizda
                                     </a></li>
-                                <li><a href="{{ route('course.create') }}" class="xl"
-                                        :class="{ 'mk': page === 'create' }">O'quv markaz qo'shish</a>
+                                <li><a href="{{ route('index') }}#support" class="xl"
+                                        :class="{ 'mk': page === 'index' }">Qo'llab-quvvatlash</a>
                                 </li>
                             </ul>
                             <!-- Dropdown End -->
                         </li>
-                        <li><a href="{{ route('index') }}#support" class="xl">Qo'llab-quvvatlash</a></li>
                     </ul>
                 </nav>
 
@@ -116,9 +115,14 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                 :class="{ 'nk yl': page === 'home', 'ok': page === 'home' && stickyMenu }"
                                 class="ek pk xl" style="color: red">Chiqish</button>
                         </form>
-                        <a href="{{ route('index') }}"
-                            :class="{ 'hh/[0.15]': page === 'home', 'sh': page === 'home' && stickyMenu }"
-                            class="lk gh dk rg tc wf xf _l gi hi">{{ Auth::user()->name }}
+                        <a style="width: 50px" href="{{ route('index') }}">
+                            @isset(Auth::user()->avatar)
+                                <img style="width: 100%; border-radius: 50%" src="{{ Auth::user()->avatar }}" alt="">
+                            @else
+                                <img style="width: 100%; border-radius: 50%"
+                                    src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random&size=64"
+                                    alt="Icon" />
+                            @endisset
                         </a>
                     @endauth
 
@@ -149,7 +153,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                     <div class="animate_left to/2">
                         <h2 class="fk vj zp pr lk ac">
                             Hozirda ro'yxatdan o'tganlar o'quv markazlar soni:
-                            {{$AllCenters->count()}} ta
+                            {{ $AllCenters->count() }} ta
                         </h2>
                         <p class="lk">
                             Ular safida siz ham bo'ling va o'zingizning o'quv markazingizni qo'shing!
@@ -175,19 +179,19 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                 <div class="tc uf ap gg fp">
                     <div class="animate_top zd/2 to/4">
                         <a href="{{ route('index') }}">
-                            <img style="width: 100px; height: 100px; border-radius: 50%"
-                                src="{{ asset('images/lcwaylogo.png') }}" alt="Logo" class="om log2" />
-                            <img style="width: 100px; height: 100px; border-radius: 50%"
-                                src="{{ asset('images/lcwaylogo.png') }}" alt="Logo" class="xc nm log2" />
+                            <img style="width: 50px; border-radius: 50%" src="{{ asset('images/lcwayfavicon.png') }}"
+                                alt="Logo" class="om log2" />
+                            <img style="width: 50px; border-radius: 50%" src="{{ asset('images/lcwayfavicon.png') }}"
+                                alt="Logo" class="xc nm log2" />
                         </a>
 
-                        <p class="lc fb">LCway - Learning-Center way yani Ta’lim sari eng qulay yo‘l</p>
+                        <p class="lc fb">LCway - Learning-Center way yani Ta’lim sari eng qulay yo‘lni topuvchi platforma</p>
 
                         <ul class="tc wf cg">
                             <li>
-                                <a href="https://t.me/lcway_group" target="_blank" class="sc xl vb">
-                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100"
-                                        height="100" viewBox="0 0 48 48">
+                                <a href="https://t.me/lcway_channel" target="_blank" class="sc xl vb">
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50"
+                                        height="50" viewBox="0 0 48 48">
                                         <path fill="#29b6f6" d="M24,4C13,4,4,13,4,24s9,20,20,20s20-9,20-20S35,4,24,4z">
                                         </path>
                                         <path fill="#fff"

@@ -8,6 +8,12 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
 use Telegram\Bot\Laravel\Facades\Telegram;
+use Illuminate\Support\Str;
+
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 
 Route::fallback(function () {
     return response()->view('pages.404', [], 404);
@@ -16,6 +22,31 @@ Route::fallback(function () {
 // Route::get('setwebhook', function () {
 //     $response = Telegram::setWebhook(['url' => 'https://fbd5e36f17a6.ngrok-free.app/api/telegram/webhook']);
 // });
+
+
+Route::get('/auth/google', function () {
+    return Socialite::driver('google')
+        ->scopes(['openid', 'profile', 'email'])
+        ->redirect();
+})->name('google.redirect');
+
+Route::get('/auth/google/callback', function () {
+    $googleUser = Socialite::driver('google')->user();
+    $user = User::updateOrCreate(
+        ['email' => $googleUser->getEmail()],
+        [
+            'name' => $googleUser->getName(),
+            'google_id' => $googleUser->getId(),       // endi null bo‘lmaydi ✅
+            'avatar' => $googleUser->getAvatar(),      // endi null bo‘lmaydi ✅
+            'password' => bcrypt(Str::random(16)),
+        ]
+    );
+
+    Auth::login($user);
+
+    return redirect('/');
+});
+
 
 
 Route::get('/', [PageController::class, 'index'])->name('index');
@@ -39,6 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/teacher/store/{id}', [TeacherController::class, 'store'])->name('teacher.storeid');
     Route::get('/teacher/announcement/{id}', [TeacherController::class, 'announcement'])->name('teacher.announcement');
     Route::post('/teacher/add_announcement/{id}', [TeacherController::class, 'add_announcement'])->name('teacher.add_announcement');
+    Route::post('/teacher/delete_announcement/{id}', [TeacherController::class, 'delete_announcement'])->name('teacher.delete_announcement');
     Route::resource('teacher', TeacherController::class);
     Route::post('/subject/store/{id}', [SubjectController::class, 'store'])->name('subject.storeid');
     Route::resource('subject', SubjectController::class);

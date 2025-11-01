@@ -338,7 +338,8 @@
                     <div id="{{ $LearningCenter->id }}" loading="lezi" class="animate_top sg vk rm xm">
 
                         <div class="c rc i z-1 pg">
-                            <img class="standard-img lazy-img" src="{{ $LearningCenter->logo }}" alt="Blog" />
+                            <img class="standard-img lazy-img" src="{{ asset('storage/' . $LearningCenter->logo) }}"
+                                alt="Blog" />
 
                             <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
                                 <a href="{{ route('blog-single', $LearningCenter->id) }}"
@@ -398,11 +399,10 @@
                             <div class="bb ze mb">
                                 <!-- Service Item -->
                                 <div class="animate_top" style="width: 100%">
-                                    <div
-                                        style="display: flex; flex-direction: row; align-content: center; align-items: center">
+                                    <div class="_b" style="display: flex; flex-direction: row; align-content: center; align-items: center;">
                                         <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
                                             src="{{ asset('images/3d-speaker.png') }}" alt="Icon" />
-                                        <h4 style="height: 2rem" class="ek zj kk wm nb _b">O'qituvchi kerak</h4>
+                                        <h4 class="ek zj kk wm">O'qituvchi kerak</h4>
                                     </div>
                                     @if ($LearningCenter->needTeachers->count() > 0)
                                         @foreach ($LearningCenter->needTeachers as $teacher)

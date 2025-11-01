@@ -114,7 +114,7 @@
 
                         <div class="fb">
                             <label class="rc ac" for="message">Qiqacha tavsif bering!</label>
-                            <textarea placeholder="Qiqacha tavsif bering.." rows="4" name="message" id="message"
+                            <textarea placeholder="Qiqacha tavsif bering.." rows="4" name="description" id="message"
                                 class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 ci"></textarea>
                         </div>
 

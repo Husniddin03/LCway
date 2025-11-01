@@ -2,7 +2,7 @@
 
     <x-slot:title>
 
-        Welcome to FindCourse - Your Gateway to Knowledge and Learning
+        Welcome to LCway - Your Gateway to Knowledge and Learning
 
     </x-slot>
 
@@ -24,7 +24,7 @@
                     <h1 class="fk vj zp or kk wm wb">Assalomu alaykum, bizning sahifamizga xush kelibsiz!
                     </h1>
                     <p class="fq">
-                        Bu yerda siz o'zingizga kerakli bo'lgan kurslarni o'quv markazlarni topishingiz mumkun. Biz
+                        Bu yerda siz o'zingizga kerakli bo'lgan o'quv markazlarni topishingiz mumkun. Biz
                         sizga eng yaxshi xizmatni taqdim etamiz.
                     </p>
 
@@ -33,9 +33,9 @@
                             tanlash!</a>
 
                         <span class="tc sf">
-                            <a href="#!" class="inline-block ek xj kk wm"> +998 77 025
+                            <a href="#!" class="inline-block ek xj kk wm"> (+998) 77 025
                                 026 77 </a>
-                            <span class="inline-block">Har qanday savol yoki muammo uchun</span>
+                            <span class="inline-block">Har qanday savol yoki taklif uchun</span>
                         </span>
                     </div>
                 </div>
@@ -860,7 +860,7 @@
                         <h4 class="wj kk wm qb">Ijtimoiy tarmoqlar</h4>
                         <ul class="tc wf fg">
                             <li>
-                                <a href="https://t.me/lcway_group" class="c tc wf xf ie ld rg ml il tl">
+                                <a href="https://t.me/matritsachi" class="c tc wf xf ie ld rg ml il tl">
                                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100"
                                         height="100" viewBox="0 0 48 48">
                                         <path fill="#29b6f6" d="M24,4C13,4,4,13,4,24s9,20,20,20s20-9,20-20S35,4,24,4z">

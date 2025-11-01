@@ -10,13 +10,13 @@ class CalendarTableSeeder extends Seeder
     public function run(): void
     {
         $days = [
-            ['weekdays' => 'Monday'],
-            ['weekdays' => 'Tuesday'],
-            ['weekdays' => 'Wednesday'],
-            ['weekdays' => 'Thursday'],
-            ['weekdays' => 'Friday'],
-            ['weekdays' => 'Saturday'],
-            ['weekdays' => 'Sunday'],
+            ['weekdays' => 'Dushanba'],
+            ['weekdays' => 'Seshanba'],
+            ['weekdays' => 'Chorshanba'],
+            ['weekdays' => 'Payshanba'],
+            ['weekdays' => 'Juma'],
+            ['weekdays' => 'Shanba'],
+            ['weekdays' => 'Yakshanba'],
         ];
 
         DB::table('calendar')->insert($days);

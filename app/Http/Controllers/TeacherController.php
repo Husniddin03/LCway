@@ -72,7 +72,13 @@ class TeacherController extends Controller
 
         NeedTeacher::create($validate);
     
-        return redirect()->route('blog-single', $id)->with('success', 'E\'lon muvaffaqiyatli yangilandi');
+        return redirect()->route('blog-single', $id)->with('success', 'E\'lon muvaffaqiyatli qo;shildi');
+    }
+
+    public function delete_announcement(string $id) {
+        $delete_announcement = NeedTeacher::find($id);
+        $delete_announcement->delete();
+        return redirect()->route('blog-single', $id)->with('success', 'E\'lon muvaffaqiyatli o\'chirilidi');
     }
 
     

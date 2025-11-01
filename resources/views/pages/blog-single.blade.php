@@ -14,8 +14,9 @@
                 <div class="ro">
                     <div
                         class="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10">
-                        <a href="{{ $LearningCenter->logo }}" data-fslightbox class="vc wf hg mb">
-                            <img style="width: 100% !important" src="{{ $LearningCenter->logo }}" alt="Blog" />
+                        <a href="{{ asset('storage/' . $LearningCenter->logo) }}" data-fslightbox class="vc wf hg mb">
+                            <img style="width: 100% !important; border-radius: 15px" src="{{ asset('storage/' . $LearningCenter->logo) }}"
+                                alt="Blog" />
                         </a>
 
                         <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">
@@ -58,7 +59,7 @@
                                 }
 
                                 .favorite1 .result1 {
-                                    font-size: 18px;
+                                    font-size: 26px;
                                     color: #667eea;
                                     font-weight: bold;
                                     min-height: 30px;
@@ -81,7 +82,7 @@
                                         </span>
                                     @endfor
                                 </div>
-                                <div class="result1">{{ $average }}</div>
+                                <div style="margin-top: 6px" class="result1">{{ $average }}</div>
                             </h4>
                         </h2>
 
@@ -111,8 +112,23 @@
                                 </div>
                                 @if ($LearningCenter->needTeachers->count() > 0)
                                     @foreach ($LearningCenter->needTeachers as $teacher)
-                                        <p><span style="color: brown">{{ $teacher->subject->name }}</span> -
-                                            {{ $teacher->description }}</p>
+                                        <div style="display: flex">
+                                            <p>
+                                                <span style="color: brown">{{ $teacher->subject->name }}</span> -
+                                                {{ $teacher->description }}
+                                            </p>
+                                            @auth
+                                                @if (Auth::user()->id == $LearningCenter->user->id)
+                                                    <form action="{{ route('teacher.delete_announcement', $teacher->id) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <button style="color: brown" type="submit">
+                                                            &nbsp;Elonni bekor qilish
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            @endauth
+                                        </div>
                                     @endforeach
                                 @else
                                     <p>Hozicha elon berilmagan!</p>
@@ -132,8 +148,9 @@
 
                         <div class="wc qf pn dg cb">
                             @foreach ($LearningCenter->images as $image)
-                                <a href="{{ $image->image }}" data-fslightbox class="vc wf hg mb">
-                                    <img style="width: 100%" src="{{ $image->image }}" alt="Blog" />
+                                <a href="{{ asset('storage/' . $image->image) }}" data-fslightbox class="vc wf hg mb">
+                                    <img style="width: 100%; border-radius: 15px" src="{{ asset('storage/' . $image->image) }}"
+                                        alt="Blog" />
                                 </a>
                             @endforeach
                         </div>
@@ -147,12 +164,11 @@
                                 <!-- Service Item -->
                                 @foreach ($LearningCenter->calendar as $calendar)
                                     <div class="animate_top sg pi ml il am cn _m"
-                                        style="display: flex; flex-direction: row; align-items: center">
-                                        <?php $image = strtolower($calendar->calendar->weekdays); ?>
-                                        <div><img style="width: 3rem; height: 3rem; margin-right: 2rem"
-                                                src='{{ asset("images/$image.png") }}' alt="Icon" /></div>
+                                        style="display: flex; flex-direction: row; align-items: center; padding-bottom: 20px">
                                         <div>
-                                            <h4 class="ek zj kk wm nb _b">{{ $calendar->calendar->weekdays }}</h4>
+                                            <h4 class="ek zj kk wm nb _b">
+                                                {{$calendar->calendar->weekdays}}
+                                            </h4>
                                             <p>{{ date('H:i', strtotime($calendar->open_time)) }} -
                                                 {{ date('H:i', strtotime($calendar->close_time)) }}</p>
                                         </div>
@@ -264,8 +280,13 @@
                                             @if (isset($teacher->photo))
                                                 <div class="tc wf xf cf ae cd rg mh"
                                                     style="width: 3rem; height: 3rem;">
-                                                    <img style="border-radius: 50%" src="{{ $teacher->photo }}"
-                                                        alt="Icon" />
+                                                    <a href="{{ asset('storage/' . $teacher->photo) }}"
+                                                        data-fslightbox>
+
+                                                        <img style="border-radius: 50%"
+                                                            src="{{ asset('storage/' . $teacher->photo) }}"
+                                                            alt="Icon" />
+                                                    </a>
                                                 </div>
                                             @else
                                                 <div class="tc wf xf cf ae cd rg mh"
@@ -564,7 +585,7 @@
 
                         @guest
 
-                        <h4 style="margin-top: 3rem">O'z fikringizni qoldirish uchun ro'yxatdan o'ting!</h4>
+                            <h4 style="margin-top: 3rem">O'z fikringizni qoldirish uchun ro'yxatdan o'ting!</h4>
                             <div class="tc wf ig pb no animate_top" style="margin-top: 20px; text-align: center">
                                 <a href="{{ route('signin') }}"
                                     :class="{ 'nk yl': page === 'home', 'ok': page === 'home' && stickyMenu }"

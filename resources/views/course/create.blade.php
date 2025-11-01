@@ -161,7 +161,7 @@
 
                     <div class="edu-center-field-group edu-center-full">
                         <label for="location" class="edu-center-label">Markazning kunlik ochilish va yopilish
-                            vaqtlarini kiriting. Ishlamaydigan kun uchun bo'sh qoldiring</label>
+                            vaqtlarini kiriting.</label>
                     </div>
 
                     <div class="edu-center-field-group">
@@ -641,9 +641,6 @@
 
     window.initMap = initMap;
 </script>
-
-
-
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM-lcwS2aMgdJd5AMxE8N_1Lu7M3aHJUw&callback=initMap" async
     defer></script>

@@ -174,34 +174,6 @@
                         @enderror
                     </div>
 
-
-                    {{-- subjects --}}
-
-                    <style>
-                        .edu-center-row {
-                            display: flex;
-                            align-items: center;
-                            gap: 20px;
-                            margin-bottom: 15px;
-                        }
-
-                        .edu-center-half {
-                            width: 48%;
-                        }
-
-                        /* Mobilga moslash */
-                        @media (max-width: 768px) {
-                            .edu-center-row {
-                                flex-direction: column;
-                                align-items: flex-start;
-                            }
-
-                            .edu-center-field-group {
-                                width: 100%;
-                            }
-                        }
-                    </style>
-
                     <div class="edu-center-field-group edu-center-full">
                         <label for="location" class="edu-center-label">Markazda qanday fanlardan dars beriladi</label>
                     </div>
@@ -231,39 +203,6 @@
                     <!-- Yangi qator qo‘shish tugmasi -->
                     <button type="button" id="add-subject" class="edu-center-btn edu-center-btn-secondary">+ Fan
                         qo‘shish</button>
-
-                    <script>
-                        let subjectIndex = 1; // index 0 band bo‘ldi
-
-                        document.getElementById('add-subject').addEventListener('click', function() {
-                            let wrapper = document.getElementById('subjects-wrapper');
-
-                            let newRow = document.createElement('div');
-                            newRow.classList.add('edu-center-row');
-                            newRow.innerHTML = `
-                                <div class="edu-center-field-group edu-center-half">
-                                    <label class="edu-center-label">Fan</label>
-                                    <select name="subjects[${subjectIndex}][id]" class="edu-center-input" required>
-                                        <option value="" disabled selected>Fanni tanlang ...</option>
-                                        @foreach ($subjects as $id => $name)
-                                            <option value="{{ $id }}">{{ $name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="edu-center-field-group edu-center-half">
-                                    <label class="edu-center-label">Narxi (oyiga)</label>
-                                    <input type="text" name="subjects[${subjectIndex}][price]" class="edu-center-input" placeholder="Masalan: 1000000">
-                                    @error('subjects.${subjectIndex}.price')
-                                        <div style="color: red">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            `;
-
-                            wrapper.appendChild(newRow);
-                            subjectIndex++;
-                        });
-                    </script>
 
 
                     {{-- connection --}}
@@ -301,42 +240,6 @@
                         + Ijtimoiy tarmoq qo‘shish
                     </button>
 
-                    <script>
-                        let connectionIndex = 1; // index 0 band
-
-                        document.getElementById('add-connection').addEventListener('click', function() {
-                            let wrapper = document.getElementById('connections-wrapper');
-
-                            let newRow = document.createElement('div');
-                            newRow.classList.add('edu-center-row');
-                            newRow.innerHTML = `
-                                <div class="edu-center-field-group edu-center-half">
-                                    <label class="edu-center-label">Ijtimoiy tarmoq</label>
-                                    <select name="connections[${connectionIndex}][id]" class="edu-center-input" required>
-                                        <option value="" disabled selected>Ijtimoiy tarmoqni tanlang ...</option>
-                                        @foreach ($connections as $id => $name)
-                                            <option value="{{ $id }}">{{ $name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="edu-center-field-group edu-center-half">
-                                    <label class="edu-center-label">Manzili</label>
-                                    <input type="text" name="connections[${connectionIndex}][url]" class="edu-center-input"
-                                        placeholder="Masalan: https://t.me/username">
-                                    @error('connections.${connectionIndex}.url')
-                                        <div style="color: red">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            `;
-
-                            wrapper.appendChild(newRow);
-                            connectionIndex++;
-                        });
-                    </script>
-
-
-
                     <?php
                     $uzbekDays = [
                         1 => 'Dushanba',
@@ -349,36 +252,7 @@
                     
                     ?>
 
-                    <style>
-                        .edu-center-row {
-                            display: flex;
-                            align-items: center;
-                            gap: 20px;
-                            margin-bottom: 15px;
-                        }
 
-                        .edu-center-field-group {
-                            flex: 1;
-                        }
-
-                        /* 📱 Mobil ekranlar uchun (768px dan kichik) */
-                        @media (max-width: 768px) {
-                            .edu-center-row {
-                                flex-direction: column;
-                                /* ustma-ust bo‘ladi */
-                                align-items: flex-start;
-                                gap: 10px;
-                            }
-
-                            .edu-center-field-group {
-                                width: 100%;
-                            }
-
-                            .edu-center-label {
-                                font-size: 16px;
-                            }
-                        }
-                    </style>
                     <div class="edu-center  field-group edu-center-full">
                         <label for="location" class="edu-center-label">Markazning haftalik ish vaqti</label>
                     </div>
@@ -441,9 +315,66 @@
     </main>
 
     <script src="{{ asset('js/course.js') }}"></script>
+
 </body>
 
 </html>
+
+
+<style>
+    .edu-center-row {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+
+    .edu-center-half {
+        width: 48%;
+    }
+
+    /* Mobilga moslash */
+    @media (max-width: 768px) {
+        .edu-center-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .edu-center-field-group {
+            width: 100%;
+        }
+    }
+
+    .edu-center-row {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+
+    .edu-center-field-group {
+        flex: 1;
+    }
+
+    /* 📱 Mobil ekranlar uchun (768px dan kichik) */
+    @media (max-width: 768px) {
+        .edu-center-row {
+            flex-direction: column;
+            /* ustma-ust bo‘ladi */
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .edu-center-field-group {
+            width: 100%;
+        }
+
+        .edu-center-label {
+            font-size: 16px;
+        }
+    }
+</style>
+
 
 <script>
     // Dinamik tumanlar ro'yxati
@@ -522,9 +453,7 @@
             });
         }
     });
-</script>
 
-<script>
     let map, geocoder, marker;
 
     function initMap() {
@@ -640,6 +569,69 @@
     }
 
     window.initMap = initMap;
+
+    let subjectIndex = 1; // index 0 band bo‘ldi
+
+    document.getElementById('add-subject').addEventListener('click', function() {
+        let wrapper = document.getElementById('subjects-wrapper');
+
+        let newRow = document.createElement('div');
+        newRow.classList.add('edu-center-row');
+        newRow.innerHTML = `
+                                <div class="edu-center-field-group edu-center-half">
+                                    <label class="edu-center-label">Fan</label>
+                                    <select name="subjects[${subjectIndex}][id]" class="edu-center-input" required>
+                                        <option value="" disabled selected>Fanni tanlang ...</option>
+                                        @foreach ($subjects as $id => $name)
+                                            <option value="{{ $id }}">{{ $name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="edu-center-field-group edu-center-half">
+                                    <label class="edu-center-label">Narxi (oyiga)</label>
+                                    <input type="text" name="subjects[${subjectIndex}][price]" class="edu-center-input" placeholder="Masalan: 1000000">
+                                    @error('subjects.${subjectIndex}.price')
+                                        <div style="color: red">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            `;
+
+        wrapper.appendChild(newRow);
+        subjectIndex++;
+    });
+
+    let connectionIndex = 1; // index 0 band
+
+    document.getElementById('add-connection').addEventListener('click', function() {
+        let wrapper = document.getElementById('connections-wrapper');
+
+        let newRow = document.createElement('div');
+        newRow.classList.add('edu-center-row');
+        newRow.innerHTML = `
+                                <div class="edu-center-field-group edu-center-half">
+                                    <label class="edu-center-label">Ijtimoiy tarmoq</label>
+                                    <select name="connections[${connectionIndex}][id]" class="edu-center-input" required>
+                                        <option value="" disabled selected>Ijtimoiy tarmoqni tanlang ...</option>
+                                        @foreach ($connections as $id => $name)
+                                            <option value="{{ $id }}">{{ $name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="edu-center-field-group edu-center-half">
+                                    <label class="edu-center-label">Manzili</label>
+                                    <input type="text" name="connections[${connectionIndex}][url]" class="edu-center-input"
+                                        placeholder="Masalan: https://t.me/username">
+                                    @error('connections.${connectionIndex}.url')
+                                        <div style="color: red">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            `;
+
+        wrapper.appendChild(newRow);
+        connectionIndex++;
+    });
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM-lcwS2aMgdJd5AMxE8N_1Lu7M3aHJUw&callback=initMap" async

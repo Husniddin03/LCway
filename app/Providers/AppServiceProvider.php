@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('isOun', function (User $user, LearningCenter $center) {
-            return $user->id === $center->id;
+            return $user->id === $center->user->id;
         });
     }
 }

@@ -22,50 +22,6 @@
                         <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">
                             {{ $LearningCenter->name }}
 
-                            <style>
-                                .favorite1 {
-                                    display: flex;
-                                    flex-direction: row;
-                                    align-items: center;
-                                    gap: 15px;
-                                    margin-top: 20px;
-                                    margin-bottom: 20px
-                                }
-
-                                .favorite1 .stars1 {
-                                    display: flex;
-                                    justify-content: center;
-                                    gap: 5px;
-                                    font-size: 40px;
-                                    cursor: pointer;
-                                    position: relative;
-                                }
-
-                                .favorite1 .star1 {
-                                    color: #ddd;
-                                    transition: color 0.2s ease;
-                                    user-select: none;
-                                    position: relative;
-                                }
-
-                                .favorite1 .star1.full {
-                                    color: #ffc107;
-                                }
-
-                                .favorite1 .star1.half {
-                                    background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
-                                    -webkit-background-clip: text;
-                                    -webkit-text-fill-color: transparent;
-                                }
-
-                                .favorite1 .result1 {
-                                    font-size: 26px;
-                                    color: #667eea;
-                                    font-weight: bold;
-                                    min-height: 30px;
-                                }
-                            </style>
-
                             @php
                                 $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
                             @endphp
@@ -181,7 +137,7 @@
                                 @can('isOun', $LearningCenter)
                                     <div style="display: flex; align-content: center; align-items: center; text-align: center">
                                         <a style="border: 1px solid blue"
-                                            href="{{ route('course.edit', $LearningCenter->id) }}"
+                                            href="{{ route('course.editImage', $LearningCenter->id) }}"
                                             class="vc ek kk hh rg ol il cm gi hi">Tahrirlash </a>
                                         <a style="border: 1px solid blue"
                                             href="{{ route('course.edit', $LearningCenter->id) }}"
@@ -357,57 +313,8 @@
                             </div>
                         </div>
 
-
-
-
                         @auth
                             <div id="comment" class="animate_top">
-
-                                <style>
-                                    .favorite {
-                                        display: flex;
-                                        flex-direction: column;
-                                        align-items: center;
-                                        gap: 15px;
-                                        margin-top: 20px
-                                    }
-
-                                    .favorite .rating-label {
-                                        color: #666;
-                                        font-size: 24px;
-                                    }
-
-                                    .favorite .stars {
-                                        display: flex;
-                                        justify-content: center;
-                                        gap: 10px;
-                                        font-size: 40px;
-                                        cursor: pointer;
-                                    }
-
-                                    .favorite .star {
-                                        color: #ddd;
-                                        transition: all 0.2s ease;
-                                        user-select: none;
-                                    }
-
-                                    .favorite .star:hover,
-                                    .favorite .star.hover {
-                                        color: #ffc107;
-                                        transform: scale(1.2);
-                                    }
-
-                                    .favorite .star.active {
-                                        color: #ffc107;
-                                    }
-
-                                    .favorite .result {
-                                        font-size: 18px;
-                                        color: #667eea;
-                                        font-weight: bold;
-                                        min-height: 30px;
-                                    }
-                                </style>
 
                                 <h4 class="favorite">
                                     <span class="rating-label">Markazni baholang:</span>
@@ -420,109 +327,6 @@
                                     </div>
                                     <div class="result" id="result1"></div>
                                 </h4>
-
-                                <script>
-                                    const ratings = {};
-
-                                    function initRating(ratingId, resultId) {
-                                        const starsContainer = document.getElementById(ratingId);
-                                        const stars = starsContainer.querySelectorAll('.star');
-
-                                        stars.forEach(star => {
-                                            star.addEventListener('mouseenter', () => {
-                                                const value = star.dataset.value;
-                                                highlightStars(stars, value);
-                                            });
-
-                                            star.addEventListener('click', () => {
-                                                const value = star.dataset.value;
-                                                const centerId = starsContainer.dataset.centerId;
-                                                ratings[ratingId] = value;
-
-                                                // Yulduzlarni yangilash
-                                                stars.forEach(s => {
-                                                    if (s.dataset.value <= value) {
-                                                        s.classList.add('active');
-                                                    } else {
-                                                        s.classList.remove('active');
-                                                    }
-                                                });
-
-                                                updateResult(resultId, value);
-
-                                                // POST so‘rov yuborish
-                                                sendRating(centerId, value);
-                                            });
-                                        });
-
-                                        starsContainer.addEventListener('mouseleave', () => {
-                                            const savedRating = ratings[ratingId];
-                                            if (savedRating) {
-                                                highlightStars(stars, savedRating);
-                                            } else {
-                                                stars.forEach(s => s.classList.remove('hover'));
-                                            }
-                                        });
-                                    }
-
-                                    function highlightStars(stars, value) {
-                                        stars.forEach(star => {
-                                            if (star.dataset.value <= value) {
-                                                star.classList.add('hover');
-                                            } else {
-                                                star.classList.remove('hover');
-                                            }
-                                        });
-                                    }
-
-                                    function updateResult(resultId, value) {
-                                        const resultEl = document.getElementById(resultId);
-                                        const ratings_text = ['Juda yomon', 'Yomon', "O'rtacha", 'Yaxshi', 'Ajoyib'];
-                                        resultEl.textContent = `${value} ⭐ - ${ratings_text[value - 1]}`;
-                                    }
-
-                                    // Reytingni serverga yuboruvchi funksiya
-                                    function sendRating(centerId, value) {
-                                        fetch('/comment/favoriteStore', {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json',
-                                                    'Accept': 'application/json', // Laravelga JSON kutayotganimizni aytadi
-                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                                },
-                                                body: JSON.stringify({
-                                                    rating: value,
-                                                    learning_centers_id: centerId
-                                                })
-                                            })
-                                            .then(async response => {
-                                                const text = await response.text(); // avval text oling
-                                                console.log('Raw response text:', text);
-
-                                                try {
-                                                    const data = JSON.parse(text); // keyin JSON.parse
-                                                    if (!response.ok) {
-                                                        // server 4xx/5xx kod qaytargan bo'lishi mumkin
-                                                        console.error('Server returned error:', data);
-                                                    } else {
-                                                        console.log('Reyting yuborildi:', data);
-                                                    }
-                                                } catch (err) {
-                                                    // Agar JSON.parse xato bersa — text ichida nimadir noto'g'ri
-                                                    console.error('JSON.parse xatosi — server noto\'g\'ri javob yubordi:', err);
-                                                    console.error('Server returned raw text:', text);
-                                                }
-                                            })
-                                            .catch(error => {
-                                                console.error('Fetch xatosi:', error);
-                                            });
-                                    }
-
-
-                                    initRating('rating1', 'result1');
-                                </script>
-
-
 
                                 <h4 class="tj kk wm qb ta-c">Izohlar</h4>
                                 <form action="{{ route('comment.store') }}" method="POST" class="mb-6">
@@ -621,16 +425,6 @@
                         @endguest
 
                     </div>
-                    {{-- <form id="update-{{ $LearningCenter->id }}"
-                        onsubmit="return confirm('Rostdan ham {{ $LearningCenter->name }} malumotlarini yangilamoqchimisiz?');"
-                        action="{{ route('course.update', $LearningCenter->id) }}" method="post"
-                        style="margin-top: 20px;" class="animate_right bf">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" style="color: green" class="vc ek kk hh rg ol il cm gi hi">
-                            {{ $LearningCenter->name }} malumotlarini yangilash.
-                        </button>
-                    </form> --}}
                     @auth
                         @can('isOun', $LearningCenter)
                             <div class="animate_right bf" style="margin-top: 10px">
@@ -730,3 +524,194 @@
 
 
 </x-layout>
+
+
+<style>
+    .favorite1 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
+        margin-top: 20px;
+        margin-bottom: 20px
+    }
+
+    .favorite1 .stars1 {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        font-size: 40px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .favorite1 .star1 {
+        color: #ddd;
+        transition: color 0.2s ease;
+        user-select: none;
+        position: relative;
+    }
+
+    .favorite1 .star1.full {
+        color: #ffc107;
+    }
+
+    .favorite1 .star1.half {
+        background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .favorite1 .result1 {
+        font-size: 26px;
+        color: #667eea;
+        font-weight: bold;
+        min-height: 30px;
+    }
+
+    /* favorites */
+    .favorite {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin-top: 20px
+    }
+
+    .favorite .rating-label {
+        color: #666;
+        font-size: 24px;
+    }
+
+    .favorite .stars {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        font-size: 40px;
+        cursor: pointer;
+    }
+
+    .favorite .star {
+        color: #ddd;
+        transition: all 0.2s ease;
+        user-select: none;
+    }
+
+    .favorite .star:hover,
+    .favorite .star.hover {
+        color: #ffc107;
+        transform: scale(1.2);
+    }
+
+    .favorite .star.active {
+        color: #ffc107;
+    }
+
+    .favorite .result {
+        font-size: 18px;
+        color: #667eea;
+        font-weight: bold;
+        min-height: 30px;
+    }
+</style>
+
+<script>
+    const ratings = {};
+
+    function initRating(ratingId, resultId) {
+        const starsContainer = document.getElementById(ratingId);
+        const stars = starsContainer.querySelectorAll('.star');
+
+        stars.forEach(star => {
+            star.addEventListener('mouseenter', () => {
+                const value = star.dataset.value;
+                highlightStars(stars, value);
+            });
+
+            star.addEventListener('click', () => {
+                const value = star.dataset.value;
+                const centerId = starsContainer.dataset.centerId;
+                ratings[ratingId] = value;
+
+                // Yulduzlarni yangilash
+                stars.forEach(s => {
+                    if (s.dataset.value <= value) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+
+                updateResult(resultId, value);
+
+                // POST so‘rov yuborish
+                sendRating(centerId, value);
+            });
+        });
+
+        starsContainer.addEventListener('mouseleave', () => {
+            const savedRating = ratings[ratingId];
+            if (savedRating) {
+                highlightStars(stars, savedRating);
+            } else {
+                stars.forEach(s => s.classList.remove('hover'));
+            }
+        });
+    }
+
+    function highlightStars(stars, value) {
+        stars.forEach(star => {
+            if (star.dataset.value <= value) {
+                star.classList.add('hover');
+            } else {
+                star.classList.remove('hover');
+            }
+        });
+    }
+
+    function updateResult(resultId, value) {
+        const resultEl = document.getElementById(resultId);
+        const ratings_text = ['Juda yomon', 'Yomon', "O'rtacha", 'Yaxshi', 'Ajoyib'];
+        resultEl.textContent = `${value} ⭐ - ${ratings_text[value - 1]}`;
+    }
+
+    // Reytingni serverga yuboruvchi funksiya
+    function sendRating(centerId, value) {
+        fetch('/comment/favoriteStore', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json', // Laravelga JSON kutayotganimizni aytadi
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    rating: value,
+                    learning_centers_id: centerId
+                })
+            })
+            .then(async response => {
+                const text = await response.text(); // avval text oling
+                console.log('Raw response text:', text);
+
+                try {
+                    const data = JSON.parse(text); // keyin JSON.parse
+                    if (!response.ok) {
+                        // server 4xx/5xx kod qaytargan bo'lishi mumkin
+                        console.error('Server returned error:', data);
+                    } else {
+                        console.log('Reyting yuborildi:', data);
+                    }
+                } catch (err) {
+                    // Agar JSON.parse xato bersa — text ichida nimadir noto'g'ri
+                    console.error('JSON.parse xatosi — server noto\'g\'ri javob yubordi:', err);
+                    console.error('Server returned raw text:', text);
+                }
+            })
+            .catch(error => {
+                console.error('Fetch xatosi:', error);
+            });
+    }
+
+
+    initRating('rating1', 'result1');
+</script>

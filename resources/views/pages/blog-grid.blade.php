@@ -31,71 +31,6 @@
                     </div>
                 </form>
 
-                <style>
-                    .nav-links {
-                        display: flex;
-                        gap: 20px;
-                        margin-top: 20px;
-                        list-style: none;
-                        padding: 0;
-                    }
-
-                    .nav-links li a {
-                        text-decoration: none;
-                        font-size: 18px;
-                        color: rgb(78 107 255);
-                        padding: 8px 16px;
-                        border-radius: 6px;
-                        transition: background 0.3s;
-                    }
-
-                    .nav-links li a:hover {
-                        background-color: pink;
-                    }
-
-                    #map-container {
-                        max-height: 0;
-                        overflow: hidden;
-                        transition: max-height 0.5s ease;
-                    }
-
-                    #map-container.active {
-                        max-height: 700px;
-                        margin-top: 10px;
-                    }
-
-                    #map {
-                        width: 100%;
-                        height: 400px;
-                        border-radius: 10px;
-                    }
-
-                    .map-form {
-                        display: flex;
-                    }
-
-                    @media (max-width: 768px) {
-                        .map-form {
-                            flex-direction: column;
-                        }
-                    }
-
-                    .location-inputs {
-                        margin-top: 10px;
-                        display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                        gap: 10px;
-                        margin-bottom: 40px;
-                    }
-
-                    .location-inputs input,
-                    .location-inputs select {
-                        padding: 8px;
-                        font-size: 16px;
-                        width: 100%;
-                    }
-                </style>
-
                 <ul class="nav-links">
                     <li><a href="{{ route('blog-grid') }}">Barchasi</a></li>
                     <li><a href="#" id="toggle-map">Xarita</a></li>
@@ -128,152 +63,6 @@
                             style="background-color: blue; color: white" type="submit">Yuborish</button>
                     </form>
                 </div>
-
-                <script>
-                    const toggleMapBtn = document.getElementById('toggle-map');
-                    const mapContainer = document.getElementById('map-container');
-
-                    toggleMapBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        mapContainer.classList.toggle('active');
-                    });
-
-                    let map, geocoder, marker;
-
-                    function initMap() {
-                        const defaultCenter = {
-                            lat: 41.3111,
-                            lng: 69.2797
-                        }; // Toshkent
-
-                        map = new google.maps.Map(document.getElementById("map"), {
-                            center: defaultCenter,
-                            zoom: 12,
-                        });
-
-                        geocoder = new google.maps.Geocoder();
-
-                        marker = new google.maps.Marker({
-                            map: map,
-                            position: defaultCenter,
-                            draggable: true
-                        });
-
-                        // ✅ Tugmani har doim xaritaga qo‘shamiz
-                        addLocateButton();
-
-                        // Foydalanuvchi joylashuvini avtomatik olishga harakat
-                        if (navigator.geolocation) {
-                            navigator.geolocation.getCurrentPosition(
-                                (position) => {
-                                    const userLocation = {
-                                        lat: position.coords.latitude,
-                                        lng: position.coords.longitude
-                                    };
-                                    map.setCenter(userLocation);
-                                    map.setZoom(15);
-                                    marker.setPosition(userLocation);
-                                    updateLocation(userLocation.lat, userLocation.lng);
-                                },
-                                () => {
-                                    updateLocation(defaultCenter.lat, defaultCenter.lng);
-                                }
-                            );
-                        } else {
-                            updateLocation(defaultCenter.lat, defaultCenter.lng);
-                        }
-
-                        // 🗺️ Xaritani bosganda markerni yangilash
-                        map.addListener("click", function(event) {
-                            const lat = event.latLng.lat();
-                            const lng = event.latLng.lng();
-                            marker.setPosition({
-                                lat,
-                                lng
-                            });
-                            updateLocation(lat, lng);
-                        });
-
-                        marker.addListener("dragend", function(event) {
-                            const lat = event.latLng.lat();
-                            const lng = event.latLng.lng();
-                            updateLocation(lat, lng);
-                        });
-                    }
-
-                    // ✅ Xarita ichidagi “Joyimni top” tugmasi (har doim chiqadi)
-                    function addLocateButton() {
-                        const controlDiv = document.createElement("div");
-
-                        const controlUI = document.createElement("button");
-                        controlUI.style.backgroundColor = "#fff";
-                        controlUI.style.border = "2px solid #fff";
-                        controlUI.style.borderRadius = "50%";
-                        controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
-                        controlUI.style.cursor = "pointer";
-                        controlUI.style.margin = "10px";
-                        controlUI.style.padding = "8px";
-                        controlUI.style.width = "40px";
-                        controlUI.style.height = "40px";
-                        controlUI.style.display = "flex";
-                        controlUI.style.alignItems = "center";
-                        controlUI.style.justifyContent = "center";
-                        controlUI.title = "Joyimni top";
-                        controlUI.innerHTML = "📍";
-                        controlDiv.appendChild(controlUI);
-
-                        // Tugmani xaritaga joylash (o‘ng past burchak)
-                        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
-
-                        // Bosilganda joylashuvni aniqlash
-                        controlUI.addEventListener("click", () => {
-                            if (navigator.geolocation) {
-                                navigator.geolocation.getCurrentPosition(
-                                    (position) => {
-                                        const userLocation = {
-                                            lat: position.coords.latitude,
-                                            lng: position.coords.longitude
-                                        };
-                                        map.setCenter(userLocation);
-                                        map.setZoom(15);
-                                        marker.setPosition(userLocation);
-                                        updateLocation(userLocation.lat, userLocation.lng);
-                                    },
-                                    () => {
-                                        alert("Joylashuvni olishga ruxsat berilmadi 😔");
-                                    }
-                                );
-                            } else {
-                                alert("Sizning brauzeringiz joylashuvni qo‘llamaydi");
-                            }
-                        });
-                    }
-
-                    function updateLocation(lat, lng) {
-                        const url = `https://www.google.com/maps?q=${lat},${lng}`;
-
-                        geocoder.geocode({
-                            location: {
-                                lat,
-                                lng
-                            }
-                        }, (results, status) => {
-                            if (status === "OK" && results[0]) {
-                                const address = results[0].formatted_address;
-                                document.getElementById("address").value = address;
-                                document.getElementById("location").value = url;
-                                document.getElementById("latitude").value = lat;
-                                document.getElementById("longitude").value = lng;
-                            }
-                        });
-                    }
-
-                    window.initMap = initMap;
-                </script>
-
-                <script async defer
-                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM-lcwS2aMgdJd5AMxE8N_1Lu7M3aHJUw&callback=initMap"></script>
-
             </div>
 
 
@@ -283,55 +72,6 @@
                 </div>
             </div>
 
-            <style>
-                .favorite {
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    gap: 15px;
-                    margin-top: 20px;
-                }
-
-                .favorite .stars {
-                    display: flex;
-                    justify-content: center;
-                    gap: 5px;
-                    font-size: 40px;
-                    cursor: pointer;
-                    position: relative;
-                }
-
-                .favorite .star {
-                    color: #ddd;
-                    transition: color 0.2s ease;
-                    user-select: none;
-                    position: relative;
-                }
-
-                .favorite .star.full {
-                    color: #ffc107;
-                }
-
-                .favorite .star.half {
-                    background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                }
-
-                .favorite .result {
-                    font-size: 18px;
-                    color: #667eea;
-                    font-weight: bold;
-                    min-height: 30px;
-                }
-
-                .standard-img {
-                    aspect-ratio: 4 / 3;
-                    object-fit: cover;
-                    width: 100%;
-                    height: auto;
-                }
-            </style>
             <div class="wc qf pn xo zf iq">
                 <!-- Blog Item -->
                 @foreach ($LearningCenters as $LearningCenter)
@@ -346,7 +86,6 @@
                                     class="vc ek rg lk gh sl ml il gi hi">Ko'proq o'qish</a>
                             </div>
                         </div>
-
 
                         <div class="yh">
                             <div class="tc uf wf ag jq">
@@ -366,9 +105,6 @@
                                 </div>
                             </div>
 
-
-
-
                             @php
                                 $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
                             @endphp
@@ -385,12 +121,8 @@
                                         </span>
                                     @endfor
                                 </div>
-                                <div class="result">{{ $average }}</div>
+                                <div style="margin-top: 7px; font-size: 26px" class="result">{{ $average }}</div>
                             </h4>
-
-
-
-
 
                             <h4 class="ek tj ml il kk wm xl eq lb">
                                 <a
@@ -399,7 +131,8 @@
                             <div class="bb ze mb">
                                 <!-- Service Item -->
                                 <div class="animate_top" style="width: 100%">
-                                    <div class="_b" style="display: flex; flex-direction: row; align-content: center; align-items: center;">
+                                    <div class="_b"
+                                        style="display: flex; flex-direction: row; align-content: center; align-items: center;">
                                         <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
                                             src="{{ asset('images/3d-speaker.png') }}" alt="Icon" />
                                         <h4 class="ek zj kk wm">O'qituvchi kerak</h4>
@@ -424,3 +157,264 @@
 
 
 </x-layout>
+
+
+
+<style>
+    .favorite {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .favorite .stars {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        font-size: 40px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .favorite .star {
+        color: #ddd;
+        transition: color 0.2s ease;
+        user-select: none;
+        position: relative;
+    }
+
+    .favorite .star.full {
+        color: #ffc107;
+    }
+
+    .favorite .star.half {
+        background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .favorite .result {
+        font-size: 18px;
+        color: #667eea;
+        font-weight: bold;
+        min-height: 30px;
+    }
+
+    .standard-img {
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        width: 100%;
+        height: auto;
+    }
+
+    /* nav-link */
+    .nav-links {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+        list-style: none;
+        padding: 0;
+    }
+
+    .nav-links li a {
+        text-decoration: none;
+        font-size: 18px;
+        color: rgb(78 107 255);
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: background 0.3s;
+    }
+
+    .nav-links li a:hover {
+        background-color: pink;
+    }
+
+    #map-container {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease;
+    }
+
+    #map-container.active {
+        max-height: 700px;
+        margin-top: 10px;
+    }
+
+    #map {
+        width: 100%;
+        height: 400px;
+        border-radius: 10px;
+    }
+
+    .map-form {
+        display: flex;
+    }
+
+    @media (max-width: 768px) {
+        .map-form {
+            flex-direction: column;
+        }
+    }
+
+    .location-inputs {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+        margin-bottom: 40px;
+    }
+
+    .location-inputs input,
+    .location-inputs select {
+        padding: 8px;
+        font-size: 16px;
+        width: 100%;
+    }
+</style>
+
+
+<script>
+    const toggleMapBtn = document.getElementById('toggle-map');
+    const mapContainer = document.getElementById('map-container');
+
+    toggleMapBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        mapContainer.classList.toggle('active');
+    });
+
+    let map, geocoder, marker;
+
+    function initMap() {
+        const defaultCenter = {
+            lat: 41.3111,
+            lng: 69.2797
+        }; // Toshkent
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: defaultCenter,
+            zoom: 12,
+        });
+
+        geocoder = new google.maps.Geocoder();
+
+        marker = new google.maps.Marker({
+            map: map,
+            position: defaultCenter,
+            draggable: true
+        });
+
+        // ✅ Tugmani har doim xaritaga qo‘shamiz
+        addLocateButton();
+
+        // Foydalanuvchi joylashuvini avtomatik olishga harakat
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    map.setCenter(userLocation);
+                    map.setZoom(15);
+                    marker.setPosition(userLocation);
+                    updateLocation(userLocation.lat, userLocation.lng);
+                },
+                () => {
+                    updateLocation(defaultCenter.lat, defaultCenter.lng);
+                }
+            );
+        } else {
+            updateLocation(defaultCenter.lat, defaultCenter.lng);
+        }
+
+        // 🗺️ Xaritani bosganda markerni yangilash
+        map.addListener("click", function(event) {
+            const lat = event.latLng.lat();
+            const lng = event.latLng.lng();
+            marker.setPosition({
+                lat,
+                lng
+            });
+            updateLocation(lat, lng);
+        });
+
+        marker.addListener("dragend", function(event) {
+            const lat = event.latLng.lat();
+            const lng = event.latLng.lng();
+            updateLocation(lat, lng);
+        });
+    }
+
+    // ✅ Xarita ichidagi “Joyimni top” tugmasi (har doim chiqadi)
+    function addLocateButton() {
+        const controlDiv = document.createElement("div");
+
+        const controlUI = document.createElement("button");
+        controlUI.style.backgroundColor = "#fff";
+        controlUI.style.border = "2px solid #fff";
+        controlUI.style.borderRadius = "50%";
+        controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+        controlUI.style.cursor = "pointer";
+        controlUI.style.margin = "10px";
+        controlUI.style.padding = "8px";
+        controlUI.style.width = "40px";
+        controlUI.style.height = "40px";
+        controlUI.style.display = "flex";
+        controlUI.style.alignItems = "center";
+        controlUI.style.justifyContent = "center";
+        controlUI.title = "Joyimni top";
+        controlUI.innerHTML = "📍";
+        controlDiv.appendChild(controlUI);
+
+        // Tugmani xaritaga joylash (o‘ng past burchak)
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
+
+        // Bosilganda joylashuvni aniqlash
+        controlUI.addEventListener("click", () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        map.setCenter(userLocation);
+                        map.setZoom(15);
+                        marker.setPosition(userLocation);
+                        updateLocation(userLocation.lat, userLocation.lng);
+                    },
+                    () => {
+                        alert("Joylashuvni olishga ruxsat berilmadi 😔");
+                    }
+                );
+            } else {
+                alert("Sizning brauzeringiz joylashuvni qo‘llamaydi");
+            }
+        });
+    }
+
+    function updateLocation(lat, lng) {
+        const url = `https://www.google.com/maps?q=${lat},${lng}`;
+
+        geocoder.geocode({
+            location: {
+                lat,
+                lng
+            }
+        }, (results, status) => {
+            if (status === "OK" && results[0]) {
+                const address = results[0].formatted_address;
+                document.getElementById("address").value = address;
+                document.getElementById("location").value = url;
+                document.getElementById("latitude").value = lat;
+                document.getElementById("longitude").value = lng;
+            }
+        });
+    }
+
+    window.initMap = initMap;
+</script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM-lcwS2aMgdJd5AMxE8N_1Lu7M3aHJUw&callback=initMap"></script>

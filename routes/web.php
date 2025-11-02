@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SubjectController;
@@ -76,4 +77,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('subject', SubjectController::class);
     Route::post('comment/store', [CommentController::class, 'store'])->name('comment.store');
     Route::post('comment/favoriteStore', [CommentController::class, 'favoriteStore'])->name('comment.favoriteStore');
+
+    Route::get('course/editImage/{id}', [ImageController::class, 'edit'])->name('course.editImage');
 });

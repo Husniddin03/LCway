@@ -26,12 +26,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Carbon::setLocale('uz_Latn');
+        
         View::composer('components.layout', function ($view) {
             $view->with('AllCenters', LearningCenter::all());
         });
 
-        Gate::define('update-post', function (User $user, $id) {
-            return $user->id === $id;
+        Gate::define('isOun', function (User $user, LearningCenter $center) {
+            return $user->id === $center->id;
         });
     }
 }

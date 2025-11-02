@@ -78,7 +78,7 @@ class TeacherController extends Controller
     public function delete_announcement(string $id) {
         $delete_announcement = NeedTeacher::find($id);
         $delete_announcement->delete();
-        return redirect()->route('blog-single', $id)->with('success', 'E\'lon muvaffaqiyatli o\'chirilidi');
+        return back()->with('success', 'E\'lon muvaffaqiyatli o\'chirilidi');
     }
 
     

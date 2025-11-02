@@ -15,8 +15,8 @@
                     <div
                         class="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10">
                         <a href="{{ asset('storage/' . $LearningCenter->logo) }}" data-fslightbox class="vc wf hg mb">
-                            <img style="width: 100% !important; border-radius: 15px" src="{{ asset('storage/' . $LearningCenter->logo) }}"
-                                alt="Blog" />
+                            <img style="width: 100% !important; border-radius: 15px"
+                                src="{{ asset('storage/' . $LearningCenter->logo) }}" alt="Blog" />
                         </a>
 
                         <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">
@@ -91,7 +91,7 @@
                                 </span> <a
                                     href="mailto:{{ $LearningCenter->user->email }}">{{ $LearningCenter->user->name }}</a>
                             </li>
-                            <li><span class="rc kk wm">Yulangan sana: </span>
+                            <li><span class="rc kk wm">Yuklangan sana: </span>
                                 {{ $LearningCenter->created_at->diffForHumans() }} </li>
                             <li><span class="rc kk wm"> Tur:
                                 </span> {{ $LearningCenter->type }}</li>
@@ -104,12 +104,30 @@
                         <div class="bb ze mb">
                             <!-- Service Item -->
                             <div class="animate_top" style="width: 100%">
-                                <div
-                                    style="display: flex; flex-direction: row; align-content: center; align-items: center">
+                                <div class="_b"
+                                    style="display: flex; flex-direction: row; align-content: center; align-items: center;">
                                     <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
                                         src="{{ asset('images/3d-speaker.png') }}" alt="Icon" />
-                                    <h4 style="height: 2rem" class="ek zj kk wm nb _b">O'qituvchi kerak</h4>
+                                    <h4 class="ek zj kk wm">O'qituvchi kerak</h4>
                                 </div>
+                                @auth
+                                    @can('isOun', $LearningCenter)
+                                        <div
+                                            style="width:100%;display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:20px;">
+                                            <h6 style="width:100%;font-size:16px; font-weight:600;">
+                                                <a href="{{ route('teacher.announcement', $LearningCenter->id) }}"
+                                                    :class="{
+                                                        'hh/[0.15]': page === 'home',
+                                                        'sh': page === 'home' &&
+                                                            stickyMenu
+                                                    }"
+                                                    class="lk gh dk rg tc wf xf _l gi hi">
+                                                    E'lon berish 📢
+                                                </a>
+                                            </h6>
+                                        </div>
+                                    @endcan
+                                @endauth
                                 @if ($LearningCenter->needTeachers->count() > 0)
                                     @foreach ($LearningCenter->needTeachers as $teacher)
                                         <div style="display: flex">
@@ -118,15 +136,16 @@
                                                 {{ $teacher->description }}
                                             </p>
                                             @auth
-                                                @if (Auth::user()->id == $LearningCenter->user->id)
+                                                @can('isOun', $LearningCenter)
                                                     <form action="{{ route('teacher.delete_announcement', $teacher->id) }}"
+                                                        onsubmit="return confirm('Rostdan ham {{ $teacher->subject->name }} uchun berilgan elon o‘chirilsinmi?');"
                                                         method="post">
                                                         @csrf
                                                         <button style="color: brown" type="submit">
-                                                            &nbsp;Elonni bekor qilish
+                                                            &nbsp;❌
                                                         </button>
                                                     </form>
-                                                @endif
+                                                @endcan
                                             @endauth
                                         </div>
                                     @endforeach
@@ -146,13 +165,30 @@
                             {{ $LearningCenter->about }}
                         </p>
 
-                        <div class="wc qf pn dg cb">
+                        <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">
+                            Rasimlar
+                        </h2>
+
+                        <div class="wc qf pn dg cb animate_right">
                             @foreach ($LearningCenter->images as $image)
-                                <a href="{{ asset('storage/' . $image->image) }}" data-fslightbox class="vc wf hg mb">
-                                    <img style="width: 100%; border-radius: 15px" src="{{ asset('storage/' . $image->image) }}"
-                                        alt="Blog" />
+                                <a href="{{ asset('storage/' . $image->image) }}" data-fslightbox
+                                    class="animate_right vc wf hg mb">
+                                    <img style="width: 100%; border-radius: 15px"
+                                        src="{{ asset('storage/' . $image->image) }}" alt="Blog" />
                                 </a>
                             @endforeach
+                            @auth
+                                @can('isOun', $LearningCenter)
+                                    <div style="display: flex; align-content: center; align-items: center; text-align: center">
+                                        <a style="border: 1px solid blue"
+                                            href="{{ route('course.edit', $LearningCenter->id) }}"
+                                            class="vc ek kk hh rg ol il cm gi hi">Tahrirlash </a>
+                                        <a style="border: 1px solid blue"
+                                            href="{{ route('course.edit', $LearningCenter->id) }}"
+                                            class="vc ek kk hh rg ol il cm gi hi">Qo'shish </a>
+                                    </div>
+                                @endcan
+                            @endauth
                         </div>
 
                         <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb qb">
@@ -167,7 +203,7 @@
                                         style="display: flex; flex-direction: row; align-items: center; padding-bottom: 20px">
                                         <div>
                                             <h4 class="ek zj kk wm nb _b">
-                                                {{$calendar->calendar->weekdays}}
+                                                {{ $calendar->calendar->weekdays }}
                                             </h4>
                                             <p>{{ date('H:i', strtotime($calendar->open_time)) }} -
                                                 {{ date('H:i', strtotime($calendar->close_time)) }}</p>
@@ -236,13 +272,12 @@
                         </ul>
                         <div class="animate_top" style="margin-top: 1rem">
                             <h4 class="tj kk wm qb ta-c">Ustozlar</h4>
-                            <div
-                                style="max-width:900px; margin:0 auto; padding:20px; font-family:'Segoe UI', sans-serif;">
+                            <div style="margin:0 auto; font-family:'Segoe UI', sans-serif;">
 
                                 @auth
-                                    @if (Auth::user()->id == $LearningCenter->user->id)
+                                    @can('isOun', $LearningCenter)
                                         <div
-                                            style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:20px;">
+                                            style="width:100%; :flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:20px;">
                                             <h6 style="font-size:16px; font-weight:600;">
                                                 <a href="{{ route('teacher.create', 'id=' . $LearningCenter->id) }}"
                                                     :class="{
@@ -251,22 +286,11 @@
                                                             stickyMenu
                                                     }"
                                                     class="lk gh dk rg tc wf xf _l gi hi">
-                                                    ➕
-                                                </a>
-                                            </h6>
-                                            <h6 style="font-size:16px; font-weight:600;">
-                                                <a href="{{ route('teacher.announcement', $LearningCenter->id) }}"
-                                                    :class="{
-                                                        'hh/[0.15]': page === 'home',
-                                                        'sh': page === 'home' &&
-                                                            stickyMenu
-                                                    }"
-                                                    class="lk gh dk rg tc wf xf _l gi hi">
-                                                    📢
+                                                    Yangi ustoz ➕
                                                 </a>
                                             </h6>
                                         </div>
-                                    @endif
+                                    @endcan
                                 @endauth
 
                                 <hr style="margin:16px 0;">
@@ -304,7 +328,7 @@
                                         </div>
 
                                         @auth
-                                            @if (Auth::user()->id == $LearningCenter->user->id)
+                                            @can('isOun', $LearningCenter)
                                                 <form id="delete-{{ $teacher->id }}"
                                                     action="{{ route('teacher.destroy', $teacher->id) }}" method="post"
                                                     onsubmit="return confirm('Rostdan ham {{ $teacher->name }}ni o‘chirilsinmi?');"
@@ -313,7 +337,7 @@
                                                     @method('DELETE')
                                                     <button type="submit" style="font-size: 1rem">❌</button>
                                                 </form>
-                                            @endif
+                                            @endcan
                                         @endauth
                                     </div>
                                 @endforeach
@@ -608,18 +632,23 @@
                         </button>
                     </form> --}}
                     @auth
-                        @if (Auth::user()->id == $LearningCenter->user->id)
-                            <form id="delete-{{ $LearningCenter->id }}"
-                                onsubmit="return confirm('Rostdan ham {{ $LearningCenter->name }} markazini o‘chirilsinmi?');"
-                                action="{{ route('course.destroy', $LearningCenter->id) }}" method="post"
-                                style="margin-top: 20px; color: red" class="animate_right bf">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" style="color: red" class="vc ek kk hh rg ol il cm gi hi">
-                                    {{ $LearningCenter->name }} markazini saytdan o'chirish.
-                                </button>
-                            </form>
-                        @endif
+                        @can('isOun', $LearningCenter)
+                            <div class="animate_right bf" style="margin-top: 10px">
+                                <a style="border: 1px solid blue" href="{{ route('course.edit', $LearningCenter->id) }}"
+                                    class="vc ek kk hh rg ol il cm gi hi"> {{ $LearningCenter->name }} markazini
+                                    tahrirlash.</a>
+                                <form id="delete-{{ $LearningCenter->id }}"
+                                    onsubmit="return confirm('Rostdan ham {{ $LearningCenter->name }} markazini o‘chirilsinmi?');"
+                                    action="{{ route('course.destroy', $LearningCenter->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" style="color: red; margin-top: 8px; border: 1px solid blue"
+                                        class="vc ek kk hh rg ol il cm gi hi">
+                                        {{ $LearningCenter->name }} markazini saytdan o'chirish.
+                                    </button>
+                                </form>
+                            </div>
+                        @endcan
                     @endauth
                 </div>
 
@@ -640,7 +669,7 @@
                             style="padding:0; margin:0; list-style:none; font-family:'Segoe UI', sans-serif; font-size:16px;">
 
                             @auth
-                                @if (Auth::user()->id == $LearningCenter->user->id)
+                                @can('isOun', $LearningCenter)
                                     <li>
                                         <a href="{{ route('subject.create', 'id=' . $LearningCenter->id) }}"
                                             :class="{
@@ -652,7 +681,7 @@
                                             ➕
                                         </a>
                                     </li>
-                                @endif
+                                @endcan
                             @endauth
 
                             <hr style="margin:16px 0;">
@@ -674,7 +703,7 @@
                                     </div>
 
                                     @auth
-                                        @if (Auth::user()->id == $LearningCenter->user->id)
+                                        @can('isOun', $LearningCenter)
                                             <form id="delete-{{ $subject->id }}"
                                                 action="{{ route('subject.destroy', $subject->id) }}" method="post"
                                                 onsubmit="return confirm('Rostdan ham {{ $subject->subject->name }}ni o‘chirilsinmi?');"
@@ -683,7 +712,7 @@
                                                 @method('DELETE')
                                                 <button type="submit" style="font-size: 1rem">❌</button>
                                             </form>
-                                        @endif
+                                        @endcan
                                     @endauth
                                 </div>
                             @endforeach

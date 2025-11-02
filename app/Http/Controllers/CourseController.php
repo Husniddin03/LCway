@@ -142,12 +142,14 @@ class CourseController extends Controller
     public function edit($id)
     {
         $center = LearningCenter::findOrFail($id);
+        Gate::authorize('isOun', $center);
         return view('course.edit', compact('center'));
     }
 
 
     public function update(Request $request, $id)
     {
+
         $validated = $request->validate([
             'logo'         => 'nullable|image|max:2048',
             'name'         => 'required|string|max:255',
@@ -157,15 +159,19 @@ class CourseController extends Controller
             'region'       => 'nullable|string|max:255',
             'address'      => 'nullable|string|max:255',
             'location'     => 'nullable|string|max:255',
-            'users_id'      => 'required|exists:users,id',
             'studentCount' => 'nullable|integer',
         ]);
 
         $center = LearningCenter::findOrFail($id);
 
+        Gate::authorize('isOun', $center);
+
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('logos', 'public');
+            $path = $request->file('logo')->store('uploads/logos', 'public');
             $validated['logo'] = $path;
+            if ($center->logo && Storage::disk('public')->exists($center->logo)) {
+                Storage::disk('public')->delete($center->logo);
+            }
         }
 
         $center->update($validated);
@@ -178,9 +184,7 @@ class CourseController extends Controller
     public function destroy($id)
     {
         $center = LearningCenter::findOrFail($id);
-        if (! Gate::allows('update-post', $center->users_id)) {
-            abort(403);
-        }
+        Gate::authorize('isOun', $center);
 
         // Markaz logosi
         if ($center->logo && Storage::disk('public')->exists($center->logo)) {

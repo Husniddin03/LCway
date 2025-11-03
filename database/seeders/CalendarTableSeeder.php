@@ -16,7 +16,6 @@ class CalendarTableSeeder extends Seeder
             ['weekdays' => 'Payshanba'],
             ['weekdays' => 'Juma'],
             ['weekdays' => 'Shanba'],
-            ['weekdays' => 'Yakshanba'],
         ];
 
         DB::table('calendar')->insert($days);

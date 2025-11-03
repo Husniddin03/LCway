@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\LearningCenter;
+use App\Models\LearningCentersComment;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
@@ -33,6 +34,10 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('isOun', function (User $user, LearningCenter $center) {
             return $user->id === $center->user->id;
+        });
+
+        Gate::define('myComment', function (User $user, LearningCentersComment $comment) {
+            return $user->id === $comment->user->id;
         });
     }
 }

@@ -168,7 +168,7 @@
                                         <div
                                             style="display: flex; align-content: center; align-items: center; text-align: center">
                                             <a style="border: 1px solid blue"
-                                                href="{{ route('course.editImage', $LearningCenter->id) }}"
+                                                href="{{ route('course.weekday', $LearningCenter->id) }}"
                                                 class="vc ek kk hh rg ol il cm gi hi">Tahrirlash </a>
                                         </div>
                                     @endcan
@@ -378,7 +378,6 @@
                                                                 <p class="ek ik xj _p kc fb">
                                                                     {{ $comment->comment }}
                                                                 </p>
-
                                                                 <div class="tc yf vf">
                                                                     <div>
                                                                         <span
@@ -391,6 +390,17 @@
                                                                 <img class="rk" src="images/brand-light-02.svg')}}"
                                                                     alt="{{ $comment->created_at->diffForHumans() }}" />
                                                             </div>
+                                                            @auth
+                                                                @can('myComment', $comment)
+                                                                    <form action="{{route('comment.delete', $comment->id)}}" method="post"
+                                                                        onsubmit="return confirm('Rostdan bu izohni o‘chirilsinmi?');">
+                                                                        @csrf
+                                                                        <button type="submit">
+                                                                            <span>Izohni o'chirish</span>
+                                                                        </button>
+                                                                    </form>
+                                                                @endcan
+                                                            @endauth
                                                         </div>
                                                     </div>
                                                 </div>

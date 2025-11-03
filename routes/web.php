@@ -8,6 +8,7 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\WeekdaysController;
 use Illuminate\Support\Facades\Route;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Illuminate\Support\Str;
@@ -76,12 +77,20 @@ Route::middleware('auth')->group(function () {
     Route::resource('teacher', TeacherController::class);
     Route::post('/subject/store/{id}', [SubjectController::class, 'store'])->name('subject.storeid');
     Route::resource('subject', SubjectController::class);
+
     Route::post('comment/store', [CommentController::class, 'store'])->name('comment.store');
+    Route::post('comment/delete/{id}', [CommentController::class, 'delete'])->name('comment.delete');
     Route::post('comment/favoriteStore', [CommentController::class, 'favoriteStore'])->name('comment.favoriteStore');
 
     Route::get('course/editImage/{id}', [ImageController::class, 'edit'])->name('course.editImage');
     Route::post('course/deleteImage/{id}', [ImageController::class, 'delete'])->name('course.deleteImage');
     Route::post('course/storeImages/{id}', [ImageController::class, 'store'])->name('course.storeImages');
+
+    Route::get('course/weekday/{id}', [WeekdaysController::class, 'edit'])->name('course.weekday');
+    Route::post('course/weekdayUpdate/{id}', [WeekdaysController::class, 'update'])->name('course.weekdayUpdate');
+    Route::post('course/weekdayDelete/{id}', [WeekdaysController::class, 'delete'])->name('course.weekdayDelete');
+
+
     Route::get('connect/edit/{id}', [ConnectController::class, 'edit'])->name('connect.edit');
     Route::post('connect/delete/{id}', [ConnectController::class, 'delete'])->name('connect.delete');
     Route::post('connect/store/{id}', [ConnectController::class, 'store'])->name('connect.store');

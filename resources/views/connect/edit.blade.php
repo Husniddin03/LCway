@@ -122,7 +122,7 @@
                                 @endif
 
                                 <form action="{{ route('connect.delete', $connection->id) }}" method="post"
-                                    onsubmit="return confirm('Rostdan ham rasimni o‘chirilsinmi?');">
+                                    onsubmit="return confirm('Rostdan ham {{ $connection->connection->name }}ni o‘chirilsinmi?');">
                                     @csrf
                                     <button type="submit">
                                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30"
@@ -145,32 +145,31 @@
                         </ul>
 
                     </div>
-                    <form action="{{ route('subject.storeid', ['id' => $LearningCenter->id]) }}" method="POST"
-                        enctype="multipart/form-data" class="fb">
+                    <form action="{{ route('connect.store', ['id' => $LearningCenter->id]) }}" method="POST" class="fb">
                         @csrf
 
                         <div class="tc sf yo ap zf ep qb">
 
                             <div class="vd to/2">
-                                <label class="rc ac" for="subject">Bog'lanish turini tanlang</label>
+                                <label class="rc ac" for="connection_id">Bog'lanish turini tanlang</label>
 
-                                <select id="subject" name="subject_id" id=""
-                                    placeholder="Type your subject"
+                                <select id="connection_id" name="connection_id"
+                                    placeholder="Bog'lanish turini tanlang!"
                                     class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 xi mi">
                                     @foreach ($connections as $connection)
                                         <option value="{{ $connection->id }}">{{ $connection->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('subject_id')
+                                @error('connection_id')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="vd to/2">
-                                <label class="rc ac" for="price">Manzili</label>
-                                <input type="text" name="price" id="price" placeholder="https://.... or +998 ..."
+                                <label class="rc ac" for="url">Manzili</label>
+                                <input type="text" name="url" id="url" placeholder="https://t.me/.... yoki +998 ..."
                                     class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 xi mi" />
-                                @error('price')
+                                @error('url')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -179,7 +178,7 @@
                         <div class="tc xf">
                             <a href="{{ route('blog-single', $LearningCenter->id) }}"
                                 style="background-color: dimgray; margin-right: 5px"
-                                class="vc rg lk gh ml il hi gi _l">Bekor qilish</a>
+                                class="vc rg lk gh ml il hi gi _l">Orqaga</a>
                             <button class="vc rg lk gh ml il hi gi _l">Saqlash</button>
                         </div>
                     </form>

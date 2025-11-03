@@ -6,6 +6,7 @@ use App\Models\Favorite;
 use App\Models\LearningCentersComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -20,6 +21,14 @@ class CommentController extends Controller
         LearningCentersComment::create($validate);
         return redirect()->route('blog-single', $validate['learning_centers_id'] . '#comment')
             ->with('success', 'Izohingiz muvaffaqiyatli qo‘shildi.');
+    }
+
+    public function delete(string $id) {
+        $comment = LearningCentersComment::find($id);
+        Gate::authorize('myComment', $comment);
+        $comment->delete();
+        return back()->with('')
+            ->with('success', 'Izohingiz muvaffaqiyatli o\'chirdingiz.');
     }
 
     public function favoriteStore(Request $request)

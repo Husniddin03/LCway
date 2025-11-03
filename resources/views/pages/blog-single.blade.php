@@ -139,9 +139,6 @@
                                         <a style="border: 1px solid blue"
                                             href="{{ route('course.editImage', $LearningCenter->id) }}"
                                             class="vc ek kk hh rg ol il cm gi hi">Tahrirlash </a>
-                                        <a style="border: 1px solid blue"
-                                            href="{{ route('course.edit', $LearningCenter->id) }}"
-                                            class="vc ek kk hh rg ol il cm gi hi">Qo'shish </a>
                                     </div>
                                 @endcan
                             @endauth
@@ -166,6 +163,16 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                @auth
+                                    @can('isOun', $LearningCenter)
+                                        <div
+                                            style="display: flex; align-content: center; align-items: center; text-align: center">
+                                            <a style="border: 1px solid blue"
+                                                href="{{ route('course.editImage', $LearningCenter->id) }}"
+                                                class="vc ek kk hh rg ol il cm gi hi">Tahrirlash </a>
+                                        </div>
+                                    @endcan
+                                @endauth
                             </div>
                         </div>
 
@@ -179,7 +186,7 @@
                             </li>
 
                             @foreach ($LearningCenter->connections as $connection)
-                                <ul style="text-align: center">
+                                <ul style="text-align: center; background-color: #fff; border-radius: 50%">
                                     @if ($connection->connection->name == 'Phone')
                                         <li style="display: flex; align-items: center; gap: 8px;">
                                             <a class="c tc wf xf ie ld rg ml il tl" href="tel:{{ $connection->url }}"
@@ -226,6 +233,14 @@
                                 </ul>
                             @endforeach
                         </ul>
+                        @auth
+                            @can('isOun', $LearningCenter)
+                                <div style="display: flex; align-content: center; align-items: center; text-align: center">
+                                    <a style="border: 1px solid blue" href="{{ route('connect.edit', $LearningCenter->id) }}"
+                                        class="vc ek kk hh rg ol il cm gi hi">Tahrirlash </a>
+                                </div>
+                            @endcan
+                        @endauth
                         <div class="animate_top" style="margin-top: 1rem">
                             <h4 class="tj kk wm qb ta-c">Ustozlar</h4>
                             <div style="margin:0 auto; font-family:'Segoe UI', sans-serif;">

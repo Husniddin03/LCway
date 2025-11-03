@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ConnectController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LogController;
@@ -79,4 +80,9 @@ Route::middleware('auth')->group(function () {
     Route::post('comment/favoriteStore', [CommentController::class, 'favoriteStore'])->name('comment.favoriteStore');
 
     Route::get('course/editImage/{id}', [ImageController::class, 'edit'])->name('course.editImage');
+    Route::post('course/deleteImage/{id}', [ImageController::class, 'delete'])->name('course.deleteImage');
+    Route::post('course/storeImages/{id}', [ImageController::class, 'store'])->name('course.storeImages');
+    Route::get('connect/edit/{id}', [ConnectController::class, 'edit'])->name('connect.edit');
+    Route::post('connect/delete/{id}', [ConnectController::class, 'delete'])->name('connect.delete');
+    Route::post('connect/store/{id}', [ConnectController::class, 'store'])->name('connect.store');
 });

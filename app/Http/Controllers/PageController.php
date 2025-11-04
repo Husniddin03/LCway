@@ -46,14 +46,25 @@ class PageController extends Controller
             'searchText' => 'required|string|max:255',
         ]);
         $searchText = $request->input('searchText');
+        $LearningCenters = $this->searchResult($searchText);
+
+        $subjects = Subject::all();
+        return view('pages.blog-grid')
+        ->with('LearningCenters', $LearningCenters)
+        ->with('searchText', $searchText)
+        ->with('subjects', $subjects);
+    }
+
+    public function searchResult($searchText)
+    {
         $LearningCenters = LearningCenter::where('name', 'LIKE', "%{$searchText}%")
             ->orWhere('province', 'LIKE', "%{$searchText}%")
             ->orWhere('region', 'LIKE', "%{$searchText}%")
             ->orWhere('address', 'LIKE', "%{$searchText}%")
+            ->orWhere('type', 'LIKE', "%{$searchText}%")
             ->get();
 
-        $subjects = Subject::all();
-        return view('pages.blog-grid')->with('LearningCenters', $LearningCenters)->with('searchText', $searchText)->with('subjects', $subjects);
+        return $LearningCenters;
     }
 
     public function searchMap(Request $request)
@@ -64,6 +75,7 @@ class PageController extends Controller
             'radius' => 'nullable|numeric', // km
             'subject_id' => 'nullable|exists:subjects,id',
             'maxPrice' => 'nullable|numeric',
+            'searchText' => 'nullable|string|max:255'
         ]);
 
         $latitude = $request->input('latitude');
@@ -71,8 +83,13 @@ class PageController extends Controller
         $radius = $request->input('radius');
         $subject_id = $request->input('subject_id');
         $maxPrice = $request->input('maxPrice');
+        $searchText = $request->input('searchText');
 
-        $LearningCentersLocation = LearningCenter::all();
+        if (isset($validated['searchText'])) {
+            $LearningCentersLocation = $this->searchResult($searchText);
+        } else {
+            $LearningCentersLocation = LearningCenter::all();
+        }
         $filteredCenters = collect();
 
         foreach ($LearningCentersLocation as $LearningCenter) {
@@ -111,6 +128,6 @@ class PageController extends Controller
         $LearningCenters = $filteredCenters->sortBy('distance')->values();
         $subjects = Subject::all();
 
-        return view('pages.blog-grid', compact('LearningCenters', 'subjects'));
+        return view('pages.blog-grid', compact('LearningCenters', 'subjects', 'searchText'));
     }
 }

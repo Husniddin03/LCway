@@ -15,8 +15,8 @@
                     @csrf
                     <div class="i">
                         @if (isset($searchText))
-                            <input type="text" name="searchText" placeholder="Search Here..." value="{{ $searchText }}"
-                                class="vd sm _g ch pm vk xm rg gm dm/40 dn/40 li mi" />
+                            <input type="text" name="searchText" placeholder="Search Here..."
+                                value="{{ $searchText }}" class="vd sm _g ch pm vk xm rg gm dm/40 dn/40 li mi" />
                         @else
                             <input type="text" name="searchText" placeholder="Search Here..."
                                 class="vd sm _g ch pm vk xm rg gm dm/40 dn/40 li mi" />
@@ -40,6 +40,10 @@
                     <div id="map"></div>
                     <form class="map-form location-inputs" action="{{ route('searchMap') }}" method="POST">
                         @csrf
+                        @if (isset($searchText))
+                            <input type="hidden" type="text" name="searchText" placeholder="Search Here..."
+                                value="{{ $searchText }}" />
+                        @endif
                         <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="text" id="address"
                             placeholder="Manzil">
                         <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden type="text"
@@ -121,7 +125,8 @@
                                         </span>
                                     @endfor
                                 </div>
-                                <div style="margin-top: 7px; font-size: 26px" class="result">{{ $average }}</div>
+                                <div style="margin-top: 7px; font-size: 26px" class="result">{{ $average }}
+                                </div>
                             </h4>
 
                             <h4 class="ek tj ml il kk wm xl eq lb">

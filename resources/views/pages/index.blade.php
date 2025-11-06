@@ -13,8 +13,8 @@
             <img src="{{ asset('images/shape-01.svg') }}" alt="shape" class="xc 2xl:ud-block h t -ud-left-[10%] ua" />
             <img src="{{ asset('images/shape-02.svg') }}" alt="shape" class="xc 2xl:ud-block h u p va" />
             <img src="{{ asset('images/shape-03.svg') }}" alt="shape" class="xc 2xl:ud-block h v w va" />
-            <img src="{{ asset('images/shape-04.svg') }}" alt="shape" class="h q r" />
-            <img src="{{ asset('images/hero.png') }}" alt="Woman" class="h q r ua" />
+            {{-- <img src="{{ asset('images/shape-04.svg') }}" alt="shape" class="h q r" /> --}}
+            <img src="{{ asset('images/image.png') }}" alt="Woman" class="h q r ua" style="margin-top: 9rem; width: 98%; border-radius: 0 0 50% 50%" />
         </div>
 
         <!-- Hero Content -->

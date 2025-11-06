@@ -16,8 +16,11 @@ class PageController extends Controller
     }
     public function blogGrid()
     {
-        $LearningCenters = LearningCenter::all();
-
+        $LearningCenters = LearningCenter::with('favorites')->with('needTeachers')->get();
+        foreach ($LearningCenters as $LearningCenter) {
+            $LearningCenter->favorite = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
+            $LearningCenter->date = $LearningCenter->created_at->diffForHumans();
+        }
         $subjects = Subject::all();
 
         return view('pages.blog-grid')->with('LearningCenters', $LearningCenters)->with('subjects', $subjects);
@@ -50,9 +53,9 @@ class PageController extends Controller
 
         $subjects = Subject::all();
         return view('pages.blog-grid')
-        ->with('LearningCenters', $LearningCenters)
-        ->with('searchText', $searchText)
-        ->with('subjects', $subjects);
+            ->with('LearningCenters', $LearningCenters)
+            ->with('searchText', $searchText)
+            ->with('subjects', $subjects);
     }
 
     public function searchResult($searchText)
@@ -62,7 +65,13 @@ class PageController extends Controller
             ->orWhere('region', 'LIKE', "%{$searchText}%")
             ->orWhere('address', 'LIKE', "%{$searchText}%")
             ->orWhere('type', 'LIKE', "%{$searchText}%")
+            ->with('favorites')
+            ->with('needTeachers')
             ->get();
+        foreach ($LearningCenters as $LearningCenter) {
+            $LearningCenter->favorite = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
+            $LearningCenter->date = $LearningCenter->created_at->diffForHumans();
+        }
 
         return $LearningCenters;
     }
@@ -88,11 +97,13 @@ class PageController extends Controller
         if (isset($validated['searchText'])) {
             $LearningCentersLocation = $this->searchResult($searchText);
         } else {
-            $LearningCentersLocation = LearningCenter::all();
+            $LearningCentersLocation = LearningCenter::with('favorites')->with('needTeachers')->get();
         }
         $filteredCenters = collect();
 
         foreach ($LearningCentersLocation as $LearningCenter) {
+            $LearningCenter->favorite = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
+            $LearningCenter->date = $LearningCenter->created_at->diffForHumans();
             $coords = explode(',', $LearningCenter->location);
             if (count($coords) < 2) {
                 $LearningCenter->distance = null;
@@ -128,6 +139,6 @@ class PageController extends Controller
         $LearningCenters = $filteredCenters->sortBy('distance')->values();
         $subjects = Subject::all();
 
-        return view('pages.blog-grid', compact('LearningCenters', 'subjects', 'searchText'));
+        return view('pages.blog-grid', compact('LearningCenters', 'subjects', 'searchText', 'subject_id'));
     }
 }

@@ -15,8 +15,8 @@
                     @csrf
                     <div class="i">
                         @if (isset($searchText))
-                            <input type="text" name="searchText" placeholder="Search Here..."
-                                value="{{ $searchText }}" class="vd sm _g ch pm vk xm rg gm dm/40 dn/40 li mi" />
+                            <input type="text" name="searchText" placeholder="Search Here..." value="{{ $searchText }}"
+                                class="vd sm _g ch pm vk xm rg gm dm/40 dn/40 li mi" />
                         @else
                             <input type="text" name="searchText" placeholder="Search Here..."
                                 class="vd sm _g ch pm vk xm rg gm dm/40 dn/40 li mi" />
@@ -31,10 +31,25 @@
                     </div>
                 </form>
 
-                <ul class="nav-links">
-                    <li><a href="{{ route('blog-grid') }}">Barchasi</a></li>
-                    <li><a href="#" id="toggle-map">Xarita</a></li>
-                </ul>
+                <div class="tc sf yo ap zf ep qb">
+
+                    <ul class="nav-links">
+                        <li><button class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 xi mi"><a
+                                    href="{{ route('blog-grid') }}">Barchasi</a></abutton>
+                        </li>
+                        <li><button class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 xi mi" href="#"
+                                id="toggle-map">Xarita</button></li>
+                        <li>
+                            <select style="padding: 1rem" id="subject" name="subject_id" id=""
+                                placeholder="Type your subject" class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 xi mi">
+                                <option value="" disabled selected>Saralash</option>
+                                <option value="">Nomi bo'yicha</option>
+                                <option value="">Masofa</option>
+                                <option value="">Rayting</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
 
                 <div id="map-container">
                     <div id="map"></div>
@@ -56,7 +71,9 @@
                             value="{{ old('subject_id') }}">
                             <option value="" disabled selected>Fanni tanlang...</option>
                             @foreach ($subjects as $subject)
-                                <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                <option value="{{ $subject->id }}"
+                                    {{ isset($sunject_id) ? ($subject->id == $sunject_id ? 'selected' : '') : '' }}>
+                                    {{ $subject->name }}</option>
                             @endforeach
                         </select>
                         <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="number" name="radius"
@@ -76,85 +93,7 @@
                 </div>
             </div>
 
-            <div class="wc qf pn xo zf iq">
-                <!-- Blog Item -->
-                @foreach ($LearningCenters as $LearningCenter)
-                    <div id="{{ $LearningCenter->id }}" loading="lezi" class="animate_top sg vk rm xm">
-
-                        <div class="c rc i z-1 pg">
-                            <img class="standard-img lazy-img" src="{{ asset('storage/' . $LearningCenter->logo) }}"
-                                alt="Blog" />
-
-                            <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                                <a href="{{ route('blog-single', $LearningCenter->id) }}"
-                                    class="vc ek rg lk gh sl ml il gi hi">Ko'proq o'qish</a>
-                            </div>
-                        </div>
-
-                        <div class="yh">
-                            <div class="tc uf wf ag jq">
-                                <div class="tc wf ag">
-                                    <p>{{ $LearningCenter->region . ', ' . $LearningCenter->province }}</p>
-                                </div>
-                                <div class="tc wf ag">
-                                    <img src="{{ asset('images/icon-calender.svg') }}" alt="Calender" />
-                                    <p>{{ $LearningCenter->created_at->diffForHumans() }}</p>
-                                </div>
-                                <div class="tc wf ag">
-                                    @if (isset($LearningCenter->distance))
-                                        <p>{{ $LearningCenter->distance }} km</p>
-                                    @else
-                                        <p>Masofani bilish uchun xaritadan joyni tanlang!</p>
-                                    @endif
-                                </div>
-                            </div>
-
-                            @php
-                                $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
-                            @endphp
-
-                            <h4 class="favorite">
-                                <div class="stars" id="rating1">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @php
-                                            $diff = $average - $i;
-                                        @endphp
-                                        <span
-                                            class="star {{ $average >= $i ? 'full' : ($diff > -1 && $diff < 0 ? 'half' : '') }}">
-                                            ★
-                                        </span>
-                                    @endfor
-                                </div>
-                                <div style="margin-top: 7px; font-size: 26px" class="result">{{ $average }}
-                                </div>
-                            </h4>
-
-                            <h4 class="ek tj ml il kk wm xl eq lb">
-                                <a
-                                    href="{{ route('blog-single', $LearningCenter->id) }}">{{ $LearningCenter->name }}</a>
-                            </h4>
-                            <div class="bb ze mb">
-                                <!-- Service Item -->
-                                <div class="animate_top" style="width: 100%">
-                                    <div class="_b"
-                                        style="display: flex; flex-direction: row; align-content: center; align-items: center;">
-                                        <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
-                                            src="{{ asset('images/3d-speaker.png') }}" alt="Icon" />
-                                        <h4 class="ek zj kk wm">O'qituvchi kerak</h4>
-                                    </div>
-                                    @if ($LearningCenter->needTeachers->count() > 0)
-                                        @foreach ($LearningCenter->needTeachers as $teacher)
-                                            <p>{{ $teacher->subject->name }}</p>
-                                        @endforeach
-                                    @else
-                                        <p>Hozicha elon berilmagan!</p>
-                                    @endif
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                @endforeach
+            <div id="centers" class="wc qf pn xo zf iq">
             </div>
         </div>
     </section>
@@ -162,6 +101,126 @@
 
 
 </x-layout>
+
+<script>
+    function sunjectName(id) {
+        const subjects = @json($subjects);
+
+        for (let i = 0; i < subjects.length; i++) {
+            if (subjects[i].id == id) {
+                return `<p>${subjects[i].name}</p>`;
+            }
+        }
+        return `<p>Hozicha elon berilmagan!</p>`;
+    }
+
+
+
+    // PHP dan ma'lumotlarni JSON qilib JS ga uzatyapmiz
+    const LearningCenters = @json($LearningCenters);
+
+    // Domen url (masalan https://mysite.com)
+    const baseUrl = "{{ url('/') }}";
+
+    // Route("blog-single", id) ni JSda ishlatish uchun shablon yaratamiz
+    const blogRoute = "{{ route('blog-single', ':id') }}";
+
+    const container = document.getElementById('centers');
+    container.innerHTML = ""; // Tozalaymiz
+    LearningCenters.sort((a, b) => a.name.localeCompare(b.name)); // Sortlaymiz
+    // Oshish tartibida (small -> big)
+    LearningCenters.sort((a, b) => (a.favorite ?? 0) - (b.favorite ?? 0));
+
+    // Teskari (descending)
+    LearningCenters.sort((a, b) => (b.favorite ?? 0) - (a.favorite ?? 0));
+    LearningCenters.sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0));
+
+    LearningCenters.forEach(center => {
+        // Dinamik URL yasaymiz
+        const blogUrl = blogRoute.replace(':id', center.id);
+
+        // Rasmlar manzili
+        const imageUrl = baseUrl + '/storage/' + center.logo;
+
+        // O‘qituvchi kerak bo‘lsa
+        let teachers = `<p>Hozicha elon berilmagan!</p>`;
+
+        if (center.need_teachers.length > 0) {
+            teachers = '';
+            center.need_teachers.forEach(teacher => {
+                teachers += sunjectName(teacher.subject_id);
+            });
+        }
+
+        container.innerHTML += `
+            <div id="${center.id}" loading="lezi" class="animate_top sg vk rm xm">
+
+                <div class="c rc i z-1 pg">
+                    <img class="standard-img lazy-img" src="${imageUrl}" alt="Blog" />
+
+                    <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
+                        <a href="${blogUrl}" class="vc ek rg lk gh sl ml il gi hi">Ko'proq o'qish</a>
+                    </div>
+                </div>
+
+                <div class="yh">
+                    <div class="tc uf wf ag jq">
+                        <div class="tc wf ag">
+                            <p>${center.region}, ${center.province}</p>
+                        </div>
+                        <div class="tc wf ag">
+                            <img src="${baseUrl}/images/icon-calender.svg" alt="Calender" />
+                            <p>${center.date}</p>
+                        </div>
+                        <div class="tc wf ag">
+                            ${center.distance ? `<p>${center.distance} km</p>` : `<p>Masofani bilish uchun xaritadan joyni tanlang!</p>`}
+                        </div>
+                    </div>
+
+                    <!-- Reyting yulduzchalari -->
+                    <h4 class="favorite">
+                        <div class="stars">
+                            ${generateStars(center.favorite)}
+                        </div>
+                        <div style="margin-top: 7px; font-size: 26px" class="result">${center.favorite}</div>
+                    </h4>
+
+                    <h4 class="ek tj ml il kk wm xl eq lb">
+                        <a href="${blogUrl}">${center.name}</a>
+                    </h4>
+
+                    <div class="bb ze mb">
+                        <div class="animate_top" style="width: 100%">
+                            <div class="_b" style="display: flex; align-items: center;">
+                                <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
+                                    src="${baseUrl}/images/3d-speaker.png" alt="Icon" />
+                                <h4 class="ek zj kk wm">O'qituvchi kerak</h4>
+                            </div>
+                            ${teachers}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    // Reyting uchun ⭐ generator
+    function generateStars(average) {
+        let stars = "";
+        for (let i = 1; i <= 5; i++) {
+            if (average >= i) {
+                stars += `<span class="star full">★</span>`;
+            } else if (average > i - 1) {
+                stars += `<span class="star half">★</span>`;
+            } else {
+                stars += `<span class="star">★</span>`;
+            }
+        }
+        return stars;
+    }
+</script>
+
+
 
 
 
@@ -222,17 +281,8 @@
         padding: 0;
     }
 
-    .nav-links li a {
-        text-decoration: none;
-        font-size: 18px;
-        color: rgb(78 107 255);
-        padding: 8px 16px;
-        border-radius: 6px;
-        transition: background 0.3s;
-    }
-
-    .nav-links li a:hover {
-        background-color: pink;
+    .nav-links li:hover {
+        color: blue;
     }
 
     #map-container {
@@ -260,6 +310,11 @@
         .map-form {
             flex-direction: column;
         }
+
+        .nav-links {
+            overflow-x: auto;
+            width: auto;
+        }
     }
 
     .location-inputs {
@@ -270,8 +325,7 @@
         margin-bottom: 40px;
     }
 
-    .location-inputs input,
-    .location-inputs select {
+    .location-inputs input {
         padding: 8px;
         font-size: 16px;
         width: 100%;

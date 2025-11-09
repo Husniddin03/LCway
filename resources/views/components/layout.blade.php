@@ -108,6 +108,36 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         </label>
                     </div>
 
+                    <ul class="tc _o sf yo cg ep">
+                        <li class="c i" x-data="{ dropdown: false }">
+                            <a href="#!" class="xl tc wf yf bg" @click.prevent="dropdown = !dropdown"
+                                :class="{
+                                    'mk': page === 'index' || page === 'index'
+                                }">
+                                Tillar
+
+                                <svg :class="{ 'wh': dropdown }" class="th mm we fd pf"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path
+                                        d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                                </svg>
+                            </a>
+
+                            <!-- Dropdown Start -->
+                            <ul class="a" :class="{ 'tc': dropdown }">
+                                <li>
+                                    <a href="{{ route('index') }}#features" class="xl"
+                                        :class="{ 'mk': page === 'index' }">Uz
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('index') }}#support" class="xl"
+                                        :class="{ 'mk': page === 'index' }">Rs</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
                     @auth
                         <form action="{{ route('logout') }}" method="POST" class="inline">
                             @csrf
@@ -117,7 +147,8 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         </form>
                         <a style="width: 50px" href="{{ route('index') }}">
                             @isset(Auth::user()->avatar)
-                                <img style="width: 100%; border-radius: 50%" src="{{ Auth::user()->avatar }}" alt="">
+                                <img style="width: 100%; border-radius: 50%" src="{{ Auth::user()->avatar }}"
+                                    alt="">
                             @else
                                 <img style="width: 100%; border-radius: 50%"
                                     src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random&size=64"

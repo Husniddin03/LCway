@@ -55,8 +55,8 @@ Route::get('/auth/google/callback', function () {
 Route::get('/', [PageController::class, 'index'])->name('index');
 Route::get('/blog-grid', [PageController::class, 'blogGrid'])->name('blog-grid');
 Route::get('/404', [PageController::class, 'notFound'])->name('404');
-Route::post('/searchMap', [PageController::class, 'searchMap'])->name('searchMap');
-Route::post('/search', [PageController::class, 'search'])->name('search');
+Route::get('/searchMap', [PageController::class, 'searchMap'])->name('searchMap');
+Route::get('/search', [PageController::class, 'search'])->name('search');
 
 Route::middleware('guest')->group(function () {
     Route::get('/signin', [PageController::class, 'signin'])->name('signin');

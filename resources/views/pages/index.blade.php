@@ -9,7 +9,7 @@
     <!-- ===== Hero Start ===== -->
     <section class="gj do ir hj sp jr i pg">
         <!-- Hero Images -->
-        <div class="xc fn zd/2 2xl:ud-w-187.5 bd 2xl:ud-h-171.5 h q r">
+        <div class="animate_right xc fn zd/2 2xl:ud-w-187.5 bd 2xl:ud-h-171.5 h q r">
             <img src="{{ asset('images/shape-01.svg') }}" alt="shape" class="xc 2xl:ud-block h t -ud-left-[10%] ua" />
             <img src="{{ asset('images/shape-02.svg') }}" alt="shape" class="xc 2xl:ud-block h u p va" />
             <img src="{{ asset('images/shape-03.svg') }}" alt="shape" class="xc 2xl:ud-block h v w va" />

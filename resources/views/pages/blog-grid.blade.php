@@ -13,6 +13,10 @@
 
                 <form action="{{ route('blog-grid') }}" method="get">
                     <div class="i">
+                        @foreach ($validated as $item)
+                            <input type="hidden" type="text" name="{{ $item }}" placeholder="Search Here..."
+                                value="{{ $item ?? '' }}" />
+                        @endforeach
                         <input type="text" name="searchText" placeholder="Search Here..."
                             value="{{ $validated['searchText'] ?? '' }}"
                             class="vd sm _g ch pm vk xm rg gm dm/40 dn/40 li mi" />
@@ -27,12 +31,14 @@
                 </form>
 
                 <div class="tc sf yo ap zf ep qb">
-
                     <ul class="nav-links">
-                        <li><a href="{{ route('blog-grid') }}">Barchasi</a> </li>
-                        <li id="toggle-map" style="cursor: pointer;">Xarita</li>
-                        <li class="c i" x-data="{ dropdown: false }">
-                            <a href="#!" class="xl tc wf yf bg" @click.prevent="dropdown = !dropdown">
+                        <li class="c i"><a href="{{ route('blog-grid') }}">Barchasi</a> </li>
+                        <li class="c i" id="toggle-map" style="cursor: pointer;">Xarita</li>
+                        <li class="c i" x-data="{ dropdown: false }" style="width: auto !important">
+                            <a href="#!" class="xl tc wf bg" @click.prevent="dropdown = !dropdown"
+                                :class="{
+                                    'mk': page === 'index' || page === 'index'
+                                }">
                                 Saralash
                                 <svg :class="{ 'wh': dropdown }" class="th mm we fd pf"
                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -41,65 +47,90 @@
                                 </svg>
                             </a>
 
-                            <ul class="a" :class="{ 'tc': dropdown }" style="position: relative;">
+                            <ul class="a" :class="{ 'tc': dropdown }">
                                 <li>
                                     @if (!isset($validated['name']))
-                                        <a href="{{ request()->fullUrlWithQuery(['name' => 'asc']) }}"
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
                                             class="xl">Nomi
                                             ↑↓</a>
                                     @elseif ($validated['name'] == 'asc')
-                                        <a href="{{ request()->fullUrlWithQuery(['name' => 'asc']) }}"
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'desc']) }}"
                                             class="xl">Nomi
                                             ↑</a>
                                     @elseif ($validated['name'] == 'desc')
-                                        <a href="{{ request()->fullUrlWithQuery(['name' => 'desc']) }}"
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
                                             class="xl">Nomi
                                             ↓</a>
                                     @else
-                                        <a href="{{ request()->fullUrlWithQuery(['name' => 'asc']) }}"
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
                                             class="xl">Nomi
                                             ↑↓</a>
                                     @endif
                                 </li>
                                 <li>
-                                    @if (!isset($validated['distence']))
-                                        <a href="{{ request()->fullUrlWithQuery(['distance' => 'asc']) }}"
+                                    @if (!isset($validated['distance']))
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
                                             class="xl">Masofasi
                                             ↑↓</a>
                                     @elseif ($validated['distance'] == 'asc')
-                                        <a href="{{ request()->fullUrlWithQuery(['distance' => 'asc']) }}"
-                                            class="xl">Narxi
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'desc']) }}"
+                                            class="xl">Masofasi
                                             ↑</a>
                                     @elseif ($validated['distance'] == 'desc')
-                                        <a href="{{ request()->fullUrlWithQuery(['distance' => 'desc']) }}"
-                                            class="xl">Narxi
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
+                                            class="xl">Masofasi
                                             ↓</a>
                                     @else
-                                        <a href="{{ request()->fullUrlWithQuery(['distance' => 'asc']) }}"
-                                            class="xl">Narxi
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
+                                            class="xl">Masofasi
                                             ↑↓</a>
                                     @endif
                                 </li>
                                 <li>
-                                    @if (!isset($validated['rating']))
-                                        <a href="{{ request()->fullUrlWithQuery(['rating' => 'asc']) }}"
+                                    @if (!isset($validated['favorites']))
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
                                             class="xl">Reytingi
                                             ↑↓</a>
-                                    @elseif ($validated['rating'] == 'asc')
-                                        <a href="{{ request()->fullUrlWithQuery(['rating' => 'asc']) }}"
+                                    @elseif ($validated['favorites'] == 'asc')
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'desc']) }}"
                                             class="xl">Reytingi
                                             ↑</a>
-                                    @elseif ($validated['rating'] == 'desc')
-                                        <a href="{{ request()->fullUrlWithQuery(['rating' => 'desc']) }}"
+                                    @elseif ($validated['favorites'] == 'desc')
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
                                             class="xl">Reytingi
                                             ↓</a>
                                     @else
-                                        <a href="{{ request()->fullUrlWithQuery(['rating' => 'asc']) }}"
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
                                             class="xl">Reytingi
                                             ↑↓</a>
                                     @endif
                                 </li>
                             </ul>
+                        </li>
+                        <li class="c i" x-data="{ dropdown: false }">
+                            <a href="#!" class="xl tc wf yf bg" @click.prevent="dropdown = !dropdown"
+                                :class="{
+                                    'mk': page === 'index' || page === 'index'
+                                }">
+                                O'qituvchi e'lonlari
+
+                                <svg :class="{ 'wh': dropdown }" class="th mm we fd pf"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path
+                                        d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                                </svg>
+                            </a>
+
+                            <!-- Dropdown Start -->
+                            <ul class="a" :class="{ 'tc': dropdown }">
+                                @foreach ($subjects as $subject)
+                                    <li>
+                                        <a href="{{ request()->fullUrlWithQuery(['needTeachers' => $subject->id]) }}"
+                                            class="xl">{{ $subject->name }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            <!-- Dropdown End -->
                         </li>
                     </ul>
                 </div>
@@ -108,10 +139,11 @@
                     <div id="map"></div>
                     <form class="map-form location-inputs" action="{{ route('blog-grid') }}" method="get">
 
-                        @if (isset($searchText))
-                            <input type="hidden" type="text" name="searchText" placeholder="Search Here..."
-                                value="{{ $searchText }}" />
-                        @endif
+                        @foreach ($validated as $item)
+                            <input type="hidden" type="text" name="{{ $item }}"
+                                placeholder="Search Here..." value="{{ $item ?? '' }}" />
+                        @endforeach
+
                         <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="text" id="address"
                             placeholder="Manzil">
                         <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden type="text"
@@ -120,12 +152,14 @@
                             type="text" id="latitude" placeholder="Latitude">
                         <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden name="longitude"
                             type="text" id="longitude" placeholder="Longitude">
-                        <select class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" name="subject_id" id="subject"
-                            value="{{ old('subject_id') }}">
-                            <option value="" disabled selected>Fanni tanlang...</option>
+                        <select class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" name="subject_id"
+                            id="subject">
+                            <option value="" disabled {{ isset($validated['sunject_id']) ? '' : 'selected' }}>
+                                Fanni
+                                tanlang...</option>
                             @foreach ($subjects as $subject)
                                 <option value="{{ $subject->id }}"
-                                    {{ isset($sunject_id) ? ($subject->id == $sunject_id ? 'selected' : '') : '' }}>
+                                    {{ isset($validated['sunject_id']) ? ($subject->id == $validated['sunject_id'] ? 'selected' : '') : '' }}>
                                     {{ $subject->name }}</option>
                             @endforeach
                         </select>
@@ -146,7 +180,8 @@
                 </div>
             </div>
 
-            <div class="wc qf pn xo zf iq">
+            <div class="wc qf pn xo zf iq" style="z-index: 1; position: relative;">
+
                 <!-- Blog Item -->
                 @foreach ($LearningCenters as $LearningCenter)
                     <div id="{{ $LearningCenter->id }}" loading="lezi" class="animate_top sg vk rm xm">
@@ -172,6 +207,7 @@
                                 </div>
                                 <div class="tc wf ag">
                                     @if (isset($LearningCenter->distance))
+                                        {{-- <p class="nowAddress"></p> --}}
                                         <p>{{ $LearningCenter->distance }} km</p>
                                     @else
                                         <p>Masofani bilish uchun xaritadan joyni tanlang!</p>
@@ -200,8 +236,9 @@
                             </h4>
 
                             <h4 class="ek tj ml il kk wm xl eq lb">
-                                <a
-                                    href="{{ route('blog-single', $LearningCenter->id) }}">{{ $LearningCenter->name }}</a>
+                                <a href="{{ route('blog-single', $LearningCenter->id) }}">
+                                    {{ $LearningCenter->name }}
+                                </a>
                             </h4>
                             <div class="bb ze mb">
                                 <!-- Service Item -->
@@ -210,11 +247,15 @@
                                         style="display: flex; flex-direction: row; align-content: center; align-items: center;">
                                         <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
                                             src="{{ asset('images/3d-speaker.png') }}" alt="Icon" />
-                                        <h4 class="ek zj kk wm">O'qituvchi kerak</h4>
+                                        <h4 class="ek zj kk wm">E'lon</h4>
                                     </div>
+
                                     @if ($LearningCenter->needTeachers->count() > 0)
+                                        <h4 class="ek kk wm">O'qituvchi kerak</h4>
                                         @foreach ($LearningCenter->needTeachers as $teacher)
-                                            <p>{{ $teacher->subject->name }}</p>
+                                            <p>🟢 {{ $teacher->subject->name }}</p>
+                                            <p style="color: brown; text-align: end">🔥
+                                                {{ $teacher->created_at->diffForHumans() }}</p>
                                         @endforeach
                                     @else
                                         <p>Hozicha elon berilmagan!</p>
@@ -476,6 +517,9 @@
             if (status === "OK" && results[0]) {
                 const address = results[0].formatted_address;
                 document.getElementById("address").value = address;
+                document.querySelectorAll(".nowAddress").forEach(el => {
+                    el.innerHTML = address;
+                });
                 document.getElementById("location").value = url;
                 document.getElementById("latitude").value = lat;
                 document.getElementById("longitude").value = lng;

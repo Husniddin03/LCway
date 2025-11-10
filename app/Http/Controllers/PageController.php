@@ -28,28 +28,13 @@ class PageController extends Controller
             'searchText' => 'nullable|string|max:255',
             'name' => 'nullable|in:asc,desc',
             'distance' => 'nullable|in:asc,desc',
-            'rating' => 'nullable|in:asc,desc',
+            'favorites' => 'nullable|in:asc,desc',
+            'sort' => 'nullable|in:name,distance,favorites',
+            'needTeachers' => 'nullable|exists:subjects,id',
         ]);
 
         if (count($validated) === 0) {
-            $LearningCenters = LearningCenter::query()
-                ->withAvg('favorites as favorite', 'rating')
-                ->with([
-                    'needTeachers' => function ($query) {
-                        $query->with('subject:id,name')->limit(1);
-                    }
-                ])
-                ->get()
-                ->map(function ($LearningCenter) {
-                    $LearningCenter->favorite = round($LearningCenter->favorite ?? 0, 1);
-                    $LearningCenter->date = $LearningCenter->created_at->diffForHumans();
-
-                    if ($LearningCenter->needTeachers->isNotEmpty()) {
-                        $LearningCenter->needTeacherSubject = $LearningCenter->needTeachers->first()->subject->name;
-                    }
-
-                    return $LearningCenter;
-                });
+            $LearningCenters = LearningCenter::with('favorites')->with('needTeachers')->get();
         } else {
             $latitude = $request->input('latitude');
             $longitude = $request->input('longitude');
@@ -59,7 +44,9 @@ class PageController extends Controller
             $searchText = $request->input('searchText');
             $name = $request->input('name');
             $distance = $request->input('distance');
-            $rating = $request->input('rating');
+            $favorites = $request->input('favorites');
+            $sort = $request->input('sort');
+            $needTeachers = $request->input('needTeachers');
 
             if (isset($validated['searchText'])) {
                 $LearningCenters = LearningCenter::where('name', 'LIKE', "%{$searchText}%")
@@ -76,6 +63,12 @@ class PageController extends Controller
                 }
 
                 $LearningCentersLocation = $LearningCenters;
+            } else if (isset($needTeachers)) {
+                $LearningCentersLocation = LearningCenter::with(['favorites', 'needTeachers'])
+                    ->whereHas('needTeachers', function ($query) use ($needTeachers) {
+                        $query->where('subject_id', $needTeachers);
+                    })
+                    ->get();
             } else {
                 $LearningCentersLocation = LearningCenter::with('favorites')->with('needTeachers')->get();
             }
@@ -119,9 +112,15 @@ class PageController extends Controller
             $LearningCenters = $filteredCenters->sortBy('distance')->values();
         }
 
+        if (isset($name) && $sort == 'name') {
+            $LearningCenters = $LearningCenters->sortBy('name', SORT_NATURAL, $name === 'desc');
+        } elseif (isset($distance) && $sort == 'distance') {
+            $LearningCenters = $LearningCenters->sortBy('distance', SORT_NUMERIC, $distance === 'desc');
+        } elseif (isset($favorites) && $sort == 'favorites') {
+            $LearningCenters = $LearningCenters->sortBy('favorite', SORT_NUMERIC, $favorites === 'desc');
+        }
 
         $subjects = Subject::all();
-
 
         return view('pages.blog-grid', compact('LearningCenters', 'subjects', 'validated'));
     }
@@ -142,5 +141,4 @@ class PageController extends Controller
     {
         return view('pages.404');
     }
-
 }

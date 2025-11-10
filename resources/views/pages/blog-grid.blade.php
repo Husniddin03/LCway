@@ -9,7 +9,7 @@
     <!-- ===== Blog Grid Start ===== -->
     <section id="app" class="ji gp uq">
         <div class="bb ye ki xn vq jb jo">
-            <div class="animate_top fb">
+            <div class="animate_top">
 
                 <form action="{{ route('blog-grid') }}" method="get">
                     <div class="i">
@@ -29,11 +29,14 @@
                         </button>
                     </div>
                 </form>
+            </div>
 
-                <div class="tc sf yo ap zf ep qb">
+            <div class="wc qf zf iq" style="z-index: 1">
+                
+                <div class="animate_top tc sf yo ap zf ep" style="z-index: 100">
                     <ul class="nav-links">
-                        <li class="c i"><a href="{{ route('blog-grid') }}">Barchasi</a> </li>
-                        <li class="c i" id="toggle-map" style="cursor: pointer;">Xarita</li>
+                        <li class="c i nav-links-li"><a href="{{ route('blog-grid') }}">Barchasi</a> </li>
+                        <li class="c i nav-links-li" id="toggle-map" style="cursor: pointer;">Xarita</li>
                         <li class="c i" x-data="{ dropdown: false }" style="width: auto !important">
                             <a href="#!" class="xl tc wf bg" @click.prevent="dropdown = !dropdown"
                                 :class="{
@@ -135,7 +138,7 @@
                     </ul>
                 </div>
 
-                <div id="map-container">
+                <div id="map-container" style="z-index: 1">
                     <div id="map"></div>
                     <form class="map-form location-inputs" action="{{ route('blog-grid') }}" method="get">
 
@@ -173,9 +176,8 @@
                 </div>
             </div>
 
-
-            <div style="margin-bottom: 10px;" class="wc qf pn xo zf iq">
-                <div class="animate_top sg vk rm xm">
+            <div style="margin-bottom: 10px;" class="wc qf zf iq" style="z-index: 1">
+                <div class="animate_top sg vk rm xm" style="z-index: 1; text-align: center;">
                     <p>{{ $LearningCenters->count() }} ta o'quv markaz topildi</p>
                 </div>
             </div>
@@ -328,12 +330,12 @@
     .nav-links {
         display: flex;
         gap: 20px;
-        margin-top: 20px;
+        margin-top: 10px;
         list-style: none;
         padding: 0;
     }
 
-    .nav-links li:hover {
+    .nav-links-li:hover {
         color: blue;
     }
 

@@ -1,4 +1,9 @@
 <x-layout>
+
+    <x-slot:title>
+        {{ $LearningCenter->name }} bilan bog'lanish
+    </x-slot>
+    
     <!-- ===== Contact Start ===== -->
     <section id="support" class="i pg fh rm ji gp uq">
         <!-- Bg Shapes -->
@@ -145,7 +150,8 @@
                         </ul>
 
                     </div>
-                    <form action="{{ route('connect.store', ['id' => $LearningCenter->id]) }}" method="POST" class="fb">
+                    <form action="{{ route('connect.store', ['id' => $LearningCenter->id]) }}" method="POST"
+                        class="fb">
                         @csrf
 
                         <div class="tc sf yo ap zf ep qb">
@@ -167,7 +173,8 @@
 
                             <div class="vd to/2">
                                 <label class="rc ac" for="url">Manzili</label>
-                                <input type="text" name="url" id="url" placeholder="https://t.me/.... yoki +998 ..."
+                                <input type="text" name="url" id="url"
+                                    placeholder="https://t.me/.... yoki +998 ..."
                                     class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 xi mi" />
                                 @error('url')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>

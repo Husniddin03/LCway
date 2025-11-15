@@ -2,7 +2,7 @@
 
     <x-slot:title>
 
-        Welcome to LCway - Your Gateway to Knowledge and Learning
+        Asosiy sahifa
 
     </x-slot>
 
@@ -20,7 +20,7 @@
                     <h1 class="fk vj zp or kk wm wb">Assalomu alaykum, bizning sahifamizga xush kelibsiz!
                     </h1>
                     <p class="fq">
-                        Bu yerda siz o'zingizga kerakli bo'lgan o'quv markazlarni topishingiz mumkun. Biz
+                        Bu yerda siz o'zingizga kreakli bo'lgan o'quv markazlarni topishingiz mumkun. Biz
                         sizga eng yaxshi xizmatni taqdim etamiz.
                     </p>
 

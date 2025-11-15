@@ -2,7 +2,7 @@
 
     <x-slot:title>
 
-        Blog Grid - FindCourse
+        Barcha o'quv markazlari
 
     </x-slot>
 

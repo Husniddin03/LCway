@@ -3,7 +3,7 @@
 
     <x-slot:title>
 
-        Blog Single - FindCourse
+        {{ $LearningCenter->name }} haqida batafsil ma'lumot
 
     </x-slot>
 

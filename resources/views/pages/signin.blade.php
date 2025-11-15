@@ -2,7 +2,7 @@
 
     <x-slot:title>
 
-        Sign In - FindCourse
+       Kirish sahifasi
 
     </x-slot>
 

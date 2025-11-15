@@ -1,4 +1,7 @@
 <x-layout>
+    <x-slot:title>
+        O'qituvchiga elon berish sahifasi
+    </x-slot>
     <!-- ===== Contact Start ===== -->
     <section id="support" class="i pg fh rm ji gp uq">
         <!-- Bg Shapes -->

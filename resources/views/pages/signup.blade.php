@@ -2,7 +2,7 @@
 
     <x-slot:title>
 
-        Sign Up - FindCourse
+        Ro'yxatdan o'tish sahifasi
 
     </x-slot>
 

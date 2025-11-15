@@ -2,7 +2,7 @@
 
     <x-slot:title>
 
-        404 Not Found - FindCourse
+        404 bunday sahifa topilmadi
 
     </x-slot>
 

@@ -1,4 +1,7 @@
 <x-layout>
+    <x-slot:title>
+        Rasimlarni tahrirlash
+    </x-slot>
     <!-- ===== Contact Start ===== -->
     <section id="support" class="i pg fh rm ji gp uq">
         <!-- Bg Shapes -->
@@ -109,8 +112,7 @@
                             </div>
                         @endforeach
                     </div>
-                    <form class="bc"
-                        action="{{ route('course.storeImages', ['id' => $LearningCenter->id]) }}"
+                    <form class="bc" action="{{ route('course.storeImages', ['id' => $LearningCenter->id]) }}"
                         method="POST" enctype="multipart/form-data" class="fb">
                         @csrf
 

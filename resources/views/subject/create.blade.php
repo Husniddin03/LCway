@@ -1,4 +1,7 @@
 <x-layout>
+    <x-slot:title>
+        Yangi fan qo'shish
+    </x-slot>
     <!-- ===== Contact Start ===== -->
     <section id="support" class="i pg fh rm ji gp uq">
         <!-- Bg Shapes -->

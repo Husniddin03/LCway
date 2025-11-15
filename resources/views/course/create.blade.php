@@ -13,7 +13,7 @@
     <main class="edu-center-wrapper">
         <div class="edu-center-container">
             <div class="edu-center-form-box">
-                <h2 class="edu-center-title">Yangi o'quv markaz qo'shish</h2>
+                <h2 class="edu-center-title">Yangi o'quv markaz qo'shing</h2>
                 @if ($errors->any())
                     <div style="color: red">
                         <ul>
@@ -28,7 +28,7 @@
                     enctype="multipart/form-data">
                     @csrf
                     <div class="edu-center-field-group">
-                        <label for="logo" class="edu-center-label">Logo</label>
+                        <label for="logo" class="edu-center-label">Markazning asosiy rasmi (logo)</label>
                         <div class="edu-center-file-wrapper">
                             <input type="file" name="logo" id="logo" class="edu-center-file-input"
                                 accept="image/*">
@@ -79,8 +79,15 @@
 
                     <div class="edu-center-field-group">
                         <label for="type" class="edu-center-label">Turi</label>
-                        <input type="text" name="type" id="type" class="edu-center-input"
-                            placeholder="Masalan: IT, Til o'rgatish, O'quv markazi ...">
+                        {{-- <input type="text" name="type" id="type" class="edu-center-input"
+                            placeholder="Masalan: IT, Til o'rgatish, O'quv markazi ..."> --}}
+                        <select name="type" id="type" class="edu-center-input">
+                            <option value="" disabled selected>Markaz turini tanlang ...</option>
+                            <option value="O'quv markaz">O'quv markaz</option>
+                            <option value="Akademiya">Akademiya</option>
+                            <option value="Kollej">Kollej</option>
+                            <option value="Unversitet">Unversitet</option>
+                        </select>
                         @error('type')
                             <div style="color: red">{{ $message }}</div>
                         @enderror

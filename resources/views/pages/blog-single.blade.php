@@ -14,15 +14,15 @@
                 <div class="ro">
                     <div
                         class="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10">
-                        {{-- <a href="{{ asset('storage/' . $LearningCenter->logo) }}" data-fslightbox class="vc wf hg mb">
+                        <a href="{{ asset('storage/' . $LearningCenter->logo) }}" data-fslightbox class="vc wf hg mb">
                             <img style="width: 100% !important; border-radius: 15px"
                                 src="{{ asset('storage/' . $LearningCenter->logo) }}" alt="Blog" />
-                        </a> --}}
-
-                         <a href="{{$LearningCenter->logo }}" data-fslightbox class="vc wf hg mb">
-                            <img style="width: 100% !important; border-radius: 15px"
-                                src="{{$LearningCenter->logo }}" alt="Blog" />
                         </a>
+
+                         {{-- <a href="{{$LearningCenter->logo }}" data-fslightbox class="vc wf hg mb">
+                            <img style="width: 100% !important; border-radius: 15px;"
+                                src="{{$LearningCenter->logo }}" alt="Blog" />
+                        </a> --}}
 
                         <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">
                             {{ $LearningCenter->name }}
@@ -132,16 +132,16 @@
 
                         <div class="wc qf pn dg cb animate_right">
                             @foreach ($LearningCenter->images as $image)
-                                {{-- <a href="{{ asset('storage/' . $image->image) }}" data-fslightbox
+                                <a href="{{ asset('storage/' . $image->image) }}" data-fslightbox
                                     class="animate_right vc wf hg mb">
                                     <img style="width: 100%; border-radius: 15px"
                                         src="{{ asset('storage/' . $image->image) }}" alt="Blog" />
-                                </a> --}}
-                                <a href="{{ $image->image}}" data-fslightbox
+                                </a>
+                                {{-- <a href="{{ $image->image}}" data-fslightbox
                                     class="animate_right vc wf hg mb">
                                     <img style="width: 100%; border-radius: 15px"
                                         src="{{ $image->image }}" alt="Blog" />
-                                </a>
+                                </a> --}}
                             @endforeach
                             @auth
                                 @can('isOun', $LearningCenter)
@@ -285,20 +285,20 @@
                                             @if (isset($teacher->photo))
                                                 <div class="tc wf xf cf ae cd rg mh"
                                                     style="width: 3rem; height: 3rem;">
-                                                    {{-- <a href="{{ asset('storage/' . $teacher->photo) }}"
+                                                    <a href="{{ asset('storage/' . $teacher->photo) }}"
                                                         data-fslightbox>
 
                                                         <img style="border-radius: 50%"
                                                             src="{{ asset('storage/' . $teacher->photo) }}"
                                                             alt="Icon" />
-                                                    </a> --}}
-                                                    <a href="{{ $teacher->photo }}"
+                                                    </a>
+                                                    {{-- <a href="{{ $teacher->photo }}"
                                                         data-fslightbox>
 
                                                         <img style="border-radius: 50%"
                                                             src="{{  $teacher->photo }}"
                                                             alt="Icon" />
-                                                    </a>
+                                                    </a> --}}
                                                 </div>
                                             @else
                                                 <div class="tc wf xf cf ae cd rg mh"
@@ -310,6 +310,7 @@
                                             @endif
                                             <div>
                                                 <h4 class="ek yj go kk wm xb">{{ $teacher->name }}</h4>
+                                                <p>{{ $teacher->phone }}</p>
                                                 <p style="color: brown">{{ $teacher->subject->name }}</p>
                                                 <p>{{ $teacher->about }}</p>
                                             </div>

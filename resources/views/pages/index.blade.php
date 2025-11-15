@@ -10,11 +10,7 @@
     <section class="gj do ir hj sp jr i pg">
         <!-- Hero Images -->
         <div class="animate_right xc fn zd/2 2xl:ud-w-187.5 bd 2xl:ud-h-171.5 h q r">
-            <img src="{{ asset('images/shape-01.svg') }}" alt="shape" class="xc 2xl:ud-block h t -ud-left-[10%] ua" />
-            <img src="{{ asset('images/shape-02.svg') }}" alt="shape" class="xc 2xl:ud-block h u p va" />
-            <img src="{{ asset('images/shape-03.svg') }}" alt="shape" class="xc 2xl:ud-block h v w va" />
-            {{-- <img src="{{ asset('images/shape-04.svg') }}" alt="shape" class="h q r" /> --}}
-            <img src="{{ asset('images/image.png') }}" alt="Woman" class="h q r ua" style="margin-top: 9rem; width: 98%; border-radius: 10%" />
+            <img src="{{asset('images/earth3.gif')}}" alt="earth" class="h q r ua" style="border-radius: 50%; width: 100%; padding: 0" />
         </div>
 
         <!-- Hero Content -->
@@ -93,12 +89,12 @@
                 <div class="animate_left xc gn gg jn/2 i">
                     <div>
                         <img src="{{ asset('images/shape-05.svg') }}" alt="Shape" class="h -ud-left-5 x" />
-                        <img src="{{ asset('images/about-01.png') }}" alt="About" class="ib" />
-                        <img src="{{ asset('images/about-02.png') }}" alt="About" />
+                        <img src="{{ asset('images/we1.png') }}" alt="About" class="ib br-10" />
+                        <img src="{{ asset('images/we3.png') }}" alt="About" class="br-10"/>
                     </div>
                     <div>
                         <img src="{{ asset('images/shape-06.svg') }}" alt="Shape" />
-                        <img src="{{ asset('images/about-03.png') }}" alt="About" class="ob gb" />
+                        <img src="{{ asset('images/we2.png') }}" alt="About" class="ob gb br-10" />
                         <img src="{{ asset('images/shape-07.svg') }}" alt="Shape" class="bb" />
                     </div>
                 </div>
@@ -111,7 +107,7 @@
                     <p class="uo">Biz haqimizda ko'proq malumot olish uchun pastdagi videoni koring va biz haqimizda
                         o'z fikringizni qoldiring.</p>
 
-                    <a href="https://www.youtube.com/watch?v=xcJtL7QggTI" data-fslightbox class="vc wf hg mb">
+                    <a href="{{asset('videos/aboutme.mp4')}}" data-fslightbox class="vc wf hg mb">
                         <span class="tc wf xf be dd rg i gh ua">
                             <span class="nf h vc yc vd rg gh qk -ud-z-1"></span>
                             <img src="{{ asset('images/icon-play.svg') }}" alt="Play" />

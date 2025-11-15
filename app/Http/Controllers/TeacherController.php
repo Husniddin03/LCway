@@ -28,7 +28,7 @@ class TeacherController extends Controller
         $validate = $request->validate([
             'photo' => 'nullable|image|max:2048',
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:255',
             'subject_id' => 'required|exists:subjects,id',
             'about' => 'nullable|string',
             'learning_centers_id' => 'required|exists:learning_centers,id',

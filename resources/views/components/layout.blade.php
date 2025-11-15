@@ -87,7 +87,8 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                             </ul>
                             <!-- Dropdown End -->
                         </li>
-                        <li class="c i" x-data="{ dropdown: false }">
+                        {{-- Tillar --}}
+                        {{-- <li class="c i" x-data="{ dropdown: false }">
                             <a href="#!" class="xl tc wf yf bg" @click.prevent="dropdown = !dropdown"
                                 :class="{
                                     'mk': page === 'index' || page === 'index'
@@ -113,7 +114,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                         :class="{ 'mk': page === 'index' }">Rs</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
                     </ul>
                 </nav>
 
@@ -142,7 +143,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                 :class="{ 'nk yl': page === 'home', 'ok': page === 'home' && stickyMenu }"
                                 class="ek pk xl" style="color: red">Chiqish</button>
                         </form>
-                        <a style="width: 50px" href="{{ route('index') }}">
+                        <a style="width: 50px" href="#">
                             @isset(Auth::user()->avatar)
                                 <img style="width: 100%; border-radius: 50%" src="{{ Auth::user()->avatar }}"
                                     alt="">
@@ -157,10 +158,10 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                     @guest
                         <a href="{{ route('signin') }}"
                             :class="{ 'nk yl': page === 'home', 'ok': page === 'home' && stickyMenu }"
-                            class="ek pk xl">Sign In</a>
+                            class="ek pk xl">Kirish</a>
                         <a href="{{ route('signup') }}"
                             :class="{ 'hh/[0.15]': page === 'home', 'sh': page === 'home' && stickyMenu }"
-                            class="lk gh dk rg tc wf xf _l gi hi">Sign Up</a>
+                            class="lk gh dk rg tc wf xf _l gi hi">Ro'yxatdan o'tish</a>
                     @endguest
 
                 </div>
@@ -277,7 +278,6 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                     <ul class="tc wf gg">
                         <li><a href="#!" class="xl">Uzbekistan</a></li>
                         <li><a href="#!" class="xl">Malumotlar himoyalangan</a></li>
-                        <li><a href="{{ route('index') }}#support" class="xl">Qo'llab quvvatlash</a></li>
                     </ul>
                 </div>
 

@@ -106,7 +106,7 @@
 
                         <div class="tc sf yo ap zf ep qb">
                             <div class="vd to/2">
-                                <label class="rc ac" for="phone">Telefon</label>
+                                <label class="rc ac" for="phone">Telefon (ixtiyoriy)</label>
                                 <input type="text" name="phone" id="phone" placeholder="+009 3342 3432"
                                     class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 xi mi" />
                                 @error('phone')

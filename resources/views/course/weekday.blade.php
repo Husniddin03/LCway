@@ -9,7 +9,7 @@
         <img src="{{ asset('images/shape-13.svg') }}" alt="Shape" class="h r q" />
 
         <!-- Section Title Start -->
-        <div x-data="{ sectionTitle: `{{ $LearningCenter->name }}`, sectionTitleText: `{{ $LearningCenter->name }}ga yangi rasimlar yuklang!` }">
+        <div x-data="{ sectionTitle: `{{ $LearningCenter->name }}`, sectionTitleText: `{{ $LearningCenter->name }} ish vaqtlarini o'zgartiring!` }">
             <div class="animate_top bb ze rj ki xn vq">
                 <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
                 </h2>

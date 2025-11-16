@@ -189,10 +189,10 @@
                     <div id="{{ $LearningCenter->id }}" loading="lezi" class="animate_top sg vk rm xm">
 
                         <div class="c rc i z-1 pg">
-                            <img class="standard-img lazy-img" src="{{ asset('storage/' . $LearningCenter->logo) }}"
-                                alt="Blog" />
-                            {{-- <img class="standard-img lazy-img" src="{{ $LearningCenter->logo }}"
+                            {{-- <img class="standard-img lazy-img" src="{{ asset('storage/' . $LearningCenter->logo) }}"
                                 alt="Blog" /> --}}
+                            <img class="standard-img lazy-img" src="{{ $LearningCenter->logo }}"
+                                alt="Blog" />
 
                             <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
                                 <a href="{{ route('blog-single', $LearningCenter->id) }}"

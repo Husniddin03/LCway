@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             SubjectsTableSeeder::class,
             ConnectionTableSeeder::class,
             CalendarTableSeeder::class,
-            FullDatabaseSeeder::class,
+            // FullDatabaseSeeder::class,
         ]);
     }
 }

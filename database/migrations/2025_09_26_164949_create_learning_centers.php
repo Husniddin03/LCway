@@ -32,6 +32,7 @@ return new class extends Migration
             $table->id();
             $table->string('type')->nullable();
             $table->string('name');
+            $table->string('icon')->nullable();
             $table->timestamps();
         });
 

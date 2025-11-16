@@ -19,7 +19,7 @@
                                 src="{{ asset('storage/' . $LearningCenter->logo) }}" alt="Blog" />
                         </a>
 
-                         {{-- <a href="{{$LearningCenter->logo }}" data-fslightbox class="vc wf hg mb">
+                        {{-- <a href="{{$LearningCenter->logo }}" data-fslightbox class="vc wf hg mb">
                             <img style="width: 100% !important; border-radius: 15px;"
                                 src="{{$LearningCenter->logo }}" alt="Blog" />
                         </a> --}}
@@ -410,7 +410,8 @@
                                                             </div>
                                                             @auth
                                                                 @can('myComment', $comment)
-                                                                    <form action="{{route('comment.delete', $comment->id)}}" method="post"
+                                                                    <form action="{{ route('comment.delete', $comment->id) }}"
+                                                                        method="post"
                                                                         onsubmit="return confirm('Rostdan bu izohni o‘chirilsinmi?');">
                                                                         @csrf
                                                                         <button type="submit">
@@ -529,9 +530,16 @@
                                         <!-- Small Features Item -->
 
                                         <div class="tc wf xf cf ae cd rg mh" style="width: 3rem; height: 3rem;">
-                                            <img style="border-radius: 50%; width: 3rem; height: 3rem;"
-                                                src="https://ui-avatars.com/api/?name={{ $subject->subject->name }}&background=random&size=64"
-                                                alt="Icon" />
+                                            @if (isset($subject->subject->icon))
+                                                <img style="border-radius: 50%; width: 3rem; height: 3rem;"
+                                                    src="https://ui-avatars.com/api/?name={{ $subject->subject->icon }}&background=random&size=64"
+                                                    alt="Icon" />
+                                            @else
+                                                <img style="border-radius: 50%; width: 3rem; height: 3rem;"
+                                                    src="https://ui-avatars.com/api/?name={{ $subject->subject->name }}&background=random&size=64"
+                                                    alt="Icon" />
+                                            @endif
+
                                         </div>
                                         <div>
                                             <h4 class="ek yj go kk wm xb">{{ $subject->subject->name }}</h4>

@@ -14,8 +14,8 @@
                 <div class="ro">
                     <div
                         class="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10">
-                        <a href="{{ asset('storage/' . $LearningCenter->logo) }}" data-fslightbox class="vc wf hg mb">
-                            <img style="width: 100% !important; border-radius: 15px"
+                        <a style="width: 100%;" href="{{ asset('storage/' . $LearningCenter->logo) }}" data-fslightbox class="vc wf hg mb">
+                            <img style="width: 100% !important; height: 400px; border-radius: 15px"
                                 src="{{ asset('storage/' . $LearningCenter->logo) }}" alt="Blog" />
                         </a>
 
@@ -131,18 +131,30 @@
                         </h2>
 
                         <div class="wc qf pn dg cb animate_right">
+                            <style>
+                                .responsive-img {
+                                    width: 100%;
+                                    height: 300px;
+                                    /* O'zingiz xohlagan balandlik */
+                                    object-fit: cover;
+                                    border-radius: 15px;
+                                }
+
+                                .image-wrapper {
+                                    display: block;
+                                    overflow: hidden;
+                                    border-radius: 15px;
+                                }
+                            </style>
+
                             @foreach ($LearningCenter->images as $image)
                                 <a href="{{ asset('storage/' . $image->image) }}" data-fslightbox
-                                    class="animate_right vc wf hg mb">
-                                    <img style="width: 100%; border-radius: 15px"
-                                        src="{{ asset('storage/' . $image->image) }}" alt="Blog" />
+                                    class="animate_right vc wf hg mb image-wrapper">
+                                    <img src="{{ asset('storage/' . $image->image) }}" alt="Blog"
+                                        class="responsive-img">
                                 </a>
-                                {{-- <a href="{{ $image->image}}" data-fslightbox
-                                    class="animate_right vc wf hg mb">
-                                    <img style="width: 100%; border-radius: 15px"
-                                        src="{{ $image->image }}" alt="Blog" />
-                                </a> --}}
                             @endforeach
+
                             @auth
                                 @can('isOun', $LearningCenter)
                                     <div style="display: flex; align-content: center; align-items: center; text-align: center">

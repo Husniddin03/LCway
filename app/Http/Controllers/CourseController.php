@@ -33,7 +33,6 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
-
         $validated = $request->validate([
             'logo'         => 'required|image|max:2048',
             'name'         => 'required|string|max:255',

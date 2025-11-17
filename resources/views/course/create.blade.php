@@ -50,7 +50,7 @@
                     <div class="edu-center-field-group">
                         <label for="name" class="edu-center-label edu-center-required">Nomi</label>
                         <input type="text" name="name" id="name" class="edu-center-input" required
-                            placeholder="O'quv markaz nomini kiriting">
+                            value="{{ old('name') }}" placeholder="O'quv markaz nomini kiriting">
                         @error('name')
                             <div style="color: red">{{ $message }}</div>
                         @enderror
@@ -96,7 +96,7 @@
                     <div class="edu-center-field-group">
                         <label for="about" class="edu-center-label">Haqida</label>
                         <textarea name="about" id="about" class="edu-center-textarea"
-                            placeholder="O'quv markaz haqida qisqacha ma'lumot..." rows="4"></textarea>
+                            placeholder="O'quv markaz haqida qisqacha ma'lumot..." rows="4">{{ old('about') }}</textarea>
                         @error('about')
                             <div style="color: red">{{ $message }}</div>
                         @enderror
@@ -117,7 +117,8 @@
                         <div class="edu-center-field-group edu-center-half">
                             <label for="region" class="edu-center-label">Viloyat</label>
                             <select id="region" name="province" class="edu-center-input" required>
-                                <option value="" disabled selected>Viloyatni tanlang ...</option>
+                                <option value="{{ old('province') }}" selected>
+                                    {{ old('province') }}</option>
                                 <option value="Toshkent">Toshkent</option>
                                 <option value="Sirdaryo">Sirdaryo</option>
                                 <option value="Jizzax">Jizzax</option>
@@ -137,7 +138,8 @@
                         <div class="edu-center-field-group edu-center-half">
                             <label for="district" class="edu-center-label">Tuman</label>
                             <select id="district" name="region" class="edu-center-input" required>
-                                <option value="" disabled selected>Tumanni tanlang...</option>
+                                <option value="{{ old('region') }}" selected>
+                                    {{ old('region') }}</option>
                             </select>
                         </div>
                     </div>
@@ -146,7 +148,7 @@
                     <div class="edu-center-field-group">
                         <label for="address" class="edu-center-label">Manzil</label>
                         <input type="text" name="address" id="address" class="edu-center-input"
-                            placeholder="To'liq manzilni kiriting">
+                            {{ old('address') }} placeholder="To'liq manzilni kiriting">
                         @error('address')
                             <div style="color: red">{{ $message }}</div>
                         @enderror
@@ -156,7 +158,7 @@
                     <div class="edu-center-field-group edu-center-full">
                         <label for="location" class="edu-center-label">URL</label>
                         <input name="location" id="location" type="text" class="edu-center-input"
-                            placeholder="Manzil URL avtomatik yoziladi">
+                            {{ old('location') }} placeholder="Manzil URL avtomatik yoziladi">
                         @error('location')
                             <div style="color: red">{{ $message }}</div>
                         @enderror
@@ -175,7 +177,7 @@
                         <label for="studentCount" class="edu-center-label">Hozirda markazingizdagi o'quvchilar
                             soni</label>
                         <input type="number" name="student_count" id="studentCount" class="edu-center-input"
-                            placeholder="0" min="0">
+                            value="{{ old('student_count') }}" placeholder="0" min="0">
                         @error('student_count')
                             <div style="color: red">{{ $message }}</div>
                         @enderror
@@ -188,6 +190,7 @@
                         <div class="edu-center-row">
                             <div class="edu-center-field-group edu-center-half">
                                 <label class="edu-center-label">Fan</label>
+
                                 <select name="subjects[0][id]" class="edu-center-input" required>
                                     <option value="" disabled selected>Fanni tanlang ...</option>
                                     @foreach ($subjects as $id => $name)
@@ -465,8 +468,8 @@
 
     function initMap() {
         const defaultCenter = {
-            lat: 41.3111,
-            lng: 69.2797
+            lat: {{ old('latitude') ?? 41.2995 }},
+            lng: {{ old('longitude') ?? 69.2401 }}
         }; // Toshkent markaz
 
         map = new google.maps.Map(document.getElementById("map"), {

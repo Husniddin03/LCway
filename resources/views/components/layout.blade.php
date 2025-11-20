@@ -145,8 +145,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         </form>
                         <a style="width: 50px" href="#">
                             @isset(Auth::user()->avatar)
-                                <img style="width: 100%; border-radius: 50%" src="{{ Auth::user()->avatar }}"
-                                    alt="">
+                                <img style="width: 100%; border-radius: 50%" src="{{ Auth::user()->avatar }}" alt="">
                             @else
                                 <img style="width: 100%; border-radius: 50%"
                                     src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random&size=64"
@@ -199,7 +198,6 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
         <!-- ===== CTA End ===== -->
     </main>
-
     <!-- ===== Footer Start ===== -->
     <footer>
         <div class="bb ze ki xn 2xl:ud-px-0">
@@ -293,13 +291,29 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
     <!-- ===== Footer End ===== -->
 
     <!-- ====== Back To Top Start ===== -->
-    <button class="xc wf xf ie ld vg sr gh tr g sa ta _a" @click="window.scrollTo({top: 0, behavior: 'smooth'})"
-        @scroll.window="scrollTop = (window.pageYOffset > 50) ? true : false" :class="{ 'uc': scrollTop }">
-        <svg class="uh se qd" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-            <path
-                d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
-        </svg>
-    </button>
+    <div x-data="{ scrollTop: false }" @scroll.window="scrollTop = (window.pageYOffset > 50)"
+        style="-ms-flex-item-align: center">
+
+        <!-- Scroll to top button with icon -->
+        <button class="xc wf xf ie ld vg sr gh tr g sa ta _a" @click="window.scrollTo({top: 0, behavior: 'smooth'})"
+            :class="{ 'uc': scrollTop }" style="bottom: 7rem; right: 2.6rem;">
+            <svg class="uh se qd" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                style="width: 20px; height: 20px; fill: white;">
+                <path
+                    d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
+            </svg>
+        </button>
+
+        <!-- Chat button -->
+        <button class="xc wf xf vg sr tr g sa ta _a uc ai-button" style="border-radius: 50%">
+            <span style="color: blue">AI dan maslahat oling &nbsp;</span>
+            <a href="{{ route('chat.chat') }}">
+                <img class="ai-img"
+                    style="border-radius: 50%; width: 4rem; height: 4rem; border: 1px solid blue;  box-shadow: blue 0px 22px 70px 4px;"
+                    src="{{ asset('images/chatai.gif') }}" alt="">
+            </a>
+        </button>
+    </div>
 
     <!-- ====== Back To Top End ===== -->
 

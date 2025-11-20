@@ -2,12 +2,12 @@
 
     <x-slot:title>
 
-        Barcha o'quv markazlari
+        Barcha o'quv markazlar
 
     </x-slot>
 
     <!-- ===== Blog Grid Start ===== -->
-    <section id="app" class="ji gp uq">
+    <section class="ji gp uq">
         <div class="bb ye ki xn vq jb jo">
             <div class="animate_top">
 
@@ -182,11 +182,11 @@
                 </div>
             </div>
 
-            <div class="wc qf pn xo zf iq" style="z-index: 1; position: relative;">
+            <div class="wc qf pn xo zf iq">
 
                 <!-- Blog Item -->
                 @foreach ($LearningCenters as $LearningCenter)
-                    <div id="{{ $LearningCenter->id }}" loading="lezi" class="animate_top sg vk rm xm">
+                    <div loading="lezi" class="animate_top sg vk rm xm">
 
                         <div class="c rc i z-1 pg">
                             <img class="standard-img lazy-img" src="{{ asset('storage/' . $LearningCenter->logo) }}"
@@ -266,11 +266,9 @@
                                     @endif
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 @endforeach
-
             </div>
         </div>
     </section>

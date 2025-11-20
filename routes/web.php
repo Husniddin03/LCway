@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ConnectController;
 use App\Http\Controllers\CourseController;
@@ -58,6 +59,8 @@ Route::get('/404', [PageController::class, 'notFound'])->name('404');
 Route::get('/searchMap', [PageController::class, 'searchMap'])->name('searchMap');
 Route::get('/search', [PageController::class, 'search'])->name('search');
 Route::get('/blog-single/{id}', [PageController::class, 'blogSingle'])->name('blog-single');
+
+Route::get('chat/chat', [ChatController::class, 'chat'])->name('chat.chat');
 
 Route::middleware('guest')->group(function () {
     Route::get('/signin', [PageController::class, 'signin'])->name('signin');

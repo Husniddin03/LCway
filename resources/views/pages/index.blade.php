@@ -10,7 +10,7 @@
     <section class="gj do ir hj sp jr i pg">
         <!-- Hero Images -->
         <div class="animate_right xc fn zd/2 2xl:ud-w-187.5 bd 2xl:ud-h-171.5 h q r">
-            <img src="{{asset('images/earth3.gif')}}" alt="earth" class="h q r ua" style="border-radius: 50%; width: 100%; padding: 0" />
+            <img src="{{asset('images/chatai.gif')}}" alt="ai" class="h q r ua" style="border-radius: 50%; margin-top: 100px; margin-right: 100px; width: 70%; border: 1px solid blue;  box-shadow: blue 10px 32px 70px 20px;" />
         </div>
 
         <!-- Hero Content -->

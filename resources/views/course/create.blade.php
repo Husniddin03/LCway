@@ -276,7 +276,7 @@
 
                             <div class="edu-center-field-group">
                                 <label class="edu-center-label">Ochilishi</label>
-                                <input type="time" name="days[{{ $day }}][open_time]"
+                                <input value="06:00" type="time" name="days[{{ $day }}][open_time]"
                                     class="edu-center-input" style="width: 100%;">
                                 @error('days.' . $day . '.open_time')
                                     <div style="color: red">{{ $message }}</div>
@@ -285,7 +285,7 @@
 
                             <div class="edu-center-field-group">
                                 <label class="edu-center-label">Yopilishi</label>
-                                <input type="time" name="days[{{ $day }}][close_time]"
+                                <input value="18:00" type="time" name="days[{{ $day }}][close_time]"
                                     class="edu-center-input" style="width: 100%;">
                                 @error('days.' . $day . '.close_time')
                                     <div style="color: red">{{ $message }}</div>

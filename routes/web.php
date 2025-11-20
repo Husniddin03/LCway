@@ -57,6 +57,7 @@ Route::get('/blog-grid', [PageController::class, 'blogGrid'])->name('blog-grid')
 Route::get('/404', [PageController::class, 'notFound'])->name('404');
 Route::get('/searchMap', [PageController::class, 'searchMap'])->name('searchMap');
 Route::get('/search', [PageController::class, 'search'])->name('search');
+Route::get('/blog-single/{id}', [PageController::class, 'blogSingle'])->name('blog-single');
 
 Route::middleware('guest')->group(function () {
     Route::get('/signin', [PageController::class, 'signin'])->name('signin');
@@ -67,7 +68,6 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/blog-single/{id}', [PageController::class, 'blogSingle'])->name('blog-single');
     Route::post('logout', [LogController::class, 'logout'])->name('logout');
     Route::resource('course', CourseController::class);
     Route::post('/teacher/store/{id}', [TeacherController::class, 'store'])->name('teacher.storeid');

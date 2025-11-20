@@ -14,8 +14,8 @@
                 <div class="ro">
                     <div
                         class="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10">
-                        <a style="width: 100%;" href="{{ asset('storage/' . $LearningCenter->logo) }}" data-fslightbox class="vc wf hg mb">
-                            <img style="width: 100% !important; height: 400px; border-radius: 15px"
+                        <a style="width: 100%; height: 400px; text-align: center !important" href="{{ asset('storage/' . $LearningCenter->logo) }}" data-fslightbox class="vc wf hg mb">
+                            <img style="width: auto !important; height: 100%; border-radius: 15px;"
                                 src="{{ asset('storage/' . $LearningCenter->logo) }}" alt="Blog" />
                         </a>
 

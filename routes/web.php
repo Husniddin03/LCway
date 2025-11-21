@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 
 Route::fallback(function () {
@@ -53,6 +54,24 @@ Route::get('/auth/google/callback', function () {
 
 
 
+Route::get('/ai', function () {
+
+    $response = Http::withHeaders([
+        'Authorization' => 'Bearer ' . env('DEEPSEEK_API_KEY'),
+        'Content-Type' => 'application/json',
+    ])->post(env('DEEPSEEK_BASE_URL') . '/chat/completions', [
+        "model" => "deepseek-chat", // asosiy model
+        "messages" => [
+            ["role" => "user", "content" => "Salom! Qandaysan?"],
+        ],
+    ]);
+
+    return $response->json();
+});
+
+
+
+
 Route::get('/', [PageController::class, 'index'])->name('index');
 Route::get('/blog-grid', [PageController::class, 'blogGrid'])->name('blog-grid');
 Route::get('/404', [PageController::class, 'notFound'])->name('404');
@@ -60,17 +79,17 @@ Route::get('/searchMap', [PageController::class, 'searchMap'])->name('searchMap'
 Route::get('/search', [PageController::class, 'search'])->name('search');
 Route::get('/blog-single/{id}', [PageController::class, 'blogSingle'])->name('blog-single');
 
-Route::get('chat/chat', [ChatController::class, 'chat'])->name('chat.chat');
 
 Route::middleware('guest')->group(function () {
     Route::get('/signin', [PageController::class, 'signin'])->name('signin');
     Route::get('/signup', [PageController::class, 'signup'])->name('signup');
-
+    
     Route::post('register', [LogController::class, 'register'])->name('register');
     Route::post('login', [LogController::class, 'login'])->name('login');
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('chat/chat', [ChatController::class, 'chat'])->name('chat.chat');
     Route::post('logout', [LogController::class, 'logout'])->name('logout');
     Route::resource('course', CourseController::class);
     Route::post('/teacher/store/{id}', [TeacherController::class, 'store'])->name('teacher.storeid');

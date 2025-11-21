@@ -27,6 +27,7 @@
             <div class="tc uf sn tf rn un zf xl:gap-10" style="align-items: center; justify-content: center;">
                 <div class="animate_top w-full vk sg hh sm yh tq">
                     <p class="ai-answer">
+                        <p style="color: red">IC answer</p>
                         Assalomu alaykum men sizga kasb tanlashda va unga eltuvchi yo'llarni topishda ko'maklashuvchi
                         suniy intelektman.
 
@@ -41,6 +42,7 @@
                         repellendus ipsa eveniet? Fugiat.
                     </p>
                     <p class="user-question">
+                        <p style="color: red">Siz</p>
                         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Expedita at iste ad esse
                         voluptates cupiditate, non numquam, perferendis quas optio placeat debitis, architecto
                         quaerat nemo animi aperiam doloremque corrupti ratione repudiandae temporibus! Maxime
@@ -50,13 +52,6 @@
                         harum magni doloribus labore. Quidem voluptate beatae nesciunt nulla, perferendis provident
                         aperiam deleniti temporibus sed qui rerum sit cum, odio, pariatur animi perspiciatis ducimus
                         repellendus ipsa eveniet? Fugiat.
-                    </p>
-
-                    <p class="ai-answer">
-                        chat
-                    </p>
-                    <p class="user-question">
-                        user
                     </p>
 
                     <div class="tc sf yo ap zf ep qb">
@@ -72,25 +67,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <style>
-                        .ai-answer {
-                            margin-right: 10%;
-                        }
-
-                        .ai-answer,
-                        .user-question {
-                            border: 1px solid whitesmoke;
-                            margin-bottom: 2rem;
-                            padding: 1rem;
-                            border-radius: 15px;
-                        }
-
-                        .user-question {
-                            text-align: end;
-                            margin-left: 10%;
-                        }
-                    </style>
                 </div>
             </div>
         </div>

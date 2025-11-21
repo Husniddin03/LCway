@@ -8,13 +8,43 @@
     <title>{{ $title ?? 'Asosiy sahifa' }}</title>
     <link rel="icon" href="images/lcwayfavicon.png">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <style>
+        .snake-border::before {
+            content: "";
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border-radius: 10px;
+            background: linear-gradient(45deg, rgb(137, 137, 243), transparent, rgb(109, 109, 232));
+            background-size: 200% 200%;
+            animation: snake 10s linear infinite;
+            z-index: -1;
+        }
+
+        /* Ilondek harakat animatsiya */
+        @keyframes snake {
+            0% {
+                background-position: 0 0;
+            }
+
+            50% {
+                background-position: 50% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+    </style>
 </head>
 
 <body x-data="{ page: 'signup', 'darkMode': true, 'stickyMenu': false, 'navigationOpen': false, 'scrollTop': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
-$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'b eh': darkMode === true }">
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'b eh': darkMode === false }">
 
     <!-- ===== Header Start ===== -->
-    <header class="g s r vd ya cj" :class="{ 'hh sm _k dj bl ll': stickyMenu }"
+    <header class="snake-border g s r vd ya cj" :class="{ 'hh sm _k dj bl ll': stickyMenu }"
         @scroll.window="stickyMenu = (window.pageYOffset > 20) ? true : false">
         <div class="bb ze ki xn 2xl:ud-px-0 oo wf yf i">
             <div class="vd to/4 tc wf yf">
@@ -167,7 +197,8 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
             </div>
         </div>
     </header>
-    <main>
+
+    <main class="">
 
         {{ $slot }}
 

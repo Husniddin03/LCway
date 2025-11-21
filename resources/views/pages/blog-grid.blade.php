@@ -186,7 +186,7 @@
 
                 <!-- Blog Item -->
                 @foreach ($LearningCenters as $LearningCenter)
-                    <div loading="lezi" class="animate_top sg vk rm xm">
+                    <div loading="lezi" class="animate_top sg vk rm xm snake-border">
 
                         <div class="c rc i z-1 pg">
                             <img class="standard-img lazy-img" src="{{ asset('storage/' . $LearningCenter->logo) }}"

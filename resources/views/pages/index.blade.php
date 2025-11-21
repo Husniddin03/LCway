@@ -10,7 +10,8 @@
     <section class="gj do ir hj sp jr i pg">
         <!-- Hero Images -->
         <div class="animate_right xc fn zd/2 2xl:ud-w-187.5 bd 2xl:ud-h-171.5 h q r">
-            <img src="{{asset('images/chatai.gif')}}" alt="ai" class="h q r ua" style="border-radius: 50%; margin-top: 100px; margin-right: 100px; width: 70%; border: 1px solid blue;  box-shadow: blue 10px 32px 70px 20px;" />
+            <img src="{{ asset('images/chatai.gif') }}" alt="ai" class="h q r ua"
+                style="border-radius: 50%; margin-top: 100px; margin-right: 100px; width: 70%;  box-shadow: blue 10px 32px 70px 20px;" />
         </div>
 
         <!-- Hero Content -->
@@ -90,7 +91,7 @@
                     <div>
                         <img src="{{ asset('images/shape-05.svg') }}" alt="Shape" class="h -ud-left-5 x" />
                         <img src="{{ asset('images/we1.png') }}" alt="About" class="ib br-10" />
-                        <img src="{{ asset('images/we3.png') }}" alt="About" class="br-10"/>
+                        <img src="{{ asset('images/we3.png') }}" alt="About" class="br-10" />
                     </div>
                     <div>
                         <img src="{{ asset('images/shape-06.svg') }}" alt="Shape" />
@@ -107,7 +108,7 @@
                     <p class="uo">Biz haqimizda ko'proq malumot olish uchun pastdagi videoni koring va biz haqimizda
                         o'z fikringizni qoldiring.</p>
 
-                    <a href="{{asset('videos/aboutme.mp4')}}" data-fslightbox class="vc wf hg mb">
+                    <a href="{{ asset('videos/aboutme.mp4') }}" data-fslightbox class="vc wf hg mb">
                         <span class="tc wf xf be dd rg i gh ua">
                             <span class="nf h vc yc vd rg gh qk -ud-z-1"></span>
                             <img src="{{ asset('images/icon-play.svg') }}" alt="Play" />
@@ -886,7 +887,7 @@
                                     class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 xi mi" />
                             </div>
 
-                           <div class="vd to/2">
+                            <div class="vd to/2">
                                 <label class="rc ac" for="phone">Telefon raqamingiz</label>
                                 <input type="text" name="phone" id="phone" placeholder="+998 77 025 26 77"
                                     class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 xi mi" />

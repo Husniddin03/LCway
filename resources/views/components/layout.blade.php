@@ -8,7 +8,7 @@
     <title>{{ $title ?? 'Asosiy sahifa' }}</title>
     <link rel="icon" href="images/lcwayfavicon.png">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <style>
+    {{-- <style>
         .snake-border::before {
             content: "";
             position: absolute;
@@ -37,7 +37,7 @@
                 background-position: 200% 0;
             }
         }
-    </style>
+    </style> --}}
 </head>
 
 <body x-data="{ page: 'signup', 'darkMode': true, 'stickyMenu': false, 'navigationOpen': false, 'scrollTop': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));

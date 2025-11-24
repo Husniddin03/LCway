@@ -83,13 +83,17 @@ Route::get('/blog-single/{id}', [PageController::class, 'blogSingle'])->name('bl
 Route::middleware('guest')->group(function () {
     Route::get('/signin', [PageController::class, 'signin'])->name('signin');
     Route::get('/signup', [PageController::class, 'signup'])->name('signup');
-    
+
     Route::post('register', [LogController::class, 'register'])->name('register');
     Route::post('login', [LogController::class, 'login'])->name('login');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('chat/chat', [ChatController::class, 'chat'])->name('chat.chat');
+    Route::get('chat/riasec', [ChatController::class, 'riasec'])->name('chat.riasec');
+    Route::get('chat/quiz', [ChatController::class, 'quiz'])->name('chat.quiz');
+    Route::get('chat/answer', [ChatController::class, 'answer'])->name('chat.answer');
+    Route::post('chat/think', [ChatController::class, 'think'])->name('chat.think');
     Route::post('logout', [LogController::class, 'logout'])->name('logout');
     Route::resource('course', CourseController::class);
     Route::post('/teacher/store/{id}', [TeacherController::class, 'store'])->name('teacher.storeid');

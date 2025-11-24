@@ -326,24 +326,33 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         style="-ms-flex-item-align: center">
 
         <!-- Scroll to top button with icon -->
-        <button class="xc wf xf ie ld vg sr gh tr g sa ta _a" @click="window.scrollTo({top: 0, behavior: 'smooth'})"
-            :class="{ 'uc': scrollTop }" style="bottom: 7rem; right: 2.6rem;">
-            <svg class="uh se qd" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                style="width: 20px; height: 20px; fill: white;">
-                <path
-                    d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
+        <button class="xc wf xf ie ld vg sr tr g sa ta _a" @click="window.scrollTo({top: 0, behavior: 'smooth'})"
+            :class="{ 'uc': scrollTop }" style="bottom: 7rem; color: blue;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 18.75 7.5-7.5 7.5 7.5" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 7.5-7.5 7.5 7.5" />
             </svg>
+
         </button>
 
+        <a href="{{route('chat.quiz')}}" class="xc wf xf ie ld vg sr tr g sa ta _a uc" style="right: 7rem; color: blue;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M7.5 3.75H6A2.25 2.25 0 0 0 3.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0 1 20.25 6v1.5m0 9V18A2.25 2.25 0 0 1 18 20.25h-1.5m-9 0H6A2.25 2.25 0 0 1 3.75 18v-1.5M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+
+        </a>
+
         <!-- Chat button -->
-        <button class="xc wf xf vg sr tr g sa ta _a uc ai-button" style="border-radius: 50%">
-            <span style="color: blue">AI dan maslahat oling &nbsp;</span>
-            <a href="{{ route('chat.chat') }}">
-                <img class="ai-img"
-                    style="border-radius: 50%; width: 4rem; height: 4rem; border: 1px solid blue;  box-shadow: blue 0px 22px 70px 4px;"
-                    src="{{ asset('images/chatai.gif') }}" alt="">
-            </a>
-        </button>
+        <a href="{{route('chat.chat')}}" class="xc wf xf ie ld vg sr tr g sa ta _a uc" style="color: blue;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+            </svg>
+        </a>
     </div>
 
     <!-- ====== Back To Top End ===== -->

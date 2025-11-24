@@ -13,4 +13,20 @@ class ChatController extends Controller
         $subjects = Subject::all();
         return view('chat.chat', compact('LearningCenter', 'subjects'));
     }
+
+    public function quiz() {
+        return view('chat.quiz');
+    }
+
+    public function think(Request $request) {
+        return redirect()->route('chat.answer');
+    }
+
+    public function answer() {
+        return view('chat.answer');
+    }
+
+    public function riasec() {
+        return view('chat.riasec');
+    }
 }

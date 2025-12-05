@@ -1,16 +1,12 @@
 <x-layout>
-
     <x-slot:title>
-
         Barcha o'quv markazlar
-
     </x-slot>
 
     <!-- ===== Blog Grid Start ===== -->
     <section class="ji gp uq">
         <div class="bb ye ki xn vq jb jo">
             <div class="animate_top">
-
                 <form action="{{ route('blog-grid') }}" method="get">
                     <div class="i">
                         @foreach ($validated as $item)
@@ -32,12 +28,11 @@
             </div>
 
             <div class="wc qf zf iq" style="z-index: 1">
-
                 <div class="animate_top tc sf yo ap zf ep" style="z-index: 100">
                     <ul class="nav-links">
                         <li class="c i nav-links-li"><a href="{{ route('blog-grid') }}">Barchasi</a> </li>
                         <li class="c i nav-links-li" id="toggle-map" style="cursor: pointer;">Xarita</li>
-                        <li class="c i" x-data="{ dropdown: false }" style="width: auto !important">
+                        <li class="c i dropdown-container" x-data="{ dropdown: false }" style="width: auto !important">
                             <a href="#!" class="xl tc wf bg" @click.prevent="dropdown = !dropdown"
                                 :class="{
                                     'mk': page === 'index' || page === 'index'
@@ -50,73 +45,60 @@
                                 </svg>
                             </a>
 
-                            <ul class="a" :class="{ 'tc': dropdown }">
+                            <ul class="a dropdown-menu" :class="{ 'tc': dropdown }">
                                 <li>
                                     @if (!isset($validated['name']))
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
-                                            class="xl">Nomi
-                                            ↑↓</a>
+                                            class="xl">Nomi ↑↓</a>
                                     @elseif ($validated['name'] == 'asc')
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'desc']) }}"
-                                            class="xl">Nomi
-                                            ↑</a>
+                                            class="xl">Nomi ↑</a>
                                     @elseif ($validated['name'] == 'desc')
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
-                                            class="xl">Nomi
-                                            ↓</a>
+                                            class="xl">Nomi ↓</a>
                                     @else
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
-                                            class="xl">Nomi
-                                            ↑↓</a>
+                                            class="xl">Nomi ↑↓</a>
                                     @endif
                                 </li>
                                 <li>
                                     @if (!isset($validated['distance']))
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
-                                            class="xl">Masofasi
-                                            ↑↓</a>
+                                            class="xl">Masofasi ↑↓</a>
                                     @elseif ($validated['distance'] == 'asc')
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'desc']) }}"
-                                            class="xl">Masofasi
-                                            ↑</a>
+                                            class="xl">Masofasi ↑</a>
                                     @elseif ($validated['distance'] == 'desc')
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
-                                            class="xl">Masofasi
-                                            ↓</a>
+                                            class="xl">Masofasi ↓</a>
                                     @else
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
-                                            class="xl">Masofasi
-                                            ↑↓</a>
+                                            class="xl">Masofasi ↑↓</a>
                                     @endif
                                 </li>
                                 <li>
                                     @if (!isset($validated['favorites']))
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
-                                            class="xl">Reytingi
-                                            ↑↓</a>
+                                            class="xl">Reytingi ↑↓</a>
                                     @elseif ($validated['favorites'] == 'asc')
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'desc']) }}"
-                                            class="xl">Reytingi
-                                            ↑</a>
+                                            class="xl">Reytingi ↑</a>
                                     @elseif ($validated['favorites'] == 'desc')
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
-                                            class="xl">Reytingi
-                                            ↓</a>
+                                            class="xl">Reytingi ↓</a>
                                     @else
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
-                                            class="xl">Reytingi
-                                            ↑↓</a>
+                                            class="xl">Reytingi ↑↓</a>
                                     @endif
                                 </li>
                             </ul>
                         </li>
-                        <li class="c i" x-data="{ dropdown: false }">
+                        <li class="c i dropdown-container" x-data="{ dropdown: false }">
                             <a href="#!" class="xl tc wf yf bg" @click.prevent="dropdown = !dropdown"
                                 :class="{
                                     'mk': page === 'index' || page === 'index'
                                 }">
                                 O'qituvchi e'lonlari
-
                                 <svg :class="{ 'wh': dropdown }" class="th mm we fd pf"
                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                     <path
@@ -125,7 +107,7 @@
                             </a>
 
                             <!-- Dropdown Start -->
-                            <ul class="a" :class="{ 'tc': dropdown }">
+                            <ul class="a dropdown-menu" :class="{ 'tc': dropdown }">
                                 @foreach ($subjects as $subject)
                                     <li>
                                         <a href="{{ request()->fullUrlWithQuery(['needTeachers' => $subject->id]) }}"
@@ -138,41 +120,42 @@
                     </ul>
                 </div>
 
-                <div id="map-container" style="z-index: 1">
+                <div id="map-container">
+                    <button class="toggle-btn" id="toggle-map">Xaritani Yopish/Ochish</button>
+
                     <div id="map"></div>
-                    <form class="map-form location-inputs" action="{{ route('blog-grid') }}" method="get">
 
-                        @foreach ($validated as $item)
-                            <input type="hidden" type="text" name="{{ $item }}"
-                                placeholder="Search Here..." value="{{ $item ?? '' }}" />
-                        @endforeach
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="O'quv markazini qidiring..."
+                            id="searchInput">
+                        <div class="search-results" id="searchResults"></div>
+                    </div>
 
-                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="text" id="address"
-                            placeholder="Manzil">
-                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden type="text"
-                            id="location" placeholder="Google Maps URL">
-                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden name="latitude"
-                            type="text" id="latitude" placeholder="Latitude">
-                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" hidden name="longitude"
-                            type="text" id="longitude" placeholder="Longitude">
+                    <form class="map-form" action="{{ route('blog-grid') }}" method="get">
+                        <input type="text" id="address" name="address" placeholder="Manzil" readonly>
+                        <input type="hidden" id="location" name="location">
+                        <input type="hidden" id="latitude" name="latitude">
+                        <input type="hidden" id="longitude" name="longitude">
+
                         <select class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" name="subject_id"
                             id="subject">
                             <option value="" disabled {{ isset($validated['sunject_id']) ? '' : 'selected' }}>
-                                Fanni
-                                tanlang...</option>
+                                Fanni tanlang...</option>
                             @foreach ($subjects as $subject)
                                 <option value="{{ $subject->id }}"
                                     {{ isset($validated['sunject_id']) ? ($subject->id == $validated['sunject_id'] ? 'selected' : '') : '' }}>
                                     {{ $subject->name }}</option>
                             @endforeach
                         </select>
-                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="number" name="radius"
-                            id="radius" placeholder="Radius (km)" min="1" max="10000">
-                        <input class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" type="number" name="maxPrice"
-                            id="maxPrice" placeholder="Maksimal narx (so'm)" min="0">
-                        <button class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi"
-                            style="background-color: blue; color: white" type="submit">Yuborish</button>
+                        <input type="number" name="radius" id="radius" placeholder="Radius (km)"
+                            min="1" max="10000">
+                        <input type="number" name="maxPrice" id="maxPrice" placeholder="Maksimal narx (so'm)"
+                            min="0">
+
+                        <button type="submit">Qidirish</button>
                     </form>
+
+                    <button class="locate-btn" id="locateBtn" title="Joyimni top">📍</button>
                 </div>
             </div>
 
@@ -182,17 +165,13 @@
                 </div>
             </div>
 
-            <div class="wc qf pn xo zf iq">
-
+            <div class="wc qf pn xo zf iq learning-centers-grid">
                 <!-- Blog Item -->
                 @foreach ($LearningCenters as $LearningCenter)
-                    <div loading="lezi" class="animate_top sg vk rm xm snake-border">
-
+                    <div loading="lezi" class="animate_top sg vk rm xm snake-border learning-center-card">
                         <div class="c rc i z-1 pg">
                             <img class="standard-img lazy-img" src="{{ asset('storage/' . $LearningCenter->logo) }}"
                                 alt="Blog" />
-                            {{-- <img class="standard-img lazy-img" src="{{ $LearningCenter->logo }}"
-                                alt="Blog" /> --}}
 
                             <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
                                 <a href="{{ route('blog-single', $LearningCenter->id) }}"
@@ -201,17 +180,16 @@
                         </div>
 
                         <div class="yh">
-                            <div class="tc uf wf ag jq">
-                                <div class="tc wf ag">
+                            <div class="tc uf wf ag jq card-meta">
+                                <div class="tc wf ag meta-item">
                                     <p>{{ $LearningCenter->region . ', ' . $LearningCenter->province }}</p>
                                 </div>
-                                <div class="tc wf ag">
-                                    <img src="{{ asset('images/icon-calender.svg') }}" alt="Calender" />
+                                <div class="tc wf ag meta-item">
+                                    <img src="{{ asset('/images/Calendar.jpg') }}" alt="Calender" />
                                     <p>{{ $LearningCenter->created_at->diffForHumans() }}</p>
                                 </div>
-                                <div class="tc wf ag">
+                                <div class="tc wf ag meta-item">
                                     @if (isset($LearningCenter->distance))
-                                        {{-- <p class="nowAddress"></p> --}}
                                         <p>{{ $LearningCenter->distance }} km</p>
                                     @else
                                         <p>Masofani bilish uchun xaritadan joyni tanlang!</p>
@@ -247,10 +225,9 @@
                             <div class="bb ze mb">
                                 <!-- Service Item -->
                                 <div class="animate_top" style="width: 100%">
-                                    <div class="_b"
-                                        style="display: flex; flex-direction: row; align-content: center; align-items: center;">
+                                    <div class="_b announcement-header">
                                         <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
-                                            src="{{ asset('images/3d-speaker.png') }}" alt="Icon" />
+                                            src="{{ asset('/images/Announcement.jpg') }}" alt="Icon" />
                                         <h4 class="ek zj kk wm">E'lon</h4>
                                     </div>
 
@@ -273,12 +250,10 @@
         </div>
     </section>
     <!-- ===== Blog Grid End ===== -->
-
-
 </x-layout>
 
-
 <style>
+    /* Base styles remain the same */
     .favorite {
         display: flex;
         flex-direction: row;
@@ -326,23 +301,27 @@
         height: auto;
     }
 
-    /* nav-link */
+    /* Navigation Links - Responsive */
     .nav-links {
         display: flex;
         gap: 20px;
         margin-top: 10px;
         list-style: none;
         padding: 0;
+        flex-wrap: wrap;
+        align-items: center;
     }
 
     .nav-links-li:hover {
         color: blue;
     }
 
+    /* Map Container - Responsive */
     #map-container {
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.5s ease;
+        position: relative;
     }
 
     #map-container.active {
@@ -356,266 +335,727 @@
         border-radius: 10px;
     }
 
+    /* Map Form - Desktop */
     .map-form {
-        display: flex;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        width: 320px;
+        z-index: 1000;
+        max-height: 90vh;
+        overflow-y: auto;
     }
 
-    @media (max-width: 768px) {
-        .map-form {
-            flex-direction: column;
-        }
+    .map-form input,
+    .map-form select,
+    .map-form button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
+        box-sizing: border-box;
+    }
 
+    .map-form button {
+        background-color: #4285f4;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .map-form button:hover {
+        background-color: #3367d6;
+    }
+
+    /* Search Box - Responsive */
+    .search-box {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: white;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        width: 300px;
+        z-index: 1000;
+        max-width: calc(100vw - 360px);
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    .search-results {
+        max-height: 250px;
+        overflow-y: auto;
+        margin-top: 8px;
+        display: none;
+        background: white;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+
+    .result-item {
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+        font-size: 13px;
+    }
+
+    .result-item:hover {
+        background: #f5f5f5;
+    }
+
+    /* Locate Button */
+    .locate-btn {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        background: white;
+        border: 2px solid white;
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        z-index: 1000;
+    }
+
+    .locate-btn:hover {
+        background: #f5f5f5;
+    }
+
+    /* Toggle Button */
+    .toggle-btn {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        z-index: 1001;
+        font-weight: 500;
+        border: none;
+        font-size: 14px;
+    }
+
+    /* Learning Centers Grid - Responsive */
+    .learning-centers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .learning-center-card {
+        width: 100%;
+        max-width: none;
+    }
+
+    /* Card Meta - Responsive */
+    .card-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Announcement Header */
+    .announcement-header {
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        align-items: center;
+    }
+
+    /* Dropdown Menus - Responsive */
+    .dropdown-container {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        min-width: 200px;
+        z-index: 1000;
+    }
+
+    /* Info Window Content */
+    .info-content {
+        padding: 10px;
+        max-width: 250px;
+    }
+
+    .info-content img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-bottom: 8px;
+    }
+
+    .info-title {
+        margin: 0 0 5px 0;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .info-distance {
+        margin: 0 0 5px 0;
+        font-size: 13px;
+        color: #1976d2;
+        font-weight: 500;
+    }
+
+    .info-address {
+        margin: 0 0 10px 0;
+        font-size: 12px;
+        color: #666;
+    }
+
+    .info-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #4285f4;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 14px;
+        margin-right: 5px;
+    }
+
+    .info-btn:hover {
+        background-color: #3367d6;
+    }
+
+    /* Scrollbar styling */
+    .search-results::-webkit-scrollbar,
+    .map-form::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .search-results::-webkit-scrollbar-thumb,
+    .map-form::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+
+    /* MOBILE RESPONSIVE STYLES */
+    @media (max-width: 768px) {
+
+        /* Navigation */
         .nav-links {
             overflow-x: auto;
-            width: auto;
+            white-space: nowrap;
+            gap: 15px;
+            padding-bottom: 10px;
+        }
+
+        .nav-links li {
+            flex-shrink: 0;
+        }
+
+        /* Map Container Mobile */
+        #map-container.active {
+            max-height: 80vh;
+        }
+
+        #map {
+            height: 300px;
+        }
+
+        /* Map Form Mobile */
+        .map-form {
+            position: relative;
+            top: 0;
+            right: 0;
+            left: 0;
+            width: 100%;
+            max-width: none;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        /* Search Box Mobile */
+        .search-box {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            max-width: none;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Toggle Button Mobile */
+        .toggle-btn {
+            position: relative;
+            top: 0;
+            left: 0;
+            transform: none;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        /* Locate Button Mobile */
+        .locate-btn {
+            right: 15px;
+            bottom: 15px;
+            width: 50px;
+            height: 50px;
+            font-size: 22px;
+        }
+
+        /* Learning Centers Grid Mobile */
+        .learning-centers-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        /* Card Meta Mobile */
+        .card-meta {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .meta-item {
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .meta-item p {
+            font-size: 14px;
+        }
+
+        /* Stars Mobile */
+        .favorite {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .favorite .stars {
+            font-size: 32px;
+            gap: 3px;
+        }
+
+        .favorite .result {
+            font-size: 20px;
+        }
+
+        /* Dropdown Mobile */
+        .dropdown-menu {
+            position: fixed;
+            top: auto;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            max-height: 50vh;
+            overflow-y: auto;
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* Announcement Header Mobile */
+        .announcement-header {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .announcement-header img {
+            width: 1.5rem !important;
+            height: 1.5rem !important;
+            margin-right: 1rem !important;
         }
     }
 
-    .location-inputs {
-        margin-top: 10px;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 10px;
-        margin-bottom: 40px;
+    /* TABLET RESPONSIVE STYLES */
+    @media (max-width: 1024px) and (min-width: 769px) {
+
+        /* Learning Centers Grid Tablet */
+        .learning-centers-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        /* Map Form Tablet */
+        .map-form {
+            width: 280px;
+        }
+
+        /* Search Box Tablet */
+        .search-box {
+            width: 250px;
+            max-width: calc(100vw - 320px);
+        }
+
+        /* Navigation Tablet */
+        .nav-links {
+            gap: 18px;
+        }
     }
 
-    .location-inputs input {
-        padding: 8px;
-        font-size: 16px;
-        width: 100%;
+    /* LARGE DESKTOP STYLES */
+    @media (min-width: 1200px) {
+        .learning-centers-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .map-form {
+            width: 350px;
+        }
+
+        .search-box {
+            width: 320px;
+        }
+    }
+
+    /* EXTRA LARGE DESKTOP STYLES */
+    @media (min-width: 1400px) {
+        .learning-centers-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    /* SMALL MOBILE STYLES */
+    @media (max-width: 480px) {
+        .nav-links {
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .favorite .stars {
+            font-size: 28px;
+        }
+
+        .favorite .result {
+            font-size: 18px;
+        }
+
+        .meta-item p {
+            font-size: 13px;
+        }
+
+        #map {
+            height: 250px;
+        }
+
+        .map-form {
+            padding: 10px;
+        }
+
+        .search-box {
+            padding: 8px;
+        }
     }
 </style>
 
 <script>
-    const toggleMapBtn = document.getElementById('toggle-map');
-    const mapContainer = document.getElementById('map-container');
-
-    toggleMapBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        mapContainer.classList.toggle('active');
-    });
+    // Demo data - Laravel blade'dan keladi
+    // Backend'da:
+    const learningCentersData = {!! json_encode(
+        $LearningCenters->map(function ($center) {
+            $location = explode(',', $center->location);
+            return [
+                'id' => $center->id,
+                'name' => $center->name,
+                'latitude' => (float) ($location[0] ?? 0),
+                'longitude' => (float) ($location[1] ?? 0),
+                'address' => $center->address ?? '',
+                'logo' => $center->logo ?? '',
+                'distance' => 0,
+            ];
+        }),
+    ) !!};
 
     let map, geocoder, userMarker;
-    const learningCenterMarkers = [];
+    const markers = [];
+    const defaultLat = 41.2995;
+    const defaultLng = 69.2401;
 
+    // Toggle map visibility
+    document.getElementById('toggle-map').addEventListener('click', function(e) {
+        e.preventDefault();
+        const container = document.getElementById('map-container');
+        container.classList.toggle('active');
+
+        // Trigger map resize after container is visible
+        if (container.classList.contains('active')) {
+            setTimeout(() => {
+                if (map) {
+                    google.maps.event.trigger(map, 'resize');
+                }
+            }, 500);
+        }
+    });
+
+    // Initialize map
     function initMap() {
         const defaultCenter = {
-            lat: {{ $validated['latitude'] ?? 41.2995 }},
-            lng: {{ $validated['longitude'] ?? 69.2401 }}
+            lat: defaultLat,
+            lng: defaultLng
         };
 
         map = new google.maps.Map(document.getElementById("map"), {
             center: defaultCenter,
             zoom: 12,
+            gestureHandling: 'greedy',
+            disableDefaultUI: false,
+            zoomControl: true,
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: true
         });
 
         geocoder = new google.maps.Geocoder();
 
-        // Foydalanuvchi joylashuvi uchun marker (ko'k rang)
+        // User marker
         userMarker = new google.maps.Marker({
             map: map,
             position: defaultCenter,
             draggable: true,
             icon: {
                 url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                labelOrigin: new google.maps.Point(16, -10)
+                scaledSize: new google.maps.Size(40, 40)
             },
             title: "Sizning joylashuvingiz",
-            label: {
-                text: "SIZ",
-                color: "#FFFFFF",
-                fontSize: "13px",
-                fontWeight: "bold",
-                className: "user-marker-label"
-            }
+            optimized: true
         });
 
-        addLocateButton();
-
-        // O'quv markazlarini xaritaga qo'shish
+        // Add learning centers
         addLearningCenters();
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const userLocation = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    map.setCenter(userLocation);
-                    map.setZoom(15);
-                    userMarker.setPosition(userLocation);
-                    updateLocation(userLocation.lat, userLocation.lng);
-                },
-                () => {
-                    updateLocation(defaultCenter.lat, defaultCenter.lng);
-                }
-            );
-        } else {
-            updateLocation(defaultCenter.lat, defaultCenter.lng);
-        }
+        // Setup events
+        setupEventListeners();
 
-        map.addListener("click", function(event) {
-            const lat = event.latLng.lat();
-            const lng = event.latLng.lng();
-            userMarker.setPosition({
-                lat,
-                lng
-            });
-            updateLocation(lat, lng);
-        });
-
-        userMarker.addListener("dragend", function(event) {
-            const lat = event.latLng.lat();
-            const lng = event.latLng.lng();
-            updateLocation(lat, lng);
-        });
+        // Get user location
+        getUserLocation();
     }
 
-    // O'quv markazlarini xaritaga qo'shish
+    // Add learning centers to map
     function addLearningCenters() {
-        // Backend'dan kelgan ma'lumotlar (PHP'dan JSON formatida)
-        const learningCenters = {!! json_encode(
-            $LearningCenters->map(function ($center) {
-                $location = explode(',', $center->location);
-                if (count($location) < 2) {
-                    $location = [null, null];
-                }
-                return [
-                    'id' => $center->id,
-                    'name' => $center->name,
-                    'latitude' => (float) $location[0],
-                    'longitude' => (float) $location[1],
-                    'address' => $center->address ?? '',
-                    'logo' => $center->logo ?? 'default-logo.png',
-                    'distance' => $center->distance ?? 0,
-                ];
-            }),
-        ) !!};
+        learningCentersData.forEach(center => {
+            if (!center.latitude || !center.longitude) return;
 
-        console.log('Learning Centers:', learningCenters); // Debug uchun
-
-        learningCenters.forEach(center => {
-            // Agar latitude yoki longitude null bo'lsa, o'tkazib yuborish
-            if (!center.latitude || !center.longitude ||
-                isNaN(center.latitude) || isNaN(center.longitude)) {
-                console.log('Invalid location for:', center.name);
-                return;
-            }
+            const position = {
+                lat: parseFloat(center.latitude),
+                lng: parseFloat(center.longitude)
+            };
 
             const marker = new google.maps.Marker({
                 map: map,
-                position: {
-                    lat: parseFloat(center.latitude),
-                    lng: parseFloat(center.longitude)
-                },
+                position: position,
                 icon: {
                     url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                    labelOrigin: new google.maps.Point(16, -10)
+                    scaledSize: new google.maps.Size(32, 32)
                 },
                 title: center.name,
-                label: {
-                    text: center.name.length > 20 ? center.name.substring(0, 20) + '...' : center.name,
-                    color: "#FF4444",
-                    fontSize: "13px",
-                    fontWeight: "bold",
-                    className: "center-marker-label"
-                }
+                optimized: true
             });
 
-            console.log('Marker created for:', center.name, center.latitude, center.longitude); // Debug
-
-            // InfoWindow (bosgan vaqti ko'rinadigan oyna)
             const infoWindow = new google.maps.InfoWindow({
-                content: `
-                    <div style="padding: 10px; max-width: 250px;">
-                        <img src="/storage/${center.logo}" 
-                             style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;"
-                             onerror="this.style.display='none'"/>
-                        <h3 style="margin: 0 0 5px 0; font-size: 16px; font-weight: bold;">
-                            ${center.name}
-                        </h3>
-                        <p style="margin: 0 0 5px 0; font-size: 13px; color: #1976d2; font-weight: 500;">
-                            📍 Masofa: ${center.distance ? center.distance.toFixed(2) : '0'} km
-                        </p>
-                        <p style="margin: 0 0 10px 0; font-size: 12px; color: #666;">
-                            ${center.address || 'Manzil ko\'rsatilmagan'}
-                        </p>
-                        <a href="/blog-single/${center.id}" 
-                           style="display: inline-block; padding: 8px 16px; background-color: #4285f4; 
-                                  color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">
-                            Batafsil ko'rish
-                        </a>
-                    </div>
-                `
+                content: createInfoContent(center)
             });
 
             marker.addListener("click", () => {
-                // Boshqa barcha InfoWindow'larni yopish
-                learningCenterMarkers.forEach(m => {
-                    if (m.infoWindow) {
-                        m.infoWindow.close();
-                    }
-                });
-
+                closeAllInfoWindows();
                 infoWindow.open(map, marker);
+                updateDistance(center, userMarker.getPosition());
             });
 
-            learningCenterMarkers.push({
-                marker: marker,
-                infoWindow: infoWindow
+            markers.push({
+                marker,
+                infoWindow,
+                center
             });
         });
     }
 
-    function addLocateButton() {
-        const controlDiv = document.createElement("div");
-        const controlUI = document.createElement("button");
+    // Create info window content
+    function createInfoContent(center) {
+        return `
+            <div class="info-content">
+                <h3 class="info-title">${center.name}</h3>
+                <p class="info-distance">📍 Masofa: <span id="dist-${center.id}">Hisoblanmoqda...</span></p>
+                <p class="info-address">${center.address || 'Manzil ko\'rsatilmagan'}</p>
+                <a href="/blog-single/${center.id}" class="info-btn">Batafsil</a>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=${center.latitude},${center.longitude}" 
+                   class="info-btn" target="_blank">Yo'nalish</a>
+            </div>
+        `;
+    }
 
-        controlUI.style.backgroundColor = "#fff";
-        controlUI.style.border = "2px solid #fff";
-        controlUI.style.borderRadius = "50%";
-        controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
-        controlUI.style.cursor = "pointer";
-        controlUI.style.margin = "10px";
-        controlUI.style.padding = "8px";
-        controlUI.style.width = "40px";
-        controlUI.style.height = "40px";
-        controlUI.style.display = "flex";
-        controlUI.style.alignItems = "center";
-        controlUI.style.justifyContent = "center";
-        controlUI.title = "Joyimni top";
-        controlUI.innerHTML = "📍";
+    // Close all info windows
+    function closeAllInfoWindows() {
+        markers.forEach(m => m.infoWindow.close());
+    }
 
-        controlDiv.appendChild(controlUI);
-        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
+    // Setup event listeners
+    function setupEventListeners() {
+        // Map click
+        map.addListener("click", (e) => {
+            const pos = {
+                lat: e.latLng.lat(),
+                lng: e.latLng.lng()
+            };
+            userMarker.setPosition(pos);
+            updateLocation(pos.lat, pos.lng);
+        });
 
-        controlUI.addEventListener("click", () => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const userLocation = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-                        map.setCenter(userLocation);
-                        map.setZoom(15);
-                        userMarker.setPosition(userLocation);
-                        updateLocation(userLocation.lat, userLocation.lng);
-                    },
-                    () => {
-                        alert("Joylashuvni olishga ruxsat berilmadi 😔");
-                    }
+        // Marker drag
+        userMarker.addListener("dragend", (e) => {
+            const pos = {
+                lat: e.latLng.lat(),
+                lng: e.latLng.lng()
+            };
+            updateLocation(pos.lat, pos.lng);
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.toLowerCase().trim();
+
+            searchTimeout = setTimeout(() => {
+                searchResults.innerHTML = '';
+
+                if (query.length < 2) {
+                    searchResults.style.display = 'none';
+                    return;
+                }
+
+                const filtered = learningCentersData.filter(center =>
+                    center.name.toLowerCase().includes(query) ||
+                    center.address.toLowerCase().includes(query)
                 );
-            } else {
-                alert("Sizning brauzeringiz joylashuvni qo'llamaydi");
+
+                if (filtered.length === 0) {
+                    searchResults.innerHTML = '<div class="result-item">Natija topilmadi</div>';
+                    searchResults.style.display = 'block';
+                    return;
+                }
+
+                searchResults.style.display = 'block';
+
+                const fragment = document.createDocumentFragment();
+                filtered.forEach(center => {
+                    const div = document.createElement('div');
+                    div.className = 'result-item';
+                    div.innerHTML =
+                        `<strong>${center.name}</strong><br><small>${center.address || 'Manzil ko\'rsatilmagan'}</small>`;
+                    div.addEventListener('click', () => selectCenter(center));
+                    fragment.appendChild(div);
+                });
+                searchResults.appendChild(fragment);
+            }, 300);
+        });
+
+        // Close search on outside click
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-box')) {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Locate button
+        document.getElementById('locateBtn').addEventListener('click', getUserLocation);
+
+        // Handle window resize for map
+        window.addEventListener('resize', () => {
+            if (map && document.getElementById('map-container').classList.contains('active')) {
+                setTimeout(() => {
+                    google.maps.event.trigger(map, 'resize');
+                }, 100);
             }
         });
     }
 
+    // Select center from search
+    function selectCenter(center) {
+        map.setCenter({
+            lat: center.latitude,
+            lng: center.longitude
+        });
+        map.setZoom(16);
+
+        const targetMarker = markers.find(m => m.center.id === center.id);
+        if (targetMarker) {
+            closeAllInfoWindows();
+            targetMarker.infoWindow.open(map, targetMarker.marker);
+        }
+
+        document.getElementById('searchResults').style.display = 'none';
+        document.getElementById('searchInput').value = '';
+    }
+
+    // Get user location
+    function getUserLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    map.setCenter(pos);
+                    map.setZoom(15);
+                    userMarker.setPosition(pos);
+                    updateLocation(pos.lat, pos.lng);
+                },
+                () => {
+                    updateLocation(defaultLat, defaultLng);
+                }
+            );
+        } else {
+            updateLocation(defaultLat, defaultLng);
+        }
+    }
+
+    // Update location
     function updateLocation(lat, lng) {
         const url = `https://www.google.com/maps?q=${lat},${lng}`;
 
+        // Update form fields
+        document.getElementById("latitude").value = lat;
+        document.getElementById("longitude").value = lng;
+        document.getElementById("location").value = url;
+
+        // Geocode address
         geocoder.geocode({
             location: {
                 lat,
@@ -625,404 +1065,47 @@
             if (status === "OK" && results[0]) {
                 const address = results[0].formatted_address;
                 document.getElementById("address").value = address;
-                document.querySelectorAll(".nowAddress").forEach(el => {
-                    el.innerHTML = address;
-                });
-                document.getElementById("location").value = url;
-                document.getElementById("latitude").value = lat;
-                document.getElementById("longitude").value = lng;
             }
+        });
+
+        // Calculate distances
+        calculateAllDistances({
+            lat,
+            lng
         });
     }
 
-    window.initMap = initMap;
-</script>
-
-<script>
-    const toggleMapBtn = document.getElementById('toggle-map');
-    const mapContainer = document.getElementById('map-container');
-
-    toggleMapBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        mapContainer.classList.toggle('active');
-    });
-
-    let map, geocoder, userMarker;
-    const learningCenterMarkers = [];
-    let allCentersData = []; // Barcha markazlar ma'lumotlari
-
-    function initMap() {
-        const defaultCenter = {
-            lat: {{ $validated['latitude'] ?? 41.2995 }},
-            lng: {{ $validated['longitude'] ?? 69.2401 }}
-        };
-
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: defaultCenter,
-            zoom: 12,
+    // Calculate all distances
+    function calculateAllDistances(userPos) {
+        markers.forEach(m => {
+            updateDistance(m.center, userPos);
         });
+    }
 
-        geocoder = new google.maps.Geocoder();
-
-        // Foydalanuvchi joylashuvi uchun marker (ko'k rang)
-        userMarker = new google.maps.Marker({
-            map: map,
-            position: defaultCenter,
-            draggable: true,
-            icon: {
-                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                labelOrigin: new google.maps.Point(16, -10)
-            },
-            title: "Sizning joylashuvingiz",
-            label: {
-                text: "SIZ",
-                color: "#FFFFFF",
-                fontSize: "13px",
-                fontWeight: "bold",
-                className: "user-marker-label"
-            }
-        });
-
-        addLocateButton();
-
-        // O'quv markazlarini xaritaga qo'shish
-        addLearningCenters();
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const userLocation = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    map.setCenter(userLocation);
-                    map.setZoom(15);
-                    userMarker.setPosition(userLocation);
-                    updateLocation(userLocation.lat, userLocation.lng);
-                },
-                () => {
-                    updateLocation(defaultCenter.lat, defaultCenter.lng);
-                }
-            );
-        } else {
-            updateLocation(defaultCenter.lat, defaultCenter.lng);
+    // Update distance for one center
+    function updateDistance(center, userPos) {
+        const dist = getDistance(userPos.lat, userPos.lng, center.latitude, center.longitude);
+        const elem = document.getElementById(`dist-${center.id}`);
+        if (elem) {
+            elem.textContent = `${dist.toFixed(2)} km`;
         }
-
-        map.addListener("click", function(event) {
-            const lat = event.latLng.lat();
-            const lng = event.latLng.lng();
-            userMarker.setPosition({lat, lng});
-            updateLocation(lat, lng);
-        });
-
-        userMarker.addListener("dragend", function(event) {
-            const lat = event.latLng.lat();
-            const lng = event.latLng.lng();
-            updateLocation(lat, lng);
-        });
+        center.distance = dist;
     }
 
-    // O'quv markazlarini xaritaga qo'shish
-    function addLearningCenters() {
-        // Backend'dan kelgan ma'lumotlar (PHP'dan JSON formatida)
-        const learningCenters = {!! json_encode($LearningCenters->map(function($center) {
-            $location = explode(',', $center->location);
-            if(count($location) < 2){
-                $location = [null, null];
-            }
-            return [
-                'id' => $center->id,
-                'name' => $center->name,
-                'latitude' => (float)$location[0],
-                'longitude' => (float)$location[1],
-                'address' => $center->address ?? '',
-                'logo' => $center->logo ?? 'default-logo.png',
-                'distance' => $center->distance ?? 0
-            ];
-        })) !!};
-
-        allCentersData = learningCenters; // Global o'zgaruvchiga saqlash
-        console.log('Learning Centers:', learningCenters); // Debug uchun
-
-        learningCenters.forEach(center => {
-            // Agar latitude yoki longitude null bo'lsa, o'tkazib yuborish
-            if (!center.latitude || !center.longitude || 
-                isNaN(center.latitude) || isNaN(center.longitude)) {
-                console.log('Invalid location for:', center.name);
-                return;
-            }
-
-            const marker = new google.maps.Marker({
-                map: map,
-                position: {
-                    lat: parseFloat(center.latitude),
-                    lng: parseFloat(center.longitude)
-                },
-                icon: {
-                    url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                    labelOrigin: new google.maps.Point(16, -10)
-                },
-                title: center.name,
-                label: {
-                    text: center.name.length > 20 ? center.name.substring(0, 20) + '...' : center.name,
-                    color: "#FF4444",
-                    fontSize: "13px",
-                    fontWeight: "bold",
-                    className: "center-marker-label"
-                }
-            });
-
-            console.log('Marker created for:', center.name, center.latitude, center.longitude); // Debug
-
-            // InfoWindow (bosgan vaqti ko'rinadigan oyna)
-            const infoWindow = new google.maps.InfoWindow({
-                content: `
-                    <a href="/blog-single/${center.id}" style="padding: 10px; max-width: 250px;">
-                        <img src="/storage/${center.logo}" 
-                             style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;"
-                             onerror="this.style.display='none'"/>
-                        <h3 style="margin: 0 0 5px 0; font-size: 16px; font-weight: bold;">
-                            ${center.name}
-                        </h3>
-                        <p style="margin: 0 0 5px 0; font-size: 13px; color: #1976d2; font-weight: 500;">
-                            📍 Masofa: ${center.distance ? center.distance.toFixed(2) : '0'} km
-                        </p>
-                        <p style="margin: 0 0 10px 0; font-size: 12px; color: #666;">
-                            ${center.address || 'Manzil ko\'rsatilmagan'}
-                        </p>
-                        <a href="/blog-single/${center.id}" 
-                           style="display: inline-block; padding: 8px 16px; background-color: #4285f4; 
-                                  color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">
-                            Batafsil ko'rish
-                        </a>
-                    </a>
-                `
-            });
-
-            marker.addListener("click", () => {
-                // Boshqa barcha InfoWindow'larni yopish
-                learningCenterMarkers.forEach(m => {
-                    if (m.infoWindow) {
-                        m.infoWindow.close();
-                    }
-                });
-                
-                infoWindow.open(map, marker);
-            });
-
-            learningCenterMarkers.push({
-                marker: marker,
-                infoWindow: infoWindow,
-                center: center  // Markaz ma'lumotlarini saqlash
-            });
-        });
-    }
-
-    // Qidiruv maydonini xaritaga qo'shish
-    function addSearchBox() {
-        console.log('addSearchBox called, centers count:', allCentersData.length);
-        
-        const searchContainer = document.createElement("div");
-        searchContainer.style.backgroundColor = "white";
-        searchContainer.style.margin = "10px";
-        searchContainer.style.padding = "10px";
-        searchContainer.style.borderRadius = "8px";
-        searchContainer.style.boxShadow = "0 2px 6px rgba(0,0,0,0.3)";
-        searchContainer.style.width = "300px";
-        searchContainer.style.zIndex = "1000";
-
-        const searchInput = document.createElement("input");
-        searchInput.type = "text";
-        searchInput.placeholder = "O'quv markazini qidiring...";
-        searchInput.style.width = "100%";
-        searchInput.style.padding = "8px";
-        searchInput.style.border = "1px solid #ddd";
-        searchInput.style.borderRadius = "4px";
-        searchInput.style.fontSize = "14px";
-        searchInput.style.boxSizing = "border-box";
-        searchInput.style.outline = "none";
-
-        const resultsContainer = document.createElement("div");
-        resultsContainer.style.maxHeight = "200px";
-        resultsContainer.style.overflowY = "auto";
-        resultsContainer.style.marginTop = "5px";
-        resultsContainer.style.display = "none";
-        resultsContainer.style.backgroundColor = "white";
-        resultsContainer.style.borderRadius = "4px";
-
-        searchContainer.appendChild(searchInput);
-        searchContainer.appendChild(resultsContainer);
-
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchContainer);
-        console.log('Search box added to map controls');
-
-        // Qidiruv funksiyasi
-        searchInput.addEventListener("input", function() {
-            const query = this.value.toLowerCase().trim();
-            resultsContainer.innerHTML = "";
-
-            if (query.length < 2) {
-                resultsContainer.style.display = "none";
-                return;
-            }
-
-            const filtered = allCentersData.filter(center => 
-                center.name.toLowerCase().includes(query)
-            );
-
-            if (filtered.length === 0) {
-                resultsContainer.style.display = "none";
-                return;
-            }
-
-            resultsContainer.style.display = "block";
-
-            filtered.forEach(center => {
-                const resultItem = document.createElement("div");
-                resultItem.style.padding = "8px";
-                resultItem.style.cursor = "pointer";
-                resultItem.style.borderBottom = "1px solid #eee";
-                resultItem.style.fontSize = "13px";
-                resultItem.innerHTML = `
-                    <strong>${center.name}</strong><br>
-                    <small style="color: #666;">${center.address || 'Manzil ko\'rsatilmagan'}</small>
-                `;
-
-                resultItem.addEventListener("mouseover", function() {
-                    this.style.backgroundColor = "#f5f5f5";
-                });
-
-                resultItem.addEventListener("mouseout", function() {
-                    this.style.backgroundColor = "white";
-                });
-
-                resultItem.addEventListener("click", function() {
-                    // Xaritani markazga o'tkazish
-                    map.setCenter({
-                        lat: center.latitude,
-                        lng: center.longitude
-                    });
-                    map.setZoom(16);
-
-                    // Tegishli markerni topish va InfoWindow'ni ochish
-                    const targetMarker = learningCenterMarkers.find(m => 
-                        m.center.id === center.id
-                    );
-
-                    if (targetMarker) {
-                        // Barcha InfoWindow'larni yopish
-                        learningCenterMarkers.forEach(m => {
-                            if (m.infoWindow) {
-                                m.infoWindow.close();
-                            }
-                        });
-                        
-                        // Tanlangan markerning InfoWindow'ni ochish
-                        targetMarker.infoWindow.open(map, targetMarker.marker);
-                    }
-
-                    // Qidiruv natijalarini yopish
-                    searchInput.value = center.name;
-                    resultsContainer.style.display = "none";
-                });
-
-                resultsContainer.appendChild(resultItem);
-            });
-        });
-
-        // Tashqariga bosilganda natijalarni yopish
-        document.addEventListener("click", function(e) {
-            if (!searchContainer.contains(e.target)) {
-                resultsContainer.style.display = "none";
-            }
-        });
-    }
-
-    function addLocateButton() {
-        const controlDiv = document.createElement("div");
-        const controlUI = document.createElement("button");
-        
-        controlUI.style.backgroundColor = "#fff";
-        controlUI.style.border = "2px solid #fff";
-        controlUI.style.borderRadius = "50%";
-        controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
-        controlUI.style.cursor = "pointer";
-        controlUI.style.margin = "10px";
-        controlUI.style.padding = "8px";
-        controlUI.style.width = "40px";
-        controlUI.style.height = "40px";
-        controlUI.style.display = "flex";
-        controlUI.style.alignItems = "center";
-        controlUI.style.justifyContent = "center";
-        controlUI.title = "Joyimni top";
-        controlUI.innerHTML = "📍";
-        
-        controlDiv.appendChild(controlUI);
-        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
-
-        controlUI.addEventListener("click", () => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const userLocation = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-                        map.setCenter(userLocation);
-                        map.setZoom(15);
-                        userMarker.setPosition(userLocation);
-                        updateLocation(userLocation.lat, userLocation.lng);
-                    },
-                    () => {
-                        alert("Joylashuvni olishga ruxsat berilmadi 😔");
-                    }
-                );
-            } else {
-                alert("Sizning brauzeringiz joylashuvni qo'llamaydi");
-            }
-        });
-    }
-
-    function updateLocation(lat, lng) {
-        const url = `https://www.google.com/maps?q=${lat},${lng}`;
-
-        geocoder.geocode({
-            location: {lat, lng}
-        }, (results, status) => {
-            if (status === "OK" && results[0]) {
-                const address = results[0].formatted_address;
-                document.getElementById("address").value = address;
-                document.querySelectorAll(".nowAddress").forEach(el => {
-                    el.innerHTML = address;
-                });
-                document.getElementById("location").value = url;
-                document.getElementById("latitude").value = lat;
-                document.getElementById("longitude").value = lng;
-            }
-        });
+    // Calculate distance (Haversine formula)
+    function getDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
     }
 
     window.initMap = initMap;
 </script>
-
-<style>
-    /* Marker label'larini ko'proq ko'rinadigan qilish */
-    .user-marker-label {
-        background-color: #2196F3 !important;
-        padding: 4px 8px !important;
-        border-radius: 4px !important;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
-        border: 2px solid white !important;
-    }
-    
-    .center-marker-label {
-        background-color: #FFFFFF !important;
-        padding: 3px 6px !important;
-        border-radius: 3px !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
-        border: 1px solid #FF4444 !important;
-    }
-</style>
 
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM-lcwS2aMgdJd5AMxE8N_1Lu7M3aHJUw&callback=initMap"></script>

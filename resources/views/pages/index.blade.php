@@ -10,8 +10,7 @@
     <section class="gj do ir hj sp jr i pg">
         <!-- Hero Images -->
         <div class="animate_right xc fn zd/2 2xl:ud-w-187.5 bd 2xl:ud-h-171.5 h q r">
-            <img src="{{ asset('images/chatai.gif') }}" alt="ai" class="h q r ua"
-                style="border-radius: 50%; margin-top: 100px; margin-right: 100px; width: 70%;  box-shadow: blue 10px 32px 70px 20px;" />
+            <img src="{{ asset('images/ai2.webp') }}" alt="ai" class="h q r ua"/>
         </div>
 
         <!-- Hero Content -->

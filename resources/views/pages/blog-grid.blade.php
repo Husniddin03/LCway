@@ -227,7 +227,7 @@
                                 <div class="animate_top" style="width: 100%">
                                     <div class="_b announcement-header">
                                         <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
-                                            src="{{ asset('/images/Announcement.jpg') }}" alt="Icon" />
+                                            src="{{ asset('/images/3d-speaker.png') }}" alt="Icon" />
                                         <h4 class="ek zj kk wm">E'lon</h4>
                                     </div>
 

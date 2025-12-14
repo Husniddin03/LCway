@@ -47,13 +47,13 @@
                                 </div>
 
                                 <!-- Model selection -->
-                                <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
+                                <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; display: none;">
                                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
                                         <input type="radio" name="ai-model" value="deepseek/deepseek-chat" checked>
                                         <span>DeepSeek Chat (Tez)</span>
                                     </label>
                                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                                        <input type="radio" name="ai-model" value="deepseek/deepseek-r1">
+                                        <input checked type="radio" name="ai-model" value="deepseek/deepseek-r1">
                                         <span>DeepSeek Reasoner (Aqlli)</span>
                                     </label>
                                 </div>

@@ -9,9 +9,9 @@
     <!-- ===== Hero Start ===== -->
     <section class="gj do ir hj sp jr i pg">
         <!-- Hero Images -->
-        <div class="animate_right xc fn zd/2 2xl:ud-w-187.5 bd 2xl:ud-h-171.5 h q r">
+        {{-- <div class="animate_right xc fn zd/2 2xl:ud-w-187.5 bd 2xl:ud-h-171.5 h q r">
             <img src="{{ asset('images/ai2.webp') }}" alt="ai" class="h q r ua"/>
-        </div>
+        </div> --}}
 
         <!-- Hero Content -->
         <div class="bb ze ki xn 2xl:ud-px-0">

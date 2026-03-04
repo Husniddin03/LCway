@@ -6,43 +6,77 @@
         <!-- Background Gradient -->
         <div class="absolute inset-0 bg-gradient-to-br from-primary-600 via-accent-600 to-primary-800"></div>
         
-        <!-- Abstract Shapes -->
+        <!-- Animated Background Shapes -->
         <div class="absolute inset-0">
-            <div class="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent-400/20 rounded-full blur-3xl"></div>
-            <div class="absolute top-1/2 left-1/3 w-64 h-64 bg-white/5 rounded-full blur-2xl"></div>
+            <div class="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent-400/20 rounded-full blur-3xl animate-bounce" style="animation-delay: 2s;"></div>
+            <div class="absolute top-1/2 left-1/3 w-64 h-64 bg-white/5 rounded-full blur-2xl animate-ping" style="animation-duration: 4s;"></div>
+            <div class="absolute top-1/3 right-1/4 w-48 h-48 bg-primary-300/10 rounded-full blur-xl animate-spin" style="animation-duration: 20s;"></div>
         </div>
         
         <!-- Hero Content -->
         <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
             <div class="animate-fade-in">
+                <!-- Floating Badge -->
+                <div class="inline-flex items-center space-x-2 bg-white/20 dark:bg-white/10 backdrop-blur-md border border-white/30 rounded-full px-4 py-2 mb-8 animate-bounce">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                    </span>
+                    <span class="text-white font-medium">🎉 Yangi funksiyalar qo'shildi!</span>
+                </div>
+                
                 <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
                     Assalomu alaykum,<br>
-                    <span class="text-yellow-300">
+                    <span class="text-yellow-300 animate-pulse">
                         FindCourse
                     </span>
-                    ga xush kelibsiz!
+                    <br>
+                    <span class="text-3xl md:text-4xl lg:text-5xl text-white/80 font-normal">ga xush kelibsiz!</span>
                 </h1>
                 
                 <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
                     Bu yerda siz o'zingizga mos bo'lgan o'quv markazlarni topishingiz mumkin. 
-                    Biz sizga eng yaxshi xizmatni taqdim etamiz.
+                    <span class="text-yellow-300 font-semibold">AI yordamchisi</span> bilan kasbga yo'naltiruvchi testni topshiring!
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                    <x-button variant="secondary" size="lg" href="{{ route('blog-grid') }}" class="bg-white text-primary-600 hover:bg-gray-50">
+                    <x-button variant="secondary" size="lg" href="{{ route('blog-grid') }}" class="bg-white text-primary-600 hover:bg-gray-50 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                         Hoziroq kurslarni tanlash
                     </x-button>
                     
-                    <x-button variant="outline" size="lg" class="border-white text-white hover:bg-white hover:text-primary-600">
+                    <x-button variant="outline" size="lg" href="{{ route('chat.quiz') }}" class="border-white text-white hover:bg-white hover:text-primary-600 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                        AI Testni topshirish
+                    </x-button>
+                    
+                    <x-button variant="outline" size="lg" class="border-white text-white hover:bg-white hover:text-primary-600 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                         </svg>
                         (+998) 77 025 026 77
                     </x-button>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-yellow-300 mb-2">500+</div>
+                        <div class="text-white/80">O'quv markazlari</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-yellow-300 mb-2">50K+</div>
+                        <div class="text-white/80">O'quvchilar</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-yellow-300 mb-2">4.9⭐</div>
+                        <div class="text-white/80">O'rtacha reyting</div>
+                    </div>
                 </div>
                 
                 <p class="text-white/80 text-sm">
@@ -53,47 +87,151 @@
         
         <!-- Scroll Indicator -->
         <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <svg class="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
+            <div class="flex flex-col items-center space-y-2">
+                <span class="text-white/60 text-sm">Pastga suring</span>
+                <svg class="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+            </div>
         </div>
     </section>
 
     <!-- Features Section -->
     <section id="features" class="py-20 bg-white dark:bg-gray-800">
         <div class="max-w-7xl mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <x-badge variant="primary" class="mb-4">Xususiyatlar</x-badge>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    Nima uchun <span class="text-primary-600 dark:text-primary-400">FindCourse</span>?
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                    Biz sizga eng yaxshi xizmatlarni taqdim etamiz va o'qish jarayonini osonlashtiramiz
+                </p>
+            </div>
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Feature 1 -->
-                <div class="text-center group">
-                    <div class="w-16 h-16 bg-gradient-to-r from-primary-500 to-accent-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
+                <div class="text-center group relative">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-primary-600 to-accent-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur"></div>
+                    <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 group-hover:border-primary-300 dark:group-hover:border-primary-600 transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-r from-primary-500 to-accent-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg group-hover:shadow-xl">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                            O'qituvchilar tanlovi
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            O'zingizga munosib ko'rgan o'qituvchilarni tanlang va ularning tarixini ko'ring.
+                        </p>
+                        <div class="flex items-center justify-center text-primary-600 dark:text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <span class="text-sm font-medium">Batafsil</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">O'qituvchilar tanlovi</h3>
-                    <p class="text-gray-600 dark:text-gray-400">O'zingizga munosib ko'rgan o'qituvchilarni tanlang.</p>
                 </div>
                 
                 <!-- Feature 2 -->
-                <div class="text-center group">
-                    <div class="w-16 h-16 bg-gradient-to-r from-success-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                <div class="text-center group relative">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-success-600 to-emerald-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur"></div>
+                    <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 group-hover:border-success-300 dark:group-hover:border-success-600 transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-r from-success-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg group-hover:shadow-xl">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 group-hover:text-success-600 dark:group-hover:text-success-400 transition-colors">
+                            Butun O'zbekiston bo'ylab
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            Butun O'zbekiston bo'ylab barcha o'quv markazlarini topishingiz mumkin.
+                        </p>
+                        <div class="flex items-center justify-center text-success-600 dark:text-success-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <span class="text-sm font-medium">Batafsil</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Butun O'zbekiston bo'ylab</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Butun O'zbekiston bo'ylab barcha o'quv markazlarini topishingiz mumkin.</p>
                 </div>
                 
                 <!-- Feature 3 -->
-                <div class="text-center group">
-                    <div class="w-16 h-16 bg-gradient-to-r from-warning-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                <div class="text-center group relative">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-warning-600 to-orange-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur"></div>
+                    <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 group-hover:border-warning-300 dark:group-hover:border-warning-600 transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-r from-warning-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg group-hover:shadow-xl">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 group-hover:text-warning-600 dark:group-hover:text-warning-400 transition-colors">
+                            Markazlar reytingi
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            O'quv markazlari reytingi bo'yicha qidiring va eng yaxshilarini tanlang.
+                        </p>
+                        <div class="flex items-center justify-center text-warning-600 dark:text-warning-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <span class="text-sm font-medium">Batafsil</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Features -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+                <div class="flex items-center space-x-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                    <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Markazlar reytingi</h3>
-                    <p class="text-gray-600 dark:text-gray-400">O'quv markazlari reytingi bo'yicha qidiring.</p>
+                    <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-white">Tezkor qidiruv</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Bir necha soniyada toping</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                    <div class="w-10 h-10 bg-success-100 dark:bg-success-900/30 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-white">Tasdiqlangan</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Barcha markazlar tekshirilgan</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                    <div class="w-10 h-10 bg-warning-100 dark:bg-warning-900/30 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-warning-600 dark:text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-white">Qulay narxlar</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Har qanday byudjet uchun</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                    <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-white">Mobil ilova</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Har yerdan foydalaning</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -633,609 +771,4 @@
         </div>
     </section>
     
-    <!-- CTA Section -->
-    <section class="py-20 bg-gradient-to-r from-primary-600 to-accent-600 relative overflow-hidden">
-        <!-- Background Pattern -->
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-0 left-0 w-full h-full bg-repeat" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
-        </div>
-        
-        <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
-            <div class="max-w-3xl mx-auto">
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
-                    Hozirda ro'yxatdan o'tganlar o'quv markazlar soni: <span class="text-yellow-300">{{ $AllCenters->count() ?? 0 }} ta</span>
-                </h2>
-                <p class="text-xl text-white/90 mb-8">
-                    Ular safida siz ham bo'ling va o'zingizning o'quv markazingizni qo'shing!
-                </p>
-                <x-button variant="secondary" size="lg" href="{{ route('course.create') }}" class="bg-white text-primary-600 hover:bg-gray-50">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Hoziroq qo'shiling
-                </x-button>
-            </div>
-        </div>
-    </section>
-    
-    <!-- ===== Pricing Table Start ===== -->
-    {{-- <section x-data="setup()" class="i pg fh rm ji gp uq">
-        <!-- Bg Shapes -->
-        <img src="{{ asset('images/shape-06.svg') }}" alt="Shape" class="h aa y" />
-        <img src="{{ asset('images/shape-03.svg') }}" alt="Shape" class="h ca u" />
-        <img src="{{ asset('images/shape-07.svg') }}" alt="Shape" class="h w da ee" />
-        <img src="{{ asset('images/shape-12.svg') }}" alt="Shape" class="h p s" />
-        <img src="{{ asset('images/shape-13.svg') }}" alt="Shape" class="h r q" />
-
-        <!-- Section Title Start -->
-        <div x-data="{ sectionTitle: `Ajoyib hamyonbop Premium narxlarni taklif qilamiz.`, sectionTitleText: `Sizda g'oya bormi, biz bilan bo'g'laning biz sizga qulay variantlarni taqdim qilamiz.` }">
-            <div class="animate_top bb ze rj ki xn vq">
-                <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
-                </h2>
-                <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
-            </div>
-
-
-        </div>
-        <!-- Section Title End -->
-
-        <!-- Pricing switcher -->
-        <div class="tc wf xf jb og">
-            <span class="ek kk wm">Bir martalik loyihalar</span>
-            <button class="i rg gm" x-cloak
-                @click="billPlan == 'monthly' ? billPlan = 'annually' : billPlan = 'monthly'">
-                <div class="fe id bl gh rg xk outline-none"></div>
-                <div class="h vc wf xf ge jd cl jl ml mf hh rg yk ea fa"
-                    :class="{ 'ff': billPlan == 'monthly', 'gf': billPlan == 'annually' }"></div>
-            </button>
-            <span class="ek kk wm">Davomiy loyihalar</span>
-        </div>
-
-        <!-- Pricing Table -->
-        <div class="bb ze i va ki xn yq bc">
-            <div class="wc qf pn xo jg">
-                <template x-for="(plan, i) in plans" x-key="i">
-                    <!-- Pricing Item -->
-                    <div class="animate_top rj sg hh sm vk xm hi nj oj">
-                        <h4 x-text="plan.name" class="wj kk wm fb"></h4>
-
-                        <div class="tc wf xf kg cc">
-                            <h2 :class="plan.name == 'Basic' ? 'text-green-500' : ''"
-                                x-text="`$${billPlan == 'monthly' ? plan.price.monthly : plan.price.annually}`"
-                                class="fk _j kk wm">
-                            </h2>
-                            <span x-text="billPlan == 'monthly' ? '/per month' : '/per year'"
-                                class="sc ak kk wm"></span>
-                        </div>
-
-                        <p class="ur dc">No credit card required</p>
-
-                        <!-- Button -->
-                        <a href="#!" class="ek rg lk ml il gi ri"
-                            :class="plan.name == 'Growth Plan' ? 'gh sl' : 'mh tl'">
-                            Try for free
-                        </a>
-
-                        <!-- Features -->
-                        <ul class="tc sf bg ob fb">
-                            <template x-for="(feature, i) in plan.features" x-key="i">
-                                <li x-text="feature"></li>
-                            </template>
-                        </ul>
-
-                        <p class="kk wm">7-day free trial</p>
-                    </div>
-                </template>
-            </div>
-        </div>
-    </section> --}}
-    <!-- ===== Pricing Table End ===== -->
-
-    <!-- ===== Projects Start ===== -->
-    {{-- <section class="pg pj vp mr oj wp nr">
-        <!-- Section Title Start -->
-        <div x-data="{ sectionTitle: `We Offer Great Affordable Premium Prices.`, sectionTitleText: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using.` }">
-            <div class="animate_top bb ze rj ki xn vq">
-                <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
-                </h2>
-                <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
-            </div>
-
-
-        </div>
-        <!-- Section Title End -->
-
-        <div class="bb ze ki xn 2xl:ud-px-0 jb" x-data="{ filterTab: 1 }">
-            <!-- Porject Tab -->
-            <div class="projects-tab _e bb tc uf wf xf cg rg hh rm vk xm si ti fc">
-                <button data-filter="*" @click="filterTab = 1" :class="{ 'gh lk': filterTab === 1 }"
-                    class="project-tab-btn ek rg ml il vi mi">
-                    All
-                </button>
-                <button data-filter=".branding" @click="filterTab = 2" :class="{ 'gh lk': filterTab === 2 }"
-                    class="project-tab-btn ek rg ml il vi mi">
-                    Branding Strategy
-                </button>
-                <button data-filter=".digital" @click="filterTab = 3" :class="{ 'gh lk': filterTab === 3 }"
-                    class="project-tab-btn ek rg ml il vi mi">
-                    Digital Experiences
-                </button>
-                <button data-filter=".ecommerce" @click="filterTab = 4" :class="{ 'gh lk': filterTab === 4 }"
-                    class="project-tab-btn ek rg ml il vi mi">
-                    Ecommerce
-                </button>
-            </div>
-
-            <!-- Projects item wrapper -->
-            <div class="projects-wrapper tc -ud-mx-5">
-                <div class="project-sizer"></div>
-                <!-- Project Item -->
-                <div class="project-item wi fb vd jn/2 to/3 branding ecommerce">
-                    <div class="c i pg sg z-1">
-                        <img src="{{ asset('images/project-01.png') }}" alt="Project" />
-
-                        <div class="h s r df nl kl im tc sf wf xf vd yc sg al hh/20 z-10">
-                            <h4 class="ek tj kk hc">Photo Retouching</h4>
-                            <p>Branded Ecommerce</p>
-                            <a class="c tc wf xf ie ld rg _g dh ml il ph jm km jc" href="#!">
-                                <svg class="th lm ml il" width="14" height="14" viewBox="0 0 14 14"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M10.4763 6.16664L6.00634 1.69664L7.18467 0.518311L13.6663 6.99998L7.18467 13.4816L6.00634 12.3033L10.4763 7.83331H0.333008V6.16664H10.4763Z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project Item -->
-                <div class="project-item wi fb vd jn/2 to/3 digital">
-                    <div class="c i pg sg z-1">
-                        <img src="{{ asset('images/project-02.png') }}" alt="Project" />
-
-                        <div class="h s r df nl kl im tc sf wf xf vd yc sg al hh/20 z-10">
-                            <h4 class="ek tj kk hc">Photo Retouching</h4>
-                            <p>Branded Ecommerce</p>
-                            <a class="c tc wf xf ie ld rg _g dh ml il ph jm km jc" href="#!">
-                                <svg class="th lm ml il" width="14" height="14" viewBox="0 0 14 14"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M10.4763 6.16664L6.00634 1.69664L7.18467 0.518311L13.6663 6.99998L7.18467 13.4816L6.00634 12.3033L10.4763 7.83331H0.333008V6.16664H10.4763Z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project Item -->
-                <div class="project-item wi fb vd jn/2 to/3 branding ecommerce">
-                    <div class="c i pg sg z-1">
-                        <img src="{{ asset('images/project-04.png') }}" alt="Project" />
-
-                        <div class="h s r df nl kl im tc sf wf xf vd yc sg al hh/20 z-10">
-                            <h4 class="ek tj kk hc">Photo Retouching</h4>
-                            <p>Branded Ecommerce</p>
-                            <a class="c tc wf xf ie ld rg _g dh ml il ph jm km jc" href="#!">
-                                <svg class="th lm ml il" width="14" height="14" viewBox="0 0 14 14"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M10.4763 6.16664L6.00634 1.69664L7.18467 0.518311L13.6663 6.99998L7.18467 13.4816L6.00634 12.3033L10.4763 7.83331H0.333008V6.16664H10.4763Z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project Item -->
-                <div class="project-item wi fb vd vo/3 digital ecommerce">
-                    <div class="c i pg sg z-1">
-                        <img src="{{ asset('images/project-03.png') }}" alt="Project" />
-
-                        <div class="h s r df nl kl im tc sf wf xf vd yc sg al hh/20 z-10">
-                            <h4 class="ek tj kk hc">Photo Retouching</h4>
-                            <p>Branded Ecommerce</p>
-                            <a class="c tc wf xf ie ld rg _g dh ml il ph jm km jc" href="#!">
-                                <svg class="th lm ml il" width="14" height="14" viewBox="0 0 14 14"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M10.4763 6.16664L6.00634 1.69664L7.18467 0.518311L13.6663 6.99998L7.18467 13.4816L6.00634 12.3033L10.4763 7.83331H0.333008V6.16664H10.4763Z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
-    <!-- ===== Projects End ===== -->
-
-    <!-- ===== Testimonials Start ===== -->
-    {{-- <section class="hj rp hr">
-        <!-- Section Title Start -->
-        <div x-data="{ sectionTitle: `Client’s Testimonials`, sectionTitleText: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using.` }">
-            <div class="animate_top bb ze rj ki xn vq">
-                <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
-                </h2>
-                <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
-            </div>
-
-
-        </div>
-        <!-- Section Title End -->
-
-        <div class="bb ze ki xn ar">
-            <div class="animate_top jb cq">
-                <!-- Slider main container -->
-                <div class="swiper testimonial-01">
-                    <!-- Additional required wrapper -->
-                    <div class="swiper-wrapper">
-                        <!-- Slides -->
-                        <div class="swiper-slide">
-                            <div class="i hh rm sg vk xm bi qj">
-                                <!-- Border Shape -->
-                                <span class="rc je md/2 gh xg h q r"></span>
-                                <span class="rc je md/2 mh yg h q p"></span>
-
-                                <div class="tc sf rn tn un zf dp">
-                                    <img class="bf" src="images/testimonial.png')}}" alt="User" />
-
-                                    <div>
-                                        <img src="{{ asset('images/icon-quote.svg') }}" alt="Quote" />
-                                        <p class="ek ik xj _p kc fb">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dolor diam,
-                                            feugiat quis enim sed,
-                                            ullamcorper semper ligula. Mauris consequat justo volutpat.
-                                        </p>
-
-                                        <div class="tc yf vf">
-                                            <div>
-                                                <span class="rc ek xj kk wm zb">Devid Smith</span>
-                                                <span class="rc">Founter @democompany</span>
-                                            </div>
-
-                                            <img class="rk" src="{{asset('images/brand-light-02.svg')}}" alt="Brand" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <!-- If we need navigation -->
-                    <div class="tc wf xf fg jb">
-                        <div class="swiper-button-prev c tc wf xf ie ld rg _g dh pf ml vr hh rm tl zm rl ym">
-                            <svg class="th lm" width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M3.52366 7.83336L7.99366 12.3034L6.81533 13.4817L0.333663 7.00002L6.81533 0.518357L7.99366 1.69669L3.52366 6.16669L13.667 6.16669L13.667 7.83336L3.52366 7.83336Z"
-                                    fill="" />
-                            </svg>
-                        </div>
-                        <div class="swiper-button-next c tc wf xf ie ld rg _g dh pf ml vr hh rm tl zm rl ym">
-                            <svg class="th lm" width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M10.4763 6.16664L6.00634 1.69664L7.18467 0.518311L13.6663 6.99998L7.18467 13.4816L6.00634 12.3033L10.4763 7.83331H0.333008V6.16664H10.4763Z"
-                                    fill="" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
-    <!-- ===== Testimonials End ===== -->
-
-    <!-- ===== Counter Start ===== -->
-    {{-- <section class="i pg qh rm ji hp">
-        <img src="{{ asset('images/shape-11.svg') }}" alt="Shape" class="of h ga ha ke" />
-        <img src="{{ asset('images/shape-07.svg') }}" alt="Shape" class="h ia o ae jf" />
-        <img src="{{ asset('images/shape-14.svg') }}" alt="Shape" class="h ja ka" />
-        <img src="{{ asset('images/shape-15.svg') }}" alt="Shape" class="h q p" />
-
-        <div class="bb ze i va ki xn br">
-            <div class="tc uf sn tn xf un gg">
-                <div class="animate_top me/5 ln rj">
-                    <h2 class="gk vj zp or kk wm hc">785</h2>
-                    <p class="ek bk aq">Global Brands</p>
-                </div>
-                <div class="animate_top me/5 ln rj">
-                    <h2 class="gk vj zp or kk wm hc">533</h2>
-                    <p class="ek bk aq">Happy Clients</p>
-                </div>
-                <div class="animate_top me/5 ln rj">
-                    <h2 class="gk vj zp or kk wm hc">865</h2>
-                    <p class="ek bk aq">Winning Award</p>
-                </div>
-                <div class="animate_top me/5 ln rj">
-                    <h2 class="gk vj zp or kk wm hc">346</h2>
-                    <p class="ek bk aq">Happy Clients</p>
-                </div>
-            </div>
-        </div>
-    </section> --}}
-    <!-- ===== Counter End ===== -->
-
-    <!-- ===== Clients Start ===== -->
-    {{-- <section class="pj vp mr">
-        <!-- Section Title Start -->
-        <div x-data="{ sectionTitle: `Trusted by Global Brands`, sectionTitleText: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using.` }">
-            <div class="animate_top bb ze rj ki xn vq">
-                <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
-                </h2>
-                <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
-            </div>
-
-
-        </div>
-        <!-- Section Title End -->
-
-        <div class="bb ze ah ch pm hj xp ki xn 2xl:ud-px-49 bc">
-            <div class="wc rf qn zf cp kq xf wf">
-                <a href="#!" class="rc animate_top">
-                    <img class="th wl ml il zl om" src="{{asset('images/brand-light-01.svg')}}" alt="Clients" />
-                    <img class="xc sk ml il zl nm" src="{{asset('images/brand-dark-01.svg')}}" alt="Clients" />
-                </a>
-                <a href="#!" class="rc animate_top">
-                    <img class="tk ml il zl om" src="{{asset('images/brand-light-02.svg')}}" alt="Clients" />
-                    <img class="xc sk ml il zl nm" src="{{asset('images/brand-dark-02.svg')}}" alt="Clients" />
-                </a>
-                <a href="#!" class="rc animate_top">
-                    <img class="tk ml il zl om" src="{{asset('images/brand-light-03.svg')}}" alt="Clients" />
-                    <img class="xc sk ml il zl nm" src="{{asset('images/brand-dark-03.svg')}}" alt="Clients" />
-                </a>
-                <a href="#!" class="rc animate_top">
-                    <img class="tk ml il zl om" src="{{asset('images/brand-light-04.svg')}}" alt="Clients" />
-                    <img class="xc sk ml il zl nm" src="{{asset('images/brand-dark-04.svg')}}" alt="Clients" />
-                </a>
-                <a href="#!" class="rc animate_top">
-                    <img class="tk ml il zl om" src="{{asset('images/brand-light-05.svg')}}" alt="Clients" />
-                    <img class="xc sk ml il zl nm" src="{{asset('images/brand-dark-05.svg')}}" alt="Clients" />
-                </a>
-                <a href="#!" class="rc animate_top">
-                    <img class="tk ml il zl om" src="{{asset('images/brand-light-06.svg')}}" alt="Clients" />
-                    <img class="xc sk ml il zl nm" src="{{asset('images/brand-dark-06.svg')}}" alt="Clients" />
-                </a>
-            </div>
-        </div>
-    </section> --}}
-    <!-- ===== Clients End ===== -->
-
-    <!-- ===== Blog Start ===== -->
-    {{-- <section class="ji gp uq">
-        <!-- Section Title Start -->
-        <div x-data="{ sectionTitle: `Latest Blogs & News`, sectionTitleText: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using.` }">
-            <div class="animate_top bb ze rj ki xn vq">
-                <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
-                </h2>
-                <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
-            </div>
-
-
-        </div>
-        <!-- Section Title End -->
-
-        <div class="bb ye ki xn vq jb jo">
-            <div class="wc qf pn xo zf iq">
-                <!-- Blog Item -->
-                <div class="animate_top sg vk rm xm">
-                    <div class="c rc i z-1 pg">
-                        <img class="w-full" src="{{asset('images/blog-01.png')}}" alt="Blog" />
-
-                        <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                            <a href="./blog-single.html" class="vc ek rg lk gh sl ml il gi hi">Read More</a>
-                        </div>
-                    </div>
-
-                    <div class="yh">
-                        <div class="tc uf wf ag jq">
-                            <div class="tc wf ag">
-                                <img src="{{ asset('images/icon-man.svg') }}" alt="User" />
-                                <p>Musharof Chy</p>
-                            </div>
-                            <div class="tc wf ag">
-                                <img src="{{ asset('images/icon-calender.svg') }}" alt="Calender" />
-                                <p>25 Dec, 2025</p>
-                            </div>
-                        </div>
-                        <h4 class="ek tj ml il kk wm xl eq lb">
-                            <a href="blog-single.html">Free advertising for your online business</a>
-                        </h4>
-                    </div>
-                </div>
-
-                <!-- Blog Item -->
-                <div class="animate_top sg vk rm xm">
-                    <div class="c rc i z-1 pg">
-                        <img class="w-full" src="{{asset('images/blog-02.png')}}" alt="Blog" />
-
-                        <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                            <a href="./blog-single.html" class="vc ek rg lk gh sl ml il gi hi">Read More</a>
-                        </div>
-                    </div>
-
-                    <div class="yh">
-                        <div class="tc uf wf ag jq">
-                            <div class="tc wf ag">
-                                <img src="{{ asset('images/icon-man.svg') }}" alt="User" />
-                                <p>Musharof Chy</p>
-                            </div>
-                            <div class="tc wf ag">
-                                <img src="{{ asset('images/icon-calender.svg') }}" alt="Calender" />
-                                <p>25 Dec, 2025</p>
-                            </div>
-                        </div>
-                        <h4 class="ek tj ml il kk wm xl eq lb">
-                            <a href="blog-single.html">9 simple ways to improve your design skills</a>
-                        </h4>
-                    </div>
-                </div>
-
-                <!-- Blog Item -->
-                <div class="animate_top sg vk rm xm">
-                    <div class="c rc i z-1 pg">
-                        <img class="w-full" src="{{asset('images/blog-03.png')}}" alt="Blog" />
-
-                        <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                            <a href="./blog-single.html" class="vc ek rg lk gh sl ml il gi hi">Read More</a>
-                        </div>
-                    </div>
-
-                    <div class="yh">
-                        <div class="tc uf wf ag jq">
-                            <div class="tc wf ag">
-                                <img src="{{ asset('images/icon-man.svg') }}" alt="User" />
-                                <p>Musharof Chy</p>
-                            </div>
-                            <div class="tc wf ag">
-                                <img src="{{ asset('images/icon-calender.svg') }}" alt="Calender" />
-                                <p>25 Dec, 2025</p>
-                            </div>
-                        </div>
-                        <h4 class="ek tj ml il kk wm xl eq lb">
-                            <a href="blog-single.html">Tips to quickly improve your coding speed.</a>
-                        </h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
-    <!-- ===== Blog End ===== -->
-
-    <!-- ===== Contact Start ===== -->
-    <section id="support" class="i pg fh rm ji gp uq">
-        <!-- Bg Shapes -->
-        <img src="{{ asset('images/shape-06.svg') }}" alt="Shape" class="h aa y" />
-        <img src="{{ asset('images/shape-03.svg') }}" alt="Shape" class="h ca u" />
-        <img src="{{ asset('images/shape-07.svg') }}" alt="Shape" class="h w da ee" />
-        <img src="{{ asset('images/shape-12.svg') }}" alt="Shape" class="h p s" />
-        <img src="{{ asset('images/shape-13.svg') }}" alt="Shape" class="h r q" />
-
-        <!-- Section Title Start -->
-        <div x-data="{ sectionTitle: `Aloqa uchun`, sectionTitleText: `Agar sizda biror loyiha websayt yoki taklif bo'lsa biz siz bilan albatta bog'lanamiz buning uchun bizga o'z malumotlaringizni yuboring yoki berilgan manzillar bilan bog'laning!` }">
-            <div class="animate_top bb ze rj ki xn vq">
-                <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
-                </h2>
-                <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
-            </div>
-
-
-        </div>
-        <!-- Section Title End -->
-
-        <div class="i va bb ye ki xn wq jb mo">
-            <div class="tc uf sn tf rn un zf xl:gap-10">
-                <div class="animate_top w-full mn/5 to/3 vk sg hh sm yh rq i pg">
-                    <!-- Bg Shapes -->
-                    <img src="{{ asset('images/shape-03.svg') }}" alt="Shape" class="h la x wd" />
-                    <img src="{{ asset('images/shape-06.svg') }}" alt="Shape" class="h la ma ne kf" />
-
-                    <div class="fb">
-                        <h4 class="wj kk wm cc">Elektron pochta</h4>
-                        <p><a href="mailto:husniddin13124041@gmail.com">husniddin13124041@gmail.com</a></p>
-                    </div>
-                    <div class="fb">
-                        <h4 class="wj kk wm cc">Manzil</h4>
-                        <p>M254+HFP, улица Усто Умара Джуракулова, Samarqand, Samarqand viloyati, Uzbekistan</p>
-                    </div>
-                    <div class="fb">
-                        <h4 class="wj kk wm cc">Telefon raqam</h4>
-                        <p><a href="#!">+998 77 025 26 77</a></p>
-                    </div>
-
-                    <span class="rc nd rh tm lc fb"></span>
-
-                    <div>
-                        <h4 class="wj kk wm qb">Ijtimoiy tarmoqlar</h4>
-                        <ul class="tc wf fg">
-                            <li>
-                                <a href="https://t.me/matritsachi" class="c tc wf xf ie ld rg ml il tl">
-                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100"
-                                        height="100" viewBox="0 0 48 48">
-                                        <path fill="#29b6f6" d="M24,4C13,4,4,13,4,24s9,20,20,20s20-9,20-20S35,4,24,4z">
-                                        </path>
-                                        <path fill="#fff"
-                                            d="M34,15l-3.7,19.1c0,0-0.2,0.9-1.2,0.9c-0.6,0-0.9-0.3-0.9-0.3L20,28l-4-2l-5.1-1.4c0,0-0.9-0.3-0.9-1	c0-0.6,0.9-0.9,0.9-0.9l21.3-8.5c0,0,0.7-0.2,1.1-0.2c0.3,0,0.6,0.1,0.6,0.5C34,14.8,34,15,34,15z">
-                                        </path>
-                                        <path fill="#b0bec5"
-                                            d="M23,30.5l-3.4,3.4c0,0-0.1,0.1-0.3,0.1c-0.1,0-0.1,0-0.2,0l1-6L23,30.5z">
-                                        </path>
-                                        <path fill="#cfd8dc"
-                                            d="M29.9,18.2c-0.2-0.2-0.5-0.3-0.7-0.1L16,26c0,0,2.1,5.9,2.4,6.9c0.3,1,0.6,1,0.6,1l1-6l9.8-9.1	C30,18.7,30.1,18.4,29.9,18.2z">
-                                        </path>
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="animate_top w-full nn/5 vo/3 vk sg hh sm yh tq">
-                    <form>
-                        <div class="tc sf yo ap zf ep qb">
-                            <div class="vd to/2">
-                                <label class="rc ac" for="fullname">To'liq ismingiz</label>
-                                <input type="text" name="fullname" id="fullname" placeholder="Husniddin"
-                                    class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 xi mi" />
-                            </div>
-
-                            <div class="vd to/2">
-                                <label class="rc ac" for="phone">Telefon raqamingiz</label>
-                                <input type="text" name="phone" id="phone" placeholder="+998 77 025 26 77"
-                                    class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 xi mi" />
-                            </div>
-                        </div>
-
-                        <div class="fb">
-                            <label class="rc ac" for="message">Xabar</label>
-                            <textarea placeholder="Xabar.." rows="4" name="description" id="message"
-                                class="vd ph sg zk xm _g ch pm hm dm dn em pl/50 ci"></textarea>
-                        </div>
-
-                        <div class="tc xf">
-                            <button class="vc rg lk gh ml il hi gi _l">Xabarni yuborish</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ===== Contact End ===== -->
-
-    {{-- <script>
-        //  Pricing Table
-        const setup = () => {
-            return {
-                isNavOpen: false,
-
-                billPlan: 'monthly',
-
-                plans: [{
-                        name: 'Boshlamg\'ich',
-                        price: {
-                            monthly: 29,
-                            annually: 29 * 12 - 199,
-                        },
-                        features: ['400 GB Storaget', 'Unlimited Photos & Videos', 'Exclusive Support'],
-                    },
-                    {
-                        name: 'O\'rta',
-                        price: {
-                            monthly: 59,
-                            annually: 59 * 12 - 100,
-                        },
-                        features: ['400 GB Storaget', 'Unlimited Photos & Videos', 'Exclusive Support'],
-                    },
-                    {
-                        name: 'Biznes',
-                        price: {
-                            monthly: 139,
-                            annually: 139 * 12 - 100,
-                        },
-                        features: ['400 GB Storaget', 'Unlimited Photos & Videos', 'Exclusive Support'],
-                    },
-                ],
-            };
-        };
-    </script> --}}
 </x-layout>

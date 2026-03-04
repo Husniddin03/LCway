@@ -14,7 +14,8 @@ class PageController extends Controller
 {
     public function index()
     {
-        return view('pages.index');
+        $AllCenters = LearningCenter::all();
+        return view('pages.index', compact('AllCenters'));
     }
     public function blogGrid(Request $request)
     {

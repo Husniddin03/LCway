@@ -1,191 +1,254 @@
-<!DOCTYPE html>
-<html lang="uz">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O'quv Markaz Ro'yxatga Olish</title>
-    <link rel="stylesheet" href="{{ asset('css/course.css') }}">
-</head>
-<html>
-
-<body>
-    <main class="edu-center-wrapper">
-        <div class="edu-center-container">
-            <div class="edu-center-form-box">
-                <h2 class="edu-center-title">{{$center->name }} markazini tahrirlash</h2>
-                @if ($errors->any())
-                    <div style="color: red">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>- {{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <form class="edu-center-form" action="{{ route('course.update', $center->id) }}" method="POST"
-                    enctype="multipart/form-data">
+<x-layout>
+    <x-slot:title>O'quv markazni tahrirlash</x-slot:title>
+    
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+        <div class="max-w-4xl mx-auto px-6">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                    {{ $center->name }} markazini tahrirlash
+                </h1>
+                <p class="text-gray-600 dark:text-gray-400">
+                    O'quv markaz ma'lumotlarini yangilang
+                </p>
+            </div>
+                <!-- Form Card -->
+            <x-card class="mb-8">
+                <form action="{{ route('course.update', $center->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
-                    @method('PUT');
-
+                    @method('PUT')
+                    
+                    <!-- Error Messages -->
+                    @if ($errors->any())
+                        <div class="bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 rounded-xl p-4 mb-6">
+                            <div class="flex items-start">
+                                <svg class="w-5 h-5 text-danger-600 dark:text-danger-400 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 0116 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 2v4a1 1 0 102-2h-1zm-2 0a2 2 0 00-2 2v4a2 2 0 002 2h1A2 2 0 002 2v-4a2 2 0 00-2-2h-1z" clip-rule="evenodd" />
+                                </svg>
+                                <div>
+                                    <h4 class="text-sm font-medium text-danger-800 dark:text-danger-200">Iltimos, xatolarni to'g'rilang:</h4>
+                                    <ul class="mt-2 text-sm text-danger-700 dark:text-danger-300 space-y-1">
+                                        @foreach ($errors->all() as $error)
+                                            <li>• {{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    
+                    <!-- Current Logo -->
                     @isset($center->logo)
-                        <div class="edu-center-field-group">
-                            <label for="logo" class="edu-center-label">Mavjud Logo</label>
-                            <img style="width: 100%;" src="{{ asset('storage/' . $center->logo) }}" alt="">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Mavjud Logo
+                            </label>
+                            <div class="w-32 h-32 rounded-xl overflow-hidden border-2 border-gray-200 dark:border-gray-700">
+                                <img src="{{ asset('storage/' . $center->logo) }}" alt="Current logo" class="w-full h-full object-cover">
+                            </div>
                         </div>
                     @endisset
-
-                    <div class="edu-center-field-group">
-                        <label for="logo" class="edu-center-label">Yangi Logo</label>
-                        <div class="edu-center-file-wrapper">
-                            <input type="file" name="logo" id="logo" class="edu-center-file-input"
-                                accept="image/*">
-                            <div class="edu-center-file-display">
-                                <svg class="edu-center-upload-icon" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor">
-                                    <path
-                                        d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                    
+                    <!-- Logo Upload -->
+                    <div>
+                        <label for="logo" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Yangi Logo
+                        </label>
+                        <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-primary-500 transition-colors cursor-pointer">
+                            <input type="file" name="logo" id="logo" class="hidden" accept="image/*" onchange="document.getElementById('logo-preview').src = window.URL.createObjectURL(this.files[0])">
+                            <div id="logo-preview" class="w-20 h-20 mx-auto mb-4 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
                                     <circle cx="12" cy="13" r="3" />
                                 </svg>
-                                <span class="edu-center-upload-text">Yangi Logo yuklash</span>
                             </div>
-                            @error('logo')
-                                <div style="color: red">{{ $message }}</div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                Yangi logo yuklash uchun bosing
+                            </p>
+                        </div>
+                        @error('logo')
+                            <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <!-- Basic Information -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Name -->
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Nomi <span class="text-danger-500">*</span>
+                            </label>
+                            <x-input 
+                                type="text" 
+                                name="name" 
+                                id="name" 
+                                value="{{ $center->name }}" 
+                                placeholder="O'quv markaz nomini kiriting"
+                                required
+                            />
+                            @error('name')
+                                <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        
+                        <!-- Type -->
+                        <div>
+                            <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Turi
+                            </label>
+                            <x-input 
+                                type="text" 
+                                name="type" 
+                                id="type" 
+                                value="{{ $center->type }}" 
+                                placeholder="Masalan: IT, Til o'rgatish, O'quv markazi"
+                            />
+                            @error('type')
+                                <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        
+                        <!-- About -->
+                        <div class="lg:col-span-2">
+                            <label for="about" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Haqida
+                            </label>
+                            <textarea name="about" id="about" rows="4" 
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white resize-none"
+                                placeholder="O'quv markaz haqida qisqacha ma'lumot...">{{ $center->about }}</textarea>
+                            @error('about')
+                                <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
-
-                    <div class="edu-center-field-group">
-                        <label for="name" class="edu-center-label edu-center-required">Nomi</label>
-                        <input type="text" name="name" id="name" class="edu-center-input" required
-                            placeholder="O'quv markaz nomini kiriting" value="{{ $center->name }}">
-                        @error('name')
-                            <div style="color: red">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="edu-center-field-group">
-                        <label for="type" class="edu-center-label">Turi</label>
-                        <input type="text" name="type" id="type" class="edu-center-input"
-                            placeholder="Masalan: IT, Til o'rgatish, O'quv markazi ..." value="{{ $center->type }}">
-                        @error('type')
-                            <div style="color: red">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="edu-center-field-group">
-                        <label for="about" class="edu-center-label">Haqida</label>
-                        <textarea name="about" id="about" class="edu-center-textarea"
-                            placeholder="O'quv markaz haqida qisqacha ma'lumot..." rows="4">{{ $center->about }}</textarea>
-                        @error('about')
-                            <div style="color: red">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- Xaritani ko'rsatish -->
-                    <div id="map" style="width: 100%; height: 400px; margin-top: 10px; border-radius:10px;">
-                    </div>
-
-                    <div class="edu-center-field-group edu-center-full">
-                        <label for="location" class="edu-center-label">Xaritadan manzilni tanlasangiz Viloyat, Tuman,
-                            manzil va manzil urli automatik to'ldiriladi agarda xato bo'lsa o'zgartirishingiz
-                            mumkin.</label>
-                    </div>
-
-                    <!-- Viloyat va Tuman tanlash -->
-                    <div class="edu-center-row">
-                        <div class="edu-center-field-group edu-center-half">
-                            <label for="region" class="edu-center-label">Viloyat</label>
-                            <select id="region" name="province" class="edu-center-input" required>
-                                <option value="{{ $center->province }}" selected>{{ $center->province }}</option>
-                                <option value="Toshkent">Toshkent</option>
-                                <option value="Sirdaryo">Sirdaryo</option>
-                                <option value="Jizzax">Jizzax</option>
-                                <option value="Samarqand">Samarqand</option>
-                                <option value="Buxoro">Buxoro</option>
-                                <option value="Navoiy">Navoiy</option>
-                                <option value="Qashqadaryo">Qashqadaryo</option>
-                                <option value="Surxandaryo">Surxandaryo</option>
-                                <option value="Xorazm">Xorazm</option>
-                                <option value="Andijon">Andijon</option>
-                                <option value="Namangan">Namangan</option>
-                                <option value="Farg‘ona">Farg‘ona</option>
-                                <option value="Qoraqalpog‘iston">Qoraqalpog‘iston</option>
-                            </select>
+                    
+                    <!-- Location Information -->
+                    <div class="space-y-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Manzil ma'lumotlari</h3>
+                        
+                        <!-- Map -->
+                        <div class="h-96 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden">
+                            <div id="map" class="w-full h-full"></div>
                         </div>
-
-                        <div class="edu-center-field-group edu-center-half">
-                            <label for="district" class="edu-center-label">Tuman</label>
-                            <select id="district" name="region" class="edu-center-input" required>
-                                <option value="{{ $center->region }}" selected>{{ $center->region }}</option>
-                            </select>
+                        
+                        <div class="text-sm text-gray-600 dark:text-gray-400">
+                            <p>Xaritadan manzilni tanlasangiz Viloyat, Tuman, manzil va manzil URL'i avtomatik to'ldiriladi. Agarda xato bo'lsa, o'zgartirishingiz mumkin.</p>
                         </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Region -->
+                            <div>
+                                <label for="region" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Viloyat <span class="text-danger-500">*</span>
+                                </label>
+                                <select name="province" id="region" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white" required>
+                                    <option value="{{ $center->province }}" selected>{{ $center->province }}</option>
+                                    <option value="Toshkent">Toshkent</option>
+                                    <option value="Sirdaryo">Sirdaryo</option>
+                                    <option value="Jizzax">Jizzax</option>
+                                    <option value="Samarqand">Samarqand</option>
+                                    <option value="Buxoro">Buxoro</option>
+                                    <option value="Navoiy">Navoiy</option>
+                                    <option value="Qashqadaryo">Qashqadaryo</option>
+                                    <option value="Surxandaryo">Surxandaryo</option>
+                                    <option value="Xorazm">Xorazm</option>
+                                    <option value="Andijon">Andijon</option>
+                                    <option value="Namangan">Namangan</option>
+                                    <option value="Farg'ona">Farg'ona</option>
+                                    <option value="Qoraqalpog'iston">Qoraqalpog'iston</option>
+                                </select>
+                            </div>
+                            
+                            <!-- District -->
+                            <div>
+                                <label for="district" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Tuman <span class="text-danger-500">*</span>
+                                </label>
+                                <select name="region" id="district" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white" required>
+                                    <option value="{{ $center->region }}" selected>{{ $center->region }}</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Address -->
+                            <div class="md:col-span-2">
+                                <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Manzil <span class="text-danger-500">*</span>
+                                </label>
+                                <x-input 
+                                    type="text" 
+                                    name="address" 
+                                    id="address" 
+                                    value="{{ $center->address }}" 
+                                    placeholder="To'liq manzilni kiriting"
+                                    required
+                                />
+                                @error('address')
+                                    <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            
+                            <!-- Location URL -->
+                            <div class="md:col-span-2">
+                                <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    URL
+                                </label>
+                                <x-input 
+                                    type="text" 
+                                    name="location" 
+                                    id="location" 
+                                    value="{{ $center->location }}" 
+                                    placeholder="Manzil URL avtomatik yoziladi"
+                                />
+                                @error('location')
+                                    <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden location fields -->
+                        <input type="hidden" id="latitude" name="latitude">
+                        <input type="hidden" id="longitude" name="longitude">
                     </div>
-
-                    <!-- Manzil -->
-                    <div class="edu-center-field-group">
-                        <label for="address" class="edu-center-label">Manzil</label>
-                        <input type="text" name="address" id="address" class="edu-center-input"
-                            placeholder="To'liq manzilni kiriting" value="{{ $center->address }}">
-                        @error('address')
-                            <div style="color: red">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- URL -->
-                    <div class="edu-center-field-group edu-center-full">
-                        <label for="location" class="edu-center-label">URL</label>
-                        <input name="location" id="location" type="text" class="edu-center-input"
-                            placeholder="Manzil URL avtomatik yoziladi" value="{{ $center->location }}">
-                        @error('location')
-                            <div style="color: red">{{ $message }}</div>
-                        @enderror
-
-                        <!-- yashirin inputlar -->
-                        <input type="hidden" id="latitude">
-                        <input type="hidden" id="longitude">
-                    </div>
-
-                    <div class="edu-center-field-group">
-                        <label for="studentCount" class="edu-center-label">Hozirda markazingizdagi o'quvchilar
-                            soni</label>
-                        <input type="number" name="student_count" id="studentCount" class="edu-center-input"
-                            placeholder="0" min="0" value="{{ $center->student_count }}">
+                    
+                    <!-- Student Count -->
+                    <div>
+                        <label for="studentCount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Hozirda markazingizdagi o'quvchilar soni
+                        </label>
+                        <x-input 
+                            type="number" 
+                            name="student_count" 
+                            id="studentCount" 
+                            value="{{ $center->student_count }}" 
+                            placeholder="0"
+                            min="0"
+                        />
                         @error('student_count')
-                            <div style="color: red">{{ $message }}</div>
+                            <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                         @enderror
                     </div>
-
-                    <div class="edu-center-buttons">
-                        <button type="submit" class="edu-center-btn edu-center-btn-primary">
-                            <svg class="edu-center-btn-icon" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                    
+                    <!-- Submit Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                        <button type="submit" class="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                            <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
                                 <polyline points="17,21 17,13 7,13 7,21" />
                                 <polyline points="7,3 7,8 15,8" />
                             </svg>
                             Saqlash
                         </button>
-                        <a href="{{ route('blog-single', $center->id) }}" type="button"
-                            class="edu-center-btn edu-center-btn-secondary">
-                            <svg class="edu-center-btn-icon" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <line x1="18" y1="6" x2="6" y2="18" />
-                                <line x1="6" y1="6" x2="18" y2="18" />
+                        <a href="{{ route('blog-single', $center->id) }}" class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-3 px-6 rounded-xl transition-all duration-300 text-center">
+                            <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                             Bekor qilish
                         </a>
                     </div>
                 </form>
-            </div>
+            </x-card>
         </div>
-    </main>
-
-    <script src="{{ asset('js/course.js') }}"></script>
-</body>
-
-</html>
+    </div>
 
 <script>
     // Dinamik tumanlar ro'yxati
@@ -275,8 +338,8 @@
 
     function initMap() {
         const defaultCenter = {
-            lat: {{$location[0]}},
-            lng: {{$location[1]}}
+            lat: {{ $location[0] }},
+            lng: {{ $location[1] }}
         }; // Toshkent markaz
 
         map = new google.maps.Map(document.getElementById("map"), {
@@ -388,5 +451,5 @@
     window.initMap = initMap;
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM-lcwS2aMgdJd5AMxE8N_1Lu7M3aHJUw&callback=initMap" async
-    defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=initMap" async defer>
+</script>

@@ -1,247 +1,297 @@
 <x-layout>
-    <x-slot:title>
-        Barcha o'quv markazlar
-    </x-slot>
+    <x-slot:title>Barcha o'quv markazlar</x-slot:title>
 
-    <!-- ===== Blog Grid Start ===== -->
-    <section class="ji gp uq">
-        <div class="bb ye ki xn vq jb jo">
-            <div class="animate_top">
-                <form action="{{ route('blog-grid') }}" method="get">
-                    <div class="i">
-                        @foreach ($validated as $item)
-                            <input type="hidden" type="text" name="{{ $item }}" placeholder="Search Here..."
-                                value="{{ $item ?? '' }}" />
-                        @endforeach
-                        <input type="text" name="searchText" placeholder="Search Here..."
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-primary-600 via-accent-600 to-primary-800 text-white py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">O'quv markazlar</h1>
+                <p class="text-xl text-white/90 max-w-2xl mx-auto">
+                    O'zbekiston bo'ylab eng yaxshi o'quv markazlarini toping va o'zingizga mos kurslarni tanlang
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section class="py-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Search Bar -->
+            <div class="mb-6">
+                <form action="{{ route('blog-grid') }}" method="get" class="relative">
+                    @foreach ($validated as $item)
+                        <input type="hidden" name="{{ $item }}" value="{{ $item ?? '' }}" />
+                    @endforeach
+                    <div class="relative max-w-2xl mx-auto">
+                        <input 
+                            type="text" 
+                            name="searchText" 
+                            placeholder="O'quv markazini qidiring..."
                             value="{{ $validated['searchText'] ?? '' }}"
-                            class="vd sm _g ch pm vk xm rg gm dm/40 dn/40 li mi" />
-                        <button type="submit" class="h r q _h">
-                            <svg class="th ul ml il" width="21" height="21" viewBox="0 0 21 21" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M16.031 14.617L20.314 18.899L18.899 20.314L14.617 16.031C13.0237 17.3082 11.042 18.0029 9 18C4.032 18 0 13.968 0 9C0 4.032 4.032 0 9 0C13.968 0 18 4.032 18 9C18.0029 11.042 17.3082 13.0237 16.031 14.617ZM14.025 13.875C15.2941 12.5699 16.0029 10.8204 16 9C16 5.132 12.867 2 9 2C5.132 2 2 5.132 2 9C2 12.867 5.132 16 9 16C10.8204 16.0029 12.5699 15.2941 13.875 14.025L14.025 13.875Z" />
+                            class="w-full px-6 py-4 pr-12 text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                        >
+                        <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </button>
                     </div>
                 </form>
             </div>
 
-            <div class="wc qf zf iq" style="z-index: 1">
-                <div class="animate_top tc sf yo ap zf ep" style="z-index: 100">
-                    <ul class="nav-links">
-                        <li class="c i nav-links-li"><a href="{{ route('blog-grid') }}">Barchasi</a> </li>
-                        <li class="c i nav-links-li" id="toggle-map" style="cursor: pointer;">Xarita</li>
-                        <li class="c i dropdown-container" x-data="{ dropdown: false }" style="width: auto !important">
-                            <a href="#!" class="xl tc wf bg" @click.prevent="dropdown = !dropdown"
-                                :class="{
-                                    'mk': page === 'index' || page === 'index'
-                                }">
-                                Saralash
-                                <svg :class="{ 'wh': dropdown }" class="th mm we fd pf"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                    <path
-                                        d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                                </svg>
-                            </a>
-
-                            <ul class="a dropdown-menu" :class="{ 'tc': dropdown }">
-                                <li>
-                                    @if (!isset($validated['name']))
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
-                                            class="xl">Nomi ↑↓</a>
-                                    @elseif ($validated['name'] == 'asc')
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'desc']) }}"
-                                            class="xl">Nomi ↑</a>
-                                    @elseif ($validated['name'] == 'desc')
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
-                                            class="xl">Nomi ↓</a>
-                                    @else
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
-                                            class="xl">Nomi ↑↓</a>
-                                    @endif
-                                </li>
-                                <li>
-                                    @if (!isset($validated['distance']))
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
-                                            class="xl">Masofasi ↑↓</a>
-                                    @elseif ($validated['distance'] == 'asc')
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'desc']) }}"
-                                            class="xl">Masofasi ↑</a>
-                                    @elseif ($validated['distance'] == 'desc')
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
-                                            class="xl">Masofasi ↓</a>
-                                    @else
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
-                                            class="xl">Masofasi ↑↓</a>
-                                    @endif
-                                </li>
-                                <li>
-                                    @if (!isset($validated['favorites']))
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
-                                            class="xl">Reytingi ↑↓</a>
-                                    @elseif ($validated['favorites'] == 'asc')
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'desc']) }}"
-                                            class="xl">Reytingi ↑</a>
-                                    @elseif ($validated['favorites'] == 'desc')
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
-                                            class="xl">Reytingi ↓</a>
-                                    @else
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
-                                            class="xl">Reytingi ↑↓</a>
-                                    @endif
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="c i dropdown-container" x-data="{ dropdown: false }">
-                            <a href="#!" class="xl tc wf yf bg" @click.prevent="dropdown = !dropdown"
-                                :class="{
-                                    'mk': page === 'index' || page === 'index'
-                                }">
-                                O'qituvchi e'lonlari
-                                <svg :class="{ 'wh': dropdown }" class="th mm we fd pf"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                    <path
-                                        d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                                </svg>
-                            </a>
-
-                            <!-- Dropdown Start -->
-                            <ul class="a dropdown-menu" :class="{ 'tc': dropdown }">
-                                @foreach ($subjects as $subject)
-                                    <li>
-                                        <a href="{{ request()->fullUrlWithQuery(['needTeachers' => $subject->id]) }}"
-                                            class="xl">{{ $subject->name }}</a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                            <!-- Dropdown End -->
-                        </li>
-                    </ul>
-                </div>
-
-                <div id="map-container">
-                    <button class="toggle-btn" id="toggle-map">Xaritani Yopish/Ochish</button>
-
-                    <div id="map"></div>
-
-                    <div class="search-box">
-                        <input type="text" class="search-input" placeholder="O'quv markazini qidiring..."
-                            id="searchInput">
-                        <div class="search-results" id="searchResults"></div>
-                    </div>
-
-                    <form class="map-form" action="{{ route('blog-grid') }}" method="get">
-                        <input type="text" id="address" name="address" placeholder="Manzil" readonly>
-                        <input type="hidden" id="location" name="location">
-                        <input type="hidden" id="latitude" name="latitude">
-                        <input type="hidden" id="longitude" name="longitude">
-
-                        <select class="vd ph sg zk xm _g ch pm hm dm dn em pl/25 xi mi" name="subject_id"
-                            id="subject">
-                            <option value="" disabled {{ isset($validated['sunject_id']) ? '' : 'selected' }}>
-                                Fanni tanlang...</option>
-                            @foreach ($subjects as $subject)
-                                <option value="{{ $subject->id }}"
-                                    {{ isset($validated['sunject_id']) ? ($subject->id == $validated['sunject_id'] ? 'selected' : '') : '' }}>
-                                    {{ $subject->name }}</option>
-                            @endforeach
-                        </select>
-                        <input type="number" name="radius" id="radius" placeholder="Radius (km)"
-                            min="1" max="10000">
-                        <input type="number" name="maxPrice" id="maxPrice" placeholder="Maksimal narx (so'm)"
-                            min="0">
-
-                        <button type="submit">Qidirish</button>
-                    </form>
-
-                    <button class="locate-btn" id="locateBtn" title="Joyimni top">📍</button>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 10px;" class="wc qf zf iq" style="z-index: 1">
-                <div class="animate_top sg vk rm xm" style="z-index: 1; text-align: center;">
-                    <p>{{ $LearningCenters->count() }} ta o'quv markaz topildi</p>
-                </div>
-            </div>
-
-            <div class="wc qf pn xo zf iq learning-centers-grid">
-                <!-- Blog Item -->
-                @foreach ($LearningCenters as $LearningCenter)
-                    <div loading="lezi" class="animate_top sg vk rm xm snake-border learning-center-card">
-                        <div class="c rc i z-1 pg">
-                            <img class="standard-img lazy-img" src="{{ asset('storage/' . $LearningCenter->logo) }}"
-                                alt="Blog" />
-
-                            <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                                <a href="{{ route('blog-single', $LearningCenter->id) }}"
-                                    class="vc ek rg lk gh sl ml il gi hi">Ko'proq o'qish</a>
+            <!-- Filter Navigation -->
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex flex-wrap gap-2">
+                    <a href="{{ route('blog-grid') }}" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
+                        Barchasi
+                    </a>
+                    <button id="toggle-map" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200">
+                        Xarita
+                    </button>
+                    
+                    <!-- Sort Dropdown -->
+                    <div class="relative" x-data="{ sortDropdown: false }">
+                        <button @click="sortDropdown = !sortDropdown" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 flex items-center gap-2">
+                            Saralash
+                            <svg class="w-4 h-4" :class="{ 'rotate-180': sortDropdown }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        
+                        <div x-show="sortDropdown" @click.away="sortDropdown = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+                            <div class="py-2">
+                                @if (!isset($validated['name']))
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Nomi ↑↓
+                                    </a>
+                                @elseif ($validated['name'] == 'asc')
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Nomi ↑
+                                    </a>
+                                @elseif ($validated['name'] == 'desc')
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Nomi ↓
+                                    </a>
+                                @else
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Nomi ↑↓
+                                    </a>
+                                @endif
+                                
+                                @if (!isset($validated['distance']))
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Masofasi ↑↓
+                                    </a>
+                                @elseif ($validated['distance'] == 'asc')
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Masofasi ↑
+                                    </a>
+                                @elseif ($validated['distance'] == 'desc')
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Masofasi ↓
+                                    </a>
+                                @else
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Masofasi ↑↓
+                                    </a>
+                                @endif
+                                
+                                @if (!isset($validated['favorites']))
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Reytingi ↑↓
+                                    </a>
+                                @elseif ($validated['favorites'] == 'asc')
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Reytingi ↑
+                                    </a>
+                                @elseif ($validated['favorites'] == 'desc')
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Reytingi ↓
+                                    </a>
+                                @else
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Reytingi ↑↓
+                                    </a>
+                                @endif
                             </div>
                         </div>
-
-                        <div class="yh">
-                            <div class="tc uf wf ag jq card-meta">
-                                <div class="tc wf ag meta-item">
-                                    <p>{{ $LearningCenter->region . ', ' . $LearningCenter->province }}</p>
-                                </div>
-                                <div class="tc wf ag meta-item">
-                                    <img src="{{ asset('/images/Calendar.jpg') }}" alt="Calender" />
-                                    <p>{{ $LearningCenter->created_at->diffForHumans() }}</p>
-                                </div>
-                                <div class="tc wf ag meta-item">
-                                    @if (isset($LearningCenter->distance))
-                                        <p>{{ $LearningCenter->distance }} km</p>
-                                    @else
-                                        <p>Masofani bilish uchun xaritadan joyni tanlang!</p>
-                                    @endif
-                                </div>
+                    </div>
+                    
+                    <!-- Teacher Announcements Dropdown -->
+                    <div class="relative" x-data="{ teacherDropdown: false }">
+                        <button @click="teacherDropdown = !teacherDropdown" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 flex items-center gap-2">
+                            O'qituvchi e'lonlari
+                            <svg class="w-4 h-4" :class="{ 'rotate-180': teacherDropdown }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        
+                        <div x-show="teacherDropdown" @click.away="teacherDropdown = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+                            <div class="py-2">
+                                @foreach ($subjects as $subject)
+                                    <a href="{{ request()->fullUrlWithQuery(['needTeachers' => $subject->id]) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        {{ $subject->name }}
+                                    </a>
+                                @endforeach
                             </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-gray-600 dark:text-gray-400">
+                    {{ $LearningCenters->count() }} ta o'quv markaz topildi
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Map Container -->
+    <div id="map-container" class="hidden bg-gray-100 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                <div class="relative">
+                    <div id="map" class="h-96"></div>
+                    
+                    <!-- Map Search Box -->
+                    <div class="absolute top-4 left-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3 w-80">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="O'quv markazini qidiring..."
+                            class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        >
+                        <div id="searchResults" class="mt-2 max-h-48 overflow-y-auto hidden"></div>
+                    </div>
+                    
+                    <!-- Map Form -->
+                    <div class="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 w-80">
+                        <form action="{{ route('blog-grid') }}" method="get" class="space-y-3">
+                            <input type="text" id="address" name="address" placeholder="Manzil" readonly class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
+                            <input type="hidden" id="location" name="location">
+                            <input type="hidden" id="latitude" name="latitude">
+                            <input type="hidden" id="longitude" name="longitude">
+                            
+                            <select name="subject_id" id="subject" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700">
+                                <option value="">Fanni tanlang...</option>
+                                @foreach ($subjects as $subject)
+                                    <option value="{{ $subject->id }}" {{ isset($validated['subject_id']) && $subject->id == $validated['subject_id'] ? 'selected' : '' }}>
+                                        {{ $subject->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            
+                            <input type="number" name="radius" id="radius" placeholder="Radius (km)" min="1" max="10000" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg">
+                            <input type="number" name="maxPrice" id="maxPrice" placeholder="Maksimal narx (so'm)" min="0" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg">
+                            
+                            <button type="submit" class="w-full bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700 transition-colors duration-200">
+                                Qidirish
+                            </button>
+                        </form>
+                        
+                        <button id="locateBtn" class="absolute bottom-4 right-4 bg-white dark:bg-gray-800 p-2 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-200" title="Joyimni top">
+                            📍
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Learning Centers Grid -->
+    <section class="py-12 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                @foreach ($LearningCenters as $LearningCenter)
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                        <!-- Image -->
+                        <div class="relative h-48 overflow-hidden">
+                            <img 
+                                src="{{ asset('storage/' . $LearningCenter->logo) }}" 
+                                alt="{{ $LearningCenter->name }}"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                            >
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <a href="{{ route('blog-single', $LearningCenter->id) }}" class="absolute bottom-4 left-4 bg-white dark:bg-gray-800 text-primary-600 dark:text-primary-400 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                                Ko'proq o'qish
+                            </a>
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="p-6">
+                            <!-- Meta Information -->
+                            <div class="flex flex-wrap gap-2 mb-4 text-sm text-gray-600 dark:text-gray-400">
+                                <div class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    <span>{{ $LearningCenter->region . ', ' . $LearningCenter->province }}</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <span>{{ $LearningCenter->created_at->diffForHumans() }}</span>
+                                </div>
+                                @if (isset($LearningCenter->distance))
+                                    <div class="flex items-center gap-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                                        </svg>
+                                        <span>{{ $LearningCenter->distance }} km</span>
+                                    </div>
+                                @endif
+                            </div>
+                            
+                            <!-- Rating -->
                             @php
                                 $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
                             @endphp
-
-                            <h4 class="favorite">
-                                <div class="stars" id="rating1">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="flex items-center">
                                     @for ($i = 1; $i <= 5; $i++)
                                         @php
                                             $diff = $average - $i;
                                         @endphp
-                                        <span
-                                            class="star {{ $average >= $i ? 'full' : ($diff > -1 && $diff < 0 ? 'half' : '') }}">
+                                        <span class="text-lg {{ $average >= $i ? 'text-yellow-400' : ($diff > -1 && $diff < 0 ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600') }}">
                                             ★
                                         </span>
                                     @endfor
                                 </div>
-                                <div style="margin-top: 7px; font-size: 26px" class="result">{{ $average }}
-                                </div>
-                            </h4>
-
-                            <h4 class="ek tj ml il kk wm xl eq lb">
-                                <a href="{{ route('blog-single', $LearningCenter->id) }}">
+                                <span class="text-lg font-semibold text-primary-600 dark:text-primary-400">{{ $average }}</span>
+                            </div>
+                            
+                            <!-- Title -->
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                                <a href="{{ route('blog-single', $LearningCenter->id) }}" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
                                     {{ $LearningCenter->name }}
                                 </a>
-                            </h4>
-                            <div class="bb ze mb">
-                                <!-- Service Item -->
-                                <div class="animate_top" style="width: 100%">
-                                    <div class="_b announcement-header">
-                                        <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
-                                            src="{{ asset('/images/3d-speaker.png') }}" alt="Icon" />
-                                        <h4 class="ek zj kk wm">E'lon</h4>
+                            </h3>
+                            
+                            <!-- Teacher Announcements -->
+                            <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
+                                        <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                                        </svg>
                                     </div>
-
-                                    @if ($LearningCenter->needTeachers->count() > 0)
-                                        <h4 class="ek kk wm">O'qituvchi kerak</h4>
-                                        @foreach ($LearningCenter->needTeachers as $teacher)
-                                            <p>🟢 {{ $teacher->subject->name }}</p>
-                                            <p style="color: brown; text-align: end">🔥
-                                                {{ $teacher->created_at->diffForHumans() }}</p>
-                                        @endforeach
-                                    @else
-                                        <p>Hozicha elon berilmagan!</p>
-                                    @endif
+                                    <h4 class="font-semibold text-gray-900 dark:text-white">E'lon</h4>
                                 </div>
+                                
+                                @if ($LearningCenter->needTeachers->count() > 0)
+                                    <div class="space-y-2">
+                                        <p class="text-sm font-medium text-success-600 dark:text-success-400">O'qituvchi kerak</p>
+                                        @foreach ($LearningCenter->needTeachers as $teacher)
+                                            <div class="flex items-center justify-between text-sm">
+                                                <span class="text-gray-700 dark:text-gray-300">🟢 {{ $teacher->subject->name }}</span>
+                                                <span class="text-xs text-gray-500 dark:text-gray-400">{{ $teacher->created_at->diffForHumans() }}</span>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Hozicha e'lon berilmagan!</p>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -249,8 +299,313 @@
             </div>
         </div>
     </section>
-    <!-- ===== Blog Grid End ===== -->
 </x-layout>
+
+<style>
+    /* Rating Stars */
+    .star {
+        transition: color 0.2s ease;
+    }
+    
+    /* Map Container */
+    #map-container.hidden {
+        display: none;
+    }
+    
+    #map-container.show {
+        display: block;
+    }
+    
+    /* Search Results */
+    .search-result-item {
+        padding: 8px 12px;
+        cursor: pointer;
+        border-bottom: 1px solid #e5e7eb;
+        transition: background-color 0.2s;
+    }
+    
+    .search-result-item:hover {
+        background-color: #f3f4f6;
+    }
+    
+    .dark .search-result-item {
+        border-bottom-color: #374151;
+    }
+    
+    .dark .search-result-item:hover {
+        background-color: #374151;
+    }
+</style>
+
+<script>
+    // Toggle Map
+    document.getElementById('toggle-map').addEventListener('click', function() {
+        const mapContainer = document.getElementById('map-container');
+        mapContainer.classList.toggle('hidden');
+        mapContainer.classList.toggle('show');
+        
+        if (mapContainer.classList.contains('show')) {
+            setTimeout(() => {
+                if (window.google && window.google.maps) {
+                    google.maps.event.trigger(map, 'resize');
+                }
+            }, 300);
+        }
+    });
+    
+    // Learning Centers Data
+    const learningCentersData = {!! json_encode(
+        $LearningCenters->map(function ($center) {
+            $location = explode(',', $center->location);
+            return [
+                'id' => $center->id,
+                'name' => $center->name,
+                'latitude' => (float) ($location[0] ?? 0),
+                'longitude' => (float) ($location[1] ?? 0),
+                'address' => $center->address ?? '',
+                'logo' => $center->logo ?? '',
+                'distance' => 0,
+            ];
+        }),
+    ) !!};
+    
+    let map, geocoder, userMarker;
+    const markers = [];
+    const defaultLat = 41.2995;
+    const defaultLng = 69.2401;
+    
+    // Initialize Map (if Google Maps API is loaded)
+    function initMap() {
+        if (!window.google || !window.google.maps) return;
+        
+        const defaultCenter = { lat: defaultLat, lng: defaultLng };
+        
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: defaultCenter,
+            zoom: 12,
+            gestureHandling: 'greedy',
+            disableDefaultUI: false,
+            zoomControl: true,
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: true
+        });
+        
+        geocoder = new google.maps.Geocoder();
+        
+        // User marker
+        userMarker = new google.maps.Marker({
+            map: map,
+            position: defaultCenter,
+            draggable: true,
+            icon: {
+                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                scaledSize: new google.maps.Size(40, 40)
+            },
+            title: "Sizning joylashuvingiz",
+            optimized: true
+        });
+        
+        // Add learning centers
+        addLearningCenters();
+        
+        // Setup events
+        setupEventListeners();
+        
+        // Get user location
+        getUserLocation();
+    }
+    
+    // Add learning centers to map
+    function addLearningCenters() {
+        learningCentersData.forEach(center => {
+            if (!center.latitude || !center.longitude) return;
+            
+            const position = {
+                lat: parseFloat(center.latitude),
+                lng: parseFloat(center.longitude)
+            };
+            
+            const marker = new google.maps.Marker({
+                map: map,
+                position: position,
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                    scaledSize: new google.maps.Size(32, 32)
+                },
+                title: center.name,
+                optimized: true
+            });
+            
+            const infoWindow = new google.maps.InfoWindow({
+                content: createInfoContent(center)
+            });
+            
+            marker.addListener("click", () => {
+                closeAllInfoWindows();
+                infoWindow.open(map, marker);
+                updateDistance(center, userMarker.getPosition());
+            });
+            
+            markers.push({ marker, infoWindow, center });
+        });
+    }
+    
+    // Create info window content
+    function createInfoContent(center) {
+        return `
+            <div class="p-3">
+                <h3 class="font-semibold text-lg mb-2">${center.name}</h3>
+                <p class="text-sm text-gray-600 mb-1">📍 Masofa: <span id="dist-${center.id}">Hisoblanmoqda...</span></p>
+                <p class="text-sm text-gray-600 mb-3">${center.address || 'Manzil ko\'rsatilmagan'}</p>
+                <div class="flex gap-2">
+                    <a href="/blog-single/${center.id}" class="bg-primary-600 text-white px-3 py-1 rounded text-sm hover:bg-primary-700">Batafsil</a>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=${center.latitude},${center.longitude}" 
+                       class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700" target="_blank">Yo'nalish</a>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Close all info windows
+    function closeAllInfoWindows() {
+        markers.forEach(m => m.infoWindow.close());
+    }
+    
+    // Setup event listeners
+    function setupEventListeners() {
+        // Map click
+        map.addListener("click", (e) => {
+            const pos = {
+                lat: e.latLng.lat(),
+                lng: e.latLng.lng()
+            };
+            userMarker.setPosition(pos);
+            updateLocation(pos.lat, pos.lng);
+        });
+        
+        // Marker drag
+        userMarker.addListener("dragend", (e) => {
+            const pos = {
+                lat: e.latLng.lat(),
+                lng: e.latLng.lng()
+            };
+            updateLocation(pos.lat, pos.lng);
+        });
+    }
+    
+    // Get user location
+    function getUserLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    userMarker.setPosition(pos);
+                    map.setCenter(pos);
+                    updateLocation(pos.lat, pos.lng);
+                },
+                () => {
+                    console.log("Location access denied");
+                }
+            );
+        }
+    }
+    
+    // Update location
+    function updateLocation(lat, lng) {
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = lng;
+        document.getElementById('location').value = `${lat},${lng}`;
+        
+        // Update address
+        if (geocoder) {
+            geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+                if (status === 'OK' && results[0]) {
+                    document.getElementById('address').value = results[0].formatted_address;
+                }
+            });
+        }
+    }
+    
+    // Update distance
+    function updateDistance(center, userPos) {
+        if (!userPos) return;
+        
+        const distance = google.maps.geometry.spherical.computeDistanceBetween(
+            new google.maps.LatLng(center.latitude, center.longitude),
+            userPos
+        ) / 1000; // Convert to km
+        
+        const distanceElement = document.getElementById(`dist-${center.id}`);
+        if (distanceElement) {
+            distanceElement.textContent = `${distance.toFixed(1)} km`;
+        }
+    }
+    
+    // Locate button
+    document.getElementById('locateBtn').addEventListener('click', function() {
+        getUserLocation();
+    });
+    
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        if (query.length < 2) {
+            searchResults.classList.add('hidden');
+            return;
+        }
+        
+        const results = learningCentersData.filter(center => 
+            center.name.toLowerCase().includes(query.toLowerCase())
+        );
+        
+        if (results.length > 0) {
+            searchResults.innerHTML = results.map(center => `
+                <div class="search-result-item" onclick="selectCenter(${center.id})">
+                    <div class="font-medium">${center.name}</div>
+                    <div class="text-sm text-gray-600">${center.address || 'Manzil ko\'rsatilmagan'}</div>
+                </div>
+            `).join('');
+            searchResults.classList.remove('hidden');
+        } else {
+            searchResults.innerHTML = '<div class="search-result-item text-gray-500">Hech narsa topilmadi</div>';
+            searchResults.classList.remove('hidden');
+        }
+    });
+    
+    // Select center from search
+    function selectCenter(centerId) {
+        const center = learningCentersData.find(c => c.id === centerId);
+        if (center && map) {
+            map.setCenter({ lat: center.latitude, lng: center.longitude });
+            map.setZoom(15);
+            
+            // Find and open the marker
+            const markerData = markers.find(m => m.center.id === centerId);
+            if (markerData) {
+                closeAllInfoWindows();
+                markerData.infoWindow.open(map, markerData.marker);
+            }
+            
+            searchResults.classList.add('hidden');
+            searchInput.value = center.name;
+        }
+    }
+    
+    // Initialize map when page loads
+    if (typeof google !== 'undefined' && google.maps) {
+        initMap();
+    } else {
+        // Wait for Google Maps to load
+        window.addEventListener('load', initMap);
+    }
+</script>
 
 <style>
     /* Base styles remain the same */
@@ -1107,5 +1462,5 @@
     window.initMap = initMap;
 </script>
 
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM-lcwS2aMgdJd5AMxE8N_1Lu7M3aHJUw&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=initMap">
+</script>

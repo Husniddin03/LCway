@@ -1,750 +1,633 @@
 <x-layout>
+    <x-slot:title>{{ $LearningCenter->name }} haqida batafsil ma'lumot</x-slot:title>
+    
+    <!-- Hero Section -->
+    <section class="relative py-16 md:py-20 bg-gradient-to-br from-primary-600 via-accent-600 to-primary-800 overflow-hidden">
+        <!-- Background Shapes -->
+        <div class="absolute inset-0">
+            <div class="absolute top-20 left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-20 w-96 h-96 bg-accent-400/20 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/3 w-64 h-64 bg-white/5 rounded-full blur-2xl"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center text-white">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ $LearningCenter->name }}</h1>
+                <p class="text-xl text-white/90 max-w-3xl mx-auto">{{ $LearningCenter->type }}</p>
+            </div>
+        </div>
+    </section>
 
+    <!-- Main Content -->
+    <section class="py-16 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Main Content Area -->
+                <div class="lg:col-span-2">
+                    <!-- Main Image -->
+                    <div class="mb-8">
+                        <div class="relative rounded-2xl overflow-hidden shadow-xl">
+                            <img src="{{ asset('storage/' . $LearningCenter->logo) }}" 
+                                 alt="{{ $LearningCenter->name }}" 
+                                 class="w-full h-96 object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                        </div>
+                    </div>
 
-    <x-slot:title>
-
-        {{ $LearningCenter->name }} haqida batafsil ma'lumot
-
-    </x-slot>
-
-    <!-- ===== Blog Single Start ===== -->
-    <section class="gj qp gr hj rp hr">
-        <div class="bb ze ki xn 2xl:ud-px-0">
-            <div class="tc sf yo zf kq">
-                <div class="ro">
-                    <div
-                        class="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10">
-                        <a style="width: 100%; height: 400px; text-align: center !important" href="{{ asset('storage/' . $LearningCenter->logo) }}" data-fslightbox class="vc wf hg mb">
-                            <img style="width: auto !important; height: 100%; border-radius: 15px;"
-                                src="{{ asset('storage/' . $LearningCenter->logo) }}" alt="Blog" />
-                        </a>
-
-                        {{-- <a href="{{$LearningCenter->logo }}" data-fslightbox class="vc wf hg mb">
-                            <img style="width: 100% !important; border-radius: 15px;"
-                                src="{{$LearningCenter->logo }}" alt="Blog" />
-                        </a> --}}
-
-                        <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">
-                            {{ $LearningCenter->name }}
-
-                            @php
-                                $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
-                            @endphp
-
-                            <h4 class="favorite1">
-                                <div class="stars1" id="rating11">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @php
-                                            $diff = $average - $i;
-                                        @endphp
-                                        <span
-                                            class="star1 {{ $average >= $i ? 'full' : ($diff > -1 && $diff < 0 ? 'half' : '') }}">
-                                            ★
-                                        </span>
-                                    @endfor
+                    <!-- Rating and Meta Info -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
+                        <div class="flex flex-wrap items-center justify-between gap-4">
+                            <div class="flex items-center space-x-4">
+                                @php
+                                    $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
+                                @endphp
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @php
+                                                $diff = $average - $i;
+                                            @endphp
+                                            <span class="text-2xl {{ $average >= $i ? '' : ($diff > -1 && $diff < 0 ? 'opacity-50' : 'opacity-20') }}">
+                                                ★
+                                            </span>
+                                        @endfor
+                                    </div>
+                                    <span class="ml-2 text-lg font-semibold text-gray-900 dark:text-white">{{ $average }}</span>
                                 </div>
-                                <div style="margin-top: 6px" class="result1">{{ $average }}</div>
-                            </h4>
-                        </h2>
-
-                        <ul class="tc uf cg 2xl:ud-gap-15 fb">
-                            <li><span class="rc kk wm">Saytga kiritgan shaxs:
-                                </span> <a
-                                    href="mailto:{{ $LearningCenter->user->email }}">{{ $LearningCenter->user->name }}</a>
-                            </li>
-                            <li><span class="rc kk wm">Yuklangan sana: </span>
-                                {{ $LearningCenter->created_at->diffForHumans() }} </li>
-                            <li><span class="rc kk wm"> Tur:
-                                </span> {{ $LearningCenter->type }}</li>
-                            <li><span class="rc kk wm"> Manzil:
-                                </span> <a target="_blank" style="color: cornflowerblue"
-                                    href="https://www.google.com/maps?q={{ $LearningCenter->location }}">{{ $LearningCenter->address }}</a>
-                            </li>
-                        </ul>
-
-                        <div class="bb ze mb">
-                            <!-- Service Item -->
-                            <div class="animate_top" style="width: 100%">
-                                <div class="_b"
-                                    style="display: flex; flex-direction: row; align-content: center; align-items: center;">
-                                    <img style="width: 2rem; margin-right: 2rem; height: 2rem;"
-                                        src="{{ asset('images/3d-speaker.png') }}" alt="Icon" />
-                                    <h4 class="ek zj kk wm">O'qituvchi kerak</h4>
-                                </div>
-                                @auth
-                                    @can('isOun', $LearningCenter)
-                                        <div
-                                            style="width:100%;display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:20px;">
-                                            <h6 style="width:100%;font-size:16px; font-weight:600;">
-                                                <a href="{{ route('teacher.announcement', $LearningCenter->id) }}"
-                                                    :class="{
-                                                        'hh/[0.15]': page === 'home',
-                                                        'sh': page === 'home' &&
-                                                            stickyMenu
-                                                    }"
-                                                    class="lk gh dk rg tc wf xf _l gi hi">
-                                                    E'lon berish 📢
-                                                </a>
-                                            </h6>
-                                        </div>
-                                    @endcan
-                                @endauth
-                                @if ($LearningCenter->needTeachers->count() > 0)
-                                    @foreach ($LearningCenter->needTeachers as $teacher)
-                                        <div style="display: flex">
-                                            <p>
-                                                <span style="color: brown">{{ $teacher->subject->name }}</span> -
-                                                {{ $teacher->description }}
-                                            </p>
-                                            @auth
-                                                @can('isOun', $LearningCenter)
-                                                    <form action="{{ route('teacher.delete_announcement', $teacher->id) }}"
-                                                        onsubmit="return confirm('Rostdan ham {{ $teacher->subject->name }} uchun berilgan elon o‘chirilsinmi?');"
-                                                        method="post">
-                                                        @csrf
-                                                        <button style="color: brown" type="submit">
-                                                            &nbsp;❌
-                                                        </button>
-                                                    </form>
-                                                @endcan
-                                            @endauth
-                                        </div>
-                                    @endforeach
-                                @else
-                                    <p>Hozicha elon berilmagan!</p>
-                                @endif
+                            </div>
+                            
+                            <div class="flex flex-wrap gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                    {{ $LearningCenter->user->name }}
+                                </span>
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    {{ $LearningCenter->created_at->diffForHumans() }}
+                                </span>
                             </div>
                         </div>
+                    </div>
 
+                    <!-- About Section -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Markaz haqida</h2>
+                        <div class="prose prose-lg max-w-none text-gray-600 dark:text-gray-300">
+                            <p>{{ $LearningCenter->about }}</p>
+                        </div>
+                    </div>
 
-
-                        <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">
-                            {{ $LearningCenter->name }} haqida qisqacha malumot:
-                        </h2>
-
-                        <p class="ob">
-                            {{ $LearningCenter->about }}
-                        </p>
-
-                        <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">
-                            Rasimlar
-                        </h2>
-
-                        <div class="wc qf pn dg cb animate_right">
-                            <style>
-                                .responsive-img {
-                                    width: 100%;
-                                    height: 300px;
-                                    /* O'zingiz xohlagan balandlik */
-                                    object-fit: cover;
-                                    border-radius: 15px;
-                                }
-
-                                .image-wrapper {
-                                    display: block;
-                                    overflow: hidden;
-                                    border-radius: 15px;
-                                }
-                            </style>
-
-                            @foreach ($LearningCenter->images as $image)
-                                <a href="{{ asset('storage/' . $image->image) }}" data-fslightbox
-                                    class="animate_right vc wf hg mb image-wrapper">
-                                    <img src="{{ asset('storage/' . $image->image) }}" alt="Blog"
-                                        class="responsive-img">
-                                </a>
-                            @endforeach
-
+                    <!-- Image Gallery -->
+                    @if($LearningCenter->images->count() > 0)
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Rasmlar</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                @foreach ($LearningCenter->images as $image)
+                                    <div class="relative group overflow-hidden rounded-xl">
+                                        <img src="{{ asset('storage/' . $image->image) }}" 
+                                             alt="Gallery image" 
+                                             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            
                             @auth
                                 @can('isOun', $LearningCenter)
-                                    <div style="display: flex; align-content: center; align-items: center; text-align: center">
-                                        <a style="border: 1px solid blue"
-                                            href="{{ route('course.editImage', $LearningCenter->id) }}"
-                                            class="vc ek kk hh rg ol il cm gi hi">Tahrirlash </a>
+                                    <div class="mt-6 text-center">
+                                        <x-button variant="outline" href="{{ route('course.editImage', $LearningCenter->id) }}">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            Rasmlarni tahrirlash
+                                        </x-button>
                                     </div>
                                 @endcan
                             @endauth
                         </div>
+                    @endif
 
-                        <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb qb">
-                            {{ $LearningCenter->name }} kun tartibi.
-                        </h2>
-
-                        <div class="bb ze mb en">
-                            <div class="wc qf pn xo ng">
-                                <!-- Service Item -->
+                    <!-- Schedule Section -->
+                    @if($LearningCenter->calendar->count() > 0)
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Ish grafigi</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 @foreach ($LearningCenter->calendar as $calendar)
-                                    <div class="animate_top sg pi ml il am cn _m"
-                                        style="display: flex; flex-direction: row; align-items: center; padding-bottom: 20px">
+                                    <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
                                         <div>
-                                            <h4 class="ek zj kk wm nb _b">
-                                                {{ $calendar->calendar->weekdays }}
-                                            </h4>
-                                            <p>{{ date('H:i', strtotime($calendar->open_time)) }} -
-                                                {{ date('H:i', strtotime($calendar->close_time)) }}</p>
+                                            <h4 class="font-semibold text-gray-900 dark:text-white">{{ $calendar->calendar->weekdays }}</h4>
+                                            <p class="text-gray-600 dark:text-gray-400">
+                                                {{ date('H:i', strtotime($calendar->open_time)) }} - {{ date('H:i', strtotime($calendar->close_time)) }}
+                                            </p>
+                                        </div>
+                                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            
+                            @auth
+                                @can('isOun', $LearningCenter)
+                                    <div class="mt-6 text-center">
+                                        <x-button variant="outline" href="{{ route('course.weekday', $LearningCenter->id) }}">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            Grafikni tahrirlash
+                                        </x-button>
+                                    </div>
+                                @endcan
+                            @endauth
+                        </div>
+                    @endif
+
+                    <!-- Teachers Section -->
+                    @if($LearningCenter->teachers->count() > 0)
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Ustozlar</h2>
+                                @auth
+                                    @can('isOun', $LearningCenter)
+                                        <x-button variant="primary" href="{{ route('teacher.create', 'id=' . $LearningCenter->id) }}">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                            Yangi ustoz
+                                        </x-button>
+                                    @endcan
+                                @endauth
+                            </div>
+                            
+                            <div class="space-y-6">
+                                @foreach ($LearningCenter->teachers as $teacher)
+                                    <div class="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors group">
+                                        <div class="flex-shrink-0">
+                                            <div class="w-16 h-16 relative">
+                                                @if(isset($teacher->photo))
+                                                    <img src="{{ asset('storage/' . $teacher->photo) }}" 
+                                                         alt="{{ $teacher->name }}" 
+                                                         class="w-16 h-16 rounded-full object-cover ring-2 ring-white dark:ring-gray-700">
+                                                @else
+                                                    <img src="https://ui-avatars.com/api/?name={{ $teacher->name }}&background=random&size=64" 
+                                                         alt="{{ $teacher->name }}" 
+                                                         class="w-16 h-16 rounded-full ring-2 ring-white dark:ring-gray-700">
+                                                @endif
+                                                <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white dark:border-gray-700"></div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="flex items-start justify-between">
+                                                <div>
+                                                    <h4 class="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{{ $teacher->name }}</h4>
+                                                    <p class="text-primary-600 dark:text-primary-400 font-medium flex items-center mt-1">
+                                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                        </svg>
+                                                        {{ $teacher->subject->name }}
+                                                    </p>
+                                                    <p class="text-gray-600 dark:text-gray-400 mt-2 line-clamp-2">{{ $teacher->about }}</p>
+                                                    <div class="flex items-center mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                                        </svg>
+                                                        {{ $teacher->phone }}
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Teacher actions for owner -->
+                                                @auth
+                                                    @can('isOun', $LearningCenter)
+                                                        <div class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <x-button variant="outline" size="sm" href="{{ route('teacher.edit', $teacher->id) }}" class="p-2">
+                                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                                </svg>
+                                                            </x-button>
+                                                            <form action="{{ route('teacher.destroy', $teacher->id) }}" method="POST" onsubmit="return confirm('Rostdan ham {{ $teacher->name }}ni o‘chirilsinmi?');">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                                    </svg>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    @endcan
+                                                @endauth
+                                            </div>
                                         </div>
                                     </div>
                                 @endforeach
+                            </div>
+                        </div>
+                    @else
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                            <div class="text-center py-8">
+                                <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Ustozlar hozircha yo'q</h3>
+                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazida hozircha ustozlar ro'yxatlanmagan</p>
+                                
                                 @auth
                                     @can('isOun', $LearningCenter)
-                                        <div
-                                            style="display: flex; align-content: center; align-items: center; text-align: center">
-                                            <a style="border: 1px solid blue"
-                                                href="{{ route('course.weekday', $LearningCenter->id) }}"
-                                                class="vc ek kk hh rg ol il cm gi hi">Tahrirlash </a>
-                                        </div>
+                                        <x-button variant="primary" href="{{ route('teacher.create', 'id=' . $LearningCenter->id) }}">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                            Birinchi ustozni qo'shish
+                                        </x-button>
                                     @endcan
                                 @endauth
                             </div>
                         </div>
+                    @endif
 
-                        <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb qb">
-                            {{ $LearningCenter->name }} bilan bog'lanish.
-                        </h2>
+                    <!-- Location Section -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Manzil</h2>
+                        <div class="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden">
+                            <iframe src="https://www.google.com/maps?q={{ $LearningCenter->location }}&hl=uz&z=14&output=embed"
+                                    allowfullscreen 
+                                    loading="lazy"
+                                    class="w-full h-96 rounded-xl border-0"></iframe>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-gray-600 dark:text-gray-400">
+                                <a href="https://www.google.com/maps?q={{ $LearningCenter->location }}" 
+                                   target="_blank" 
+                                   class="text-primary-600 dark:text-primary-400 hover:underline">
+                                    {{ $LearningCenter->address }}
+                                </a>
+                            </p>
+                        </div>
+                    </div>
 
-                        <ul class="tc wf bg sb">
-                            <li>
-                                <p class="sj kk wm tb">Ijtimoiy tarmoqlar:</p>
-                            </li>
-
-                            @foreach ($LearningCenter->connections as $connection)
-                                <ul style="text-align: center; background-color: #fff; border-radius: 50%">
-                                    @if ($connection->connection->name == 'Phone')
-                                        <li style="display: flex; align-items: center; gap: 8px;">
-                                            <a class="c tc wf xf ie ld rg ml il tl" href="tel:{{ $connection->url }}"
-                                                class="tc wf xf yd ad rg ml il ih wk">
-                                                <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                    class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M3 5a2 2 0 012-2h3.28a2 2 0 011.94 1.515l.62 2.48a2 2 0 01-.45 1.885l-1.516 1.516a16 16 0 006.586 6.586l1.516-1.516a2 2 0 011.885-.45l2.48.62A2 2 0 0121 17.72V21a2 2 0 01-2 2h-1c-9.94 0-18-8.06-18-18V5z" />
-                                                </svg>
-
-                                            </a>
-                                        </li>
-                                    @elseif($connection->connection->name == 'Email')
-                                        <li>
-                                            <a class="c tc wf xf ie ld rg ml il tl"
-                                                href="mailto:{{ $connection->url }}"
-                                                class="tc wf xf yd ad rg ml il ih wk">
-                                                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg"
-                                                    width="20" height="20"
-                                                    alt="{{ $connection->connection->name }}" />
-                                            </a>
-                                        </li>
-                                    @elseif($connection->connection->name == 'Website')
-                                        <li>
-                                            <a class="c tc wf xf ie ld rg ml il tl" href="{{ $connection->url }}"
-                                                class="tc wf xf yd ad rg ml il ih wk">
-                                                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlechrome.svg"
-                                                    width="20" height="20"
-                                                    alt="{{ $connection->connection->name }}" />
-                                            </a>
-                                        </li>
-                                    @else
-                                        <li>
-                                            <a href="{{ $connection->url }}" class="c tc wf xf ie ld rg ml il tl"
-                                                class="tc wf xf yd ad rg ml il ih wk">
-                                                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg"
-                                                    width="20" height="20"
-                                                    alt="{{ $connection->connection->name }}" />
-                                            </a>
-                                        </li>
-                                    @endif
-                                </ul>
-                            @endforeach
-                        </ul>
-                        @auth
-                            @can('isOun', $LearningCenter)
-                                <div style="display: flex; align-content: center; align-items: center; text-align: center">
-                                    <a style="border: 1px solid blue" href="{{ route('connect.edit', $LearningCenter->id) }}"
-                                        class="vc ek kk hh rg ol il cm gi hi">Tahrirlash </a>
+                    <!-- Comments Section -->
+                    @auth
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Izohlar</h2>
+                            
+                            <!-- Rating Form -->
+                            <div class="mb-8">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Markazni baholang</h3>
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex text-2xl" id="rating1" data-center-id="{{ $LearningCenter->id }}">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <span class="star cursor-pointer text-gray-300 hover:text-yellow-400 transition-colors" data-value="{{ $i }}">★</span>
+                                        @endfor
+                                    </div>
+                                    <span id="result1" class="text-lg font-medium text-gray-600 dark:text-gray-400"></span>
                                 </div>
-                            @endcan
-                        @endauth
-                        <div class="animate_top" style="margin-top: 1rem">
-                            <h4 class="tj kk wm qb ta-c">Ustozlar</h4>
-                            <div style="margin:0 auto; font-family:'Segoe UI', sans-serif;">
-
-                                @auth
-                                    @can('isOun', $LearningCenter)
-                                        <div
-                                            style="width:100%; :flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:20px;">
-                                            <h6 style="font-size:16px; font-weight:600;">
-                                                <a href="{{ route('teacher.create', 'id=' . $LearningCenter->id) }}"
-                                                    :class="{
-                                                        'hh/[0.15]': page === 'home',
-                                                        'sh': page === 'home' &&
-                                                            stickyMenu
-                                                    }"
-                                                    class="lk gh dk rg tc wf xf _l gi hi">
-                                                    Yangi ustoz ➕
-                                                </a>
-                                            </h6>
-                                        </div>
-                                    @endcan
-                                @endauth
-
-                                <hr style="margin:16px 0;">
-
-
-                                @foreach ($LearningCenter->teachers as $teacher)
-                                    <div class="tc uf zo ap zf bp" style="align-items: center">
-                                        <div class="tc zo ap zf bp"
-                                            style="display: flex; align-items: center; margin-bottom: 2rem">
-                                            <!-- Small Features Item -->
-                                            @if (isset($teacher->photo))
-                                                <div class="tc wf xf cf ae cd rg mh"
-                                                    style="width: 3rem; height: 3rem;">
-                                                    <a href="{{ asset('storage/' . $teacher->photo) }}"
-                                                        data-fslightbox>
-
-                                                        <img style="border-radius: 50%"
-                                                            src="{{ asset('storage/' . $teacher->photo) }}"
-                                                            alt="Icon" />
-                                                    </a>
-                                                    {{-- <a href="{{ $teacher->photo }}"
-                                                        data-fslightbox>
-
-                                                        <img style="border-radius: 50%"
-                                                            src="{{  $teacher->photo }}"
-                                                            alt="Icon" />
-                                                    </a> --}}
-                                                </div>
-                                            @else
-                                                <div class="tc wf xf cf ae cd rg mh"
-                                                    style="width: 3rem; height: 3rem;">
-                                                    <img style="border-radius: 50%"
-                                                        src="https://ui-avatars.com/api/?name={{ $teacher->name }}&background=random&size=64"
-                                                        alt="Icon" />
-                                                </div>
-                                            @endif
+                            </div>
+                            
+                            <!-- Comment Form -->
+                            <form action="{{ route('comment.store') }}" method="POST" class="mb-8">
+                                @csrf
+                                <input type="hidden" name="learning_centers_id" value="{{ $LearningCenter->id }}">
+                                <div class="flex space-x-4">
+                                    <input name="comment" 
+                                           type="text" 
+                                           placeholder="{{ $LearningCenter->name }} haqida fikringizni qoldiring..."
+                                           class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white">
+                                    <button type="submit" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-xl transition-colors duration-200">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            <!-- Comments List -->
+                            <div class="space-y-4">
+                                <p class="text-gray-600 dark:text-gray-400">Jami izohlar: {{ $LearningCenter->comments->count() }}</p>
+                                @foreach ($LearningCenter->comments->reverse() as $comment)
+                                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                                        <div class="flex items-start justify-between">
                                             <div>
-                                                <h4 class="ek yj go kk wm xb">{{ $teacher->name }}</h4>
-                                                <p>{{ $teacher->phone }}</p>
-                                                <p style="color: brown">{{ $teacher->subject->name }}</p>
-                                                <p>{{ $teacher->about }}</p>
+                                                <p class="font-semibold text-gray-900 dark:text-white">{{ $comment->user->name }}</p>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $comment->user->email }}</p>
                                             </div>
+                                            <span class="text-sm text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() }}</span>
                                         </div>
-
+                                        <p class="mt-2 text-gray-600 dark:text-gray-300">{{ $comment->comment }}</p>
+                                        
                                         @auth
-                                            @can('isOun', $LearningCenter)
-                                                <form id="delete-{{ $teacher->id }}"
-                                                    action="{{ route('teacher.destroy', $teacher->id) }}" method="post"
-                                                    onsubmit="return confirm('Rostdan ham {{ $teacher->name }}ni o‘chirilsinmi?');"
-                                                    style="margin-left:10px;">
+                                            @can('myComment', $comment)
+                                                <form action="{{ route('comment.delete', $comment->id) }}" 
+                                                      method="POST" 
+                                                      onsubmit="return confirm('Rostdan bu izohni o‘chirilsinmi?');"
+                                                      class="mt-4">
                                                     @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" style="font-size: 1rem">❌</button>
+                                                    <button type="submit" class="text-red-500 hover:text-red-700 text-sm transition-colors">
+                                                        Izohni o'chirish
+                                                    </button>
                                                 </form>
                                             @endcan
                                         @endauth
                                     </div>
                                 @endforeach
-
-                            </div>
-
-                            <hr style="margin:16px 0;">
-                        </div>
-                        <div class="animate_top">
-                            <h4 class="tj kk wm qb ta-c">Joylashuv</h4>
-
-                            <div>
-                                <iframe style="width: 100%; height: 20rem; border-radius: 0.5rem"
-                                    src="https://www.google.com/maps?q={{ $LearningCenter->location }}&hl=uz&z=14&output=embed"
-                                    allowfullscreen loading="lazy">
-                                </iframe>
                             </div>
                         </div>
-
-                        @auth
-                            <div id="comment" class="animate_top">
-
-                                <h4 class="favorite">
-                                    <span class="rating-label">Markazni baholang:</span>
-                                    <div class="stars" id="rating1" data-center-id="{{ $LearningCenter->id }}">
-                                        <span class="star" data-value="1">★</span>
-                                        <span class="star" data-value="2">★</span>
-                                        <span class="star" data-value="3">★</span>
-                                        <span class="star" data-value="4">★</span>
-                                        <span class="star" data-value="5">★</span>
-                                    </div>
-                                    <div class="result" id="result1"></div>
-                                </h4>
-
-                                <h4 class="tj kk wm qb ta-c">Izohlar</h4>
-                                <form action="{{ route('comment.store') }}" method="POST" class="mb-6">
-                                    @csrf
-                                    <input style="padding-right: 20px" type="hidden" name="learning_centers_id"
-                                        value="{{ $LearningCenter->id }}">
-                                    <div class="i">
-                                        <input name="comment" type="text"
-                                            placeholder="{{ $LearningCenter->name }} haqida fikringizni qoldiring..."
-                                            class="vd sm _g ch pm vk xm rg gm dm/40 dn/40 li mi" />
-
-                                        <button type="submit" class="h r q _h">
-                                            <svg class="th ul ml il" width="21" height="21" viewBox="0 0 24 24"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z"
-                                                    fill="currentColor" />
-                                            </svg>
-                                        </button>
-
-                                    </div>
-                                </form>
-                                <div>
-
-                                    <!-- Slider main container -->
-                                    <div style="margin-top: 20px" class="swiper testimonial-01">
-                                        <p>Jami izohlar {{ $LearningCenter->comments->count() }}</p>
-                                        <div class="swiper-wrapper">
-                                            @foreach ($LearningCenter->comments->reverse() as $comment)
-                                                <!-- Slides -->
-                                                <div class="swiper-slide">
-                                                    <div class="i hh rm sg vk xm bi qj">
-                                                        <div class="tc sf rn tn un zf dp">
-                                                            <div>
-                                                                <p class="ek ik xj _p kc fb">
-                                                                    {{ $comment->comment }}
-                                                                </p>
-                                                                <div class="tc yf vf">
-                                                                    <div>
-                                                                        <span
-                                                                            class="rc ek xj kk wm zb">{{ $comment->user->name }}</span>
-                                                                        <span
-                                                                            class="rc">{{ $comment->user->email }}</span>
-                                                                    </div>
-
-                                                                </div>
-                                                                <img class="rk" src="images/brand-light-02.svg')}}"
-                                                                    alt="{{ $comment->created_at->diffForHumans() }}" />
-                                                            </div>
-                                                            @auth
-                                                                @can('myComment', $comment)
-                                                                    <form action="{{ route('comment.delete', $comment->id) }}"
-                                                                        method="post"
-                                                                        onsubmit="return confirm('Rostdan bu izohni o‘chirilsinmi?');">
-                                                                        @csrf
-                                                                        <button type="submit">
-                                                                            <span>Izohni o'chirish</span>
-                                                                        </button>
-                                                                    </form>
-                                                                @endcan
-                                                            @endauth
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        @if ($LearningCenter->comments->count() > 1)
-                                            <!-- If we need navigation -->
-                                            <div class="tc wf xf fg jb">
-                                                <div
-                                                    class="swiper-button-prev c tc wf xf ie ld rg _g dh pf ml vr hh rm tl zm rl ym">
-                                                    <svg class="th lm" width="14" height="14"
-                                                        viewBox="0 0 14 14" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M3.52366 7.83336L7.99366 12.3034L6.81533 13.4817L0.333663 7.00002L6.81533 0.518357L7.99366 1.69669L3.52366 6.16669L13.667 6.16669L13.667 7.83336L3.52366 7.83336Z"
-                                                            fill="" />
-                                                    </svg>
-                                                </div>
-                                                <div
-                                                    class="swiper-button-next c tc wf xf ie ld rg _g dh pf ml vr hh rm tl zm rl ym">
-                                                    <svg class="th lm" width="14" height="14"
-                                                        viewBox="0 0 14 14" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M10.4763 6.16664L6.00634 1.69664L7.18467 0.518311L13.6663 6.99998L7.18467 13.4816L6.00634 12.3033L10.4763 7.83331H0.333008V6.16664H10.4763Z"
-                                                            fill="" />
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        @endauth
-
-                        @guest
-
-                            <h4 style="margin-top: 3rem">O'z fikringizni qoldirish uchun ro'yxatdan o'ting!</h4>
-                            <div class="tc wf ig pb no animate_top" style="margin-top: 20px; text-align: center">
-                                <a href="{{ route('signin') }}"
-                                    :class="{ 'nk yl': page === 'home', 'ok': page === 'home' && stickyMenu }"
-                                    class="ek pk xl">Sign In</a>
-                                <a href="{{ route('signup') }}"
-                                    :class="{ 'hh/[0.15]': page === 'home', 'sh': page === 'home' && stickyMenu }"
-                                    class="lk gh dk rg tc wf xf _l gi hi">Sign Up</a>
-                            </div>
-                        @endguest
-
-                    </div>
-                    @auth
-                        @can('isOun', $LearningCenter)
-                            <div class="animate_right bf" style="margin-top: 10px">
-                                <a style="border: 1px solid blue" href="{{ route('course.edit', $LearningCenter->id) }}"
-                                    class="vc ek kk hh rg ol il cm gi hi"> {{ $LearningCenter->name }} markazini
-                                    tahrirlash.</a>
-                                <form id="delete-{{ $LearningCenter->id }}"
-                                    onsubmit="return confirm('Rostdan ham {{ $LearningCenter->name }} markazini o‘chirilsinmi?');"
-                                    action="{{ route('course.destroy', $LearningCenter->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" style="color: red; margin-top: 8px; border: 1px solid blue"
-                                        class="vc ek kk hh rg ol il cm gi hi">
-                                        {{ $LearningCenter->name }} markazini saytdan o'chirish.
-                                    </button>
-                                </form>
-                            </div>
-                        @endcan
                     @endauth
                 </div>
 
-                <div class="jn/2 so">
-                    <div class="animate_top fb">
-                        <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">
-                            {{ $LearningCenter->name }}
-                        </h2>
-                    </div>
-
-                    <div class="animate_top fb">
-                        <hr style="margin:16px 0;">
-
-                        <h4 class="tj kk wm qb ta-c">
-                            Fanlar</h4>
-
-                        <ul
-                            style="padding:0; margin:0; list-style:none; font-family:'Segoe UI', sans-serif; font-size:16px;">
-
-                            @auth
-                                @can('isOun', $LearningCenter)
-                                    <li>
-                                        <a href="{{ route('subject.create', 'id=' . $LearningCenter->id) }}"
-                                            :class="{
-                                                'hh/[0.15]': page === 'home',
-                                                'sh': page === 'home' &&
-                                                    stickyMenu
-                                            }"
-                                            class="lk gh dk rg tc wf xf _l gi hi">
-                                            ➕
-                                        </a>
-                                    </li>
-                                @endcan
-                            @endauth
-
-                            <hr style="margin:16px 0;">
-                            @foreach ($LearningCenter->subjects as $subject)
-                                <div class="tc uf zo ap zf bp" style="align-items: center">
-                                    <div class="tc zo ap zf bp"
-                                        style="display: flex; align-items: center; margin-bottom: 2rem">
-                                        <!-- Small Features Item -->
-
-                                        <div class="tc wf xf cf ae cd rg mh" style="width: 3rem; height: 3rem;">
-                                            @if (isset($subject->subject->icon))
-                                                <img style="border-radius: 50%; width: 3rem; height: 3rem;"
-                                                    src="https://ui-avatars.com/api/?name={{ $subject->subject->icon }}&background=random&size=64"
-                                                    alt="Icon" />
-                                            @else
-                                                <img style="border-radius: 50%; width: 3rem; height: 3rem;"
-                                                    src="https://ui-avatars.com/api/?name={{ $subject->subject->name }}&background=random&size=64"
-                                                    alt="Icon" />
-                                            @endif
-
-                                        </div>
-                                        <div>
-                                            <h4 class="ek yj go kk wm xb">{{ $subject->subject->name }}</h4>
-                                            <p>{{ $subject->price }}</p>
-                                        </div>
-                                    </div>
-
-                                    @auth
-                                        @can('isOun', $LearningCenter)
-                                            <form id="delete-{{ $subject->id }}"
-                                                action="{{ route('subject.destroy', $subject->id) }}" method="post"
-                                                onsubmit="return confirm('Rostdan ham {{ $subject->subject->name }}ni o‘chirilsinmi?');"
-                                                style="margin-left:10px;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" style="font-size: 1rem">❌</button>
-                                            </form>
-                                        @endcan
-                                    @endauth
+                <!-- Sidebar -->
+                <div class="lg:col-span-1">
+                    <!-- Quick Info Card -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8 sticky top-8">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tezkor ma'lumot</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Turi</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->type }}</p>
+                            </div>
+                            
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Manzil</p>
+                                <a href="https://www.google.com/maps?q={{ $LearningCenter->location }}" 
+                                   target="_blank" 
+                                   class="text-primary-600 dark:text-primary-400 hover:underline text-sm">
+                                    {{ $LearningCenter->address }}
+                                </a>
+                            </div>
+                            
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Qo'shilgan sana</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->created_at->diffForHumans() }}</p>
+                            </div>
+                            
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">O'quvchilar soni</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->student_count ?? 0 }}</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        @auth
+                            @can('isOun', $LearningCenter)
+                                <div class="mt-6 space-y-3">
+                                    <x-button variant="primary" href="{{ route('course.edit', $LearningCenter->id) }}" class="w-full">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                        Tahrirlash
+                                    </x-button>
+                                    
+                                    <form action="{{ route('course.destroy', $LearningCenter->id) }}" 
+                                          method="POST" 
+                                          onsubmit="return confirm('Rostdan ham {{ $LearningCenter->name }} markazini o‘chirilsinmi?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="w-full bg-danger-600 hover:bg-danger-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200">
+                                            <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                            O'chirish
+                                        </button>
+                                    </form>
                                 </div>
-                            @endforeach
-
-                            <hr>
-                        </ul>
-
+                            @endcan
+                        @endauth
                     </div>
-
+                    
+                    <!-- Subjects -->
+                    @if($LearningCenter->subjects->count() > 0)
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Fanlar</h3>
+                                @auth
+                                    @can('isOun', $LearningCenter)
+                                        <x-button variant="outline" size="sm" href="{{ route('subject.create', 'id=' . $LearningCenter->id) }}">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                            Qo'shish
+                                        </x-button>
+                                    @endcan
+                                @endauth
+                            </div>
+                            
+                            <div class="space-y-3">
+                                @foreach ($LearningCenter->subjects as $subject)
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors group">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-8 h-8 flex items-center justify-center">
+                                                <!-- @if(isset($subject->subject->icon))
+                                                    <img src="{{ asset('storage/' . $subject->subject->icon) }}" 
+                                                         alt="{{ $subject->subject->name }}" 
+                                                         class="w-8 h-8 rounded-full object-cover">
+                                                @else
+                                                    <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                                        {{ strtoupper(substr($subject->subject->name, 0, 1)) }}
+                                                    </div>
+                                                @endif -->
+                                                <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                                        {{ strtoupper(substr($subject->subject->name, 0, 1)) }}
+                                                    </div>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{{ $subject->subject->name }}</p>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ number_format($subject->price) }} so'm/oy</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Subject actions for owner -->
+                                        @auth
+                                            @can('isOun', $LearningCenter)
+                                                <div class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <x-button variant="outline" size="sm" href="{{ route('subject.edit', $subject->id) }}" class="p-2">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                        </svg>
+                                                    </x-button>
+                                                    <form action="{{ route('subject.destroy', $subject->id) }}" method="POST" onsubmit="return confirm('Rostdan ham {{ $subject->subject->name }} fani o‘chirilsinmi?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="p-2 text-red-500 hover:text-red-700 transition-colors">
+                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @endcan
+                                        @endauth
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @else
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                            <div class="text-center py-8">
+                                <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Fanlar hozircha yo'q</h3>
+                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazida hozircha fanlar ro'yxatlanmagan</p>
+                                
+                                @auth
+                                    @can('isOun', $LearningCenter)
+                                        <x-button variant="primary" href="{{ route('subject.create', 'id=' . $LearningCenter->id) }}">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                            Birinchi fanni qo'shish
+                                        </x-button>
+                                    @endcan
+                                @endauth
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </section>
-    <!-- ===== Blog Single End ===== -->
 
-
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-primary-600 to-accent-600">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                Ushbu markazga qiziqish bildiraysizmi?
+            </h2>
+            <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                Bog'lanish orqali qo'shimcha ma'lumot oling yoki to'g'ridan-to'g'ri markazga murojaat qiling
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                @foreach ($LearningCenter->connections as $connection)
+                    @if($connection->connection->name == 'Phone')
+                        <a href="tel:{{ $connection->url }}" class="bg-white text-primary-600 hover:bg-gray-50 font-semibold py-3 px-6 rounded-xl transition-colors duration-200">
+                            <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            {{ $connection->url }}
+                        </a>
+                    @elseif($connection->connection->name == 'Email')
+                        <a href="mailto:{{ $connection->url }}" class="bg-white/10 border border-white/20 text-white hover:bg-white/20 font-semibold py-3 px-6 rounded-xl transition-colors duration-200">
+                            <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            Email
+                        </a>
+                    @endif
+                @endforeach
+            </div>
+        </div>
+    </section>
 </x-layout>
 
-
 <style>
-    .favorite1 {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 15px;
-        margin-top: 20px;
-        margin-bottom: 20px
-    }
-
-    .favorite1 .stars1 {
-        display: flex;
-        justify-content: center;
-        gap: 5px;
-        font-size: 40px;
+    /* Rating System Styles */
+    .star {
         cursor: pointer;
-        position: relative;
-    }
-
-    .favorite1 .star1 {
-        color: #ddd;
-        transition: color 0.2s ease;
-        user-select: none;
-        position: relative;
-    }
-
-    .favorite1 .star1.full {
-        color: #ffc107;
-    }
-
-    .favorite1 .star1.half {
-        background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .favorite1 .result1 {
-        font-size: 26px;
-        color: #667eea;
-        font-weight: bold;
-        min-height: 30px;
-    }
-
-    /* favorites */
-    .favorite {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-        margin-top: 20px
-    }
-
-    .favorite .rating-label {
-        color: #666;
-        font-size: 24px;
-    }
-
-    .favorite .stars {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        font-size: 40px;
-        cursor: pointer;
-    }
-
-    .favorite .star {
-        color: #ddd;
         transition: all 0.2s ease;
         user-select: none;
     }
 
-    .favorite .star:hover,
-    .favorite .star.hover {
-        color: #ffc107;
-        transform: scale(1.2);
+    .star:hover {
+        transform: scale(1.1);
     }
 
-    .favorite .star.active {
-        color: #ffc107;
+    .star.hover {
+        color: #fbbf24;
     }
 
-    .favorite .result {
-        font-size: 18px;
-        color: #667eea;
-        font-weight: bold;
-        min-height: 30px;
+    .star.active {
+        color: #f59e0b;
+    }
+
+    /* Dark mode adjustments */
+    .dark .star.hover {
+        color: #fbbf24;
+    }
+
+    .dark .star.active {
+        color: #f59e0b;
     }
 </style>
 
 <script>
-    const ratings = {};
+    // Rating functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const ratings = {};
 
-    function initRating(ratingId, resultId) {
-        const starsContainer = document.getElementById(ratingId);
-        const stars = starsContainer.querySelectorAll('.star');
+        function initRating(ratingId, resultId) {
+            const starsContainer = document.getElementById(ratingId);
+            if (!starsContainer) return;
+            
+            const stars = starsContainer.querySelectorAll('.star');
 
-        stars.forEach(star => {
-            star.addEventListener('mouseenter', () => {
-                const value = star.dataset.value;
-                highlightStars(stars, value);
-            });
-
-            star.addEventListener('click', () => {
-                const value = star.dataset.value;
-                const centerId = starsContainer.dataset.centerId;
-                ratings[ratingId] = value;
-
-                // Yulduzlarni yangilash
-                stars.forEach(s => {
-                    if (s.dataset.value <= value) {
-                        s.classList.add('active');
-                    } else {
-                        s.classList.remove('active');
-                    }
+            stars.forEach(star => {
+                star.addEventListener('mouseenter', () => {
+                    const value = star.dataset.value;
+                    highlightStars(stars, value);
                 });
 
-                updateResult(resultId, value);
+                star.addEventListener('click', () => {
+                    const value = star.dataset.value;
+                    const centerId = starsContainer.dataset.centerId;
+                    ratings[ratingId] = value;
 
-                // POST so‘rov yuborish
-                sendRating(centerId, value);
+                    // Update stars
+                    stars.forEach(s => {
+                        if (s.dataset.value <= value) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+
+                    updateResult(resultId, value);
+
+                    // Send rating to server
+                    sendRating(centerId, value);
+                });
             });
-        });
 
-        starsContainer.addEventListener('mouseleave', () => {
-            const savedRating = ratings[ratingId];
-            if (savedRating) {
-                highlightStars(stars, savedRating);
-            } else {
-                stars.forEach(s => s.classList.remove('hover'));
-            }
-        });
-    }
+            starsContainer.addEventListener('mouseleave', () => {
+                const savedRating = ratings[ratingId];
+                if (savedRating) {
+                    highlightStars(stars, savedRating);
+                } else {
+                    stars.forEach(s => s.classList.remove('hover'));
+                }
+            });
+        }
 
-    function highlightStars(stars, value) {
-        stars.forEach(star => {
-            if (star.dataset.value <= value) {
-                star.classList.add('hover');
-            } else {
-                star.classList.remove('hover');
-            }
-        });
-    }
+        function highlightStars(stars, value) {
+            stars.forEach(star => {
+                if (star.dataset.value <= value) {
+                    star.classList.add('hover');
+                } else {
+                    star.classList.remove('hover');
+                }
+            });
+        }
 
-    function updateResult(resultId, value) {
-        const resultEl = document.getElementById(resultId);
-        const ratings_text = ['Juda yomon', 'Yomon', "O'rtacha", 'Yaxshi', 'Ajoyib'];
-        resultEl.textContent = `${value} ⭐ - ${ratings_text[value - 1]}`;
-    }
+        function updateResult(resultId, value) {
+            const resultEl = document.getElementById(resultId);
+            if (!resultEl) return;
+            
+            const ratings_text = ['Juda yomon', 'Yomon', "O'rtacha", 'Yaxshi', 'Ajoyib'];
+            resultEl.textContent = `${value} ⭐ - ${ratings_text[value - 1]}`;
+        }
 
-    // Reytingni serverga yuboruvchi funksiya
-    function sendRating(centerId, value) {
-        fetch('/comment/favoriteStore', {
+        // Send rating to server
+        function sendRating(centerId, value) {
+            fetch('/comment/favoriteStore', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json', // Laravelga JSON kutayotganimizni aytadi
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 body: JSON.stringify({
@@ -753,28 +636,27 @@
                 })
             })
             .then(async response => {
-                const text = await response.text(); // avval text oling
+                const text = await response.text();
                 console.log('Raw response text:', text);
 
                 try {
-                    const data = JSON.parse(text); // keyin JSON.parse
+                    const data = JSON.parse(text);
                     if (!response.ok) {
-                        // server 4xx/5xx kod qaytargan bo'lishi mumkin
                         console.error('Server returned error:', data);
                     } else {
                         console.log('Reyting yuborildi:', data);
                     }
                 } catch (err) {
-                    // Agar JSON.parse xato bersa — text ichida nimadir noto'g'ri
-                    console.error('JSON.parse xatosi — server noto\'g\'ri javob yubordi:', err);
+                    console.error('JSON.parse xatosi:', err);
                     console.error('Server returned raw text:', text);
                 }
             })
             .catch(error => {
                 console.error('Fetch xatosi:', error);
             });
-    }
+        }
 
-
-    initRating('rating1', 'result1');
+        // Initialize rating
+        initRating('rating1', 'result1');
+    });
 </script>

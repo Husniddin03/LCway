@@ -1,124 +1,142 @@
 <x-layout>
-
-    <x-slot:title>
-
-        Asosiy sahifa
-
-    </x-slot>
-
-    <!-- ===== Hero Start ===== -->
-    <section class="gj do ir hj sp jr i pg">
-        <!-- Hero Images -->
-        {{-- <div class="animate_right xc fn zd/2 2xl:ud-w-187.5 bd 2xl:ud-h-171.5 h q r">
-            <img src="{{ asset('images/ai2.webp') }}" alt="ai" class="h q r ua"/>
-        </div> --}}
-
+    <x-slot:title>FindCourse - Eng yaxshi o'quv markazlari</x-slot-title>
+    
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-600 via-accent-600 to-primary-800"></div>
+        
+        <!-- Abstract Shapes -->
+        <div class="absolute inset-0">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent-400/20 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/3 w-64 h-64 bg-white/5 rounded-full blur-2xl"></div>
+        </div>
+        
         <!-- Hero Content -->
-        <div class="bb ze ki xn 2xl:ud-px-0">
-            <div class="tc _o">
-                <div class="animate_left jn/2">
-                    <h1 class="fk vj zp or kk wm wb">Assalomu alaykum, bizning sahifamizga xush kelibsiz!
-                    </h1>
-                    <p class="fq">
-                        Bu yerda siz o'zingizga kreakli bo'lgan o'quv markazlarni topishingiz mumkun. Biz
-                        sizga eng yaxshi xizmatni taqdim etamiz.
+        <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
+            <div class="animate-fade-in">
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+                    Assalomu alaykum,<br>
+                    <span class="text-yellow-300">
+                        FindCourse
+                    </span>
+                    ga xush kelibsiz!
+                </h1>
+                
+                <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+                    Bu yerda siz o'zingizga mos bo'lgan o'quv markazlarni topishingiz mumkin. 
+                    Biz sizga eng yaxshi xizmatni taqdim etamiz.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+                    <x-button variant="secondary" size="lg" href="{{ route('blog-grid') }}" class="bg-white text-primary-600 hover:bg-gray-50">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        Hoziroq kurslarni tanlash
+                    </x-button>
+                    
+                    <x-button variant="outline" size="lg" class="border-white text-white hover:bg-white hover:text-primary-600">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                        (+998) 77 025 026 77
+                    </x-button>
+                </div>
+                
+                <p class="text-white/80 text-sm">
+                    Har qanday savol yoki taklif uchun biz bilan bog'laning
+                </p>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="text-center group">
+                    <div class="w-16 h-16 bg-gradient-to-r from-primary-500 to-accent-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">O'qituvchilar tanlovi</h3>
+                    <p class="text-gray-600 dark:text-gray-400">O'zingizga munosib ko'rgan o'qituvchilarni tanlang.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="text-center group">
+                    <div class="w-16 h-16 bg-gradient-to-r from-success-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Butun O'zbekiston bo'ylab</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Butun O'zbekiston bo'ylab barcha o'quv markazlarini topishingiz mumkin.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="text-center group">
+                    <div class="w-16 h-16 bg-gradient-to-r from-warning-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Markazlar reytingi</h3>
+                    <p class="text-gray-600 dark:text-gray-400">O'quv markazlari reytingi bo'yicha qidiring.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <div class="relative z-10">
+                        <img src="{{ asset('images/we1.png') }}" alt="About" class="rounded-2xl shadow-xl">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 z-0">
+                        <img src="{{ asset('images/we2.png') }}" alt="About" class="rounded-2xl shadow-xl opacity-80">
+                    </div>
+                    <div class="absolute -top-6 -left-6 z-0">
+                        <img src="{{ asset('images/we3.png') }}" alt="About" class="rounded-2xl shadow-xl opacity-60">
+                    </div>
+                </div>
+                
+                <div>
+                    <x-badge variant="primary" class="mb-4">Nima uchun bizni tanlaysiz</x-badge>
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
+                        Biz eng yaxshi xizmatlarni taqdim etamiz
+                    </h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+                        Biz haqimizda ko'proq ma'lumot olish uchun pastdagi videoni koring va biz haqimizda o'z fikringizni qoldiring.
                     </p>
-
-                    <div class="tc tf yo zf mb">
-                        <a href="{{ route('blog-grid') }}" class="ek jk lk gh gi hi rg ml il vc _d _l">Hoziroq kurslarni
-                            tanlash!</a>
-
-                        <span class="tc sf">
-                            <a href="#!" class="inline-block ek xj kk wm"> (+998) 77 025
-                                026 77 </a>
-                            <span class="inline-block">Har qanday savol yoki taklif uchun</span>
-                        </span>
+                    
+                    <div class="flex items-center space-x-4">
+                        <a href="{{ asset('videos/aboutme.mp4') }}" class="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Bizning ishga munosabatingiz qanday?
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- ===== Hero End ===== -->
-
-    <!-- ===== Small Features Start ===== -->
-    <section id="features">
-        <div class="bb ze ki yn 2xl:ud-px-12.5">
-            <div class="tc uf zo xf ap zf bp mq">
-                <!-- Small Features Item -->
-                <div class="animate_top kn to/3 tc cg oq">
-                    <div class="tc wf xf cf ae cd rg mh">
-                        <img src="{{ asset('images/icon-01.svg') }}" alt="Icon" />
-                    </div>
-                    <div>
-                        <h4 class="ek yj go kk wm xb">O'qituvchilar tanlovi</h4>
-                        <p>O'zingiz munoib ko'rgan o'qituvchilarni tanlang.</p>
-                    </div>
-                </div>
-
-                <!-- Small Features Item -->
-                <div class="animate_top kn to/3 tc cg oq">
-                    <div class="tc wf xf cf ae cd rg nh">
-                        <img src="{{ asset('images/icon-02.svg') }}" alt="Icon" />
-                    </div>
-                    <div>
-                        <h4 class="ek yj go kk wm xb">Butun O'zbekiston bo'ylab </h4>
-                        <p>Butun O'zbekiston bo'ylab barcha o'quv markazlarini topishingiz mumkun.</p>
-                    </div>
-                </div>
-
-                <!-- Small Features Item -->
-                <div class="animate_top kn to/3 tc cg oq">
-                    <div class="tc wf xf cf ae cd rg oh">
-                        <img src="{{ asset('images/icon-03.svg') }}" alt="Icon" />
-                    </div>
-                    <div>
-                        <h4 class="ek yj go kk wm xb">Markazlar reytingi bo'yicha</h4>
-                        <p>O'quv markazlari reytingi bo'yicha qidiring.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ===== Small Features End ===== -->
-
-    <!-- ===== About Start ===== -->
-    <section class="ji gp uq 2xl:ud-py-35 pg">
-        <div class="bb ze ki xn wq">
-            <div class="tc wf gg qq">
-                <!-- About Images -->
-                <div class="animate_left xc gn gg jn/2 i">
-                    <div>
-                        <img src="{{ asset('images/shape-05.svg') }}" alt="Shape" class="h -ud-left-5 x" />
-                        <img src="{{ asset('images/we1.png') }}" alt="About" class="ib br-10" />
-                        <img src="{{ asset('images/we3.png') }}" alt="About" class="br-10" />
-                    </div>
-                    <div>
-                        <img src="{{ asset('images/shape-06.svg') }}" alt="Shape" />
-                        <img src="{{ asset('images/we2.png') }}" alt="About" class="ob gb br-10" />
-                        <img src="{{ asset('images/shape-07.svg') }}" alt="Shape" class="bb" />
-                    </div>
-                </div>
-
-                <!-- About Content -->
-                <div class="animate_right jn/2">
-                    <h4 class="ek yj mk gb">Nima uchun bizni tanlaysiz</h4>
-                    <h2 class="fk vj zp pr kk wm qb">Biz eng yaxshi xizmatlarni taqdim etish orqali mijozlarimizni
-                        xursand qilamiz.</h2>
-                    <p class="uo">Biz haqimizda ko'proq malumot olish uchun pastdagi videoni koring va biz haqimizda
-                        o'z fikringizni qoldiring.</p>
-
-                    <a href="{{ asset('videos/aboutme.mp4') }}" data-fslightbox class="vc wf hg mb">
-                        <span class="tc wf xf be dd rg i gh ua">
-                            <span class="nf h vc yc vd rg gh qk -ud-z-1"></span>
-                            <img src="{{ asset('images/icon-play.svg') }}" alt="Play" />
-                        </span>
-                        <span class="kk">Bizning ishga munosabatingiz qanday?</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ===== About End ===== -->
 
     <!-- ===== Team Start ===== -->
     {{-- <section class="i pg ji gp uq">
@@ -303,68 +321,343 @@
     </section> --}}
     <!-- ===== Team End ===== -->
 
-    <!-- ===== Services Start ===== -->
-    <section class="lj tp kr">
-        <!-- Section Title Start -->
-        <div x-data="{ sectionTitle: `Biz siz uchun eng yaxshi sifatli xizmatni taklif etamiz.`, sectionTitleText: `Bu yerda biz qila oladigan ishlar berilgan.` }">
-            <div class="animate_top bb ze rj ki xn vq">
-                <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
+    <!-- Services Section -->
+    <section class="py-20 bg-white dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    Biz siz uchun eng yaxshi sifatli xizmatni taklif etamiz
                 </h2>
-                <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                    Bu yerda biz qila oladigan ishlar berilgan
+                </p>
             </div>
-
-
-        </div>
-        <!-- Section Title End -->
-
-        <div class="bb ze ki xn yq mb en">
-            <div class="wc qf pn xo ng">
-                <!-- Service Item -->
-                <div class="animate_top sg oi pi zq ml il am cn _m">
-                    <img src="{{ asset('images/icon-04.svg') }}" alt="Icon" />
-                    <h4 class="ek zj kk wm nb _b">Startup ishlab chiqish.</h4>
-                    <p>Turli xil mavzularda startap loyhalar ishlab chiqamiz.</p>
-                </div>
-
-                <!-- Service Item -->
-                <div class="animate_top sg oi pi zq ml il am cn _m">
-                    <img src="{{ asset('images/icon-05.svg') }}" alt="Icon" />
-                    <h4 class="ek zj kk wm nb _b">Yuqori sifatli dizayn</h4>
-                    <p>Foydalanuvchilarga hush yoqadigan yuqori sifatli dizayn.</p>
-                </div>
-
-                <!-- Service Item -->
-                <div class="animate_top sg oi pi zq ml il am cn _m">
-                    <img src="{{ asset('images/icon-06.svg') }}" alt="Icon" />
-                    <h4 class="ek zj kk wm nb _b">Websaytlar</h4>
-                    <p>Biz siz uchun websayt qilib berishimiz mumkun.</p>
-                </div>
-
-                <!-- Service Item -->
-                <div class="animate_top sg oi pi zq ml il am cn _m">
-                    <img src="{{ asset('images/icon-07.svg') }}" alt="Icon" />
-                    <h4 class="ek zj kk wm nb _b">Optimal tezlik</h4>
-                    <p>Foydalanuvchilar uchun tezlikda hizmat qilish</p>
-                </div>
-
-                <!-- Service Item -->
-                <div class="animate_top sg oi pi zq ml il am cn _m">
-                    <img src="{{ asset('images/icon-05.svg') }}" alt="Icon" />
-                    <h4 class="ek zj kk wm nb _b">To'liq moslashish</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor.</p>
-                </div>
-
-                <!-- Service Item -->
-                <div class="animate_top sg oi pi zq ml il am cn _m">
-                    <img src="{{ asset('images/icon-06.svg') }}" alt="Icon" />
-                    <h4 class="ek zj kk wm nb _b">Har ikkala tomondan</h4>
-                    <p>Ham frontend ham backend bo'limlarni birdek bajarish</p>
-                </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <x-card hover class="text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-primary-500 to-accent-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Startup ishlab chiqish</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Turli xil mavzularda startup loyihalar ishlab chiqamiz.</p>
+                </x-card>
+                
+                <!-- Service 2 -->
+                <x-card hover class="text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Yuqori sifatli dizayn</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Foydalanuvchilarga hush yoqadigan yuqori sifatli dizayn.</p>
+                </x-card>
+                
+                <!-- Service 3 -->
+                <x-card hover class="text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-success-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Websaytlar</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Biz siz uchun veb-sayt qilib berishimiz mumkin.</p>
+                </x-card>
+                
+                <!-- Service 4 -->
+                <x-card hover class="text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-warning-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Optimal tezlik</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Foydalanuvchilar uchun tezlikda hizmat qilish.</p>
+                </x-card>
+                
+                <!-- Service 5 -->
+                <x-card hover class="text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-danger-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">To'liq moslashish</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </x-card>
+                
+                <!-- Service 6 -->
+                <x-card hover class="text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Har ikkala tomondan</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Ham frontend ham backend bo'limlarni birdek bajarish.</p>
+                </x-card>
             </div>
         </div>
     </section>
-    <!-- ===== Services End ===== -->
 
+    <!-- Featured Courses Section -->
+    <section class="py-16 bg-white dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    Mashhur o'quv markazlari
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                    Eng yaxshi reytingga ega o'quv markazlari bilan tanishing
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                @if(isset($centers) && $centers->count() > 0)
+                    @foreach($centers->take(8) as $center)
+                        <x-card hover class="group cursor-pointer">
+                            <div class="relative overflow-hidden rounded-t-2xl">
+                                @if($center->logo)
+                                    <img src="{{ asset('storage/' . $center->logo) }}" 
+                                         alt="{{ $center->name }}" 
+                                         class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                                @else
+                                    <div class="w-full h-48 bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center">
+                                        <svg class="w-16 h-16 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                        </svg>
+                                    </div>
+                                @endif
+                                
+                                <!-- Rating Badge -->
+                                <div class="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-2 py-1 rounded-full">
+                                    @php
+                                        $average = round($center->favorites()->avg('rating') ?? 0, 1);
+                                    @endphp
+                                    <div class="flex items-center space-x-1">
+                                        <span class="text-yellow-500 text-sm">★</span>
+                                        <span class="text-sm font-medium text-gray-900 dark:text-white">{{ $average }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <div class="mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                                        {{ Str::limit($center->name, 30) }}
+                                    </h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $center->type }}</p>
+                                </div>
+                                
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        {{ Str::limit($center->address, 25) }}
+                                    </div>
+                                </div>
+                                
+                                @if($center->subjects->count() > 0)
+                                    <div class="flex flex-wrap gap-1 mb-4">
+                                        @foreach($center->subjects->take(2) as $subject)
+                                            <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-xs rounded-full">
+                                                {{ $subject->subject->name }}
+                                            </span>
+                                        @endforeach
+                                        @if($center->subjects->count() > 2)
+                                            <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full">
+                                                +{{ $center->subjects->count() - 2 }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                @endif
+                                
+                                <div class="flex items-center justify-between">
+                                    @if($center->subjects->count() > 0)
+                                        <div>
+                                            <p class="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                                                {{ $center->subjects->min('price') ?? 0 }}
+                                            </p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">so'm/oydan</p>
+                                        </div>
+                                    @endif
+                                    
+                                    <x-button variant="outline" size="sm" href="{{ route('blog-single', $center->id) }}">
+                                        Batafsil
+                                    </x-button>
+                                </div>
+                            </div>
+                        </x-card>
+                    @endforeach
+                @else
+                    <!-- Placeholder cards when no centers -->
+                    @for($i = 1; $i <= 4; $i++)
+                        <x-card hover>
+                            <div class="h-48 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 rounded-t-2xl"></div>
+                            <div class="p-6">
+                                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
+                                <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+                                <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                            </div>
+                        </x-card>
+                    @endfor
+                @endif
+            </div>
+            
+            <div class="text-center mt-12">
+                <x-button variant="primary" size="lg" href="{{ route('blog-grid') }}">
+                    Barcha markazlarni ko'rish
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </x-button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="py-16 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    O'qish yo'nalishlari
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                    O'zingizga mos bo'lgan yo'nalishni tanlang
+                </p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-3">
+                @php
+                    $categories = [
+                        'IT va dasturlash', 
+                        'Chet tillari', 
+                        'Matematika', 
+                        'Fizika', 
+                        'Kimyo', 
+                        'Biologiya', 
+                        'Tarix', 
+                        'Adabiyot', 
+                        'San\'at', 
+                        'Biznes', 
+                        'Marketing', 
+                        'Dizayn'
+                    ];
+                @endphp
+                
+                @foreach($categories as $category)
+                    <x-badge variant="primary" class="px-4 py-2 text-sm hover:scale-105 transition-transform cursor-pointer">
+                        {{ $category }}
+                    </x-badge>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-white dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    O'quvchilarimiz fikrlari
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                    Bitiruvchilarimiz tajribasi va muvaffaqiyatlari
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <x-card hover class="text-center">
+                    <div class="mb-6">
+                        <img src="https://ui-avatars.com/api/?name=Ali+Valiyev&background=random&size=100" 
+                             alt="Ali Valiyev" 
+                             class="w-20 h-20 rounded-full mx-auto mb-4">
+                        <div class="flex justify-center mb-2">
+                            @for($i = 1; $i <= 5; $i++)
+                                <span class="text-yellow-400 text-lg">★</span>
+                            @endfor
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Ali Valiyev</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Web Dasturchi</p>
+                    </div>
+                    <blockquote class="text-gray-600 dark:text-gray-300 italic">
+                        "FindCourse orqali o'zim uchun eng yaxshi IT kursini topdim. Endi yirik kompaniyada ishlayman. Ushbu platforma har qanday yosh uchun foydalidir!"
+                    </blockquote>
+                </x-card>
+                
+                <!-- Testimonial 2 -->
+                <x-card hover class="text-center">
+                    <div class="mb-6">
+                        <img src="https://ui-avatars.com/api/?name=Malika+Karimova&background=random&size=100" 
+                             alt="Malika Karimova" 
+                             class="w-20 h-20 rounded-full mx-auto mb-4">
+                        <div class="flex justify-center mb-2">
+                            @for($i = 1; $i <= 5; $i++)
+                                <span class="text-yellow-400 text-lg">★</span>
+                            @endfor
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Malika Karimova</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Ingliz tuli o'qituvchisi</p>
+                    </div>
+                    <blockquote class="text-gray-600 dark:text-gray-300 italic">
+                        "Chet tili kursini topish juda oson bo'ldi. Sifatli o'qituvchilar va qulay jadval. Hozir o'zim ham o'qituvchi sifatida faoliyat yuritaman."
+                    </blockquote>
+                </x-card>
+                
+                <!-- Testimonial 3 -->
+                <x-card hover class="text-center">
+                    <div class="mb-6">
+                        <img src="https://ui-avatars.com/api/?name=Javohir+Toshmatov&background=random&size=100" 
+                             alt="Javohir Toshmatov" 
+                             class="w-20 h-20 rounded-full mx-auto mb-4">
+                        <div class="flex justify-center mb-2">
+                            @for($i = 1; $i <= 4; $i++)
+                                <span class="text-yellow-400 text-lg">★</span>
+                            @endfor
+                            <span class="text-yellow-400 text-lg opacity-30">★</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Javohir Toshmatov</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Grafik dizayner</p>
+                    </div>
+                    <blockquote class="text-gray-600 dark:text-gray-300 italic">
+                        "Dizayn yo'nalishida bir nechta kurslarni solishtirdim. Platforma orqali eng yaxshi markazni topdim va hozir o'z ishimga asos soldim."
+                    </blockquote>
+                </x-card>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-primary-600 to-accent-600 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-full h-full bg-repeat" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    Hozirda ro'yxatdan o'tganlar o'quv markazlar soni: <span class="text-yellow-300">{{ $AllCenters->count() ?? 0 }} ta</span>
+                </h2>
+                <p class="text-xl text-white/90 mb-8">
+                    Ular safida siz ham bo'ling va o'zingizning o'quv markazingizni qo'shing!
+                </p>
+                <x-button variant="secondary" size="lg" href="{{ route('course.create') }}" class="bg-white text-primary-600 hover:bg-gray-50">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Hoziroq qo'shiling
+                </x-button>
+            </div>
+        </div>
+    </section>
+    
     <!-- ===== Pricing Table Start ===== -->
     {{-- <section x-data="setup()" class="i pg fh rm ji gp uq">
         <!-- Bg Shapes -->

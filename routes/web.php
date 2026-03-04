@@ -13,7 +13,6 @@ use App\Http\Controllers\WeekdaysController;
 use Illuminate\Support\Facades\Route;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Illuminate\Support\Str;
-
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +27,7 @@ Route::fallback(function () {
 //     $response = Telegram::setWebhook(['url' => 'https://fbd5e36f17a6.ngrok-free.app/api/telegram/webhook']);
 // });
 
-
+// google auth uchun route lar
 Route::get('/auth/google', function () {
     return Socialite::driver('google')
         ->scopes(['openid', 'profile', 'email'])
@@ -46,14 +45,11 @@ Route::get('/auth/google/callback', function () {
             'password' => bcrypt(Str::random(16)),
         ]
     );
-
     Auth::login($user);
-
     return redirect('/');
 });
 
-
-
+// AI test route
 Route::get('/ai', function () {
 
     $response = Http::withHeaders([
@@ -65,13 +61,10 @@ Route::get('/ai', function () {
             ["role" => "user", "content" => "Salom! Qandaysan?"],
         ],
     ]);
-
     return $response->json();
 });
 
-
-
-
+// Asosiy sahifalar uchun route lar
 Route::get('/', [PageController::class, 'index'])->name('index');
 Route::get('/blog-grid', [PageController::class, 'blogGrid'])->name('blog-grid');
 Route::get('/404', [PageController::class, 'notFound'])->name('404');
@@ -79,45 +72,50 @@ Route::get('/searchMap', [PageController::class, 'searchMap'])->name('searchMap'
 Route::get('/search', [PageController::class, 'search'])->name('search');
 Route::get('/blog-single/{id}', [PageController::class, 'blogSingle'])->name('blog-single');
 
-
+// auth uchun route lar
 Route::middleware('guest')->group(function () {
+    // signin va signup sahifalari uchun route lar
     Route::get('/signin', [PageController::class, 'signin'])->name('signin');
     Route::get('/signup', [PageController::class, 'signup'])->name('signup');
-
+    // register va login uchun route lar
     Route::post('register', [LogController::class, 'register'])->name('register');
     Route::post('login', [LogController::class, 'login'])->name('login');
 });
-
+// auth bo‘lgan foydalanuvchilar uchun route lar
 Route::middleware('auth')->group(function () {
+    // chat uchun route lar
     Route::get('chat/chat', [ChatController::class, 'chat'])->name('chat.chat');
     Route::get('chat/riasec', [ChatController::class, 'riasec'])->name('chat.riasec');
     Route::get('chat/quiz', [ChatController::class, 'quiz'])->name('chat.quiz');
     Route::get('chat/answer', [ChatController::class, 'answer'])->name('chat.answer');
     Route::post('chat/think', [ChatController::class, 'think'])->name('chat.think');
-    Route::post('logout', [LogController::class, 'logout'])->name('logout');
+    // course uchun route
     Route::resource('course', CourseController::class);
+    // teacher uchun route lar
     Route::post('/teacher/store/{id}', [TeacherController::class, 'store'])->name('teacher.storeid');
     Route::get('/teacher/announcement/{id}', [TeacherController::class, 'announcement'])->name('teacher.announcement');
     Route::post('/teacher/add_announcement/{id}', [TeacherController::class, 'add_announcement'])->name('teacher.add_announcement');
     Route::post('/teacher/delete_announcement/{id}', [TeacherController::class, 'delete_announcement'])->name('teacher.delete_announcement');
     Route::resource('teacher', TeacherController::class);
+    // subject uchun route lar
     Route::post('/subject/store/{id}', [SubjectController::class, 'store'])->name('subject.storeid');
     Route::resource('subject', SubjectController::class);
-
+    // comment uchun route lar
     Route::post('comment/store', [CommentController::class, 'store'])->name('comment.store');
     Route::post('comment/delete/{id}', [CommentController::class, 'delete'])->name('comment.delete');
     Route::post('comment/favoriteStore', [CommentController::class, 'favoriteStore'])->name('comment.favoriteStore');
-
+    // image uchun route lar
     Route::get('course/editImage/{id}', [ImageController::class, 'edit'])->name('course.editImage');
     Route::post('course/deleteImage/{id}', [ImageController::class, 'delete'])->name('course.deleteImage');
     Route::post('course/storeImages/{id}', [ImageController::class, 'store'])->name('course.storeImages');
-
+    // weekdays uchun route lar
     Route::get('course/weekday/{id}', [WeekdaysController::class, 'edit'])->name('course.weekday');
     Route::post('course/weekdayUpdate/{id}', [WeekdaysController::class, 'update'])->name('course.weekdayUpdate');
     Route::post('course/weekdayDelete/{id}', [WeekdaysController::class, 'delete'])->name('course.weekdayDelete');
-
-
+    // connect uchun route lar
     Route::get('connect/edit/{id}', [ConnectController::class, 'edit'])->name('connect.edit');
     Route::post('connect/delete/{id}', [ConnectController::class, 'delete'])->name('connect.delete');
     Route::post('connect/store/{id}', [ConnectController::class, 'store'])->name('connect.store');
+    // logout uchun route
+    Route::post('logout', [LogController::class, 'logout'])->name('logout');
 });

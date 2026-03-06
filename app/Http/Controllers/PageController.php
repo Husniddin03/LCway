@@ -14,8 +14,8 @@ class PageController extends Controller
 {
     public function index()
     {
-        $AllCenters = LearningCenter::all();
-        return view('pages.index', compact('AllCenters'));
+        $centers = LearningCenter::all();
+        return view('pages.index', compact('centers'));
     }
     public function blogGrid(Request $request)
     {
@@ -35,7 +35,7 @@ class PageController extends Controller
         ]);
 
         if (count($validated) === 0) {
-            $LearningCenters = LearningCenter::with(['favorites', 'needTeachers', 'subjects'])->get();
+            $LearningCenters = LearningCenter::with('favorites')->with('needTeachers')->get();
         } else {
             $latitude = $request->input('latitude');
             $longitude = $request->input('longitude');
@@ -55,7 +55,8 @@ class PageController extends Controller
                     ->orWhere('region', 'LIKE', "%{$searchText}%")
                     ->orWhere('address', 'LIKE', "%{$searchText}%")
                     ->orWhere('type', 'LIKE', "%{$searchText}%")
-                    ->with(['favorites', 'needTeachers', 'subjects'])
+                    ->with('favorites')
+                    ->with('needTeachers')
                     ->get();
                 foreach ($LearningCenters as $LearningCenter) {
                     $LearningCenter->favorite = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
@@ -64,13 +65,13 @@ class PageController extends Controller
 
                 $LearningCentersLocation = $LearningCenters;
             } else if (isset($needTeachers)) {
-                $LearningCentersLocation = LearningCenter::with(['favorites', 'needTeachers', 'subjects'])
+                $LearningCentersLocation = LearningCenter::with(['favorites', 'needTeachers'])
                     ->whereHas('needTeachers', function ($query) use ($needTeachers) {
                         $query->where('subject_id', $needTeachers);
                     })
                     ->get();
             } else {
-                $LearningCentersLocation = LearningCenter::with(['favorites', 'needTeachers', 'subjects'])->get();
+                $LearningCentersLocation = LearningCenter::with('favorites')->with('needTeachers')->get();
             }
             $filteredCenters = collect();
 

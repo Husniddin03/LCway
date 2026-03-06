@@ -1,415 +1,564 @@
 <x-layout>
     <x-slot:title>Kasbga yo'naltiruvchi test</x-slot:title>
 
-    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-        <div class="max-w-4xl mx-auto px-6">
-
-            <!-- Header -->
-            <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                    Kasbga yo'naltiruvchi test
-                </h1>
-                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                    24 ta savolga javob bering, natijada sizga mos yo'nalish foizlarda chiqadi. (RIASEC test)
-                </p>
+    <section class="test-container">
+        <div x-data="{ sectionTitle: `Kasbga yo'naltiruvchi test`, sectionTitleText: `24 ta savolga javob bering, natijada sizga mos yo'nalish foizlarda chiqadi. (RIASEC test)` }">
+            <div class="animate_top bb ze rj ki xn vq">
+                <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b"></h2>
+                <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
+                <a href="{{route('chat.riasec')}}" style="color: blue; "> RIASEC test</a>
             </div>
-
-            <!-- Test Form -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                <form id="testForm" class="space-y-6">
-                    <div id="questions" class="space-y-6"></div>
-
-                    <div class="flex justify-center pt-6">
-                        <button type="button" onclick="calculateRIASEC()"
-                            class="bg-primary-600 hover:bg-primary-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                            </svg>
-                            <span>Natijani ko'rish</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Result Section -->
-            <div id="result-box" class="hidden bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
-                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">Natijangiz</h2>
-
-                <!-- Chart -->
-                <div class="mb-8 flex justify-center">
-                    <div class="w-full max-w-2xl" style="height:350px;">
-                        <canvas id="resultChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- AI Tavsiya -->
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                        </svg>
-                        AI tavsiyasi
-                    </h3>
-                    <div id="ai-result"></div>
-                </div>
-
-                <div class="flex justify-center mt-6">
-                    <button type="button" onclick="resetTest()"
-                        class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 flex items-center space-x-2 shadow hover:shadow-md transform hover:scale-105">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
-                        <span>Testni qayta topshirish</span>
-                    </button>
-                </div>
-            </div>
-
         </div>
-    </div>
+        <form id="testForm" class="test-box">
+            <div id="questions"></div>
 
+            <button type="button" class="submit-btn" onclick="calculateRIASEC()">Natijani ko'rish</button>
+        </form>
+
+        <div id="result-box" class="result-box hidden">
+            <h2>Natijangiz</h2>
+            <canvas id="resultChart" style="max-height: 350px;"></canvas>
+
+            <h3 style="margin-top:20px;">AI tavsiyasi</h3>
+            <div id="ai-result" class="ai-result">⏳ Hisoblanmoqda...</div>
+
+            <button type="button" class="reset-btn" onclick="resetTest()">Testni qayta topshirish</button>
+        </div>
+    </section>
+
+
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Marked.js (Markdown formatlash) -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- DeepSeek Puter -->
+    <script src="https://js.puter.com/v2/"></script>
 
     <script>
-    // ───────────────────────────────────────────────
-    // SAVOLLAR
-    // ───────────────────────────────────────────────
-    const questionsList = [
-        { text: "Mashinalar yoki mexanik qurilmalarni ayirib-yig'ish menga yoqadi.", category: "R" },
-        { text: "Uskunalar, asboblar bilan ishlashni xohlayman.", category: "R" },
-        { text: "Ochiq havoda jismoniy ish qilish yoqadi.", category: "R" },
-        { text: "Sport va jismoniy mashg'ulotlar menga qiziq.", category: "R" },
-        { text: "Murakkab masalalarni yechishni yoqtiraman.", category: "I" },
-        { text: "Ilmiy tajribalar haqida o'qishni yaxshi ko'raman.", category: "I" },
-        { text: "Kompyuterda dastur tuzish menga yoqadi.", category: "I" },
-        { text: "Narsalar qanday ishlashini o'rganishni yoqtiraman.", category: "I" },
-        { text: "Chizish yoki dizayn qilishni yaxshi ko'raman.", category: "A" },
-        { text: "Yangi g'oyalarni o'ylab topishni yoqtiraman.", category: "A" },
-        { text: "Musiqa yoki ijodiy mashg'ulotlar menga yoqadi.", category: "A" },
-        { text: "Odamlar bilan gaplashishni yoqtiraman.", category: "S" },
-        { text: "Jamoa ishida ishlashni afzal ko'raman.", category: "S" },
-        { text: "Boshqalarga yordam berishdan zavq olaman.", category: "S" },
-        { text: "Boshqalarni o'qitish yoki tushuntirishni yoqtiraman.", category: "S" },
-        { text: "Boshqalarni boshqarishni yoqtiraman.", category: "E" },
-        { text: "Tashkilot ishlarida ishtirok etishni yoqtiraman.", category: "E" },
-        { text: "Savdo-sotiq bilan shug'ullanishni yoqtiraman.", category: "E" },
-        { text: "Biznes boshlashni xohlayman.", category: "E" },
-        { text: "Rahbarlik qilishni yoqtiraman.", category: "E" },
-        { text: "Ma'lumotlarni tartibli saqlashni yoqtiraman.", category: "C" },
-        { text: "Hujjatlar va hisobotlar bilan ishlashni yoqtiraman.", category: "C" },
-        { text: "Qoidalar va tartibga rioya qilishni yoqtiraman.", category: "C" },
-        { text: "Mas'uliyatni olishdan qo'rqmayman.", category: "C" }
-    ];
+        // --- SAVOLLAR MASSIVI ---
+        const questionsList = [
+            "Mashinalar yoki mexanik qurilmalarni ayirib-yig'ish menga yoqadi.",
+            "Uskunalar, asboblar bilan ishlashni xohlayman.",
+            "Ochiq havoda jismoniy ish qilish yoqadi.",
+            "Sport va jismoniy mashg'ulotlar menga qiziq.",
+            "Murakkab masalalarni yechishni yoqtiraman.",
+            "Ilmiy tajribalar haqida o'qishni yaxshi ko'raman.",
+            "Kompyuterda dastur tuzish menga yoqadi.",
+            "Narsalar qanday ishlashini o'rganishni yoqtiraman.",
+            "Chizish yoki dizayn qilishni yaxshi ko'raman.",
+            "Yangi g'oyalarni o'ylab topishni yoqtiraman.",
+            "Musiqa yoki ijodiy mashg'ulotlar menga yoqadi.",
+            "Ranglar va shakllar bilan ishlashni yoqtiraman.",
+            "Boshqalarga yordam berish menga yoqadi.",
+            "O'qituvchi bo'lishni tasavvur qila olaman.",
+            "Odamlar bilan gaplashish yoqadi.",
+            "Jamoada ishlash menga zavq beradi.",
+            "Guruhni boshqarish menga yoqadi.",
+            "Savdo qilish meni qiziqtiradi.",
+            "Pul topish yo'llari haqida o'ylashni yoqtiraman.",
+            "Loyihalarni boshqarishni yoqtiraman.",
+            "Hujjatlar bilan ishlash menga qiziq.",
+            "Tartib-intizom va qoidalarga rioya qilishni yoqtiraman.",
+            "Ma'lumotlarni tizimli ravishda saqlashni afzal ko'raman.",
+            "Hisobotlar tuzish va raqamlar bilan ishlash menga yoqadi."
+        ];
 
-    const SCORES = { "Umuman yoqmaydi": 1, "Yoqmaydi": 2, "Neytral": 3, "Yoqadi": 4, "Juda yoqadi": 5 };
-
-    const CATEGORY_LABELS = {
-        R: "Realistic (R) Amaliy",
-        I: "Investigative (I) Tadqiqot",
-        A: "Artistic (A) Ijod",
-        S: "Social (S) Ijtimoiy",
-        E: "Enterprising (E) Tadbirkorlik",
-        C: "Conventional (C) Tartib"
-    };
-
-    let answers = {};
-    let chartInstance = null;
-
-    // ───────────────────────────────────────────────
-    // SAVOLLARNI YUKLASH
-    // ───────────────────────────────────────────────
-    function loadQuestions() {
-        const container = document.getElementById('questions');
-        container.innerHTML = '';
-        questionsList.forEach((q, i) => {
-            const div = document.createElement('div');
-            div.className = 'bg-gray-50 dark:bg-gray-700 rounded-xl p-6';
-            div.innerHTML = `
-                <div class="flex items-start space-x-3">
-                    <span class="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">${i + 1}</span>
-                    <div class="flex-1">
-                        <p class="text-gray-900 dark:text-white font-medium mb-4">${q.text}</p>
-                        <div class="flex flex-wrap gap-2">
-                            ${Object.keys(SCORES).map(label => `
-                                <label class="flex items-center space-x-2 cursor-pointer bg-white dark:bg-gray-600 hover:bg-primary-50 dark:hover:bg-primary-900/30 border border-gray-200 dark:border-gray-500 hover:border-primary-400 px-3 py-2 rounded-lg transition-all">
-                                    <input type="radio" name="q${i}" value="${label}" class="w-4 h-4 text-primary-600 hidden">
-                                    <span class="text-sm text-gray-700 dark:text-gray-200">${label}</span>
-                                </label>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
-            container.appendChild(div);
-        });
-
-        // Radio tanlaganda label rangi o'zgarsin
-        document.querySelectorAll('input[type=radio]').forEach(radio => {
-            radio.addEventListener('change', () => {
-                const name = radio.name;
-                document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
-                    r.closest('label').classList.remove('bg-primary-100', 'dark:bg-primary-800', 'border-primary-500');
-                    r.closest('label').classList.add('bg-white', 'dark:bg-gray-600', 'border-gray-200', 'dark:border-gray-500');
-                });
-                radio.closest('label').classList.remove('bg-white', 'dark:bg-gray-600', 'border-gray-200', 'dark:border-gray-500');
-                radio.closest('label').classList.add('bg-primary-100', 'dark:bg-primary-800', 'border-primary-500');
-            });
-        });
-    }
-
-    // ───────────────────────────────────────────────
-    // NATIJANI HISOBLASH
-    // ───────────────────────────────────────────────
-    function calculateRIASEC() {
-        answers = {};
-        for (let i = 0; i < questionsList.length; i++) {
-            const sel = document.querySelector(`input[name="q${i}"]:checked`);
-            if (!sel) {
-                showNotification(`${i + 1}-savolga javob bering!`, 'warning');
-                document.querySelectorAll('.bg-gray-50, .dark\\:bg-gray-700')[i]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-            answers[i] = sel.value;
-        }
-
-        // Har bir kategoriya uchun umumiy ball (max = 4 savol × 5 = 20)
-        const totals = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-        const counts = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-
-        questionsList.forEach((q, i) => {
-            totals[q.category] += SCORES[answers[i]];
-            counts[q.category]++;
-        });
-
-        // Foizga o'tkazish
-        const percentages = {};
-        Object.keys(totals).forEach(cat => {
-            percentages[cat] = Math.round((totals[cat] / (counts[cat] * 5)) * 100);
-        });
-
-        showResults(percentages);
-    }
-
-    // ───────────────────────────────────────────────
-    // NATIJALARNI KO'RSATISH
-    // ───────────────────────────────────────────────
-    function showResults(percentages) {
-        window.lastPercentages = percentages;
-        document.getElementById('result-box').classList.remove('hidden');
-        document.getElementById('result-box').scrollIntoView({ behavior: 'smooth' });
-
-        // Eski chartni yo'qot
-        if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
-
-        createChart(percentages);
-        getAIRecommendation(percentages);
-    }
-
-    // ───────────────────────────────────────────────
-    // GRAFIK
-    // ───────────────────────────────────────────────
-    function createChart(percentages) {
-        const ctx = document.getElementById('resultChart').getContext('2d');
-        chartInstance = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: Object.keys(percentages).map(k => CATEGORY_LABELS[k]),
-                datasets: [{
-                    label: 'Foiz (%)',
-                    data: Object.values(percentages),
-                    backgroundColor: [
-                        'rgba(59,130,246,0.8)',
-                        'rgba(168,85,247,0.8)',
-                        'rgba(34,197,94,0.8)',
-                        'rgba(249,115,22,0.8)',
-                        'rgba(234,179,8,0.8)',
-                        'rgba(107,114,128,0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(59,130,246,1)',
-                        'rgba(168,85,247,1)',
-                        'rgba(34,197,94,1)',
-                        'rgba(249,115,22,1)',
-                        'rgba(234,179,8,1)',
-                        'rgba(107,114,128,1)'
-                    ],
-                    borderWidth: 2,
-                    borderRadius: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: { callback: v => v + '%' }
-                    }
-                },
-                plugins: { legend: { display: false } }
-            }
-        });
-    }
-
-    // ───────────────────────────────────────────────
-    // AI TAVSIYA — Anthropic API + JSON
-    // ───────────────────────────────────────────────
-    async function getAIRecommendation(percentages) {
-        const aiResult = document.getElementById('ai-result');
-
-        aiResult.innerHTML = `
-            <div class="flex flex-col items-center justify-center py-12 space-y-4">
-                <div class="relative">
-                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-                    <div class="absolute inset-0 rounded-full border-2 border-primary-200 animate-pulse"></div>
-                </div>
-                <p class="text-gray-600 dark:text-gray-400 font-medium">AI tavsiyasini tayyorlamoqda...</p>
-            </div>
-        `;
-
-        // AIga yuboriladigan JSON
-        const payload = {
-            riasec_scores: percentages,
-            category_names: CATEGORY_LABELS,
-            questions_and_answers: questionsList.map((q, i) => ({
-                question: q.text,
-                category: q.category,
-                answer: answers[i],
-                score: SCORES[answers[i]]
-            }))
+        // RIASEC mapping
+        const groups = {
+            R: [0, 1, 2, 3],
+            I: [4, 5, 6, 7],
+            A: [8, 9, 10, 11],
+            S: [12, 13, 14, 15],
+            E: [16, 17, 18, 19],
+            C: [20, 21, 22, 23]
         };
 
-        const prompt = `
-Quyidagi RIASEC test natijalari JSON formatida berilgan:
+        // RIASEC yo'nalishlari haqida ma'lumot
+        const riasecInfo = {
+            R: "Realistic - Amaliy ish, texnika, sport",
+            I: "Investigative - Tadqiqot, fan, tahlil",
+            A: "Artistic - San'at, ijod, dizayn",
+            S: "Social - Odamlar bilan ishlash, yordam berish",
+            E: "Enterprising - Biznes, liderlik, tadbirkorlik",
+            C: "Conventional - Tartib, hujjatlar, tizim"
+        };
 
-\`\`\`json
-${JSON.stringify(payload, null, 2)}
-\`\`\`
+        // HTMLga savollarni chiqarish
+        const qBox = document.getElementById("questions");
+        questionsList.forEach((q, i) => {
+            qBox.innerHTML += `
+        <div class="question">
+            <p><strong>${i + 1}.</strong> ${q}</p>
+            <div class="radio-group">
+                <label class="radio-label">
+                    <input type="radio" name="q${i}" value="1">
+                    <span>Ha</span>
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="q${i}" value="0">
+                    <span>Yo'q</span>
+                </label>
+            </div>
+        </div>`;
+        });
 
-Ushbu natijalar asosida o'zbek tilida quyidagilarni yoz:
+        let chart = null;
+
+        // ————— TEST HISOBLASH —————
+        function calculateRIASEC() {
+            // Barcha savollarga javob berilganini tekshirish
+            let allAnswered = true;
+            for (let i = 0; i < questionsList.length; i++) {
+                if (!document.querySelector(`input[name="q${i}"]:checked`)) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+
+            if (!allAnswered) {
+                alert("⚠️ Iltimos, barcha savollarga javob bering!");
+                return;
+            }
+
+            let scores = {
+                R: 0,
+                I: 0,
+                A: 0,
+                S: 0,
+                E: 0,
+                C: 0
+            };
+
+            // Har bir yo'nalikni hisoblash
+            for (let type in groups) {
+                groups[type].forEach(i => {
+                    let v = document.querySelector(`input[name="q${i}"]:checked`);
+                    if (v) scores[type] += parseInt(v.value);
+                });
+            }
+
+            // Foizga o'tkazish
+            let resultPercent = {
+                R: (scores.R / 4) * 100,
+                I: (scores.I / 4) * 100,
+                A: (scores.A / 4) * 100,
+                S: (scores.S / 4) * 100,
+                E: (scores.E / 4) * 100,
+                C: (scores.C / 4) * 100
+            };
+
+            // Grafikni chiqarish
+            document.getElementById("result-box").classList.remove("hidden");
+            document.getElementById("result-box").scrollIntoView({
+                behavior: 'smooth'
+            });
+            drawChart(resultPercent);
+
+            // AI dan maslahat so'rash
+            askAI(resultPercent);
+        }
+
+        // ————— DIAGRAMMA CHIZISH —————
+        function drawChart(data) {
+            const ctx = document.getElementById("resultChart");
+
+            if (chart) chart.destroy();
+
+            // Ranglar va gradient
+            const colors = [
+                'rgba(239, 68, 68, 0.8)', // R - qizil
+                'rgba(59, 130, 246, 0.8)', // I - ko'k
+                'rgba(168, 85, 247, 0.8)', // A - binafsha
+                'rgba(34, 197, 94, 0.8)', // S - yashil
+                'rgba(249, 115, 22, 0.8)', // E - to'q sariq
+                'rgba(107, 114, 128, 0.8)' // C - kulrang
+            ];
+
+            chart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: [
+                        "Realistic (R)\nAmaliy",
+                        "Investigative (I)\nTadqiqot",
+                        "Artistic (A)\nIjod",
+                        "Social (S)\nIjtimoiy",
+                        "Enterprising (E)\nTadbirkorlik",
+                        "Conventional (C)\nTartib"
+                    ],
+                    datasets: [{
+                        label: "Foiz",
+                        data: [data.R, data.I, data.A, data.S, data.E, data.C],
+                        backgroundColor: colors,
+                        borderColor: colors.map(c => c.replace('0.8', '1')),
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toFixed(0) + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ————— AI TAVSIYASI —————
+        async function askAI(result) {
+            const aiResultDiv = document.getElementById("ai-result");
+            aiResultDiv.innerHTML = "⏳ Suniy intellekt tahlil qilmoqda...";
+
+            // Eng yuqori 3 yo'nalishni topish
+            const sorted = Object.entries(result)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3);
+
+            const prompt = `Siz kasbga yo'naltirish bo'yicha professional maslahatchi sifatida ishlayapsiz.
+
+Quyidagi RIASEC test natijalariga asoslanib, talabaga to'liq va batafsil kasb tanlash bo'yicha maslahat bering:
+
+**Test natijalari:**
+- Realistic (Amaliy): ${result.R}%
+- Investigative (Tadqiqot): ${result.I}%
+- Artistic (Ijod): ${result.A}%
+- Social (Ijtimoiy): ${result.S}%
+- Enterprising (Tadbirkorlik): ${result.E}%
+- Conventional (Tartib): ${result.C}%
+
+**Eng yuqori 3 yo'nalish:**
+1. ${riasecInfo[sorted[0][0]]} - ${sorted[0][1]}%
+2. ${riasecInfo[sorted[1][0]]} - ${sorted[1][1]}%
+3. ${riasecInfo[sorted[2][0]]} - ${sorted[2][1]}%
+
+Quyidagi formatda javob bering:
 
 ## 📊 Natija tahlili
-Eng yuqori 3 ta kategoriyani foizlari bilan tushuntir. Nima ma'nosi borligini ayt.
+[Qisqacha natijani tahlil qiling]
 
 ## 💼 Tavsiya etilgan kasblar
-Natijaga mos 5–7 ta kasbni ro'yxatla. Har biri uchun 1 qator izoh.
+[5-7 ta aniq kasb nomlari va qisqacha tavsif]
 
-## 🎓 O'qish yo'nalishlari
-Universitetda qaysi yo'nalishlarni tanlash kerak — 4–5 ta tavsiya.
+## 🎓 Ta'lim yo'nalishlari
+[Qaysi universitetlarda o'qish mumkin]
 
-## 🚀 Kelajak istiqbollari
-Bu yo'nalishlardagi ish imkoniyatlari va daromad haqida qisqacha.
+## ⭐ Kuchli tomonlaringiz
+[3-4 ta kuchli tomon]
 
-## 💡 Shaxsiy maslahatlar
-Foydalanuvchiga mos 3 ta amaliy maslahat.
+## 📈 Rivojlantirish kerak bo'lgan sohalar
+[2-3 ta tavsiya]
 
-Javobni markdown formatida, o'zbek tilida yoz.
-        `.trim();
+Javobingiz o'zbek tilida, oddiy va tushunarli bo'lsin.`;
 
-        try {
-            const response = await fetch("https://api.anthropic.com/v1/messages", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "anthropic-dangerous-direct-browser-access": "true"
-                },
-                body: JSON.stringify({
-                    model: "claude-sonnet-4-20250514",
-                    max_tokens: 1500,
-                    messages: [{ role: "user", content: prompt }]
-                })
+            try {
+                let fullResponse = "";
+                const response = await puter.ai.chat(prompt, {
+                    model: "deepseek/deepseek-r1",
+                    stream: true
+                });
+
+                aiResultDiv.innerHTML = "";
+
+                for await (const part of response) {
+                    if (part.text) {
+                        fullResponse += part.text;
+                        // Markdown ni HTML ga o'girish
+                        aiResultDiv.innerHTML = marked.parse(fullResponse);
+                    }
+                }
+            } catch (error) {
+                console.error('AI xato:', error);
+                aiResultDiv.innerHTML = `
+                    <div style="color: #dc2626; padding: 1rem; background: #fee2e2; border-radius: 8px;">
+                        ❌ Xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.
+                    </div>`;
+            }
+        }
+
+        // ————— TESTNI QAYTA BOSHLASH —————
+        function resetTest() {
+            // Barcha radiobutton tanlovlarini tozalash
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.checked = false;
             });
 
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            // Natijalar qismini yashirish
+            document.getElementById("result-box").classList.add("hidden");
 
-            const data = await response.json();
-            const text = data.content.map(c => c.text || '').join('\n');
+            // Grafikkni yo'q qilish
+            if (chart) {
+                chart.destroy();
+                chart = null;
+            }
 
-            aiResult.innerHTML = `
-                <div class="bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 rounded-xl p-6 border border-primary-200 dark:border-primary-800">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                        </svg>
-                        <span class="font-semibold text-primary-900 dark:text-primary-100">AI tomonidan tayyorlandi</span>
-                    </div>
-                    <div class="prose prose-gray dark:prose-invert max-w-none ai-content">
-                        ${marked.parse(text)}
-                    </div>
-                </div>
-                <div class="flex justify-center mt-4">
-                    <button onclick="copyResults()" class="flex items-center space-x-2 text-sm text-gray-500 hover:text-primary-600 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                        </svg>
-                        <span>Natijalarni nusxalash</span>
-                    </button>
-                </div>
-            `;
-
-        } catch (err) {
-            console.error(err);
-            aiResult.innerHTML = `
-                <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
-                    <p class="text-red-700 dark:text-red-300 font-medium mb-2">❌ AI xizmati ishlamayapti</p>
-                    <p class="text-red-600 dark:text-red-400 text-sm mb-4">${err.message}</p>
-                    <button onclick="retryAI()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
-                        Qayta urinish
-                    </button>
-                </div>
-            `;
+            // Tepaga scroll qilish
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
-    }
-
-    function retryAI() {
-        if (window.lastPercentages) getAIRecommendation(window.lastPercentages);
-    }
-
-    function copyResults() {
-        navigator.clipboard.writeText(document.getElementById('ai-result').innerText)
-            .then(() => showNotification('Nusxalandi!', 'success'))
-            .catch(() => showNotification('Xatolik!', 'error'));
-    }
-
-    function resetTest() {
-        document.getElementById('testForm').reset();
-        document.getElementById('result-box').classList.add('hidden');
-        answers = {};
-        document.querySelectorAll('label').forEach(l => {
-            l.classList.remove('bg-primary-100', 'dark:bg-primary-800', 'border-primary-500');
-            l.classList.add('bg-white', 'dark:bg-gray-600', 'border-gray-200');
-        });
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function showNotification(message, type = 'info') {
-        const colors = { info: 'bg-blue-500', warning: 'bg-yellow-500', error: 'bg-red-500', success: 'bg-green-500' };
-        const n = document.createElement('div');
-        n.className = `fixed top-4 right-4 z-50 px-5 py-3 rounded-xl shadow-lg text-white font-medium transform transition-all duration-300 translate-x-full ${colors[type]}`;
-        n.textContent = message;
-        document.body.appendChild(n);
-        setTimeout(() => n.classList.remove('translate-x-full'), 100);
-        setTimeout(() => { n.classList.add('translate-x-full'); setTimeout(() => n.remove(), 300); }, 3000);
-    }
-
-    document.addEventListener('DOMContentLoaded', loadQuestions);
     </script>
 
+
     <style>
-        .ai-content h1, .ai-content h2, .ai-content h3 { font-weight: 700; margin: 1rem 0 0.5rem; }
-        .ai-content h2 { font-size: 1.2rem; color: #4f46e5; }
-        .ai-content h3 { font-size: 1rem; }
-        .ai-content p { margin-bottom: 0.6rem; line-height: 1.7; }
-        .ai-content ul { margin-left: 1.5rem; margin-bottom: 0.75rem; }
-        .ai-content li { margin-bottom: 0.3rem; }
-        .ai-content strong { color: #4f46e5; }
-        @media (prefers-color-scheme: dark) {
-            .ai-content h2 { color: #818cf8; }
-            .ai-content strong { color: #818cf8; }
+        * {
+            box-sizing: border-box;
+        }
+
+        .test-container {
+            max-width: 850px;
+            margin: 5rem auto;
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .test-box {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .question:hover {
+            background: #f3f4f6;
+            border-color: #e5e7eb;
+        }
+
+        .question p {
+            margin-bottom: 12px;
+            color: #374151;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+
+        .radio-label:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .radio-label input[type="radio"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .radio-label input[type="radio"]:checked {
+            accent-color: #3b82f6;
+        }
+
+        .radio-label span {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .submit-btn,
+        .reset-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .submit-btn:hover,
+        .reset-btn:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .reset-btn {
+            margin-top: 20px;
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+        }
+
+        .reset-btn:hover {
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+        }
+
+        .result-box {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .result-box h2 {
+            text-align: center;
+            color: #1f2937;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .result-box h3 {
+            color: #1f2937;
+            font-size: 22px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .ai-result {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            line-height: 1.8;
+            color: #374151;
+        }
+
+        /* Markdown formatlash uchun */
+        .ai-result h2 {
+            color: #1f2937;
+            font-size: 22px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+
+        .ai-result h3 {
+            color: #374151;
+            font-size: 18px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .ai-result ul,
+        .ai-result ol {
+            margin-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .ai-result li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .ai-result p {
+            margin-bottom: 12px;
+        }
+
+        .ai-result strong {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .ai-result code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #dc2626;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .test-container {
+                padding: 15px;
+            }
+
+            .title {
+                font-size: 28px;
+            }
+
+            .test-box {
+                padding: 20px;
+            }
+
+            .question {
+                padding: 15px;
+            }
+
+            .radio-group {
+                flex-direction: column;
+            }
+
+            .radio-label {
+                width: 100%;
+            }
         }
     </style>
+
 </x-layout>

@@ -7,6 +7,7 @@ use App\Models\NeedTeacher;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class TeacherController extends Controller
@@ -15,6 +16,42 @@ class TeacherController extends Controller
     {
         $LearningCenter = LearningCenter::find(request()->query('id'));
         return view('teacher.create', compact('LearningCenter'));
+    }
+
+    public function edit(string $id)
+    {
+        $teacher = Teacher::findOrFail($id);
+        $subjects = Subject::all();
+        $LearningCenter = LearningCenter::find($teacher->learning_centers_id);
+        Gate::authorize('isOun', $LearningCenter);
+        return view('teacher.edit', compact('teacher', 'subjects', 'LearningCenter'));
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $teacher = Teacher::findOrFail($id);
+        $LearningCenter = LearningCenter::find($teacher->learning_centers_id);
+        Gate::authorize('isOun', $LearningCenter);
+
+        $validate = $request->validate([
+            'photo' => 'nullable|image|max:2048',
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:255',
+            'subject_id' => 'required|exists:subjects,id',
+            'about' => 'nullable|string',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            if ($teacher->photo && Storage::disk('public')->exists($teacher->photo)) {
+                Storage::disk('public')->delete($teacher->photo);
+            }
+            $path = $request->file('photo')->store('uploads/teachers', 'public');
+            $validate['photo'] = $path;
+        }
+
+        $teacher->update($validate);
+        return redirect()->route('blog-single', $teacher->learning_centers_id)
+            ->with('success', 'Ustoz muvaffaqiyatli yangilandi');
     }
 
 

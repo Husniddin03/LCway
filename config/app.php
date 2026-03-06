@@ -123,17 +123,4 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Google Maps API Key
-    |--------------------------------------------------------------------------
-    |
-    | This value is used for Google Maps API integration throughout the
-    | application, particularly for displaying interactive maps and
-    | location-based features.
-    |
-    */
-
-    'map_api_key' => env('MAP_API_KEY'),
-
 ];

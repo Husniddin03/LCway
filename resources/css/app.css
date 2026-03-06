@@ -412,4 +412,58 @@
         background: rgba(31, 41, 55, 0.95);
         border-bottom-color: rgba(55, 65, 81, 0.8);
     }
+    
+    /* Light mode scrollbar - only apply when not dark */
+    html:not(.dark) ::-webkit-scrollbar-track {
+        background: #f3f4f6;
+    }
+
+    html:not(.dark) ::-webkit-scrollbar-thumb {
+        background: #9ca3af;
+        border-radius: 4px;
+    }
+
+    html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+        background: #6b7280;
+    }
+    
+    /* Light mode card styles - only apply when not dark */
+    html:not(.dark) .card {
+        background: white !important;
+        border: 1px solid #e5e7eb !important;
+        color: #111827 !important;
+    }
+    
+    html:not(.dark) .card * {
+        color: inherit !important;
+    }
+    
+    /* Light mode input styles - only apply when not dark */
+    html:not(.dark) .input-primary {
+        background: white !important;
+        border-color: #e5e7eb !important;
+        color: #111827 !important;
+    }
+    
+    html:not(.dark) .input-primary::placeholder {
+        color: #9ca3af !important;
+    }
+    
+    /* Light mode navigation - only apply when not dark */
+    html:not(.dark) .nav-sticky {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-bottom-color: rgba(229, 231, 235, 0.8) !important;
+    }
+    
+    html:not(.dark) .nav-sticky * {
+        color: #111827 !important;
+    }
+    
+    html:not(.dark) .nav-sticky a {
+        color: #374151 !important;
+    }
+    
+    html:not(.dark) .nav-sticky a:hover {
+        color: #2563eb !important;
+    }
 }

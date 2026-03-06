@@ -453,3 +453,5 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=initMap" async defer>
 </script>
+
+</x-layout>

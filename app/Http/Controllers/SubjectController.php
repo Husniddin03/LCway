@@ -57,7 +57,10 @@ class SubjectController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $subjectOfCenter = SubjectsOfLearningCenter::findOrFail($id);
+        $subjects = Subject::all();
+        $LearningCenter = LearningCenter::find($subjectOfCenter->learning_centers_id);
+        return view('subject.edit', compact('subjectOfCenter', 'subjects', 'LearningCenter'));
     }
 
     /**
@@ -65,7 +68,16 @@ class SubjectController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $subjectOfCenter = SubjectsOfLearningCenter::findOrFail($id);
+
+        $validate = $request->validate([
+            'subject_id' => 'required|exists:subjects,id',
+            'price' => 'nullable|string|max:255',
+        ]);
+
+        $subjectOfCenter->update($validate);
+        return redirect()->route('blog-single', $subjectOfCenter->learning_centers_id)
+            ->with('success', "Fan muvaffaqiyatli yangilandi");
     }
 
     /**

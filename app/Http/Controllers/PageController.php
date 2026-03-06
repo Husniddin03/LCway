@@ -7,6 +7,8 @@ use App\Models\LearningCenter;
 use App\Models\Subject;
 use App\Models\LearningCentersCalendar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use function PHPUnit\Framework\isNull;
@@ -140,6 +142,53 @@ class PageController extends Controller
     public function signup()
     {
         return view('pages.signup');
+    }
+    public function profile()
+    {
+        return view('pages.profile');
+    }
+    public function profileEdit()
+    {
+        return view('pages.profile-edit');
+    }
+    public function profileUpdate(Request $request)
+    {
+        $user = Auth::user();
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
+            'phone' => 'nullable|string|max:20',
+            'bio' => 'nullable|string|max:1000',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'current_password' => 'nullable|required_with:password|string',
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+        
+        // Update user info
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->phone = $validated['phone'] ?? null;
+        $user->bio = $validated['bio'] ?? null;
+        
+        // Handle avatar upload
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $avatarPath = $avatar->store('avatars', 'public');
+            $user->avatar = '/storage/' . $avatarPath;
+        }
+        
+        // Handle password change
+        if (!empty($validated['password'])) {
+            if (!Hash::check($validated['current_password'], $user->password)) {
+                return back()->withErrors(['current_password' => 'Joriy parol noto\'g\'ri']);
+            }
+            $user->password = Hash::make($validated['password']);
+        }
+        
+        $user->save();
+        
+        return redirect()->route('profile')->with('success', 'Profil muvaffaqiyatli yangilandi!');
     }
     public function notFound()
     {

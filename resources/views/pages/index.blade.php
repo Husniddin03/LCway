@@ -235,7 +235,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @if(isset($centers) && $centers->count() > 0)
                     @foreach($centers->take(8) as $center)
-                        <x-card hover class="group cursor-pointer bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300">
+                        <x-card hover class="group cursor-pointer bg-white dark:from-gray-800/50 dark:to-gray-900/50 backdrop-blur-sm border border-gray-100 dark:border-gray-700/50 shadow-md hover:shadow-lg transition-all duration-300">
                             <div class="relative overflow-hidden rounded-t-2xl">
                                 @if($center->logo)
                                     <img src="{{ asset('storage/' . $center->logo) }}" 
@@ -250,13 +250,13 @@
                                 @endif
                                 
                                 <!-- Rating Badge -->
-                                <div class="absolute top-4 right-4 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg border border-gray-200/50 dark:border-gray-700/50">
+                                <div class="absolute top-4 right-4 bg-white dark:bg-gray-900/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md border border-gray-100 dark:border-gray-700/50">
                                     @php
                                         $average = round($center->favorites()->avg('rating') ?? 0, 1);
                                     @endphp
                                     <div class="flex items-center space-x-1">
-                                        <span class="text-yellow-500 dark:text-yellow-400 text-sm font-bold drop-shadow-sm">★</span>
-                                        <span class="text-sm font-bold text-gray-900 dark:text-white">{{ $average }}</span>
+                                        <span class="text-amber-500 dark:text-yellow-400 text-sm font-semibold">★</span>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-white">{{ $average }}</span>
                                     </div>
                                 </div>
                             </div>

@@ -45,8 +45,8 @@
                     <a href="{{ route('blog-grid') }}" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
                         Barchasi
                     </a>
-                    <button id="toggle-map" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200">
-                        Xarita
+                    <button id="toggle-map" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
+                        Yopish xarita
                     </button>
                     
                     <!-- Sort Dropdown -->
@@ -146,11 +146,16 @@
     </section>
 
     <!-- Map Container -->
-    <div id="map-container" class="hidden bg-gray-100 dark:bg-gray-900">
+    <div id="map-container" class="bg-gray-100 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-6 py-6">
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
                 <div class="relative">
-                    <div id="map" class="h-96"></div>
+                    <div id="map" class="h-[600px] w-full" style="background: #e5e7eb; border: 2px solid #d1d5db;">
+        <div style="padding: 20px; text-align: center; color: #374151;">
+            <h3>Xarita yuklanmoqda...</h3>
+            <p>Agar xarita ko'rinmasa, Google Maps API muammosi bo'lishi mumkin</p>
+        </div>
+    </div>
                     
                     <!-- Map Search Box -->
                     <div class="absolute top-4 left-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3 w-80">
@@ -301,6 +306,7 @@
     </section>
 </x-layout>
 
+
 <style>
     /* Rating Stars */
     .star {
@@ -309,11 +315,28 @@
     
     /* Map Container */
     #map-container.hidden {
-        display: none;
+        display: none !important;
     }
     
     #map-container.show {
-        display: block;
+        display: block !important;
+    }
+    
+    #map {
+        min-height: 600px !important;
+        width: 100% !important;
+        background-color: #e5e7eb !important;
+        border: 2px solid #d1d5db !important;
+    }
+    
+    .dark #map {
+        background-color: #374151 !important;
+        border-color: #4b5563 !important;
+    }
+    
+    /* Ensure map container takes full width when shown */
+    #map-container.show .relative {
+        width: 100% !important;
     }
     
     /* Search Results */
@@ -341,33 +364,54 @@
     // Toggle Map
     document.getElementById('toggle-map').addEventListener('click', function() {
         const mapContainer = document.getElementById('map-container');
-        mapContainer.classList.toggle('hidden');
-        mapContainer.classList.toggle('show');
+        const isHidden = mapContainer.classList.contains('hidden');
         
-        if (mapContainer.classList.contains('show')) {
+        if (isHidden) {
+            mapContainer.classList.remove('hidden');
+            mapContainer.classList.add('show');
+            this.textContent = 'Yopish xarita';
+            this.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            this.classList.add('bg-primary-600', 'text-white');
+            
+            // Initialize map if not already initialized
             setTimeout(() => {
                 if (window.google && window.google.maps) {
-                    google.maps.event.trigger(map, 'resize');
+                    if (!map) {
+                        initMap();
+                    } else {
+                        google.maps.event.trigger(map, 'resize');
+                    }
                 }
-            }, 300);
+            }, 100);
+        } else {
+            mapContainer.classList.add('hidden');
+            mapContainer.classList.remove('show');
+            this.textContent = 'Xarita';
+            this.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            this.classList.remove('bg-primary-600', 'text-white');
         }
     });
     
     // Learning Centers Data
     const learningCentersData = {!! json_encode(
         $LearningCenters->map(function ($center) {
-            $location = explode(',', $center->location);
+            $location = $center->location;
+            if (!$location) return null;
+            $coords = explode(',', $location);
+            if (count($coords) < 2) return null;
             return [
                 'id' => $center->id,
                 'name' => $center->name,
-                'latitude' => (float) ($location[0] ?? 0),
-                'longitude' => (float) ($location[1] ?? 0),
+                'latitude' => (float) trim($coords[0]),
+                'longitude' => (float) trim($coords[1]),
                 'address' => $center->address ?? '',
                 'logo' => $center->logo ?? '',
                 'distance' => 0,
             ];
-        }),
+        })->filter()->values()
     ) !!};
+    
+    console.log('Learning centers data:', learningCentersData);
     
     let map, geocoder, userMarker;
     const markers = [];
@@ -376,11 +420,27 @@
     
     // Initialize Map (if Google Maps API is loaded)
     function initMap() {
-        if (!window.google || !window.google.maps) return;
+        console.log('initMap called');
+        
+        if (!window.google || !window.google.maps) {
+            console.error('Google Maps not loaded');
+            return;
+        }
+        
+        console.log('Google Maps available, creating map...');
+        
+        const mapElement = document.getElementById("map");
+        if (!mapElement) {
+            console.error('Map element not found');
+            return;
+        }
         
         const defaultCenter = { lat: defaultLat, lng: defaultLng };
         
-        map = new google.maps.Map(document.getElementById("map"), {
+        // Clear the loading message
+        mapElement.innerHTML = '';
+        
+        map = new google.maps.Map(mapElement, {
             center: defaultCenter,
             zoom: 12,
             gestureHandling: 'greedy',
@@ -390,6 +450,8 @@
             streetViewControl: false,
             fullscreenControl: true
         });
+        
+        console.log('Map created successfully');
         
         geocoder = new google.maps.Geocoder();
         
@@ -414,6 +476,11 @@
         
         // Get user location
         getUserLocation();
+        
+        // Force map to resize after initialization
+        setTimeout(() => {
+            google.maps.event.trigger(map, 'resize');
+        }, 200);
     }
     
     // Add learning centers to map
@@ -599,11 +666,32 @@
     }
     
     // Initialize map when page loads
-    if (typeof google !== 'undefined' && google.maps) {
-        initMap();
+    function initializeMapWhenReady() {
+        if (typeof google !== 'undefined' && google.maps) {
+            initMap();
+        } else {
+            // Wait for Google Maps to load
+            setTimeout(initializeMapWhenReady, 200);
+        }
+    }
+    
+    // Make initMap globally available for Google Maps callback
+    window.initMap = function() {
+        console.log('Google Maps API loaded, initializing map...');
+        if (typeof google !== 'undefined' && google.maps) {
+            initMap();
+        } else {
+            console.error('Google Maps not available');
+        }
+    };
+    
+    // Start initialization
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initializeMapWhenReady, 500);
+        });
     } else {
-        // Wait for Google Maps to load
-        window.addEventListener('load', initMap);
+        setTimeout(initializeMapWhenReady, 500);
     }
 </script>
 
@@ -1139,20 +1227,7 @@
 <script>
     // Demo data - Laravel blade'dan keladi
     // Backend'da:
-    const learningCentersData = {!! json_encode(
-        $LearningCenters->map(function ($center) {
-            $location = explode(',', $center->location);
-            return [
-                'id' => $center->id,
-                'name' => $center->name,
-                'latitude' => (float) ($location[0] ?? 0),
-                'longitude' => (float) ($location[1] ?? 0),
-                'address' => $center->address ?? '',
-                'logo' => $center->logo ?? '',
-                'distance' => 0,
-            ];
-        }),
-    ) !!};
+    
 
     let map, geocoder, userMarker;
     const markers = [];

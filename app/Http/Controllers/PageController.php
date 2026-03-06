@@ -35,7 +35,7 @@ class PageController extends Controller
         ]);
 
         if (count($validated) === 0) {
-            $LearningCenters = LearningCenter::with('favorites')->with('needTeachers')->get();
+            $LearningCenters = LearningCenter::with(['favorites', 'needTeachers', 'subjects'])->get();
         } else {
             $latitude = $request->input('latitude');
             $longitude = $request->input('longitude');
@@ -55,8 +55,7 @@ class PageController extends Controller
                     ->orWhere('region', 'LIKE', "%{$searchText}%")
                     ->orWhere('address', 'LIKE', "%{$searchText}%")
                     ->orWhere('type', 'LIKE', "%{$searchText}%")
-                    ->with('favorites')
-                    ->with('needTeachers')
+                    ->with(['favorites', 'needTeachers', 'subjects'])
                     ->get();
                 foreach ($LearningCenters as $LearningCenter) {
                     $LearningCenter->favorite = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
@@ -65,13 +64,13 @@ class PageController extends Controller
 
                 $LearningCentersLocation = $LearningCenters;
             } else if (isset($needTeachers)) {
-                $LearningCentersLocation = LearningCenter::with(['favorites', 'needTeachers'])
+                $LearningCentersLocation = LearningCenter::with(['favorites', 'needTeachers', 'subjects'])
                     ->whereHas('needTeachers', function ($query) use ($needTeachers) {
                         $query->where('subject_id', $needTeachers);
                     })
                     ->get();
             } else {
-                $LearningCentersLocation = LearningCenter::with('favorites')->with('needTeachers')->get();
+                $LearningCentersLocation = LearningCenter::with(['favorites', 'needTeachers', 'subjects'])->get();
             }
             $filteredCenters = collect();
 

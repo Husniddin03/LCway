@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Favorite;
 use App\Models\LearningCenter;
 use App\Models\Subject;
+use App\Models\LearningCentersCalendar;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -32,6 +33,7 @@ class PageController extends Controller
             'favorites' => 'nullable|in:asc,desc',
             'sort' => 'nullable|in:name,distance,favorites',
             'needTeachers' => 'nullable|exists:subjects,id',
+            'dayMode' => 'nullable|in:true',
         ]);
 
         if (count($validated) === 0) {
@@ -48,6 +50,7 @@ class PageController extends Controller
             $favorites = $request->input('favorites');
             $sort = $request->input('sort');
             $needTeachers = $request->input('needTeachers');
+            $dayMode = $request->input('dayMode');
 
             if (isset($validated['searchText'])) {
                 $LearningCenters = LearningCenter::where('name', 'LIKE', "%{$searchText}%")

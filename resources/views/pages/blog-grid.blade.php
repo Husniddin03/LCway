@@ -2,11 +2,11 @@
     <x-slot:title>Barcha o'quv markazlar</x-slot:title>
 
     <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-primary-600 via-accent-600 to-primary-800 text-white py-16">
+    <section class="text-gray-900 dark:text-white bg-gradient-to-br from-primary-800 via-accent-800 to-primary-900 dark:from-primary-700 dark:via-accent-700 dark:to-primary-900 text-white py-16">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center">
                 <h1 class="text-4xl md:text-5xl font-bold mb-4">O'quv markazlar</h1>
-                <p class="text-xl text-white/90 max-w-2xl mx-auto">
+                <p class="text-xl text-gray-900 dark:text-white text-white/90 max-w-2xl mx-auto">
                     O'zbekiston bo'ylab eng yaxshi o'quv markazlarini toping va o'zingizga mos kurslarni tanlang
                 </p>
             </div>
@@ -42,16 +42,16 @@
             <!-- Filter Navigation -->
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex flex-wrap gap-2">
-                    <a href="{{ route('blog-grid') }}" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
+                    <a href="{{ route('blog-grid') }}" class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
                         Barchasi
                     </a>
-                    <button id="toggle-map" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200">
+                    <button id="toggle-map" class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
                         Xarita
                     </button>
                     
                     <!-- Sort Dropdown -->
-                    <div class="relative" x-data="{ sortDropdown: false }">
-                        <button @click="sortDropdown = !sortDropdown" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 flex items-center gap-2">
+                    <div class="text-gray-900 dark:text-white relative" x-data="{ sortDropdown: false }">
+                        <button @click="sortDropdown = !sortDropdown" class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
                             Saralash
                             <svg class="w-4 h-4" :class="{ 'rotate-180': sortDropdown }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -61,55 +61,55 @@
                         <div x-show="sortDropdown" @click.away="sortDropdown = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2">
                                 @if (!isset($validated['name']))
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         Nomi ↑↓
                                     </a>
                                 @elseif ($validated['name'] == 'asc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         Nomi ↑
                                     </a>
                                 @elseif ($validated['name'] == 'desc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         Nomi ↓
                                     </a>
                                 @else
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         Nomi ↑↓
                                     </a>
                                 @endif
                                 
                                 @if (!isset($validated['distance']))
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         Masofasi ↑↓
                                     </a>
                                 @elseif ($validated['distance'] == 'asc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         Masofasi ↑
                                     </a>
                                 @elseif ($validated['distance'] == 'desc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         Masofasi ↓
                                     </a>
                                 @else
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         Masofasi ↑↓
                                     </a>
                                 @endif
                                 
                                 @if (!isset($validated['favorites']))
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         Reytingi ↑↓
                                     </a>
                                 @elseif ($validated['favorites'] == 'asc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         Reytingi ↑
                                     </a>
                                 @elseif ($validated['favorites'] == 'desc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         Reytingi ↓
                                     </a>
                                 @else
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         Reytingi ↑↓
                                     </a>
                                 @endif
@@ -118,8 +118,8 @@
                     </div>
                     
                     <!-- Teacher Announcements Dropdown -->
-                    <div class="relative" x-data="{ teacherDropdown: false }">
-                        <button @click="teacherDropdown = !teacherDropdown" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 flex items-center gap-2">
+                    <div class="text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
+                        <button @click="teacherDropdown = !teacherDropdown" class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
                             O'qituvchi e'lonlari
                             <svg class="w-4 h-4" :class="{ 'rotate-180': teacherDropdown }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -129,7 +129,7 @@
                         <div x-show="teacherDropdown" @click.away="teacherDropdown = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2">
                                 @foreach ($subjects as $subject)
-                                    <a href="{{ request()->fullUrlWithQuery(['needTeachers' => $subject->id]) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['needTeachers' => $subject->id]) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         {{ $subject->name }}
                                     </a>
                                 @endforeach

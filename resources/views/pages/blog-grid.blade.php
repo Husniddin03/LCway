@@ -61,55 +61,55 @@
                         <div x-show="sortDropdown" @click.away="sortDropdown = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2">
                                 @if (!isset($validated['name']))
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↑↓
                                     </a>
                                 @elseif ($validated['name'] == 'asc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↑
                                     </a>
                                 @elseif ($validated['name'] == 'desc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↓
                                     </a>
                                 @else
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↑↓
                                     </a>
                                 @endif
                                 
                                 @if (!isset($validated['distance']))
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↑↓
                                     </a>
                                 @elseif ($validated['distance'] == 'asc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↑
                                     </a>
                                 @elseif ($validated['distance'] == 'desc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↓
                                     </a>
                                 @else
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↑↓
                                     </a>
                                 @endif
                                 
                                 @if (!isset($validated['favorites']))
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↑↓
                                     </a>
                                 @elseif ($validated['favorites'] == 'asc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↑
                                     </a>
                                 @elseif ($validated['favorites'] == 'desc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↓
                                     </a>
                                 @else
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↑↓
                                     </a>
                                 @endif

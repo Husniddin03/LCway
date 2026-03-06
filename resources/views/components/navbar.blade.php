@@ -79,7 +79,7 @@
                 <!-- Auth buttons -->
                 @auth
                     <div class="relative" x-data="{ profileOpen: false }">
-                        <button @click="profileOpen = !profileOpen" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200">
+                        <button @click="profileOpen = !profileOpen" class="flex items-center space-x-2 p-2 rounded-full roup-hover:scale-110 transition-transform duration-300">
                             @isset(Auth::user()->avatar)
                                 <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full ring-2 ring-primary-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900">
                             @else
@@ -157,6 +157,25 @@
                 <a href="{{ route('course.create') }}" class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
                     Markaz qo'shish
                 </a>
+                
+                <!-- Mobile dropdown for Sahifalar -->
+                <div class="relative" x-data="{ mobileDropdownOpen: false }">
+                    <button @click="mobileDropdownOpen = !mobileDropdownOpen" class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 w-full text-left flex items-center justify-between">
+                        Sahifalar
+                        <svg class="h-4 w-4 transition-transform" :class="{ 'rotate-180': mobileDropdownOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    
+                    <div x-show="mobileDropdownOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="mt-1 ml-4 space-y-1">
+                        <a href="{{ route('index') }}#features" class="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            Biz haqimizda
+                        </a>
+                        <a href="{{ route('index') }}#support" class="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            Qo'llab-quvvatlash
+                        </a>
+                    </div>
+                </div>
                 
                 @guest
                     <a href="{{ route('signin') }}" class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">

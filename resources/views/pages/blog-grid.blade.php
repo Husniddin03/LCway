@@ -2,7 +2,8 @@
     <x-slot:title>Barcha o'quv markazlar</x-slot:title>
 
     <!-- Hero Section -->
-    <section class="text-gray-900 dark:text-white bg-gradient-to-br from-primary-800 via-accent-800 to-primary-900 dark:from-primary-700 dark:via-accent-700 dark:to-primary-900 text-white py-16">
+    <section
+        class="text-gray-900 dark:text-white bg-gradient-to-br from-primary-800 via-accent-800 to-primary-900 dark:from-primary-700 dark:via-accent-700 dark:to-primary-900 text-white py-16">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center">
                 <h1 class="text-4xl md:text-5xl font-bold mb-4">O'quv markazlar</h1>
@@ -23,16 +24,14 @@
                         <input type="hidden" name="{{ $item }}" value="{{ $item ?? '' }}" />
                     @endforeach
                     <div class="relative max-w-2xl mx-auto">
-                        <input 
-                            type="text" 
-                            name="searchText" 
-                            placeholder="O'quv markazini qidiring..."
+                        <input type="text" name="searchText" placeholder="O'quv markazini qidiring..."
                             value="{{ $validated['searchText'] ?? '' }}"
-                            class="w-full px-6 py-4 pr-12 text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                        >
-                        <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
+                            class="w-full px-6 py-4 pr-12 text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                        <button type="submit"
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </button>
                     </div>
@@ -42,224 +41,252 @@
             <!-- Filter Navigation -->
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex flex-wrap gap-2">
-                    <a href="{{ route('blog-grid') }}" class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
+                    <a href="{{ route('blog-grid') }}"
+                        class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
                         Barchasi
                     </a>
 
                     <!-- Filter by maps -->
 
 
-    {{-- ========== COMPONENT ========== --}}
-<div class="relative" x-data="mapFilterComp()" x-init="boot()">
+                    {{-- ========== COMPONENT ========== --}}
+                    <div class="relative" x-data="mapFilterComp()" x-init="boot()">
 
-    {{-- Trigger --}}
-    <button type="button" class="mf-btn" :class="open && 'is-open'" @click="toggle()">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-        </svg>
-        Xarita bo'yicha
-        <svg class="mf-chevron" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-        </svg>
-    </button>
-
-    {{-- Panel --}}
-    <div class="mf-panel"
-        x-show="open"
-        x-transition:enter="transition ease-out duration-200"
-        x-transition:enter-start="opacity-0 -translate-y-2 scale-95"
-        x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-        x-transition:leave="transition ease-in duration-150"
-        x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-        x-transition:leave-end="opacity-0 -translate-y-2 scale-95"
-        @click.outside="open = false"
-        style="display:none;">
-
-        {{-- Header --}}
-        <div class="mf-header">
-            <div style="display:flex;align-items:center;gap:10px;">
-                <div class="mf-hicon">
-                    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                </div>
-                <div>
-                    <div class="mf-htitle">Xarita orqali qidirish</div>
-                    <div class="mf-hsub">Joylashuvingizni belgilang va radius kiriting</div>
-                </div>
-            </div>
-            <button type="button" class="mf-close-btn" @click="open = false">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </button>
-        </div>
-
-        {{-- Map area --}}
-        <div class="mf-map-wrap">
-            <div id="filterMapEl"></div>
-
-            {{-- Loading placeholder --}}
-            <div class="mf-placeholder" x-show="!mapReady">
-                <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="opacity:.4;">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9 20l-5.447-9.132A1 1 0 013.382 9.5h17.236a1 1 0 01.838 1.368L16 20M9 20h6M9 20V9m6 11V9"/>
-                </svg>
-                <span>Xarita yuklanmoqda...</span>
-            </div>
-
-            {{-- Locate button --}}
-            <button type="button" class="mf-locate-btn" @click.stop="locateMe()">
-                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                    :style="locating ? 'animation:spin 1s linear infinite' : ''">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M12 2v3m0 14v3M2 12h3m14 0h3"/>
-                </svg>
-                <span x-text="locating ? 'Aniqlanmoqda...' : 'Mening joylashuvim'"></span>
-            </button>
-
-            <div class="mf-map-hint">🖱 Xaritaga bosing yoki markerni sudrang</div>
-        </div>
-
-        {{-- Controls --}}
-        <div class="mf-controls">
-
-            {{-- Location info --}}
-            <div class="mf-loc-box">
-                <div class="mf-loc-dot"></div>
-                <div style="flex:1;min-width:0;">
-                    <div class="mf-loc-label">Tanlangan joylashuv</div>
-                    <div class="mf-loc-text" x-text="addressText"></div>
-                    <div class="mf-loc-coords" x-show="lat && lng">
-                        <span x-text="lat ? lat.toFixed(5) : ''"></span>,
-                        <span x-text="lng ? lng.toFixed(5) : ''"></span>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Radius row --}}
-            <div class="mf-radius-row">
-                <div class="mf-radius-lbl">
-                    <svg width="13" height="13" fill="none" stroke="#6366f1" stroke-width="2" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/>
-                    </svg>
-                    Qidiruv radiusi
-                </div>
-                <div class="mf-radius-badge" x-text="radius + ' km'"></div>
-            </div>
-
-            <input type="range" min="1" max="50" step="1"
-                x-model.number="radius"
-                @input="onRadiusChange()"
-                class="mf-slider"
-                :style="`background:linear-gradient(to right,#4f46e5 0%,#4f46e5 ${(radius-1)/49*100}%,${darkMode?'#374151':'#e5e7eb'} ${(radius-1)/49*100}%,${darkMode?'#374151':'#e5e7eb'} 100%)`">
-
-            <div class="mf-slider-marks">
-                <span>1 km</span><span>25 km</span><span>50 km</span>
-            </div>
-
-            <div class="mf-quick">
-                <template x-for="r in [2,5,10,20]" :key="r">
-                    <button type="button"
-                        class="mf-qbtn"
-                        :class="radius == r ? 'mf-qbtn-on' : 'mf-qbtn-off'"
-                        @click="radius = r; onRadiusChange()"
-                        x-text="r + ' km'">
-                    </button>
-                </template>
-            </div>
-
-            {{-- Hidden form inputs --}}
-            <input type="hidden" name="latitude"  :value="lat">
-            <input type="hidden" name="longitude" :value="lng">
-            <input type="hidden" name="radius"    :value="radius">
-
-            {{-- Actions --}}
-            <div class="mf-actions">
-                <button type="button" class="mf-reset-btn" @click="resetFilter()">Tozalash</button>
-                <button type="button" class="mf-apply-btn" @click="applyFilter()">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path stroke-linecap="round" d="m21 21-4.35-4.35"/>
-                    </svg>
-                    Qidirish
-                </button>
-            </div>
-
-            <div class="mf-result" x-show="resultShown">
-                <strong x-text="resultCount"></strong> ta markaz topildi
-                (<span x-text="radius"></span> km radiusda)
-            </div>
-        </div>
-    </div>
-</div>
-
-                    
-                    <!-- Sort Dropdown -->
-                    <div class="text-gray-900 dark:text-white relative" x-data="{ sortDropdown: false }">
-                        <button @click="sortDropdown = !sortDropdown" class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
-                            Saralash
-                            <svg class="w-4 h-4" :class="{ 'rotate-180': sortDropdown }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        {{-- Trigger --}}
+                        <button type="button" class="mf-btn" :class="open && 'is-open'" @click="toggle()">
+                            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Xarita bo'yicha
+                            <svg class="mf-chevron" width="13" height="13" fill="none" stroke="currentColor"
+                                stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
-                        
-                        <div x-show="sortDropdown" @click.away="sortDropdown = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+
+                        {{-- Panel --}}
+                        <div class="mf-panel" x-show="open" x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 -translate-y-2 scale-95"
+                            x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                            x-transition:leave-end="opacity-0 -translate-y-2 scale-95" @click.outside="open = false"
+                            style="display:none;">
+
+                            {{-- Header --}}
+                            <div class="mf-header">
+                                <div style="display:flex;align-items:center;gap:10px;">
+                                    <div class="mf-hicon">
+                                        <svg width="16" height="16" fill="none" stroke="#fff"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="mf-htitle">Xarita orqali qidirish</div>
+                                        <div class="mf-hsub">Joylashuvingizni belgilang va radius kiriting</div>
+                                    </div>
+                                </div>
+                                <button type="button" class="mf-close-btn" @click="open = false">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor"
+                                        stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            {{-- Map area --}}
+                            <div class="mf-map-wrap">
+                                <div id="filterMapEl"></div>
+
+                                {{-- Loading placeholder --}}
+                                <div class="mf-placeholder" x-show="!mapReady">
+                                    <svg width="36" height="36" fill="none" stroke="currentColor"
+                                        stroke-width="1.5" viewBox="0 0 24 24" style="opacity:.4;">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9 20l-5.447-9.132A1 1 0 013.382 9.5h17.236a1 1 0 01.838 1.368L16 20M9 20h6M9 20V9m6 11V9" />
+                                    </svg>
+                                    <span>Xarita yuklanmoqda...</span>
+                                </div>
+
+                                {{-- Locate button --}}
+                                <button type="button" class="mf-locate-btn" @click.stop="locateMe()">
+                                    <svg width="14" height="14" fill="none" stroke="currentColor"
+                                        stroke-width="2" viewBox="0 0 24 24"
+                                        :style="locating ? 'animation:spin 1s linear infinite' : ''">
+                                        <circle cx="12" cy="12" r="3" />
+                                        <path d="M12 2v3m0 14v3M2 12h3m14 0h3" />
+                                    </svg>
+                                    <span x-text="locating ? 'Aniqlanmoqda...' : 'Mening joylashuvim'"></span>
+                                </button>
+
+                                <div class="mf-map-hint">🖱 Xaritaga bosing yoki markerni sudrang</div>
+                            </div>
+
+                            {{-- Controls --}}
+                            <div class="mf-controls">
+
+                                {{-- Location info --}}
+                                <div class="mf-loc-box">
+                                    <div class="mf-loc-dot"></div>
+                                    <div style="flex:1;min-width:0;">
+                                        <div class="mf-loc-label">Tanlangan joylashuv</div>
+                                        <div class="mf-loc-text" x-text="addressText"></div>
+                                        <div class="mf-loc-coords" x-show="lat && lng">
+                                            <span x-text="lat ? lat.toFixed(5) : ''"></span>,
+                                            <span x-text="lng ? lng.toFixed(5) : ''"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Radius row --}}
+                                <div class="mf-radius-row">
+                                    <div class="mf-radius-lbl">
+                                        <svg width="13" height="13" fill="none" stroke="#6366f1"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="9" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg>
+                                        Qidiruv radiusi
+                                    </div>
+                                    <div class="mf-radius-badge" x-text="radius + ' km'"></div>
+                                </div>
+
+                                <input type="range" min="1" max="50" step="1"
+                                    x-model.number="radius" @input="onRadiusChange()" class="mf-slider"
+                                    :style="`background:linear-gradient(to right,#4f46e5 0%,#4f46e5 ${(radius-1)/49*100}%,${darkMode?'#374151':'#e5e7eb'} ${(radius-1)/49*100}%,${darkMode?'#374151':'#e5e7eb'} 100%)`">
+
+                                <div class="mf-slider-marks">
+                                    <span>1 km</span><span>25 km</span><span>50 km</span>
+                                </div>
+
+                                <div class="mf-quick">
+                                    <template x-for="r in [2,5,10,20]" :key="r">
+                                        <button type="button" class="mf-qbtn"
+                                            :class="radius == r ? 'mf-qbtn-on' : 'mf-qbtn-off'"
+                                            @click="radius = r; onRadiusChange()" x-text="r + ' km'">
+                                        </button>
+                                    </template>
+                                </div>
+
+                                {{-- Hidden form inputs --}}
+                                <input type="hidden" name="latitude" :value="lat">
+                                <input type="hidden" name="longitude" :value="lng">
+                                <input type="hidden" name="radius" :value="radius">
+
+                                {{-- Actions --}}
+                                <div class="mf-actions">
+                                    <button type="button" class="mf-reset-btn"
+                                        @click="resetFilter()">Tozalash</button>
+                                    <button type="button" class="mf-apply-btn" @click="applyFilter()">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor"
+                                            stroke-width="2.5" viewBox="0 0 24 24">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <path stroke-linecap="round" d="m21 21-4.35-4.35" />
+                                        </svg>
+                                        Qidirish
+                                    </button>
+                                </div>
+
+                                <div class="mf-result" x-show="resultShown">
+                                    <strong x-text="resultCount"></strong> ta markaz topildi
+                                    (<span x-text="radius"></span> km radiusda)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Sort Dropdown -->
+                    <div class="text-gray-900 dark:text-white relative" x-data="{ sortDropdown: false }">
+                        <button @click="sortDropdown = !sortDropdown"
+                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
+                            Saralash
+                            <svg class="w-4 h-4" :class="{ 'rotate-180': sortDropdown }" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <div x-show="sortDropdown" @click.away="sortDropdown = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2">
                                 @if (!isset($validated['name']))
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↑↓
                                     </a>
                                 @elseif ($validated['name'] == 'asc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'desc']) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↑
                                     </a>
                                 @elseif ($validated['name'] == 'desc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↓
                                     </a>
                                 @else
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↑↓
                                     </a>
                                 @endif
-                                
+
                                 @if (!isset($validated['distance']))
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↑↓
                                     </a>
                                 @elseif ($validated['distance'] == 'asc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'desc']) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↑
                                     </a>
                                 @elseif ($validated['distance'] == 'desc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↓
                                     </a>
                                 @else
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↑↓
                                     </a>
                                 @endif
-                                
+
                                 @if (!isset($validated['favorites']))
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↑↓
                                     </a>
                                 @elseif ($validated['favorites'] == 'asc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'desc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'desc']) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↑
                                     </a>
                                 @elseif ($validated['favorites'] == 'desc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↓
                                     </a>
                                 @else
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↑↓
                                     </a>
                                 @endif
@@ -268,18 +295,29 @@
                     </div>
 
                     <!-- Filter by subjects -->
-                     <div class="text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
-                        <button @click="teacherDropdown = !teacherDropdown" class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
+                    <div class="text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
+                        <button @click="teacherDropdown = !teacherDropdown"
+                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
                             Fanlar bo'yicha
-                            <svg class="w-4 h-4" :class="{ 'rotate-180': teacherDropdown }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            <svg class="w-4 h-4" :class="{ 'rotate-180': teacherDropdown }" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
-                        
-                        <div x-show="teacherDropdown" @click.away="teacherDropdown = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+
+                        <div x-show="teacherDropdown" @click.away="teacherDropdown = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2 max-h-70 overflow-y-auto">
                                 @foreach ($subjects as $subject)
-                                    <a href="{{ request()->fullUrlWithQuery(['subject_id' => $subject->id]) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['subject_id' => $subject->id]) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
                                         {{ $subject->name }}
                                     </a>
                                 @endforeach
@@ -289,17 +327,28 @@
 
                     <!-- Teacher Announcements Dropdown -->
                     <div class="text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
-                        <button @click="teacherDropdown = !teacherDropdown" class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
+                        <button @click="teacherDropdown = !teacherDropdown"
+                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
                             O'qituvchi e'lonlari
-                            <svg class="w-4 h-4" :class="{ 'rotate-180': teacherDropdown }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            <svg class="w-4 h-4" :class="{ 'rotate-180': teacherDropdown }" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
-                        
-                        <div x-show="teacherDropdown" @click.away="teacherDropdown = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+
+                        <div x-show="teacherDropdown" @click.away="teacherDropdown = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2 max-h-70 overflow-y-auto">
                                 @foreach ($subjects as $subject)
-                                    <a href="{{ request()->fullUrlWithQuery(['needTeachers' => $subject->id]) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                    <a href="{{ request()->fullUrlWithQuery(['needTeachers' => $subject->id]) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
                                         {{ $subject->name }}
                                     </a>
                                 @endforeach
@@ -307,7 +356,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="text-gray-600 dark:text-gray-400">
                     {{ $LearningCenters->count() }} ta o'quv markaz topildi
                 </div>
@@ -320,47 +369,54 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @foreach ($LearningCenters as $LearningCenter)
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
                         <!-- Image -->
                         <div class="relative h-48 overflow-hidden">
-                            <img 
-                                src="{{ asset('storage/' . $LearningCenter->logo) }}" 
+                            <img src="{{ asset('storage/' . $LearningCenter->logo) }}"
                                 alt="{{ $LearningCenter->name }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                            >
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <a href="{{ route('blog-single', $LearningCenter->id) }}" class="absolute bottom-4 left-4 bg-white dark:bg-gray-800 text-primary-600 dark:text-primary-400 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            </div>
+                            <a href="{{ route('blog-single', $LearningCenter->id) }}"
+                                class="absolute bottom-4 left-4 bg-white dark:bg-gray-800 text-primary-600 dark:text-primary-400 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                                 Ko'proq o'qish
                             </a>
                         </div>
-                        
+
                         <!-- Content -->
                         <div class="p-6">
                             <!-- Meta Information -->
                             <div class="flex flex-wrap gap-2 mb-4 text-sm text-gray-600 dark:text-gray-400">
                                 <div class="flex items-center gap-1">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
                                     <span>{{ $LearningCenter->region . ', ' . $LearningCenter->province }}</span>
                                 </div>
                                 <div class="flex items-center gap-1">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     <span>{{ $LearningCenter->created_at->diffForHumans() }}</span>
                                 </div>
                                 @if (isset($LearningCenter->distance))
                                     <div class="flex items-center gap-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                                         </svg>
                                         <span>{{ $LearningCenter->distance }} km</span>
                                     </div>
                                 @endif
                             </div>
-                            
+
                             <!-- Rating -->
                             @php
                                 $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
@@ -371,39 +427,48 @@
                                         @php
                                             $diff = $average - $i;
                                         @endphp
-                                        <span class="text-lg {{ $average >= $i ? 'text-yellow-400' : ($diff > -1 && $diff < 0 ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600') }}">
+                                        <span
+                                            class="text-lg {{ $average >= $i ? 'text-yellow-400' : ($diff > -1 && $diff < 0 ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600') }}">
                                             ★
                                         </span>
                                     @endfor
                                 </div>
-                                <span class="text-lg font-semibold text-primary-600 dark:text-primary-400">{{ $average }}</span>
+                                <span
+                                    class="text-lg font-semibold text-primary-600 dark:text-primary-400">{{ $average }}</span>
                             </div>
-                            
+
                             <!-- Title -->
                             <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                                <a href="{{ route('blog-single', $LearningCenter->id) }}" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
+                                <a href="{{ route('blog-single', $LearningCenter->id) }}"
+                                    class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
                                     {{ $LearningCenter->name }}
                                 </a>
                             </h3>
-                            
+
                             <!-- Teacher Announcements -->
                             <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
                                 <div class="flex items-center gap-2 mb-2">
-                                    <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
-                                        <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                                    <div
+                                        class="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
+                                        <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                                         </svg>
                                     </div>
                                     <h4 class="font-semibold text-gray-900 dark:text-white">E'lon</h4>
                                 </div>
-                                
+
                                 @if ($LearningCenter->needTeachers->count() > 0)
                                     <div class="space-y-2">
-                                        <p class="text-sm font-medium text-success-600 dark:text-success-400">O'qituvchi kerak</p>
+                                        <p class="text-sm font-medium text-success-600 dark:text-success-400">
+                                            O'qituvchi kerak</p>
                                         @foreach ($LearningCenter->needTeachers as $teacher)
                                             <div class="flex items-center justify-between text-sm">
-                                                <span class="text-gray-700 dark:text-gray-300">🟢 {{ $teacher->subject->name }}</span>
-                                                <span class="text-xs text-gray-500 dark:text-gray-400">{{ $teacher->created_at->diffForHumans() }}</span>
+                                                <span class="text-gray-700 dark:text-gray-300">🟢
+                                                    {{ $teacher->subject->name }}</span>
+                                                <span
+                                                    class="text-xs text-gray-500 dark:text-gray-400">{{ $teacher->created_at->diffForHumans() }}</span>
                                             </div>
                                         @endforeach
                                     </div>
@@ -424,16 +489,16 @@
     .star {
         transition: color 0.2s ease;
     }
-    
+
     /* Map Container */
     #map-container.hidden {
         display: none;
     }
-    
+
     #map-container.show {
         display: block;
     }
-    
+
     /* Search Results */
     .search-result-item {
         padding: 8px 12px;
@@ -441,15 +506,15 @@
         border-bottom: 1px solid #e5e7eb;
         transition: background-color 0.2s;
     }
-    
+
     .search-result-item:hover {
         background-color: #f3f4f6;
     }
-    
+
     .dark .search-result-item {
         border-bottom-color: #374151;
     }
-    
+
     .dark .search-result-item:hover {
         background-color: #374151;
     }
@@ -996,560 +1061,942 @@
 
 {{-- ========== STYLES ========== --}}
 <style>
-/* ---- TRIGGER BUTTON ---- */
-.mf-btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 18px; border-radius: 12px;
-    font-size: 14px; font-weight: 600; cursor: pointer;
-    border: none; font-family: inherit; white-space: nowrap;
-    transition: all .25s ease;
-    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
-    color: #fff;
-    box-shadow: 0 4px 14px rgba(99,102,241,.35);
-}
-.mf-btn:hover  { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(99,102,241,.48); }
-.mf-btn:active { transform: translateY(0); }
-.mf-chevron { transition: transform .25s; }
-.mf-btn.is-open .mf-chevron { transform: rotate(180deg); }
-
-/* ---- PANEL ---- */
-.mf-panel {
-    position: absolute;
-    top: calc(100% + 10px);
-    left: 0;
-    width: 500px;
-    max-width: calc(100vw - 20px);
-    border-radius: 20px;
-    overflow: hidden;
-    z-index: 9999;
-    /* Light */
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 20px 60px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.04);
-}
-.dark .mf-panel {
-    background: #111827;
-    border-color: rgba(255,255,255,.08);
-    box-shadow: 0 20px 60px rgba(0,0,0,.55);
-}
-
-/* ---- HEADER ---- */
-.mf-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 18px;
-    background: linear-gradient(135deg, #f5f6ff 0%, #eff0ff 100%);
-    border-bottom: 1px solid #e5e7eb;
-}
-.dark .mf-header {
-    background: linear-gradient(135deg, #1a1d2e 0%, #1e2140 100%);
-    border-bottom-color: rgba(255,255,255,.07);
-}
-.mf-hicon {
-    width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
-    display: flex; align-items: center; justify-content: center;
-}
-.mf-htitle  { font-size: 14px; font-weight: 700; color: #111827; }
-.dark .mf-htitle  { color: #f9fafb; }
-.mf-hsub    { font-size: 11px; color: #6b7280; margin-top: 1px; }
-.dark .mf-hsub    { color: rgba(255,255,255,.45); }
-.mf-close-btn {
-    background: none; border: none; cursor: pointer;
-    color: #9ca3af; padding: 4px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    transition: background .15s, color .15s;
-}
-.mf-close-btn:hover { background: rgba(0,0,0,.06); color: #374151; }
-.dark .mf-close-btn:hover { background: rgba(255,255,255,.1); color: #f9fafb; }
-
-/* ---- MAP AREA ---- */
-.mf-map-wrap { position: relative; height: 265px; }
-#filterMapEl { width: 100%; height: 100%; }
-.mf-placeholder {
-    position: absolute; inset: 0; z-index: 5;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 8px; color: #9ca3af; font-size: 13px;
-    background: #f3f4f6;
-}
-.dark .mf-placeholder { background: #1f2937; }
-.mf-locate-btn {
-    position: absolute; top: 10px; right: 10px; z-index: 10;
-    display: flex; align-items: center; gap: 6px;
-    padding: 7px 12px; border-radius: 10px;
-    font-size: 12px; font-weight: 600; border: none; cursor: pointer;
-    font-family: inherit; transition: all .2s;
-    backdrop-filter: blur(8px);
-    background: rgba(255,255,255,.92); color: #374151;
-    box-shadow: 0 2px 10px rgba(0,0,0,.18);
-}
-.dark .mf-locate-btn { background: rgba(17,24,39,.88); color: #f3f4f6; }
-.mf-locate-btn:hover { background: #4f46e5; color: #fff; box-shadow: 0 4px 14px rgba(99,102,241,.4); }
-.mf-map-hint {
-    position: absolute; bottom: 8px; left: 8px; z-index: 10;
-    padding: 5px 10px; border-radius: 8px;
-    font-size: 11px;
-    background: rgba(0,0,0,.55); color: rgba(255,255,255,.8);
-    backdrop-filter: blur(4px); pointer-events: none;
-}
-
-/* ---- CONTROLS ---- */
-.mf-controls { padding: 16px 18px; background: #fff; }
-.dark .mf-controls { background: #111827; }
-
-.mf-loc-box {
-    display: flex; align-items: flex-start; gap: 10px;
-    padding: 10px 12px; border-radius: 12px; margin-bottom: 14px;
-    background: #f9fafb; border: 1px solid #e5e7eb;
-}
-.dark .mf-loc-box { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); }
-.mf-loc-dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,.2);
-    flex-shrink: 0; margin-top: 4px;
-}
-.mf-loc-label { font-size: 10px; font-weight: 600; color: #9ca3af; letter-spacing:.04em; text-transform:uppercase; margin-bottom:2px; }
-.mf-loc-text  { font-size: 13px; color: #374151; line-height: 1.4; }
-.dark .mf-loc-text { color: #e5e7eb; }
-.mf-loc-coords { font-size: 10px; color: #9ca3af; margin-top: 2px; font-family: monospace; }
-
-.mf-radius-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.mf-radius-lbl { font-size: 12px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 5px; }
-.dark .mf-radius-lbl { color: #d1d5db; }
-.mf-radius-badge {
-    font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
-    background: rgba(99,102,241,.12); color: #4f46e5;
-    border: 1px solid rgba(99,102,241,.25);
-}
-.dark .mf-radius-badge { color: #818cf8; background: rgba(99,102,241,.18); }
-
-.mf-slider {
-    width: 100%; height: 5px; border-radius: 999px;
-    appearance: none; -webkit-appearance: none;
-    cursor: pointer; outline: none; border: none;
-}
-.mf-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 18px; height: 18px; border-radius: 50%;
-    background: #4f46e5; cursor: pointer;
-    border: 2.5px solid #fff;
-    box-shadow: 0 0 0 2px rgba(99,102,241,.3), 0 2px 6px rgba(0,0,0,.2);
-}
-.mf-slider-marks { display:flex; justify-content:space-between; font-size:10px; color:#9ca3af; margin-top:4px; padding:0 2px; }
-
-.mf-quick { display: flex; gap: 6px; margin-top: 8px; }
-.mf-qbtn {
-    flex: 1; padding: 6px 0; border-radius: 8px;
-    font-size: 12px; font-weight: 600; cursor: pointer;
-    font-family: inherit; transition: all .15s;
-}
-.mf-qbtn-off { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
-.dark .mf-qbtn-off { background: rgba(255,255,255,.06); color: #9ca3af; border-color: rgba(255,255,255,.08); }
-.mf-qbtn-off:hover { background: rgba(99,102,241,.1); color: #4f46e5; border-color: rgba(99,102,241,.3); }
-.dark .mf-qbtn-off:hover { background: rgba(99,102,241,.15); color: #818cf8; }
-.mf-qbtn-on { background: rgba(99,102,241,.15); color: #4f46e5; border: 1px solid #4f46e5; }
-.dark .mf-qbtn-on { color: #818cf8; border-color: #6366f1; background: rgba(99,102,241,.2); }
-
-.mf-actions { display: flex; gap: 10px; margin-top: 14px; }
-.mf-reset-btn {
-    padding: 10px 18px; border-radius: 11px;
-    font-size: 13px; font-weight: 600; cursor: pointer;
-    font-family: inherit; transition: all .2s;
-    background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb;
-}
-.dark .mf-reset-btn { background: rgba(255,255,255,.06); color: #9ca3af; border-color: rgba(255,255,255,.08); }
-.mf-reset-btn:hover { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
-.dark .mf-reset-btn:hover { background: rgba(239,68,68,.12); color: #f87171; border-color: rgba(239,68,68,.3); }
-.mf-apply-btn {
-    flex: 1; padding: 10px 20px; border-radius: 11px;
-    font-size: 13px; font-weight: 700; cursor: pointer;
-    font-family: inherit; border: none; transition: all .2s;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
-    color: #fff; box-shadow: 0 4px 12px rgba(99,102,241,.35);
-}
-.mf-apply-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(99,102,241,.5); }
-.mf-apply-btn:active { transform: translateY(0); }
-
-.mf-result { text-align: center; margin-top: 8px; font-size: 12px; color: #9ca3af; }
-.mf-result strong { color: #4f46e5; }
-.dark .mf-result strong { color: #818cf8; }
-
-/* ---- MOBILE ---- */
-@media (max-width: 540px) {
-    .mf-panel {
-        position: fixed !important;
-        top: auto !important; left: 0 !important; right: 0;
-        bottom: 0; width: 100%; max-width: 100%;
-        border-radius: 20px 20px 0 0;
-        max-height: 88vh; overflow-y: auto;
+    /* ---- TRIGGER BUTTON ---- */
+    .mf-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        font-family: inherit;
+        white-space: nowrap;
+        transition: all .25s ease;
+        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, .35);
     }
-    .mf-map-wrap { height: 220px; }
-}
+
+    .mf-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, .48);
+    }
+
+    .mf-btn:active {
+        transform: translateY(0);
+    }
+
+    .mf-chevron {
+        transition: transform .25s;
+    }
+
+    .mf-btn.is-open .mf-chevron {
+        transform: rotate(180deg);
+    }
+
+    /* ---- PANEL ---- */
+    .mf-panel {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        width: 500px;
+        max-width: calc(100vw - 20px);
+        border-radius: 20px;
+        overflow: hidden;
+        z-index: 9999;
+        /* Light */
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .18), 0 0 0 1px rgba(0, 0, 0, .04);
+    }
+
+    .dark .mf-panel {
+        background: #111827;
+        border-color: rgba(255, 255, 255, .08);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .55);
+    }
+
+    /* ---- HEADER ---- */
+    .mf-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        background: linear-gradient(135deg, #f5f6ff 0%, #eff0ff 100%);
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .dark .mf-header {
+        background: linear-gradient(135deg, #1a1d2e 0%, #1e2140 100%);
+        border-bottom-color: rgba(255, 255, 255, .07);
+    }
+
+    .mf-hicon {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        flex-shrink: 0;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mf-htitle {
+        font-size: 14px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .dark .mf-htitle {
+        color: #f9fafb;
+    }
+
+    .mf-hsub {
+        font-size: 11px;
+        color: #6b7280;
+        margin-top: 1px;
+    }
+
+    .dark .mf-hsub {
+        color: rgba(255, 255, 255, .45);
+    }
+
+    .mf-close-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #9ca3af;
+        padding: 4px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background .15s, color .15s;
+    }
+
+    .mf-close-btn:hover {
+        background: rgba(0, 0, 0, .06);
+        color: #374151;
+    }
+
+    .dark .mf-close-btn:hover {
+        background: rgba(255, 255, 255, .1);
+        color: #f9fafb;
+    }
+
+    /* ---- MAP AREA ---- */
+    .mf-map-wrap {
+        position: relative;
+        height: 265px;
+    }
+
+    #filterMapEl {
+        width: 100%;
+        height: 100%;
+    }
+
+    .mf-placeholder {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #9ca3af;
+        font-size: 13px;
+        background: #f3f4f6;
+    }
+
+    .dark .mf-placeholder {
+        background: #1f2937;
+    }
+
+    .mf-locate-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        transition: all .2s;
+        backdrop-filter: blur(8px);
+        background: rgba(255, 255, 255, .92);
+        color: #374151;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, .18);
+    }
+
+    .dark .mf-locate-btn {
+        background: rgba(17, 24, 39, .88);
+        color: #f3f4f6;
+    }
+
+    .mf-locate-btn:hover {
+        background: #4f46e5;
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, .4);
+    }
+
+    .mf-map-hint {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        z-index: 10;
+        padding: 5px 10px;
+        border-radius: 8px;
+        font-size: 11px;
+        background: rgba(0, 0, 0, .55);
+        color: rgba(255, 255, 255, .8);
+        backdrop-filter: blur(4px);
+        pointer-events: none;
+    }
+
+    /* ---- CONTROLS ---- */
+    .mf-controls {
+        padding: 16px 18px;
+        background: #fff;
+    }
+
+    .dark .mf-controls {
+        background: #111827;
+    }
+
+    .mf-loc-box {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        margin-bottom: 14px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+    }
+
+    .dark .mf-loc-box {
+        background: rgba(255, 255, 255, .04);
+        border-color: rgba(255, 255, 255, .08);
+    }
+
+    .mf-loc-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, .2);
+        flex-shrink: 0;
+        margin-top: 4px;
+    }
+
+    .mf-loc-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: #9ca3af;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+    }
+
+    .mf-loc-text {
+        font-size: 13px;
+        color: #374151;
+        line-height: 1.4;
+    }
+
+    .dark .mf-loc-text {
+        color: #e5e7eb;
+    }
+
+    .mf-loc-coords {
+        font-size: 10px;
+        color: #9ca3af;
+        margin-top: 2px;
+        font-family: monospace;
+    }
+
+    .mf-radius-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+
+    .mf-radius-lbl {
+        font-size: 12px;
+        font-weight: 600;
+        color: #374151;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .dark .mf-radius-lbl {
+        color: #d1d5db;
+    }
+
+    .mf-radius-badge {
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 20px;
+        background: rgba(99, 102, 241, .12);
+        color: #4f46e5;
+        border: 1px solid rgba(99, 102, 241, .25);
+    }
+
+    .dark .mf-radius-badge {
+        color: #818cf8;
+        background: rgba(99, 102, 241, .18);
+    }
+
+    .mf-slider {
+        width: 100%;
+        height: 5px;
+        border-radius: 999px;
+        appearance: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+        outline: none;
+        border: none;
+    }
+
+    .mf-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #4f46e5;
+        cursor: pointer;
+        border: 2.5px solid #fff;
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, .3), 0 2px 6px rgba(0, 0, 0, .2);
+    }
+
+    .mf-slider-marks {
+        display: flex;
+        justify-content: space-between;
+        font-size: 10px;
+        color: #9ca3af;
+        margin-top: 4px;
+        padding: 0 2px;
+    }
+
+    .mf-quick {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+    }
+
+    .mf-qbtn {
+        flex: 1;
+        padding: 6px 0;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+        transition: all .15s;
+    }
+
+    .mf-qbtn-off {
+        background: #f3f4f6;
+        color: #6b7280;
+        border: 1px solid #e5e7eb;
+    }
+
+    .dark .mf-qbtn-off {
+        background: rgba(255, 255, 255, .06);
+        color: #9ca3af;
+        border-color: rgba(255, 255, 255, .08);
+    }
+
+    .mf-qbtn-off:hover {
+        background: rgba(99, 102, 241, .1);
+        color: #4f46e5;
+        border-color: rgba(99, 102, 241, .3);
+    }
+
+    .dark .mf-qbtn-off:hover {
+        background: rgba(99, 102, 241, .15);
+        color: #818cf8;
+    }
+
+    .mf-qbtn-on {
+        background: rgba(99, 102, 241, .15);
+        color: #4f46e5;
+        border: 1px solid #4f46e5;
+    }
+
+    .dark .mf-qbtn-on {
+        color: #818cf8;
+        border-color: #6366f1;
+        background: rgba(99, 102, 241, .2);
+    }
+
+    .mf-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+    }
+
+    .mf-reset-btn {
+        padding: 10px 18px;
+        border-radius: 11px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+        transition: all .2s;
+        background: #f3f4f6;
+        color: #6b7280;
+        border: 1px solid #e5e7eb;
+    }
+
+    .dark .mf-reset-btn {
+        background: rgba(255, 255, 255, .06);
+        color: #9ca3af;
+        border-color: rgba(255, 255, 255, .08);
+    }
+
+    .mf-reset-btn:hover {
+        background: #fee2e2;
+        color: #ef4444;
+        border-color: #fca5a5;
+    }
+
+    .dark .mf-reset-btn:hover {
+        background: rgba(239, 68, 68, .12);
+        color: #f87171;
+        border-color: rgba(239, 68, 68, .3);
+    }
+
+    .mf-apply-btn {
+        flex: 1;
+        padding: 10px 20px;
+        border-radius: 11px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+        border: none;
+        transition: all .2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, .35);
+    }
+
+    .mf-apply-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(99, 102, 241, .5);
+    }
+
+    .mf-apply-btn:active {
+        transform: translateY(0);
+    }
+
+    cle .mf-result {
+        text-align: center;
+        margin-top: 8px;
+        font-size: 12px;
+        color: #9ca3af;
+    }
+
+    .mf-result strong {
+        color: #4f46e5;
+    }
+
+    .dark .mf-result strong {
+        color: #818cf8;
+    }
+
+    /* ---- MOBILE ---- */
+    @media (max-width: 540px) {
+        .mf-panel {
+            position: fixed !important;
+            top: auto !important;
+            left: 0 !important;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 100%;
+            border-radius: 20px 20px 0 0;
+            max-height: 88vh;
+            overflow-y: auto;
+        }
+
+        .mf-map-wrap {
+            height: 220px;
+        }
+    }
 </style>
 
 
 <style>
-@keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
 </style>
 
 {{-- ========== ALPINE JS COMPONENT ========== --}}
 <script>
-(function () {
-    /* --------------------------------------------------
-       Centers data from Laravel
-    -------------------------------------------------- */
-    var _CENTERS = {!! json_encode(
-        $LearningCenters->map(function ($center) {
-            $coords = explode(',', $center->location ?? '');
-            return [
-                'id'        => $center->id,
-                'name'      => $center->name,
-                'latitude'  => (float) ($coords[0] ?? 0),
-                'longitude' => (float) ($coords[1] ?? 0),
-                'address'   => $center->address ?? '',
-            ];
-        })
-    ) !!};
-
-    var DEFAULT_LAT = 39.6542; // Samarqand
-    var DEFAULT_LNG = 66.9597;
-
-    window.mapFilterComp = function () {
-        return {
-            /* public state */
-            open:        false,
-            mapReady:    false,
-            locating:    false,
-            resultShown: false,
-            resultCount: 0,
-            lat:         null,
-            lng:         null,
-            radius:      5,
-            darkMode:    false,
-            addressText: 'Xaritadan joy tanlang yoki "Mening joylashuvim" tugmasini bosing',
-
-            /* private */
-            _map:    null,
-            _uMark:  null,
-            _circle: null,
-            _iws:    [],
-            _geo:    null,
-
-            /* ---------- boot ---------- */
-            boot() {
-                /* detect dark mode */
-                this.darkMode = document.documentElement.classList.contains('dark');
-
-                /* read URL params */
-                var p = new URLSearchParams(window.location.search);
-                if (p.get('latitude'))  this.lat    = parseFloat(p.get('latitude'));
-                if (p.get('longitude')) this.lng    = parseFloat(p.get('longitude'));
-                if (p.get('radius'))    this.radius = parseFloat(p.get('radius'));
-
-                /* register GLOBAL callback that Google Maps SDK calls */
-                window.__mfInitMap = () => {
-                    if (this.open) this._initMap();
-                };
-
-                /* if SDK already present, bind immediately */
-                if (window.google && window.google.maps) {
-                    // no-op; _initMap() called when panel opens
-                }
-
-                /* observe dark-mode toggle */
-                new MutationObserver(() => {
-                    this.darkMode = document.documentElement.classList.contains('dark');
-                }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-            },
-
-            /* ---------- toggle panel ---------- */
-            toggle() {
-                this.open = !this.open;
-                if (this.open) {
-                    this.$nextTick(() => setTimeout(() => this._initMap(), 150));
-                }
-            },
-
-            /* ---------- init map ---------- */
-            _initMap() {
-                if (this._map) {
-                    google.maps.event.trigger(this._map, 'resize');
-                    return;
-                }
-                if (!window.google || !window.google.maps) return;
-
-                var el = document.getElementById('filterMapEl');
-                if (!el) return;
-
-                var center = {
-                    lat: this.lat  || DEFAULT_LAT,
-                    lng: this.lng  || DEFAULT_LNG,
-                };
-
-                var darkStyles = [
-                    { elementType: 'geometry',          stylers: [{ color: '#1a1d2e' }] },
-                    { elementType: 'labels.text.fill',  stylers: [{ color: '#8ec3b9' }] },
-                    { elementType: 'labels.text.stroke',stylers: [{ color: '#1a1d2e' }] },
-                    { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#2c2f45' }] },
-                    { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#3c3f5e' }] },
-                    { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#17263c' }] },
-                    { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#2c2d3a' }] },
-                    { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#263c3f' }] },
-                    { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#4a4e6a' }] },
+    (function() {
+        /* --------------------------------------------------
+           Centers data from Laravel
+        -------------------------------------------------- */
+        var _CENTERS = {!! json_encode(
+            $LearningCenters->map(function ($center) {
+                $coords = explode(',', $center->location ?? '');
+                return [
+                    'id' => $center->id,
+                    'name' => $center->name,
+                    'latitude' => (float) ($coords[0] ?? 0),
+                    'longitude' => (float) ($coords[1] ?? 0),
+                    'address' => $center->address ?? '',
                 ];
+            }),
+        ) !!};
 
-                this._map = new google.maps.Map(el, {
-                    center:            center,
-                    zoom:              13,
-                    gestureHandling:   'greedy',
-                    mapTypeControl:    false,
-                    streetViewControl: false,
-                    fullscreenControl: false,
-                    zoomControl:       true,
-                    styles:            this.darkMode ? darkStyles : [],
-                });
+        var DEFAULT_LAT = 39.6542; // Samarqand
+        var DEFAULT_LNG = 66.9597;
 
-                this._geo = new google.maps.Geocoder();
+        window.mapFilterComp = function() {
+            return {
+                /* public state */
+                open: false,
+                mapReady: false,
+                locating: false,
+                resultShown: false,
+                resultCount: 0,
+                lat: null,
+                lng: null,
+                radius: 5,
+                darkMode: false,
+                addressText: 'Xaritadan joy tanlang yoki "Mening joylashuvim" tugmasini bosing',
 
-                /* User marker (blue circle) */
-                this._uMark = new google.maps.Marker({
-                    map:       this._map,
-                    position:  center,
-                    draggable: true,
-                    zIndex:    999,
-                    title:     'Sizning joylashuvingiz',
-                    icon: {
-                        path:         google.maps.SymbolPath.CIRCLE,
-                        scale:        10,
-                        fillColor:    '#4f46e5',
-                        fillOpacity:  1,
-                        strokeColor:  '#ffffff',
-                        strokeWeight: 2.5,
-                    },
-                });
+                /* private */
+                _map: null,
+                _uMark: null,
+                _circle: null,
+                _iws: [],
+                _geo: null,
 
-                /* Radius circle */
-                this._circle = new google.maps.Circle({
-                    map:           this._map,
-                    center:        center,
-                    radius:        this.radius * 1000,
-                    fillColor:     '#6366f1',
-                    fillOpacity:   0.07,
-                    strokeColor:   '#6366f1',
-                    strokeOpacity: 0.45,
-                    strokeWeight:  1.5,
-                });
+                /* ---------- boot ---------- */
+                boot() {
+                    /* detect dark mode */
+                    this.darkMode = document.documentElement.classList.contains('dark');
 
-                /* Click on map */
-                this._map.addListener('click', (e) => {
-                    this._moveUser(e.latLng.lat(), e.latLng.lng());
-                });
+                    /* read URL params */
+                    var p = new URLSearchParams(window.location.search);
+                    if (p.get('latitude')) this.lat = parseFloat(p.get('latitude'));
+                    if (p.get('longitude')) this.lng = parseFloat(p.get('longitude'));
+                    if (p.get('radius')) this.radius = parseFloat(p.get('radius'));
 
-                /* Drag user marker */
-                this._uMark.addListener('dragend', (e) => {
-                    this._moveUser(e.latLng.lat(), e.latLng.lng());
-                });
+                    /* register GLOBAL callback that Google Maps SDK calls */
+                    window.__mfInitMap = () => {
+                        if (this.open) this._initMap();
+                    };
 
-                /* Add center markers */
-                this._addCenters();
+                    /* if SDK already present, bind immediately */
+                    if (window.google && window.google.maps) {
+                        // no-op; _initMap() called when panel opens
+                    }
 
-                this.mapReady = true;
+                    /* observe dark-mode toggle */
+                    new MutationObserver(() => {
+                        this.darkMode = document.documentElement.classList.contains('dark');
+                    }).observe(document.documentElement, {
+                        attributes: true,
+                        attributeFilter: ['class']
+                    });
+                },
 
-                /* Restore from URL */
-                if (this.lat && this.lng) {
-                    this._uMark.setPosition({ lat: this.lat, lng: this.lng });
-                    this._circle.setCenter({ lat: this.lat, lng: this.lng });
-                    this._map.setCenter({ lat: this.lat, lng: this.lng });
-                }
-            },
+                /* ---------- toggle panel ---------- */
+                toggle() {
+                    this.open = !this.open;
+                    if (this.open) {
+                        this.$nextTick(() => setTimeout(() => this._initMap(), 150));
+                    }
+                },
 
-            /* ---------- add center markers ---------- */
-            _addCenters() {
-                var self = this;
-                var pin = function (color) {
-                    return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
-                        '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">' +
-                        '<path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22S28 23.333 28 14C28 6.268 21.732 0 14 0z" fill="' + color + '"/>' +
-                        '<circle cx="14" cy="14" r="6" fill="white"/>' +
-                        '<circle cx="14" cy="14" r="3.5" fill="' + color + '"/>' +
-                        '</svg>'
-                    );
-                };
+                /* ---------- init map ---------- */
+                _initMap() {
+                    if (this._map) {
+                        google.maps.event.trigger(this._map, 'resize');
+                        return;
+                    }
+                    if (!window.google || !window.google.maps) return;
 
-                _CENTERS.forEach(function (c) {
-                    if (!c.latitude || !c.longitude) return;
+                    var el = document.getElementById('filterMapEl');
+                    if (!el) return;
 
-                    var marker = new google.maps.Marker({
-                        map:      self._map,
-                        position: { lat: c.latitude, lng: c.longitude },
-                        title:    c.name,
+                    var center = {
+                        lat: this.lat || DEFAULT_LAT,
+                        lng: this.lng || DEFAULT_LNG,
+                    };
+
+                    var darkStyles = [{
+                            elementType: 'geometry',
+                            stylers: [{
+                                color: '#1a1d2e'
+                            }]
+                        },
+                        {
+                            elementType: 'labels.text.fill',
+                            stylers: [{
+                                color: '#8ec3b9'
+                            }]
+                        },
+                        {
+                            elementType: 'labels.text.stroke',
+                            stylers: [{
+                                color: '#1a1d2e'
+                            }]
+                        },
+                        {
+                            featureType: 'road',
+                            elementType: 'geometry',
+                            stylers: [{
+                                color: '#2c2f45'
+                            }]
+                        },
+                        {
+                            featureType: 'road.highway',
+                            elementType: 'geometry',
+                            stylers: [{
+                                color: '#3c3f5e'
+                            }]
+                        },
+                        {
+                            featureType: 'water',
+                            elementType: 'geometry',
+                            stylers: [{
+                                color: '#17263c'
+                            }]
+                        },
+                        {
+                            featureType: 'poi',
+                            elementType: 'geometry',
+                            stylers: [{
+                                color: '#2c2d3a'
+                            }]
+                        },
+                        {
+                            featureType: 'poi.park',
+                            elementType: 'geometry',
+                            stylers: [{
+                                color: '#263c3f'
+                            }]
+                        },
+                        {
+                            featureType: 'administrative',
+                            elementType: 'geometry',
+                            stylers: [{
+                                color: '#4a4e6a'
+                            }]
+                        },
+                    ];
+
+                    this._map = new google.maps.Map(el, {
+                        center: center,
+                        zoom: 13,
+                        gestureHandling: 'greedy',
+                        mapTypeControl: false,
+                        streetViewControl: false,
+                        fullscreenControl: false,
+                        zoomControl: true,
+                        styles: this.darkMode ? darkStyles : [],
+                    });
+
+                    this._geo = new google.maps.Geocoder();
+
+                    /* User marker (blue circle) */
+                    this._uMark = new google.maps.Marker({
+                        map: this._map,
+                        position: center,
+                        draggable: true,
+                        zIndex: 999,
+                        title: 'Sizning joylashuvingiz',
                         icon: {
-                            url:        pin('#e53e3e'),
-                            scaledSize: new google.maps.Size(26, 33),
-                            anchor:     new google.maps.Point(13, 33),
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 10,
+                            fillColor: '#4f46e5',
+                            fillOpacity: 1,
+                            strokeColor: '#ffffff',
+                            strokeWeight: 2.5,
                         },
                     });
 
-                    var iw = new google.maps.InfoWindow({
-                        maxWidth: 260,
+                    /* Radius circle */
+                    this._circle = new google.maps.Circle({
+                        map: this._map,
+                        center: center,
+                        radius: this.radius * 1000,
+                        fillColor: '#6366f1',
+                        fillOpacity: 0.07,
+                        strokeColor: '#6366f1',
+                        strokeOpacity: 0.45,
+                        strokeWeight: 1.5,
                     });
 
-                    marker.addListener('click', function () {
-                        self._iws.forEach(function (w) { w.close(); });
-                        iw.setContent(self._buildIW(c));
-                        iw.open(self._map, marker);
+                    /* Click on map */
+                    this._map.addListener('click', (e) => {
+                        this._moveUser(e.latLng.lat(), e.latLng.lng());
                     });
 
-                    self._iws.push(iw);
-                });
-            },
+                    /* Drag user marker */
+                    this._uMark.addListener('dragend', (e) => {
+                        this._moveUser(e.latLng.lat(), e.latLng.lng());
+                    });
 
-            /* ---------- info window HTML ---------- */
-            _buildIW(c) {
-                var dist = (this.lat && this.lng)
-                    ? this._haversine(this.lat, this.lng, c.latitude, c.longitude).toFixed(1) + ' km'
-                    : '—';
-                var dark = this.darkMode;
-                var bg  = dark ? '#1e2231' : '#ffffff';
-                var clr = dark ? '#f3f4f6' : '#111827';
-                var sub = dark ? '#9ca3af' : '#6b7280';
-                var btn2bg = dark ? 'rgba(255,255,255,.1)' : '#f3f4f6';
-                var btn2bd = dark ? 'rgba(255,255,255,.12)' : '#e5e7eb';
-                return '<div style="background:' + bg + ';border-radius:12px;padding:14px;min-width:210px;font-family:sans-serif;">' +
-                    '<div style="font-size:14px;font-weight:700;color:' + clr + ';margin-bottom:6px;">' + c.name + '</div>' +
-                    '<div style="font-size:12px;color:#6366f1;margin-bottom:4px;">📍 Masofa: ' + dist + '</div>' +
-                    '<div style="font-size:11px;color:' + sub + ';margin-bottom:10px;line-height:1.4;">' + (c.address || "Manzil ko'rsatilmagan") + '</div>' +
-                    '<div style="display:flex;gap:7px;">' +
-                    '<a href="/blog-single/' + c.id + '" style="flex:1;padding:6px 8px;border-radius:8px;font-size:12px;font-weight:600;text-align:center;text-decoration:none;background:#4f46e5;color:#fff;">Batafsil</a>' +
-                    '<a href="https://www.google.com/maps/dir/?api=1&destination=' + c.latitude + ',' + c.longitude + '" target="_blank" style="flex:1;padding:6px 8px;border-radius:8px;font-size:12px;font-weight:600;text-align:center;text-decoration:none;background:' + btn2bg + ';color:' + clr + ';border:1px solid ' + btn2bd + ';">Yo\'nalish</a>' +
-                    '</div></div>';
-            },
+                    /* Add center markers */
+                    this._addCenters();
 
-            /* ---------- move user marker ---------- */
-            _moveUser(lat, lng, doGeocode) {
-                this.lat = lat;
-                this.lng = lng;
-                if (doGeocode === undefined) doGeocode = true;
+                    this.mapReady = true;
 
-                var pos = { lat: lat, lng: lng };
-                if (this._uMark)  this._uMark.setPosition(pos);
-                if (this._circle) this._circle.setCenter(pos);
+                    /* Restore from URL */
+                    if (this.lat && this.lng) {
+                        this._uMark.setPosition({
+                            lat: this.lat,
+                            lng: this.lng
+                        });
+                        this._circle.setCenter({
+                            lat: this.lat,
+                            lng: this.lng
+                        });
+                        this._map.setCenter({
+                            lat: this.lat,
+                            lng: this.lng
+                        });
+                    }
+                },
 
-                if (doGeocode && this._geo) {
+                /* ---------- add center markers ---------- */
+                _addCenters() {
                     var self = this;
-                    this._geo.geocode({ location: pos }, function (res, status) {
-                        if (status === 'OK' && res[0]) {
-                            self.addressText = res[0].formatted_address;
-                        } else {
-                            self.addressText = lat.toFixed(5) + ', ' + lng.toFixed(5);
-                        }
+                    var pin = function(color) {
+                        return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+                            '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">' +
+                            '<path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22S28 23.333 28 14C28 6.268 21.732 0 14 0z" fill="' +
+                            color + '"/>' +
+                            '<circle cx="14" cy="14" r="6" fill="white"/>' +
+                            '<circle cx="14" cy="14" r="3.5" fill="' + color + '"/>' +
+                            '</svg>'
+                        );
+                    };
+
+                    _CENTERS.forEach(function(c) {
+                        if (!c.latitude || !c.longitude) return;
+
+                        var marker = new google.maps.Marker({
+                            map: self._map,
+                            position: {
+                                lat: c.latitude,
+                                lng: c.longitude
+                            },
+                            title: c.name,
+                            icon: {
+                                url: pin('#e53e3e'),
+                                scaledSize: new google.maps.Size(26, 33),
+                                anchor: new google.maps.Point(13, 33),
+                            },
+                        });
+
+                        var iw = new google.maps.InfoWindow({
+                            maxWidth: 260,
+                        });
+
+                        marker.addListener('click', function() {
+                            self._iws.forEach(function(w) {
+                                w.close();
+                            });
+                            iw.setContent(self._buildIW(c));
+                            iw.open(self._map, marker);
+                        });
+
+                        self._iws.push(iw);
                     });
-                }
-            },
+                },
 
-            /* ---------- locate me ---------- */
-            locateMe() {
-                if (!navigator.geolocation) return;
-                this.locating = true;
-                var self = this;
-                navigator.geolocation.getCurrentPosition(
-                    function (pos) {
-                        self.locating = false;
-                        var lat = pos.coords.latitude;
-                        var lng = pos.coords.longitude;
-                        if (!self._map) {
-                            self.lat = lat; self.lng = lng;
-                            self._initMap();
-                            return;
+                /* ---------- info window HTML ---------- */
+                _buildIW(c) {
+                    var dist = (this.lat && this.lng) ?
+                        this._haversine(this.lat, this.lng, c.latitude, c.longitude).toFixed(1) + ' km' :
+                        '—';
+                    var dark = this.darkMode;
+                    var bg = dark ? '#1e2231' : '#ffffff';
+                    var clr = dark ? '#f3f4f6' : '#111827';
+                    var sub = dark ? '#9ca3af' : '#6b7280';
+                    var btn2bg = dark ? 'rgba(255,255,255,.1)' : '#f3f4f6';
+                    var btn2bd = dark ? 'rgba(255,255,255,.12)' : '#e5e7eb';
+                    return '<div style="background:' + bg +
+                        ';border-radius:12px;padding:14px;min-width:210px;font-family:sans-serif;">' +
+                        '<div style="font-size:14px;font-weight:700;color:' + clr + ';margin-bottom:6px;">' + c
+                        .name + '</div>' +
+                        '<div style="font-size:12px;color:#6366f1;margin-bottom:4px;">📍 Masofa: ' + dist +
+                        '</div>' +
+                        '<div style="font-size:11px;color:' + sub + ';margin-bottom:10px;line-height:1.4;">' + (
+                            c.address || "Manzil ko'rsatilmagan") + '</div>' +
+                        '<div style="display:flex;gap:7px;">' +
+                        '<a href="/blog-single/' + c.id +
+                        '" style="flex:1;padding:6px 8px;border-radius:8px;font-size:12px;font-weight:600;text-align:center;text-decoration:none;background:#4f46e5;color:#fff;">Batafsil</a>' +
+                        '<a href="https://www.google.com/maps/dir/?api=1&destination=' + c.latitude + ',' + c
+                        .longitude +
+                        '" target="_blank" style="flex:1;padding:6px 8px;border-radius:8px;font-size:12px;font-weight:600;text-align:center;text-decoration:none;background:' +
+                        btn2bg + ';color:' + clr + ';border:1px solid ' + btn2bd + ';">Yo\'nalish</a>' +
+                        '</div></div>';
+                },
+
+                /* ---------- move user marker ---------- */
+                _moveUser(lat, lng, doGeocode) {
+                    this.lat = lat;
+                    this.lng = lng;
+                    if (doGeocode === undefined) doGeocode = true;
+
+                    var pos = {
+                        lat: lat,
+                        lng: lng
+                    };
+                    if (this._uMark) this._uMark.setPosition(pos);
+                    if (this._circle) this._circle.setCenter(pos);
+
+                    if (doGeocode && this._geo) {
+                        var self = this;
+                        this._geo.geocode({
+                            location: pos
+                        }, function(res, status) {
+                            if (status === 'OK' && res[0]) {
+                                self.addressText = res[0].formatted_address;
+                            } else {
+                                self.addressText = lat.toFixed(5) + ', ' + lng.toFixed(5);
+                            }
+                        });
+                    }
+                },
+
+                /* ---------- locate me ---------- */
+                locateMe() {
+                    if (!navigator.geolocation) return;
+                    this.locating = true;
+                    var self = this;
+                    navigator.geolocation.getCurrentPosition(
+                        function(pos) {
+                            self.locating = false;
+                            var lat = pos.coords.latitude;
+                            var lng = pos.coords.longitude;
+                            if (!self._map) {
+                                self.lat = lat;
+                                self.lng = lng;
+                                self._initMap();
+                                return;
+                            }
+                            self._map.setCenter({
+                                lat: lat,
+                                lng: lng
+                            });
+                            self._map.setZoom(14);
+                            self._moveUser(lat, lng);
+                        },
+                        function() {
+                            self.locating = false;
+                            /* Fallback to Samarqand */
+                            if (self._map) {
+                                self._map.setCenter({
+                                    lat: DEFAULT_LAT,
+                                    lng: DEFAULT_LNG
+                                });
+                                self._moveUser(DEFAULT_LAT, DEFAULT_LNG);
+                            }
+                        }, {
+                            timeout: 8000
                         }
-                        self._map.setCenter({ lat: lat, lng: lng });
-                        self._map.setZoom(14);
-                        self._moveUser(lat, lng);
-                    },
-                    function () {
-                        self.locating = false;
-                        /* Fallback to Samarqand */
-                        if (self._map) {
-                            self._map.setCenter({ lat: DEFAULT_LAT, lng: DEFAULT_LNG });
-                            self._moveUser(DEFAULT_LAT, DEFAULT_LNG);
-                        }
-                    },
-                    { timeout: 8000 }
-                );
-            },
+                    );
+                },
 
-            /* ---------- radius change ---------- */
-            onRadiusChange() {
-                if (this._circle) this._circle.setRadius(this.radius * 1000);
-            },
+                /* ---------- radius change ---------- */
+                onRadiusChange() {
+                    if (this._circle) this._circle.setRadius(this.radius * 1000);
+                },
 
-            /* ---------- apply ---------- */
-            applyFilter() {
-                var finalLat = this.lat || DEFAULT_LAT;
-                var finalLng = this.lng || DEFAULT_LNG;
+                /* ---------- apply ---------- */
+                applyFilter() {
+                    var finalLat = this.lat || DEFAULT_LAT;
+                    var finalLng = this.lng || DEFAULT_LNG;
 
-                this.resultCount = _CENTERS.filter(function (c) {
-                    if (!c.latitude || !c.longitude) return false;
-                    return _haversine(finalLat, finalLng, c.latitude, c.longitude) <= this.radius;
-                }.bind(this)).length;
-                this.resultShown = true;
+                    this.resultCount = _CENTERS.filter(function(c) {
+                        if (!c.latitude || !c.longitude) return false;
+                        return _haversine(finalLat, finalLng, c.latitude, c.longitude) <= this.radius;
+                    }.bind(this)).length;
+                    this.resultShown = true;
 
-                var params = new URLSearchParams(window.location.search);
-                params.set('latitude',  finalLat);
-                params.set('longitude', finalLng);
-                params.set('radius',    this.radius);
-                params.delete('searchText');
-                window.location.href = window.location.pathname + '?' + params.toString();
-            },
+                    var params = new URLSearchParams(window.location.search);
+                    params.set('latitude', finalLat);
+                    params.set('longitude', finalLng);
+                    params.set('radius', this.radius);
+                    params.delete('searchText');
+                    window.location.href = window.location.pathname + '?' + params.toString();
+                },
 
-            /* ---------- reset ---------- */
-            resetFilter() {
-                this.lat = null; this.lng = null;
-                this.resultShown = false;
-                this.addressText = 'Xaritadan joy tanlang yoki "Mening joylashuvim" tugmasini bosing';
-                if (this._uMark)  this._uMark.setPosition({ lat: DEFAULT_LAT, lng: DEFAULT_LNG });
-                if (this._circle) this._circle.setCenter({ lat: DEFAULT_LAT, lng: DEFAULT_LNG });
-                var params = new URLSearchParams(window.location.search);
-                params.delete('latitude'); params.delete('longitude'); params.delete('radius');
-                window.location.href = window.location.pathname + '?' + params.toString();
-            },
+                /* ---------- reset ---------- */
+                resetFilter() {
+                    this.lat = null;
+                    this.lng = null;
+                    this.resultShown = false;
+                    this.addressText = 'Xaritadan joy tanlang yoki "Mening joylashuvim" tugmasini bosing';
+                    if (this._uMark) this._uMark.setPosition({
+                        lat: DEFAULT_LAT,
+                        lng: DEFAULT_LNG
+                    });
+                    if (this._circle) this._circle.setCenter({
+                        lat: DEFAULT_LAT,
+                        lng: DEFAULT_LNG
+                    });
+                    var params = new URLSearchParams(window.location.search);
+                    params.delete('latitude');
+                    params.delete('longitude');
+                    params.delete('radius');
+                    window.location.href = window.location.pathname + '?' + params.toString();
+                },
 
-            /* ---------- haversine ---------- */
-            _haversine(lat1, lon1, lat2, lon2) {
-                var R = 6371;
-                var dLat = (lat2 - lat1) * Math.PI / 180;
-                var dLon = (lon2 - lon1) * Math.PI / 180;
-                var a = Math.sin(dLat/2) * Math.sin(dLat/2)
-                      + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180)
-                      * Math.sin(dLon/2) * Math.sin(dLon/2);
-                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            },
+                /* ---------- haversine ---------- */
+                _haversine(lat1, lon1, lat2, lon2) {
+                    var R = 6371;
+                    var dLat = (lat2 - lat1) * Math.PI / 180;
+                    var dLon = (lon2 - lon1) * Math.PI / 180;
+                    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                },
+            };
         };
-    };
 
-    /* module-level haversine for filter closure */
-    function _haversine(lat1,lon1,lat2,lon2){
-        var R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;
-        var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);
-        return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-    }
-})();
+        /* module-level haversine for filter closure */
+        function _haversine(lat1, lon1, lat2, lon2) {
+            var R = 6371,
+                dLat = (lat2 - lat1) * Math.PI / 180,
+                dLon = (lon2 - lon1) * Math.PI / 180;
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math
+                .PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+    })();
 </script>
-
-{{--
-    ================================================================
-    Google Maps API — callback nomi __mfInitMap ga o'zgartirildi.
-    Bu @stack('scripts') yoki layout faylining pastida bo'lishi kerak.
-    Agar sahifada allaqachon Google Maps script bor bo'lsa,
-    quyidagi @once blokini olib tashlang va mavjud skriptga
-    &callback=__mfInitMap qo'shing.
-    ================================================================
---}}
-@once
-    @push('scripts')
-        <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=__mfInitMap">
-        </script>
-    @endpush
-@endonce
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=__mfInitMap">
+</script>

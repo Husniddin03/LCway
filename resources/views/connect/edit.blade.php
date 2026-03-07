@@ -3,7 +3,7 @@
     <x-slot:title>
         {{ $LearningCenter->name }} bilan bog'lanish
     </x-slot>
-    
+
     <!-- ===== Contact Start ===== -->
     <section id="support" class="i pg fh rm ji gp uq">
         <!-- Bg Shapes -->

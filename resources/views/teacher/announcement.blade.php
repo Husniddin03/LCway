@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>O'qituvchiga elon berish</x-slot:title>
-    
+
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
         <div class="max-w-6xl mx-auto px-6">
             <!-- Header -->
@@ -12,15 +12,18 @@
                     Bu yerda elon bering
                 </p>
             </div>
-            
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Learning Center Info Card -->
                 <div class="lg:col-span-1">
                     <x-card class="sticky top-8">
                         <div class="text-center mb-6">
-                            <div class="w-20 h-20 mx-auto mb-4 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center">
-                                <svg class="w-10 h-10 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            <div
+                                class="w-20 h-20 mx-auto mb-4 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center">
+                                <svg class="w-10 h-10 text-primary-600 dark:text-primary-400" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                 </svg>
                             </div>
                             <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
@@ -28,36 +31,46 @@
                             </h3>
                             <x-badge variant="secondary">{{ $LearningCenter->type }}</x-badge>
                         </div>
-                        
+
                         <div class="space-y-4">
                             <div>
                                 <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mavjud fanlar</h4>
                                 <div class="space-y-1">
                                     @foreach ($LearningCenter->subjects as $subject)
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ $subject->subject->name }}</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                                            {{ $subject->subject->name }}</p>
                                     @endforeach
                                 </div>
-                                <a href="{{ route('subject.create', 'id=' . $LearningCenter->id) }}" class="inline-flex items-center mt-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 text-sm">
+                                <a href="{{ route('subject.create', 'id=' . $LearningCenter->id) }}"
+                                    class="inline-flex items-center mt-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 text-sm">
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v16m8-8H4" />
                                     </svg>
                                     Fan qo'shish
                                 </a>
                             </div>
-                            
+
                             <div>
                                 <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Bog'lanish</h4>
                                 <div class="flex flex-wrap gap-2">
                                     @foreach ($LearningCenter->connections as $connection)
                                         @if ($connection->connection->name == 'Phone')
-                                            <a href="tel:{{ $connection->url }}" class="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                                                <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a2 2 0 011.94 1.515l.62 2.48a2 2 0 01-.45 1.885l-1.516 1.516a16 16 0 006.586 6.586l1.516-1.516a2 2 0 011.885-.45l2.48.62A2 2 0 0121 17.72V21a2 2 0 01-2 2h-1c-9.94 0-18-8.06-18-18V5z" />
+                                            <a href="tel:{{ $connection->url }}"
+                                                class="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                                <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M3 5a2 2 0 012-2h3.28a2 2 0 011.94 1.515l.62 2.48a2 2 0 01-.45 1.885l-1.516 1.516a16 16 0 006.586 6.586l1.516-1.516a2 2 0 011.885-.45l2.48.62A2 2 0 0121 17.72V21a2 2 0 01-2 2h-1c-9.94 0-18-8.06-18-18V5z" />
                                                 </svg>
                                             </a>
                                         @else
-                                            <a href="{{ $connection->url }}" target="_blank" class="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                                                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg" width="20" height="20" alt="{{ $connection->connection->name }}" />
+                                            <a href="{{ $connection->url }}" target="_blank"
+                                                class="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg"
+                                                    width="20" height="20"
+                                                    alt="{{ $connection->connection->name }}" />
                                             </a>
                                         @endif
                                     @endforeach
@@ -66,22 +79,28 @@
                         </div>
                     </x-card>
                 </div>
-                
+
                 <!-- Form -->
                 <div class="lg:col-span-2">
                     <x-card>
-                        <form action="{{ route('teacher.add_announcement', ['id' => $LearningCenter->id]) }}" method="POST" class="space-y-6">
+                        <form action="{{ route('teacher.add_announcement', ['id' => $LearningCenter->id]) }}"
+                            method="POST" class="space-y-6">
                             @csrf
-                            
+
                             <!-- Error Messages -->
                             @if ($errors->any())
-                                <div class="bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 rounded-xl p-4">
+                                <div
+                                    class="bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 rounded-xl p-4">
                                     <div class="flex items-start">
-                                        <svg class="w-5 h-5 text-danger-600 dark:text-danger-400 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 0116 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 2v4a1 1 0 102-2h-1zm-2 0a2 2 0 00-2 2v4a2 2 0 002 2h1A2 2 0 002 2v-4a2 2 0 00-2-2h-1z" clip-rule="evenodd" />
+                                        <svg class="w-5 h-5 text-danger-600 dark:text-danger-400 mr-3 flex-shrink-0 mt-0.5"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 0116 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 2v4a1 1 0 102-2h-1zm-2 0a2 2 0 00-2 2v4a2 2 0 002 2h1A2 2 0 002 2v-4a2 2 0 00-2-2h-1z"
+                                                clip-rule="evenodd" />
                                         </svg>
                                         <div>
-                                            <h4 class="text-sm font-medium text-danger-800 dark:text-danger-200">Iltimos, xatolarni to'g'irlang:</h4>
+                                            <h4 class="text-sm font-medium text-danger-800 dark:text-danger-200">
+                                                Iltimos, xatolarni to'g'irlang:</h4>
                                             <ul class="mt-2 text-sm text-danger-700 dark:text-danger-300 space-y-1">
                                                 @foreach ($errors->all() as $error)
                                                     <li>• {{ $error }}</li>
@@ -91,13 +110,16 @@
                                     </div>
                                 </div>
                             @endif
-                            
+
                             <!-- Subject -->
                             <div>
-                                <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label for="subject"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Mutaxasisligi <span class="text-danger-500">*</span>
                                 </label>
-                                <select name="subject_id" id="subject" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white" required>
+                                <select name="subject_id" id="subject"
+                                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
+                                    required>
                                     <option value="" disabled>Fanni tanlang...</option>
                                     @foreach ($subjects as $subject)
                                         <option value="{{ $subject->id }}">{{ $subject->name }}</option>
@@ -107,28 +129,35 @@
                                     <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                                 @enderror
                             </div>
-                            
+
                             <!-- Description -->
                             <div>
-                                <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label for="message"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Qisqacha tavsif bering
                                 </label>
-                                <textarea name="description" id="message" rows="6" 
+                                <textarea name="description" id="message" rows="6"
                                     class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white resize-none"
                                     placeholder="Qisqacha tavsif bering..." required></textarea>
                             </div>
-                            
+
                             <!-- Buttons -->
                             <div class="flex flex-col sm:flex-row gap-4 pt-6">
-                                <a href="{{ route('blog-single', $LearningCenter->id) }}" class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-3 px-6 rounded-xl transition-all duration-300 text-center">
-                                    <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                <a href="{{ route('blog-single', $LearningCenter->id) }}"
+                                    class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-3 px-6 rounded-xl transition-all duration-300 text-center">
+                                    <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                     Bekor qilish
                                 </a>
-                                <button type="submit" class="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-                                    <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                                <button type="submit"
+                                    class="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                                    <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                                     </svg>
                                     Elon berish
                                 </button>

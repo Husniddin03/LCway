@@ -28,7 +28,8 @@
                     <!-- Chat history container -->
                     <div id="chat-history"
                         style="max-height: 500px; overflow-y: auto; margin-bottom: 1rem; padding: 1rem; border-radius: 8px;">
-                        <p style="text-align: center; margin-bottom: 5px">Savollaringizni bering, AI yordam beradi...</p>
+                        <p style="text-align: center; margin-bottom: 5px">Savollaringizni bering, AI yordam beradi...
+                        </p>
                     </div>
 
                     <!-- Input section -->
@@ -47,7 +48,8 @@
                                 </div>
 
                                 <!-- Model selection -->
-                                <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; display: none;">
+                                <div
+                                    style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; display: none;">
                                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
                                         <input type="radio" name="ai-model" value="deepseek/deepseek-chat" checked>
                                         <span>DeepSeek Chat (Tez)</span>

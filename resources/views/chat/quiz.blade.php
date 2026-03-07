@@ -6,7 +6,7 @@
             <div class="animate_top bb ze rj ki xn vq">
                 <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b"></h2>
                 <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
-                <a href="{{route('chat.riasec')}}" style="color: blue; "> RIASEC test</a>
+                <a href="{{ route('chat.riasec') }}" style="color: blue; "> RIASEC test</a>
             </div>
         </div>
         <form id="testForm" class="test-box">

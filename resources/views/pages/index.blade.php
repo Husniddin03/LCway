@@ -809,11 +809,21 @@
                     } else {
                         // Show error message
                         errorMessage.classList.remove('hidden');
+                        // Reset form
+                        form.reset();
+                        // Hide error message after 5 seconds
+                        setTimeout(() => {
+                            errorMessage.classList.add('hidden');
+                        }, 5000);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     errorMessage.classList.remove('hidden');
+                    // Hide error message after 5 seconds
+                    setTimeout(() => {
+                        errorMessage.classList.add('hidden');
+                    }, 5000);
                 })
                 .finally(() => {
                     // Re-enable button

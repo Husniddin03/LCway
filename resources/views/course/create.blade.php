@@ -44,7 +44,7 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Markazning asosiy rasmi (logo)
                             </label>
-                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-primary-500 transition-colors cursor-pointer">
+                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-primary-500 transition-colors cursor-pointer" onclick="document.getElementById('logo').click()">
                                 <input type="file" name="logo" id="logo" class="hidden" accept="image/*" onchange="document.getElementById('logo-preview').src = window.URL.createObjectURL(this.files[0])">
                                 <div id="logo-preview" class="w-20 h-20 mx-auto mb-4 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
                                     <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,7 +114,7 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Markaz rasmlari
                             </label>
-                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-primary-500 transition-colors cursor-pointer">
+                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-primary-500 transition-colors cursor-pointer" onclick="document.getElementById('images').click()">
                                 <input type="file" name="images[]" id="images" class="hidden" accept="image/*" multiple>
                                 <div class="w-20 h-20 mx-auto mb-4 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
                                     <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -333,7 +333,65 @@
         </div>
     </div>
     
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=initMap" async defer>
+    </script>
+    
     <script>
+        // Logo preview functionality
+        document.getElementById('logo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('logo-preview').innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover rounded-full">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Multiple images preview functionality
+        document.getElementById('images').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            const previewContainer = document.getElementById('images-preview');
+            
+            if (files.length > 0) {
+                let previewHtml = '<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">';
+                
+                files.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imgElement = document.getElementById(`preview-${index}`);
+                        if (imgElement) {
+                            imgElement.src = e.target.result;
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                    
+                    previewHtml += `
+                        <div class="relative group">
+                            <img id="preview-${index}" class="w-full h-32 object-cover rounded-lg border-2 border-gray-200 dark:border-gray-600" alt="Preview ${index + 1}">
+                            <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                <span class="text-white text-sm">${file.name}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                previewHtml += '</div>';
+                
+                // Create or update preview container
+                if (!previewContainer) {
+                    const container = document.querySelector('input[name="images[]"]').parentElement;
+                    const div = document.createElement('div');
+                    div.id = 'images-preview';
+                    div.innerHTML = previewHtml;
+                    container.appendChild(div);
+                } else {
+                    previewContainer.innerHTML = previewHtml;
+                }
+            }
+        });
+
         // Districts by region data
         const districtsByRegion = {
             "Toshkent": ["Bekobod", "Bo'ka", "Chinoz", "Oqqo'rg'on", "Ohangaron", "Piskent", "Quyichirchiq", "Yuqorichirchiq", "Zangiota", "Toshkent tumani", "Parkent"],
@@ -399,13 +457,60 @@
             subjectIndex++;
         });
 
-        // Map initialization (placeholder - needs Google Maps API key)
+        // Map initialization
         function initMap() {
             const mapElement = document.getElementById("map");
             if (!mapElement) return;
             
-            // Placeholder for map initialization
-            mapElement.innerHTML = '<div class="w-full h-full flex items-center justify-center text-gray-500"><p>Xarita uchun Google Maps API kaliti kerak</p></div>';
+            // Default location (Samarqand, Uzbekistan)
+            const defaultLocation = { lat: 39.6574, lng: 66.9601 };
+            
+            const map = new google.maps.Map(mapElement, {
+                center: defaultLocation,
+                zoom: 12,
+                mapTypeControl: true,
+                streetViewControl: true,
+                fullscreenControl: true
+            });
+            
+            let marker = new google.maps.Marker({
+                position: defaultLocation,
+                map: map,
+                draggable: true,
+                title: "O'quv markaz manzili"
+            });
+            
+            // Update hidden fields when marker is dragged
+            marker.addListener('dragend', function(event) {
+                document.getElementById('latitude').value = event.latLng.lat();
+                document.getElementById('longitude').value = event.latLng.lng();
+            });
+            
+            // Update marker position when map is clicked
+            map.addListener('click', function(event) {
+                marker.setPosition(event.latLng);
+                document.getElementById('latitude').value = event.latLng.lat();
+                document.getElementById('longitude').value = event.latLng.lng();
+            });
+            
+            // Try to get user's current location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        map.setCenter(userLocation);
+                        marker.setPosition(userLocation);
+                        document.getElementById('latitude').value = userLocation.lat;
+                        document.getElementById('longitude').value = userLocation.lng;
+                    },
+                    function(error) {
+                        console.log('Geolokatsiya xatosi:', error.message);
+                    }
+                );
+            }
         }
 
         // Initialize map when page loads

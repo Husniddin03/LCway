@@ -120,7 +120,14 @@
     
     <!-- Success/Error Messages -->
     @if(session('success'))
-        <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed top-20 right-6 z-50 max-w-sm">
+        <div x-data="{ 
+            show: true,
+            init() {
+                setTimeout(() => {
+                    this.show = false;
+                }, 5000);
+            }
+        }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed top-20 right-6 z-50 max-w-sm">
             <div class="bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800 rounded-xl p-4 shadow-lg">
                 <div class="flex items-start">
                     <div class="flex-shrink-0">
@@ -144,7 +151,14 @@
     @endif
     
     @if(session('error'))
-        <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed top-20 right-6 z-50 max-w-sm">
+        <div x-data="{ 
+            show: true,
+            init() {
+                setTimeout(() => {
+                    this.show = false;
+                }, 5000);
+            }
+        }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed top-20 right-6 z-50 max-w-sm">
             <div class="bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 rounded-xl p-4 shadow-lg">
                 <div class="flex items-start">
                     <div class="flex-shrink-0">

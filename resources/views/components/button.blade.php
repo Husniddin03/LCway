@@ -31,11 +31,11 @@
 @endphp
 
 @if($href)
-    <a href="{{ $href }}" class="{{ $classes }}" {{ $disabled ? 'tabindex="-1" aria-disabled="true"' : '' }}>
+    <a href="{{ $href }}" class="{{ $classes }} text-gray-900 dark:text-white" {{ $disabled ? 'tabindex="-1" aria-disabled="true"' : '' }}>
         {{ $slot }}
     </a>
 @else
-    <button type="{{ $type }}" class="{{ $classes }}" {{ $disabled ? 'disabled' : '' }}>
+    <button type="{{ $type }}" class="{{ $classes }} text-gray-900 dark:text-white" {{ $disabled ? 'disabled' : '' }}>
         {{ $slot }}
     </button>
 @endif

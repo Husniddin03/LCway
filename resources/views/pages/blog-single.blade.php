@@ -12,8 +12,8 @@
         
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center text-white">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ $LearningCenter->name }}</h1>
-                <p class="text-xl text-white/90 max-w-3xl mx-auto">{{ $LearningCenter->type }}</p>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">{{ $LearningCenter->name }}</h1>
+                <p class="text-xl text-white/90 max-w-3xl mx-auto text-gray-900 dark:text-white">{{ $LearningCenter->type }}</p>
             </div>
         </div>
     </section>
@@ -109,6 +109,24 @@
                                 @endcan
                             @endauth
                         </div>
+                        @else
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Rasmlar</h2>
+                            
+                            
+                            @auth
+                                @can('isOun', $LearningCenter)
+                                    <div class="mt-6 text-center">
+                                        <x-button variant="outline" href="{{ route('course.editImage', $LearningCenter->id) }}">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            Rasmlar qo'shish
+                                        </x-button>
+                                    </div>
+                                @endcan
+                            @endauth
+                        </div>
                     @endif
 
                     <!-- Schedule Section -->
@@ -137,6 +155,23 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                             Grafikni tahrirlash
+                                        </x-button>
+                                    </div>
+                                @endcan
+                            @endauth
+                        </div>
+                        @else
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Ish grafigi</h2>
+                            
+                            @auth
+                                @can('isOun', $LearningCenter)
+                                    <div class="mt-6 text-center">
+                                        <x-button variant="outline" href="{{ route('course.weekday', $LearningCenter->id) }}">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            Grafikni qo'shish
                                         </x-button>
                                     </div>
                                 @endcan
@@ -295,8 +330,8 @@
                                     <input name="comment" 
                                            type="text" 
                                            placeholder="{{ $LearningCenter->name }} haqida fikringizni qoldiring..."
-                                           class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white">
-                                    <button type="submit" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-xl transition-colors duration-200">
+                                           class="text-gray-900 bg-white dark:text-white flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white">
+                                    <button type="submit" class="text-gray-900 dark:text-white bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-xl transition-colors duration-200">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                         </svg>
@@ -341,7 +376,7 @@
                 <!-- Sidebar -->
                 <div class="lg:col-span-1">
                     <!-- Quick Info Card -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8 sticky top-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 static md:sticky md:top-16 mb-8">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tezkor ma'lumot</h3>
                         
                         <div class="space-y-4">
@@ -386,7 +421,7 @@
                                           onsubmit="return confirm('Rostdan ham {{ $LearningCenter->name }} markazini o‘chirilsinmi?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="w-full bg-danger-600 hover:bg-danger-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200">
+                                        <button type="submit" class="text-gray-900 dark:text-white w-full bg-danger-600 hover:bg-danger-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200">
                                             <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                             </svg>
@@ -400,7 +435,7 @@
                     
                     <!-- Subjects -->
                     @if($LearningCenter->subjects->count() > 0)
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mt-8">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-xl font-bold text-gray-900 dark:text-white">Fanlar</h3>
                                 @auth
@@ -429,9 +464,9 @@
                                                         {{ strtoupper(substr($subject->subject->name, 0, 1)) }}
                                                     </div>
                                                 @endif -->
-                                                <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                                        {{ strtoupper(substr($subject->subject->name, 0, 1)) }}
-                                                    </div>
+                                                <div class="text-gray-900 dark:text-white w-8 h-8 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white font-bold text-sm bg-gray-100 border border-gray-200 dark:bg-gray-800">
+                                                    {{ strtoupper(substr($subject->subject->name, 0, 1)) }}
+                                                </div>
                                             </div>
                                             <div>
                                                 <p class="font-medium text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{{ $subject->subject->name }}</p>
@@ -496,10 +531,10 @@
     <!-- CTA Section -->
     <section class="py-16 bg-gradient-to-r from-primary-600 to-accent-600">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 text-gray-900 dark:text-white">
                 Ushbu markazga qiziqish bildiraysizmi?
             </h2>
-            <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto text-gray-900 dark:text-white">
                 Bog'lanish orqali qo'shimcha ma'lumot oling yoki to'g'ridan-to'g'ri markazga murojaat qiling
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -523,6 +558,113 @@
             </div>
         </div>
     </section>
+
+    <!-- Image Preview Modal -->
+    <div id="imagePreviewModal" class="fixed inset-0 bg-black bg-opacity-90 z-[9999] hidden items-center justify-center p-4" style="backdrop-filter: blur(4px);">
+        <div class="relative max-w-7xl max-h-full">
+            <button onclick="closeImagePreview()" class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <img id="previewImage" src="" alt="Preview" class="max-w-full max-h-[80vh] rounded-lg shadow-2xl">
+            <div class="text-center mt-4">
+                <p id="imageCaption" class="text-white text-lg font-medium"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Image Preview -->
+    <script>
+        function openImagePreview(imageSrc, caption = '') {
+            console.log('Opening image preview:', imageSrc); // Debug log
+            const modal = document.getElementById('imagePreviewModal');
+            const previewImage = document.getElementById('previewImage');
+            const imageCaption = document.getElementById('imageCaption');
+            
+            previewImage.src = imageSrc;
+            imageCaption.textContent = caption;
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeImagePreview() {
+            console.log('Closing image preview'); // Debug log
+            const modal = document.getElementById('imagePreviewModal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeImagePreview();
+            }
+        });
+        
+        // Close modal on background click
+        document.getElementById('imagePreviewModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeImagePreview();
+            }
+        });
+        
+        // Add click handlers to all images when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Main image - use more specific selector
+            const mainImage = document.querySelector('img[alt="{{ $LearningCenter->name }}"]');
+            if (mainImage) {
+                mainImage.style.cursor = 'pointer';
+                mainImage.addEventListener('click', function() {
+                    openImagePreview(this.src, '{{ $LearningCenter->name }}');
+                });
+            }
+            
+            // Gallery images - use better selector
+            const galleryImages = document.querySelectorAll('img[alt="Gallery image"]');
+            galleryImages.forEach(function(img) {
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', function() {
+                    openImagePreview(this.src, 'Galereya rasmi');
+                });
+            });
+            
+            // Teacher photos - use more specific selector
+            const teacherPhotos = document.querySelectorAll('img[alt*=""]');
+            teacherPhotos.forEach(function(img) {
+                // Skip main image and gallery images (already handled)
+                if (img.alt !== '{{ $LearningCenter->name }}' && img.alt !== 'Gallery image') {
+                    img.style.cursor = 'pointer';
+                    img.addEventListener('click', function() {
+                        const teacherCard = this.closest('.group');
+                        if (teacherCard) {
+                            const teacherName = teacherCard.querySelector('h4');
+                            if (teacherName) {
+                                openImagePreview(this.src, teacherName.textContent);
+                            } else {
+                                openImagePreview(this.src, 'Ustoz rasmi');
+                            }
+                        }
+                    });
+                }
+            });
+            
+            // Also add preview to any other images that might be added dynamically
+            setTimeout(function() {
+                const allImages = document.querySelectorAll('img:not([onclick])');
+                allImages.forEach(function(img) {
+                    if (!img.style.cursor || img.style.cursor !== 'pointer') {
+                        img.style.cursor = 'pointer';
+                        img.addEventListener('click', function() {
+                            openImagePreview(this.src, img.alt || 'Rasm');
+                        });
+                    }
+                });
+            }, 1000);
+        });
+    </script>
 </x-layout>
 
 <style>

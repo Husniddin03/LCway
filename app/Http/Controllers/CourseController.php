@@ -33,8 +33,11 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
+        // Combine latitude and longitude into location string
+        $location = $request->latitude . ',' . $request->longitude;
+        $request->merge(['location' => $location]);
         $validated = $request->validate([
-            'logo'         => 'required|image|max:2048',
+            'logo'         => 'required|image|max:1024',
             'name'         => 'required|string|max:255',
             'type'         => 'required|string|max:255',
             'about'        => 'required|string',
@@ -70,8 +73,8 @@ class CourseController extends Controller
 
 
         $validated4 = $request->validate([
-            'images' => 'required|array',
-            'images.*' => 'image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpg,jpeg,png,gif,webp|max:1024',
         ]);
 
         $validated['users_id'] = Auth::id();
@@ -150,7 +153,7 @@ class CourseController extends Controller
     {
 
         $validated = $request->validate([
-            'logo'         => 'nullable|image|max:2048',
+            'logo'         => 'nullable|image|max:1024',
             'name'         => 'required|string|max:255',
             'type'         => 'nullable|string|max:255',
             'about'        => 'nullable|string',

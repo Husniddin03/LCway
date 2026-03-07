@@ -19,19 +19,25 @@
         <div class="max-w-7xl mx-auto px-6">
             <!-- Search Bar -->
             <div class="mb-6">
-                <form action="{{ route('blog-grid') }}" method="get" class="relative">
-                    @foreach ($validated as $item)
-                        <input type="hidden" name="{{ $item }}" value="{{ $item ?? '' }}" />
+                <form id="searchForm" class="relative">
+                    @foreach ($validated as $key => $value)
+                        @if ($key !== 'searchText')
+                            <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
+                        @endif
                     @endforeach
                     <div class="relative max-w-2xl mx-auto">
-                        <input type="text" name="searchText" placeholder="O'quv markazini qidiring..."
+                        <input type="text" name="searchText" id="searchText" placeholder="O'quv markazini qidiring..."
                             value="{{ $validated['searchText'] ?? '' }}"
                             class="w-full px-6 py-4 pr-12 text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
-                        <button type="submit"
+                        <button type="submit" id="searchBtn"
                             class="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg id="searchIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            <svg id="loadingIcon" class="w-5 h-5 hidden animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                             </svg>
                         </button>
                     </div>
@@ -41,10 +47,10 @@
             <!-- Filter Navigation -->
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex flex-wrap gap-2">
-                    <a href="{{ route('blog-grid') }}"
+                    <button type="button" onclick="clearAllFilters()"
                         class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
                         Barchasi
-                    </a>
+                    </button>
 
                     <!-- Filter by maps -->
 
@@ -226,69 +232,69 @@
                             class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2">
                                 @if (!isset($validated['name']))
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('sort', 'name'); applyFilter('name', 'asc')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↑↓
-                                    </a>
+                                    </button>
                                 @elseif ($validated['name'] == 'asc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'desc']) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('name', 'desc')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↑
-                                    </a>
+                                    </button>
                                 @elseif ($validated['name'] == 'desc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('name', 'asc')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↓
-                                    </a>
+                                    </button>
                                 @else
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'name' => 'asc']) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('sort', 'name'); applyFilter('name', 'asc')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↑↓
-                                    </a>
+                                    </button>
                                 @endif
 
                                 @if (!isset($validated['distance']))
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('sort', 'distance'); applyFilter('distance', 'asc')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↑↓
-                                    </a>
+                                    </button>
                                 @elseif ($validated['distance'] == 'asc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'desc']) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('distance', 'desc')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↑
-                                    </a>
+                                    </button>
                                 @elseif ($validated['distance'] == 'desc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('distance', 'asc')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↓
-                                    </a>
+                                    </button>
                                 @else
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'distance', 'distance' => 'asc']) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('sort', 'distance'); applyFilter('distance', 'asc')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↑↓
-                                    </a>
+                                    </button>
                                 @endif
 
                                 @if (!isset($validated['favorites']))
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('sort', 'favorites'); applyFilter('favorites', 'asc')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↑↓
-                                    </a>
+                                    </button>
                                 @elseif ($validated['favorites'] == 'asc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'desc']) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('favorites', 'desc')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↑
-                                    </a>
+                                    </button>
                                 @elseif ($validated['favorites'] == 'desc')
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('favorites', 'asc')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↓
-                                    </a>
+                                    </button>
                                 @else
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'favorites', 'favorites' => 'asc']) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('sort', 'favorites'); applyFilter('favorites', 'asc')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↑↓
-                                    </a>
+                                    </button>
                                 @endif
                             </div>
                         </div>
@@ -316,10 +322,10 @@
                             class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2 max-h-70 overflow-y-auto">
                                 @foreach ($subjects as $subject)
-                                    <a href="{{ request()->fullUrlWithQuery(['subject_id' => $subject->id]) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('subject_id', '{{ $subject->id }}')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
                                         {{ $subject->name }}
-                                    </a>
+                                    </button>
                                 @endforeach
                             </div>
                         </div>
@@ -347,10 +353,10 @@
                             class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2 max-h-70 overflow-y-auto">
                                 @foreach ($subjects as $subject)
-                                    <a href="{{ request()->fullUrlWithQuery(['needTeachers' => $subject->id]) }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick="applyFilter('needTeachers', '{{ $subject->id }}')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
                                         {{ $subject->name }}
-                                    </a>
+                                    </button>
                                 @endforeach
                             </div>
                         </div>
@@ -358,7 +364,7 @@
                 </div>
 
                 <div class="text-gray-600 dark:text-gray-400">
-                    {{ $LearningCenters->count() }} ta o'quv markaz topildi
+                    <span id="resultsCount">{{ $LearningCenters->count() }}</span> ta o'quv markaz topildi
                 </div>
             </div>
         </div>
@@ -367,7 +373,14 @@
     <!-- Learning Centers Grid -->
     <section class="py-12 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div id="loadingIndicator" class="hidden text-center py-8">
+                <svg class="w-8 h-8 animate-spin mx-auto text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <p class="mt-2 text-gray-600 dark:text-gray-400">Qidiryapman...</p>
+            </div>
+            <div id="centersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @foreach ($LearningCenters as $LearningCenter)
                     <div
                         class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
@@ -483,6 +496,142 @@
         </div>
     </section>
 </x-layout>
+
+<!-- AJAX JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Search form handler
+    const searchForm = document.getElementById('searchForm');
+    if (searchForm) {
+        searchForm.addEventListener('submit', handleSearch);
+    }
+
+    // Initialize current filters
+    window.currentFilters = new URLSearchParams(window.location.search);
+});
+
+function handleSearch(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    const searchBtn = document.getElementById('searchBtn');
+    const searchIcon = document.getElementById('searchIcon');
+    const loadingIcon = document.getElementById('loadingIcon');
+    
+    // Update URL parameters
+    window.currentFilters.set('searchText', formData.get('searchText'));
+    
+    // Show loading state
+    searchBtn.disabled = true;
+    searchIcon.classList.add('hidden');
+    loadingIcon.classList.remove('hidden');
+    
+    // Perform AJAX search
+    performSearch();
+}
+
+function clearAllFilters() {
+    window.currentFilters = new URLSearchParams();
+    performSearch();
+}
+
+function applyFilter(type, value) {
+    if (value) {
+        window.currentFilters.set(type, value);
+    } else {
+        window.currentFilters.delete(type);
+    }
+    performSearch();
+}
+
+function performSearch() {
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const centersGrid = document.getElementById('centersGrid');
+    const resultsCount = document.getElementById('resultsCount');
+    
+    // Show loading
+    loadingIndicator.classList.remove('hidden');
+    centersGrid.classList.add('hidden');
+    
+    // Build URL
+    const url = window.location.pathname + '?' + window.currentFilters.toString();
+    
+    // Update browser URL without reload
+    history.pushState(null, '', url);
+    
+    // Perform AJAX request
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update results count
+            resultsCount.textContent = data.count;
+            
+            // Update centers grid
+            centersGrid.innerHTML = data.html;
+            
+            // Reinitialize map component if needed
+            if (typeof window.mapFilterComp === 'function') {
+                // Update centers data for map
+                if (data.centers) {
+                    updateMapCenters(data.centers);
+                }
+            }
+        } else {
+            // Show error
+            centersGrid.innerHTML = '<div class="col-span-full text-center py-8 text-red-600">Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.</div>';
+        }
+    })
+    .catch(error => {
+        console.error('Search error:', error);
+        centersGrid.innerHTML = '<div class="col-span-full text-center py-8 text-red-600">Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.</div>';
+    })
+    .finally(() => {
+        // Hide loading and reset button
+        loadingIndicator.classList.add('hidden');
+        centersGrid.classList.remove('hidden');
+        
+        const searchBtn = document.getElementById('searchBtn');
+        const searchIcon = document.getElementById('searchIcon');
+        const loadingIcon = document.getElementById('loadingIcon');
+        
+        if (searchBtn) {
+            searchBtn.disabled = false;
+            searchIcon.classList.remove('hidden');
+            loadingIcon.classList.add('hidden');
+        }
+    });
+}
+
+function updateMapCenters(centers) {
+    // Update global centers data for map component
+    if (typeof _CENTERS !== 'undefined') {
+        _CENTERS = centers.map(function(center) {
+            const coords = (center.location || '').split(',');
+            return {
+                id: center.id,
+                name: center.name,
+                latitude: parseFloat(coords[0] || 0),
+                longitude: parseFloat(coords[1] || 0),
+                address: center.address || '',
+            };
+        });
+    }
+}
+
+// Handle browser back/forward buttons
+window.addEventListener('popstate', function() {
+    window.currentFilters = new URLSearchParams(window.location.search);
+    performSearch();
+});
+</script>
 
 <style>
     /* Rating Stars */
@@ -1945,12 +2094,16 @@
                     }.bind(this)).length;
                     this.resultShown = true;
 
-                    var params = new URLSearchParams(window.location.search);
-                    params.set('latitude', finalLat);
-                    params.set('longitude', finalLng);
-                    params.set('radius', this.radius);
-                    params.delete('searchText');
-                    window.location.href = window.location.pathname + '?' + params.toString();
+                    // Update URL parameters and perform AJAX search
+                    window.currentFilters.set('latitude', finalLat);
+                    window.currentFilters.set('longitude', finalLng);
+                    window.currentFilters.set('radius', this.radius);
+                    window.currentFilters.delete('searchText');
+                    
+                    // Use global performSearch function
+                    if (typeof performSearch === 'function') {
+                        performSearch();
+                    }
                 },
 
                 /* ---------- reset ---------- */
@@ -1967,11 +2120,16 @@
                         lat: DEFAULT_LAT,
                         lng: DEFAULT_LNG
                     });
-                    var params = new URLSearchParams(window.location.search);
-                    params.delete('latitude');
-                    params.delete('longitude');
-                    params.delete('radius');
-                    window.location.href = window.location.pathname + '?' + params.toString();
+                    
+                    // Update URL parameters and perform AJAX search
+                    window.currentFilters.delete('latitude');
+                    window.currentFilters.delete('longitude');
+                    window.currentFilters.delete('radius');
+                    
+                    // Use global performSearch function
+                    if (typeof performSearch === 'function') {
+                        performSearch();
+                    }
                 },
 
                 /* ---------- haversine ---------- */

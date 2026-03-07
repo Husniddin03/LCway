@@ -19,6 +19,37 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
+
+Route::post('/send-message', function (Request $request) {
+    try {
+        Mail::raw(
+            "Ism: ".$request->fullname."\n".
+            "Email: ".$request->email."\n\n".
+            "Xabar:\n".$request->message,
+            function ($mail) use ($request) {
+                $mail->to('husniddin13124041@gmail.com')
+                     ->from($request->email)
+                     ->subject('Yangi xabar');
+            }
+        );
+
+        // Return JSON response for AJAX requests
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Xabar muvaffaqiyatli yuborildi!']);
+        }
+
+        return back()->with('success', 'Xabar muvaffaqiyatli yuborildi!');
+    } catch (\Exception $e) {
+        // Return JSON response for AJAX requests
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => false, 'message' => 'Xabarni yuborishda xatolik yuz berdi.'], 500);
+        }
+
+        return back()->with('error', 'Xabarni yuborishda xatolik yuz berdi.');
+    }
+});
 
 Route::fallback(function () {
     return response()->view('pages.404', [], 404);

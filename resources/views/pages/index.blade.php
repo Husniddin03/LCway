@@ -149,17 +149,49 @@
                             fikringizni qoldiring.
                         </p>
 
-                        <div class="flex items-center space-x-4">
-                            <a href="{{ asset('videos/aboutme.mp4') }}"
-                                class="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">
-                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                Bizning ishga munosabatingiz qanday?
-                            </a>
+                        <div class="flex flex-col space-y-4">
+                            <button onclick="openVideoModal()" 
+                                class="relative group w-full">
+                                <div class="relative w-full">
+                                    <video 
+                                        src="{{ asset('videos/aboutme.mp4') }}" 
+                                        class="w-full h-85 object-cover rounded-lg shadow-md group-hover:shadow-lg transition-shadow"
+                                        muted
+                                        preload="metadata"
+                                        id="videoThumbnail">
+                                    </video>
+                                    <div class="absolute inset-0 bg-black/30 rounded-lg flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="mt-3 text-center">
+                                    <div class="font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">Bizning ishga munosabatingiz qanday?</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">Videoni tomosha qiling</div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- Video Modal -->
+                        <div id="videoModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+                            <div class="relative w-full max-w-4xl mx-4">
+                                
+                                <!-- Close Button -->
+                                <button onclick="closeVideoModal()" 
+                                    class="absolute top-4 right-4 z-10 hover:bg-white/30 text-white p-3 rounded-full transition-all backdrop-blur-sm">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                                
+                                <!-- Video Player -->
+                                <video id="videoPlayer" class="w-full rounded-lg shadow-2xl" controls>
+                                    <source src="{{ asset('videos/aboutme.mp4') }}" type="video/mp4">
+                                    Sizning brauzeringiz video elementini qo'llab-quvvatlamaydi.
+                                </video>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -670,42 +702,44 @@
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Xabar yuboring</h3>
 
-                        <form class="space-y-6">
+                        <form class="space-y-6" id="contactForm">
+                            @csrf
+                            <div id="successMessage" class="hidden mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-xl">
+                                Xabar muvaffaqiyatli yuborildi!
+                            </div>
+                            <div id="errorMessage" class="hidden mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-xl">
+                                Xabarni yuborishda xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.
+                            </div>
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label for="fullname"
-                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         To'liq ismingiz
                                     </label>
-                                    <input type="text" name="fullname" id="fullname" placeholder="Husniddin"
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                        required />
+                                    <input type="text" name="fullname" placeholder="Husniddin"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-300" required />
                                 </div>
 
                                 <div>
-                                    <label for="phone"
-                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Telefon raqamingiz
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Elektron pochtangiz
                                     </label>
-                                    <input type="tel" name="phone" id="phone"
-                                        placeholder="+998 77 025 26 77"
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                        required />
+                                    <input type="email" name="email" placeholder="husniddin@gmail.com"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-300" required />
                                 </div>
                             </div>
 
                             <div>
-                                <label for="message"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Xabar
                                 </label>
-                                <textarea name="description" id="message" rows="4" placeholder="Xabaringizni shu yerga yozing..."
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                                <textarea name="message" rows="4"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-300"
                                     required></textarea>
                             </div>
 
-                            <button type="submit"
-                                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-xl transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl">
+                            <button type="submit" id="submitBtn"
+                                class="w-full bg-blue-600 text-white py-4 rounded-xl cursor-pointer">
                                 Xabarni yuborish
                             </button>
                         </form>
@@ -714,4 +748,116 @@
             </div>
         </section>
         <!-- ===== Contact End ===== -->
+        
+        <!-- Video Modal JavaScript -->
+        <script>
+            // Set video thumbnail to show frame at 17 seconds
+            document.addEventListener('DOMContentLoaded', function() {
+                const videoThumbnail = document.getElementById('videoThumbnail');
+                if (videoThumbnail) {
+                    videoThumbnail.currentTime = 17;
+                    videoThumbnail.pause();
+                }
+                
+                // Handle contact form submission
+                const contactForm = document.getElementById('contactForm');
+                if (contactForm) {
+                    contactForm.addEventListener('submit', handleFormSubmit);
+                }
+            });
+            
+            // Handle form submission with AJAX
+            function handleFormSubmit(event) {
+                event.preventDefault();
+                
+                const form = event.target;
+                const submitBtn = document.getElementById('submitBtn');
+                const successMessage = document.getElementById('successMessage');
+                const errorMessage = document.getElementById('errorMessage');
+                
+                // Hide messages
+                successMessage.classList.add('hidden');
+                errorMessage.classList.add('hidden');
+                
+                // Disable button and show loading
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Yuborilmoqda...';
+                
+                // Get form data
+                const formData = new FormData(form);
+                
+                // Send AJAX request
+                fetch('/send-message', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        successMessage.classList.remove('hidden');
+                        // Reset form
+                        form.reset();
+                        // Hide success message after 5 seconds
+                        setTimeout(() => {
+                            successMessage.classList.add('hidden');
+                        }, 5000);
+                    } else {
+                        // Show error message
+                        errorMessage.classList.remove('hidden');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    errorMessage.classList.remove('hidden');
+                })
+                .finally(() => {
+                    // Re-enable button
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Xabarni yuborish';
+                });
+            }
+            
+            function openVideoModal() {
+                const modal = document.getElementById('videoModal');
+                const video = document.getElementById('videoPlayer');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                video.play();
+                // Prevent body scroll when modal is open
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeVideoModal() {
+                const modal = document.getElementById('videoModal');
+                const video = document.getElementById('videoPlayer');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                video.pause();
+                video.currentTime = 0;
+                // Restore body scroll
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Close modal when clicking outside the video
+            document.getElementById('videoModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeVideoModal();
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('videoModal');
+                    if (!modal.classList.contains('hidden')) {
+                        closeVideoModal();
+                    }
+                }
+            });
+        </script>
 </x-layout>

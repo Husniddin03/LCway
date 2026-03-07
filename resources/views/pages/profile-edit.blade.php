@@ -74,19 +74,6 @@
                                 @enderror
                             </div>
                             
-                            <!-- Phone Field -->
-                            <div>
-                                <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Telefon
-                                </label>
-                                <input type="tel" id="phone" name="phone" value="{{ Auth::user()->phone ?? '' }}"
-                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="+998 90 123 45 67">
-                                @error('phone')
-                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            
                             <!-- Bio Field -->
                             <div>
                                 <label for="bio" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -98,6 +85,75 @@
                                 @error('bio')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
+                            </div>
+                            
+                            <!-- Personal Information Section -->
+                            <div class="border-t pt-6">
+                                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Shaxsiy ma'lumotlar</h3>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Ism
+                                        </label>
+                                        <input type="text" id="first_name" name="first_name" value="{{ $userData->first_name ?? '' }}" required
+                                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                                            placeholder="Ismingiz">
+                                        @error('first_name')
+                                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Familiya
+                                        </label>
+                                        <input type="text" id="last_name" name="last_name" value="{{ $userData->last_name ?? '' }}" required
+                                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                                            placeholder="Familiyangiz">
+                                        @error('last_name')
+                                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Telefon raqami
+                                        </label>
+                                        <input type="tel" id="phone" name="phone" value="{{ $userData->phone ?? '' }}" required
+                                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                                            placeholder="+998 90 123 45 67">
+                                        @error('phone')
+                                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="gander" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Jins
+                                        </label>
+                                        <select id="gander" name="gander" required
+                                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Jinsni tanlang</option>
+                                            <option value="male" {{ ($userData->gander ?? '') == 'male' ? 'selected' : '' }}>Erkak</option>
+                                            <option value="female" {{ ($userData->gander ?? '') == 'female' ? 'selected' : '' }}>Ayol</option>
+                                        </select>
+                                        @error('gander')
+                                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="birthday" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Tug'ilgan kun
+                                        </label>
+                                        <input type="date" id="birthday" name="birthday" value="{{ $userData?->birthday?->format('Y-m-d') ?? '' }}" required
+                                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                                        @error('birthday')
+                                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
                             
                             <!-- Password Fields -->

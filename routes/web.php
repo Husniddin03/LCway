@@ -4,6 +4,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ConnectController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\UserDataController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\PageController;
@@ -84,9 +85,10 @@ Route::middleware('guest')->group(function () {
 // auth bo‘lgan foydalanuvchilar uchun route lar
 Route::middleware('auth')->group(function () {
     // profile uchun route
-    Route::get('/profile', [PageController::class, 'profile'])->name('profile');
-    Route::get('/profile/edit', [PageController::class, 'profileEdit'])->name('profile.edit');
-    Route::put('/profile', [PageController::class, 'profileUpdate'])->name('profile.update');
+    Route::get('/profile', [UserDataController::class, 'index'])->name('profile');
+    Route::get('/profile/edit', [UserDataController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [UserDataController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [UserDataController::class, 'destroy'])->name('profile.destroy');
     // chat uchun route lar
     Route::get('chat/chat', [ChatController::class, 'chat'])->name('chat.chat');
     Route::get('chat/riasec', [ChatController::class, 'riasec'])->name('chat.riasec');

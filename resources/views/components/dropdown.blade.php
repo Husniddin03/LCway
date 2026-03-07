@@ -14,7 +14,7 @@
     };
 @endphp
 
-<div x-data="{ open: false }" class="relative inline-block">
+<div x-data="{ open: false }" class="relative inline-block w-full">
     <!-- Trigger -->
     <div @click="{{ $trigger === 'click' ? 'open = !open' : '' }}" @mouseenter="{{ $trigger === 'hover' ? 'open = true' : '' }}" @mouseleave="{{ $trigger === 'hover' ? 'open = false' : '' }}">
         {{ $trigger }}
@@ -30,7 +30,7 @@
         x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95"
         @click.away="open = false"
-        class="absolute {{ $placementClasses }} mt-{{ $offset }} w-48 rounded-xl shadow-floating bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+        class="absolute {{ $placementClasses }} mt-{{ $offset }} w-full rounded-xl shadow-floating bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
         style="display: none;"
     >
         <div class="py-1">

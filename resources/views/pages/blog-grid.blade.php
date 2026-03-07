@@ -45,9 +45,159 @@
                     <a href="{{ route('blog-grid') }}" class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
                         Barchasi
                     </a>
-                    <button id="toggle-map" class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
-                        Xarita
+
+                    <!-- Filter by maps -->
+
+
+    {{-- ========== COMPONENT ========== --}}
+<div class="relative" x-data="mapFilterComp()" x-init="boot()">
+
+    {{-- Trigger --}}
+    <button type="button" class="mf-btn" :class="open && 'is-open'" @click="toggle()">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        Xarita bo'yicha
+        <svg class="mf-chevron" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+        </svg>
+    </button>
+
+    {{-- Panel --}}
+    <div class="mf-panel"
+        x-show="open"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 -translate-y-2 scale-95"
+        x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+        x-transition:leave-end="opacity-0 -translate-y-2 scale-95"
+        @click.outside="open = false"
+        style="display:none;">
+
+        {{-- Header --}}
+        <div class="mf-header">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="mf-hicon">
+                    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="mf-htitle">Xarita orqali qidirish</div>
+                    <div class="mf-hsub">Joylashuvingizni belgilang va radius kiriting</div>
+                </div>
+            </div>
+            <button type="button" class="mf-close-btn" @click="open = false">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        {{-- Map area --}}
+        <div class="mf-map-wrap">
+            <div id="filterMapEl"></div>
+
+            {{-- Loading placeholder --}}
+            <div class="mf-placeholder" x-show="!mapReady">
+                <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="opacity:.4;">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 20l-5.447-9.132A1 1 0 013.382 9.5h17.236a1 1 0 01.838 1.368L16 20M9 20h6M9 20V9m6 11V9"/>
+                </svg>
+                <span>Xarita yuklanmoqda...</span>
+            </div>
+
+            {{-- Locate button --}}
+            <button type="button" class="mf-locate-btn" @click.stop="locateMe()">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                    :style="locating ? 'animation:spin 1s linear infinite' : ''">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 2v3m0 14v3M2 12h3m14 0h3"/>
+                </svg>
+                <span x-text="locating ? 'Aniqlanmoqda...' : 'Mening joylashuvim'"></span>
+            </button>
+
+            <div class="mf-map-hint">🖱 Xaritaga bosing yoki markerni sudrang</div>
+        </div>
+
+        {{-- Controls --}}
+        <div class="mf-controls">
+
+            {{-- Location info --}}
+            <div class="mf-loc-box">
+                <div class="mf-loc-dot"></div>
+                <div style="flex:1;min-width:0;">
+                    <div class="mf-loc-label">Tanlangan joylashuv</div>
+                    <div class="mf-loc-text" x-text="addressText"></div>
+                    <div class="mf-loc-coords" x-show="lat && lng">
+                        <span x-text="lat ? lat.toFixed(5) : ''"></span>,
+                        <span x-text="lng ? lng.toFixed(5) : ''"></span>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Radius row --}}
+            <div class="mf-radius-row">
+                <div class="mf-radius-lbl">
+                    <svg width="13" height="13" fill="none" stroke="#6366f1" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/>
+                    </svg>
+                    Qidiruv radiusi
+                </div>
+                <div class="mf-radius-badge" x-text="radius + ' km'"></div>
+            </div>
+
+            <input type="range" min="1" max="50" step="1"
+                x-model.number="radius"
+                @input="onRadiusChange()"
+                class="mf-slider"
+                :style="`background:linear-gradient(to right,#4f46e5 0%,#4f46e5 ${(radius-1)/49*100}%,${darkMode?'#374151':'#e5e7eb'} ${(radius-1)/49*100}%,${darkMode?'#374151':'#e5e7eb'} 100%)`">
+
+            <div class="mf-slider-marks">
+                <span>1 km</span><span>25 km</span><span>50 km</span>
+            </div>
+
+            <div class="mf-quick">
+                <template x-for="r in [2,5,10,20]" :key="r">
+                    <button type="button"
+                        class="mf-qbtn"
+                        :class="radius == r ? 'mf-qbtn-on' : 'mf-qbtn-off'"
+                        @click="radius = r; onRadiusChange()"
+                        x-text="r + ' km'">
                     </button>
+                </template>
+            </div>
+
+            {{-- Hidden form inputs --}}
+            <input type="hidden" name="latitude"  :value="lat">
+            <input type="hidden" name="longitude" :value="lng">
+            <input type="hidden" name="radius"    :value="radius">
+
+            {{-- Actions --}}
+            <div class="mf-actions">
+                <button type="button" class="mf-reset-btn" @click="resetFilter()">Tozalash</button>
+                <button type="button" class="mf-apply-btn" @click="applyFilter()">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path stroke-linecap="round" d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Qidirish
+                </button>
+            </div>
+
+            <div class="mf-result" x-show="resultShown">
+                <strong x-text="resultCount"></strong> ta markaz topildi
+                (<span x-text="radius"></span> km radiusda)
+            </div>
+        </div>
+    </div>
+</div>
+
                     
                     <!-- Sort Dropdown -->
                     <div class="text-gray-900 dark:text-white relative" x-data="{ sortDropdown: false }">
@@ -116,7 +266,27 @@
                             </div>
                         </div>
                     </div>
-                    
+
+                    <!-- Filter by subjects -->
+                     <div class="text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
+                        <button @click="teacherDropdown = !teacherDropdown" class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
+                            Fanlar bo'yicha
+                            <svg class="w-4 h-4" :class="{ 'rotate-180': teacherDropdown }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        
+                        <div x-show="teacherDropdown" @click.away="teacherDropdown = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+                            <div class="py-2 max-h-70 overflow-y-auto">
+                                @foreach ($subjects as $subject)
+                                    <a href="{{ request()->fullUrlWithQuery(['subject_id' => $subject->id]) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                        {{ $subject->name }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Teacher Announcements Dropdown -->
                     <div class="text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
                         <button @click="teacherDropdown = !teacherDropdown" class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
@@ -127,9 +297,9 @@
                         </button>
                         
                         <div x-show="teacherDropdown" @click.away="teacherDropdown = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
-                            <div class="py-2">
+                            <div class="py-2 max-h-70 overflow-y-auto">
                                 @foreach ($subjects as $subject)
-                                    <a href="{{ request()->fullUrlWithQuery(['needTeachers' => $subject->id]) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <a href="{{ request()->fullUrlWithQuery(['needTeachers' => $subject->id]) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
                                         {{ $subject->name }}
                                     </a>
                                 @endforeach
@@ -144,58 +314,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Map Container -->
-    <div id="map-container" class="hidden bg-gray-100 dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto px-6 py-6">
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-                <div class="relative">
-                    <div id="map" class="h-96"></div>
-                    
-                    <!-- Map Search Box -->
-                    <div class="absolute top-4 left-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3 w-80">
-                        <input 
-                            type="text" 
-                            id="searchInput" 
-                            placeholder="O'quv markazini qidiring..."
-                            class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        >
-                        <div id="searchResults" class="mt-2 max-h-48 overflow-y-auto hidden"></div>
-                    </div>
-                    
-                    <!-- Map Form -->
-                    <div class="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 w-80">
-                        <form action="{{ route('blog-grid') }}" method="get" class="space-y-3">
-                            <input type="text" id="address" name="address" placeholder="Manzil" readonly class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
-                            <input type="hidden" id="location" name="location">
-                            <input type="hidden" id="latitude" name="latitude">
-                            <input type="hidden" id="longitude" name="longitude">
-                            
-                            <select name="subject_id" id="subject" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700">
-                                <option value="">Fanni tanlang...</option>
-                                @foreach ($subjects as $subject)
-                                    <option value="{{ $subject->id }}" {{ isset($validated['subject_id']) && $subject->id == $validated['subject_id'] ? 'selected' : '' }}>
-                                        {{ $subject->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            
-                            <input type="number" name="radius" id="radius" placeholder="Radius (km)" min="1" max="10000" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg">
-                            <input type="number" name="maxPrice" id="maxPrice" placeholder="Maksimal narx (so'm)" min="0" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg">
-                            
-                            <button type="submit" class="w-full bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700 transition-colors duration-200">
-                                Qidirish
-                            </button>
-                        </form>
-                        
-                        <button id="locateBtn" class="absolute bottom-4 right-4 bg-white dark:bg-gray-800 p-2 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-200" title="Joyimni top">
-                            📍
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Learning Centers Grid -->
     <section class="py-12 bg-gray-50 dark:bg-gray-900">
@@ -335,279 +453,7 @@
     .dark .search-result-item:hover {
         background-color: #374151;
     }
-</style>
 
-<script>
-    // Toggle Map
-    document.getElementById('toggle-map').addEventListener('click', function() {
-        const mapContainer = document.getElementById('map-container');
-        mapContainer.classList.toggle('hidden');
-        mapContainer.classList.toggle('show');
-        
-        if (mapContainer.classList.contains('show')) {
-            setTimeout(() => {
-                if (window.google && window.google.maps) {
-                    google.maps.event.trigger(map, 'resize');
-                }
-            }, 300);
-        }
-    });
-    
-    // Learning Centers Data
-    const learningCentersData = {!! json_encode(
-        $LearningCenters->map(function ($center) {
-            $location = explode(',', $center->location);
-            return [
-                'id' => $center->id,
-                'name' => $center->name,
-                'latitude' => (float) ($location[0] ?? 0),
-                'longitude' => (float) ($location[1] ?? 0),
-                'address' => $center->address ?? '',
-                'logo' => $center->logo ?? '',
-                'distance' => 0,
-            ];
-        }),
-    ) !!};
-    
-    let map, geocoder, userMarker;
-    const markers = [];
-    const defaultLat = 41.2995;
-    const defaultLng = 69.2401;
-    
-    // Initialize Map (if Google Maps API is loaded)
-    function initMap() {
-        if (!window.google || !window.google.maps) return;
-        
-        const defaultCenter = { lat: defaultLat, lng: defaultLng };
-        
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: defaultCenter,
-            zoom: 12,
-            gestureHandling: 'greedy',
-            disableDefaultUI: false,
-            zoomControl: true,
-            mapTypeControl: false,
-            streetViewControl: false,
-            fullscreenControl: true
-        });
-        
-        geocoder = new google.maps.Geocoder();
-        
-        // User marker
-        userMarker = new google.maps.Marker({
-            map: map,
-            position: defaultCenter,
-            draggable: true,
-            icon: {
-                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                scaledSize: new google.maps.Size(40, 40)
-            },
-            title: "Sizning joylashuvingiz",
-            optimized: true
-        });
-        
-        // Add learning centers
-        addLearningCenters();
-        
-        // Setup events
-        setupEventListeners();
-        
-        // Get user location
-        getUserLocation();
-    }
-    
-    // Add learning centers to map
-    function addLearningCenters() {
-        learningCentersData.forEach(center => {
-            if (!center.latitude || !center.longitude) return;
-            
-            const position = {
-                lat: parseFloat(center.latitude),
-                lng: parseFloat(center.longitude)
-            };
-            
-            const marker = new google.maps.Marker({
-                map: map,
-                position: position,
-                icon: {
-                    url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                    scaledSize: new google.maps.Size(32, 32)
-                },
-                title: center.name,
-                optimized: true
-            });
-            
-            const infoWindow = new google.maps.InfoWindow({
-                content: createInfoContent(center)
-            });
-            
-            marker.addListener("click", () => {
-                closeAllInfoWindows();
-                infoWindow.open(map, marker);
-                updateDistance(center, userMarker.getPosition());
-            });
-            
-            markers.push({ marker, infoWindow, center });
-        });
-    }
-    
-    // Create info window content
-    function createInfoContent(center) {
-        return `
-            <div class="p-3">
-                <h3 class="font-semibold text-lg mb-2">${center.name}</h3>
-                <p class="text-sm text-gray-600 mb-1">📍 Masofa: <span id="dist-${center.id}">Hisoblanmoqda...</span></p>
-                <p class="text-sm text-gray-600 mb-3">${center.address || 'Manzil ko\'rsatilmagan'}</p>
-                <div class="flex gap-2">
-                    <a href="/blog-single/${center.id}" class="bg-primary-600 text-white px-3 py-1 rounded text-sm hover:bg-primary-700">Batafsil</a>
-                    <a href="https://www.google.com/maps/dir/?api=1&destination=${center.latitude},${center.longitude}" 
-                       class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700" target="_blank">Yo'nalish</a>
-                </div>
-            </div>
-        `;
-    }
-    
-    // Close all info windows
-    function closeAllInfoWindows() {
-        markers.forEach(m => m.infoWindow.close());
-    }
-    
-    // Setup event listeners
-    function setupEventListeners() {
-        // Map click
-        map.addListener("click", (e) => {
-            const pos = {
-                lat: e.latLng.lat(),
-                lng: e.latLng.lng()
-            };
-            userMarker.setPosition(pos);
-            updateLocation(pos.lat, pos.lng);
-        });
-        
-        // Marker drag
-        userMarker.addListener("dragend", (e) => {
-            const pos = {
-                lat: e.latLng.lat(),
-                lng: e.latLng.lng()
-            };
-            updateLocation(pos.lat, pos.lng);
-        });
-    }
-    
-    // Get user location
-    function getUserLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    userMarker.setPosition(pos);
-                    map.setCenter(pos);
-                    updateLocation(pos.lat, pos.lng);
-                },
-                () => {
-                    console.log("Location access denied");
-                }
-            );
-        }
-    }
-    
-    // Update location
-    function updateLocation(lat, lng) {
-        document.getElementById('latitude').value = lat;
-        document.getElementById('longitude').value = lng;
-        document.getElementById('location').value = `${lat},${lng}`;
-        
-        // Update address
-        if (geocoder) {
-            geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-                if (status === 'OK' && results[0]) {
-                    document.getElementById('address').value = results[0].formatted_address;
-                }
-            });
-        }
-    }
-    
-    // Update distance
-    function updateDistance(center, userPos) {
-        if (!userPos) return;
-        
-        const distance = google.maps.geometry.spherical.computeDistanceBetween(
-            new google.maps.LatLng(center.latitude, center.longitude),
-            userPos
-        ) / 1000; // Convert to km
-        
-        const distanceElement = document.getElementById(`dist-${center.id}`);
-        if (distanceElement) {
-            distanceElement.textContent = `${distance.toFixed(1)} km`;
-        }
-    }
-    
-    // Locate button
-    document.getElementById('locateBtn').addEventListener('click', function() {
-        getUserLocation();
-    });
-    
-    // Search functionality
-    const searchInput = document.getElementById('searchInput');
-    const searchResults = document.getElementById('searchResults');
-    
-    searchInput.addEventListener('input', function() {
-        const query = this.value.trim();
-        if (query.length < 2) {
-            searchResults.classList.add('hidden');
-            return;
-        }
-        
-        const results = learningCentersData.filter(center => 
-            center.name.toLowerCase().includes(query.toLowerCase())
-        );
-        
-        if (results.length > 0) {
-            searchResults.innerHTML = results.map(center => `
-                <div class="search-result-item" onclick="selectCenter(${center.id})">
-                    <div class="font-medium">${center.name}</div>
-                    <div class="text-sm text-gray-600">${center.address || 'Manzil ko\'rsatilmagan'}</div>
-                </div>
-            `).join('');
-            searchResults.classList.remove('hidden');
-        } else {
-            searchResults.innerHTML = '<div class="search-result-item text-gray-500">Hech narsa topilmadi</div>';
-            searchResults.classList.remove('hidden');
-        }
-    });
-    
-    // Select center from search
-    function selectCenter(centerId) {
-        const center = learningCentersData.find(c => c.id === centerId);
-        if (center && map) {
-            map.setCenter({ lat: center.latitude, lng: center.longitude });
-            map.setZoom(15);
-            
-            // Find and open the marker
-            const markerData = markers.find(m => m.center.id === centerId);
-            if (markerData) {
-                closeAllInfoWindows();
-                markerData.infoWindow.open(map, markerData.marker);
-            }
-            
-            searchResults.classList.add('hidden');
-            searchInput.value = center.name;
-        }
-    }
-    
-    // Initialize map when page loads
-    if (typeof google !== 'undefined' && google.maps) {
-        initMap();
-    } else {
-        // Wait for Google Maps to load
-        window.addEventListener('load', initMap);
-    }
-</script>
-
-<style>
     /* Base styles remain the same */
     .favorite {
         display: flex;
@@ -1136,331 +982,574 @@
     }
 </style>
 
+
+
+{{--
+    ============================================================
+    Xarita bo'yicha filter — Map Filter Component
+    - Google Maps API kaliti: env('MAP_API_KEY')
+    - Default: Samarqand (39.6542, 66.9597)
+    - Light/Dark mode + Mobile responsive
+    - Alpine.js x-data component
+    ============================================================
+--}}
+
+{{-- ========== STYLES ========== --}}
+<style>
+/* ---- TRIGGER BUTTON ---- */
+.mf-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px; border-radius: 12px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    border: none; font-family: inherit; white-space: nowrap;
+    transition: all .25s ease;
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(99,102,241,.35);
+}
+.mf-btn:hover  { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(99,102,241,.48); }
+.mf-btn:active { transform: translateY(0); }
+.mf-chevron { transition: transform .25s; }
+.mf-btn.is-open .mf-chevron { transform: rotate(180deg); }
+
+/* ---- PANEL ---- */
+.mf-panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 500px;
+    max-width: calc(100vw - 20px);
+    border-radius: 20px;
+    overflow: hidden;
+    z-index: 9999;
+    /* Light */
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 20px 60px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.04);
+}
+.dark .mf-panel {
+    background: #111827;
+    border-color: rgba(255,255,255,.08);
+    box-shadow: 0 20px 60px rgba(0,0,0,.55);
+}
+
+/* ---- HEADER ---- */
+.mf-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, #f5f6ff 0%, #eff0ff 100%);
+    border-bottom: 1px solid #e5e7eb;
+}
+.dark .mf-header {
+    background: linear-gradient(135deg, #1a1d2e 0%, #1e2140 100%);
+    border-bottom-color: rgba(255,255,255,.07);
+}
+.mf-hicon {
+    width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    display: flex; align-items: center; justify-content: center;
+}
+.mf-htitle  { font-size: 14px; font-weight: 700; color: #111827; }
+.dark .mf-htitle  { color: #f9fafb; }
+.mf-hsub    { font-size: 11px; color: #6b7280; margin-top: 1px; }
+.dark .mf-hsub    { color: rgba(255,255,255,.45); }
+.mf-close-btn {
+    background: none; border: none; cursor: pointer;
+    color: #9ca3af; padding: 4px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s, color .15s;
+}
+.mf-close-btn:hover { background: rgba(0,0,0,.06); color: #374151; }
+.dark .mf-close-btn:hover { background: rgba(255,255,255,.1); color: #f9fafb; }
+
+/* ---- MAP AREA ---- */
+.mf-map-wrap { position: relative; height: 265px; }
+#filterMapEl { width: 100%; height: 100%; }
+.mf-placeholder {
+    position: absolute; inset: 0; z-index: 5;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px; color: #9ca3af; font-size: 13px;
+    background: #f3f4f6;
+}
+.dark .mf-placeholder { background: #1f2937; }
+.mf-locate-btn {
+    position: absolute; top: 10px; right: 10px; z-index: 10;
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 12px; border-radius: 10px;
+    font-size: 12px; font-weight: 600; border: none; cursor: pointer;
+    font-family: inherit; transition: all .2s;
+    backdrop-filter: blur(8px);
+    background: rgba(255,255,255,.92); color: #374151;
+    box-shadow: 0 2px 10px rgba(0,0,0,.18);
+}
+.dark .mf-locate-btn { background: rgba(17,24,39,.88); color: #f3f4f6; }
+.mf-locate-btn:hover { background: #4f46e5; color: #fff; box-shadow: 0 4px 14px rgba(99,102,241,.4); }
+.mf-map-hint {
+    position: absolute; bottom: 8px; left: 8px; z-index: 10;
+    padding: 5px 10px; border-radius: 8px;
+    font-size: 11px;
+    background: rgba(0,0,0,.55); color: rgba(255,255,255,.8);
+    backdrop-filter: blur(4px); pointer-events: none;
+}
+
+/* ---- CONTROLS ---- */
+.mf-controls { padding: 16px 18px; background: #fff; }
+.dark .mf-controls { background: #111827; }
+
+.mf-loc-box {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 12px; border-radius: 12px; margin-bottom: 14px;
+    background: #f9fafb; border: 1px solid #e5e7eb;
+}
+.dark .mf-loc-box { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); }
+.mf-loc-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,.2);
+    flex-shrink: 0; margin-top: 4px;
+}
+.mf-loc-label { font-size: 10px; font-weight: 600; color: #9ca3af; letter-spacing:.04em; text-transform:uppercase; margin-bottom:2px; }
+.mf-loc-text  { font-size: 13px; color: #374151; line-height: 1.4; }
+.dark .mf-loc-text { color: #e5e7eb; }
+.mf-loc-coords { font-size: 10px; color: #9ca3af; margin-top: 2px; font-family: monospace; }
+
+.mf-radius-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.mf-radius-lbl { font-size: 12px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 5px; }
+.dark .mf-radius-lbl { color: #d1d5db; }
+.mf-radius-badge {
+    font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+    background: rgba(99,102,241,.12); color: #4f46e5;
+    border: 1px solid rgba(99,102,241,.25);
+}
+.dark .mf-radius-badge { color: #818cf8; background: rgba(99,102,241,.18); }
+
+.mf-slider {
+    width: 100%; height: 5px; border-radius: 999px;
+    appearance: none; -webkit-appearance: none;
+    cursor: pointer; outline: none; border: none;
+}
+.mf-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #4f46e5; cursor: pointer;
+    border: 2.5px solid #fff;
+    box-shadow: 0 0 0 2px rgba(99,102,241,.3), 0 2px 6px rgba(0,0,0,.2);
+}
+.mf-slider-marks { display:flex; justify-content:space-between; font-size:10px; color:#9ca3af; margin-top:4px; padding:0 2px; }
+
+.mf-quick { display: flex; gap: 6px; margin-top: 8px; }
+.mf-qbtn {
+    flex: 1; padding: 6px 0; border-radius: 8px;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: inherit; transition: all .15s;
+}
+.mf-qbtn-off { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
+.dark .mf-qbtn-off { background: rgba(255,255,255,.06); color: #9ca3af; border-color: rgba(255,255,255,.08); }
+.mf-qbtn-off:hover { background: rgba(99,102,241,.1); color: #4f46e5; border-color: rgba(99,102,241,.3); }
+.dark .mf-qbtn-off:hover { background: rgba(99,102,241,.15); color: #818cf8; }
+.mf-qbtn-on { background: rgba(99,102,241,.15); color: #4f46e5; border: 1px solid #4f46e5; }
+.dark .mf-qbtn-on { color: #818cf8; border-color: #6366f1; background: rgba(99,102,241,.2); }
+
+.mf-actions { display: flex; gap: 10px; margin-top: 14px; }
+.mf-reset-btn {
+    padding: 10px 18px; border-radius: 11px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: inherit; transition: all .2s;
+    background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb;
+}
+.dark .mf-reset-btn { background: rgba(255,255,255,.06); color: #9ca3af; border-color: rgba(255,255,255,.08); }
+.mf-reset-btn:hover { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
+.dark .mf-reset-btn:hover { background: rgba(239,68,68,.12); color: #f87171; border-color: rgba(239,68,68,.3); }
+.mf-apply-btn {
+    flex: 1; padding: 10px 20px; border-radius: 11px;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    font-family: inherit; border: none; transition: all .2s;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff; box-shadow: 0 4px 12px rgba(99,102,241,.35);
+}
+.mf-apply-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(99,102,241,.5); }
+.mf-apply-btn:active { transform: translateY(0); }
+
+.mf-result { text-align: center; margin-top: 8px; font-size: 12px; color: #9ca3af; }
+.mf-result strong { color: #4f46e5; }
+.dark .mf-result strong { color: #818cf8; }
+
+/* ---- MOBILE ---- */
+@media (max-width: 540px) {
+    .mf-panel {
+        position: fixed !important;
+        top: auto !important; left: 0 !important; right: 0;
+        bottom: 0; width: 100%; max-width: 100%;
+        border-radius: 20px 20px 0 0;
+        max-height: 88vh; overflow-y: auto;
+    }
+    .mf-map-wrap { height: 220px; }
+}
+</style>
+
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+{{-- ========== ALPINE JS COMPONENT ========== --}}
 <script>
-    // Demo data - Laravel blade'dan keladi
-    // Backend'da:
-    const learningCentersData = {!! json_encode(
+(function () {
+    /* --------------------------------------------------
+       Centers data from Laravel
+    -------------------------------------------------- */
+    var _CENTERS = {!! json_encode(
         $LearningCenters->map(function ($center) {
-            $location = explode(',', $center->location);
+            $coords = explode(',', $center->location ?? '');
             return [
-                'id' => $center->id,
-                'name' => $center->name,
-                'latitude' => (float) ($location[0] ?? 0),
-                'longitude' => (float) ($location[1] ?? 0),
-                'address' => $center->address ?? '',
-                'logo' => $center->logo ?? '',
-                'distance' => 0,
+                'id'        => $center->id,
+                'name'      => $center->name,
+                'latitude'  => (float) ($coords[0] ?? 0),
+                'longitude' => (float) ($coords[1] ?? 0),
+                'address'   => $center->address ?? '',
             ];
-        }),
+        })
     ) !!};
 
-    let map, geocoder, userMarker;
-    const markers = [];
-    const defaultLat = 41.2995;
-    const defaultLng = 69.2401;
+    var DEFAULT_LAT = 39.6542; // Samarqand
+    var DEFAULT_LNG = 66.9597;
 
-    // Toggle map visibility
-    document.getElementById('toggle-map').addEventListener('click', function(e) {
-        e.preventDefault();
-        const container = document.getElementById('map-container');
-        container.classList.toggle('active');
+    window.mapFilterComp = function () {
+        return {
+            /* public state */
+            open:        false,
+            mapReady:    false,
+            locating:    false,
+            resultShown: false,
+            resultCount: 0,
+            lat:         null,
+            lng:         null,
+            radius:      5,
+            darkMode:    false,
+            addressText: 'Xaritadan joy tanlang yoki "Mening joylashuvim" tugmasini bosing',
 
-        // Trigger map resize after container is visible
-        if (container.classList.contains('active')) {
-            setTimeout(() => {
-                if (map) {
-                    google.maps.event.trigger(map, 'resize');
+            /* private */
+            _map:    null,
+            _uMark:  null,
+            _circle: null,
+            _iws:    [],
+            _geo:    null,
+
+            /* ---------- boot ---------- */
+            boot() {
+                /* detect dark mode */
+                this.darkMode = document.documentElement.classList.contains('dark');
+
+                /* read URL params */
+                var p = new URLSearchParams(window.location.search);
+                if (p.get('latitude'))  this.lat    = parseFloat(p.get('latitude'));
+                if (p.get('longitude')) this.lng    = parseFloat(p.get('longitude'));
+                if (p.get('radius'))    this.radius = parseFloat(p.get('radius'));
+
+                /* register GLOBAL callback that Google Maps SDK calls */
+                window.__mfInitMap = () => {
+                    if (this.open) this._initMap();
+                };
+
+                /* if SDK already present, bind immediately */
+                if (window.google && window.google.maps) {
+                    // no-op; _initMap() called when panel opens
                 }
-            }, 500);
-        }
-    });
 
-    // Initialize map
-    function initMap() {
-        const defaultCenter = {
-            lat: defaultLat,
-            lng: defaultLng
-        };
-
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: defaultCenter,
-            zoom: 12,
-            gestureHandling: 'greedy',
-            disableDefaultUI: false,
-            zoomControl: true,
-            mapTypeControl: false,
-            streetViewControl: false,
-            fullscreenControl: true
-        });
-
-        geocoder = new google.maps.Geocoder();
-
-        // User marker
-        userMarker = new google.maps.Marker({
-            map: map,
-            position: defaultCenter,
-            draggable: true,
-            icon: {
-                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                scaledSize: new google.maps.Size(40, 40)
+                /* observe dark-mode toggle */
+                new MutationObserver(() => {
+                    this.darkMode = document.documentElement.classList.contains('dark');
+                }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
             },
-            title: "Sizning joylashuvingiz",
-            optimized: true
-        });
 
-        // Add learning centers
-        addLearningCenters();
+            /* ---------- toggle panel ---------- */
+            toggle() {
+                this.open = !this.open;
+                if (this.open) {
+                    this.$nextTick(() => setTimeout(() => this._initMap(), 150));
+                }
+            },
 
-        // Setup events
-        setupEventListeners();
-
-        // Get user location
-        getUserLocation();
-    }
-
-    // Add learning centers to map
-    function addLearningCenters() {
-        learningCentersData.forEach(center => {
-            if (!center.latitude || !center.longitude) return;
-
-            const position = {
-                lat: parseFloat(center.latitude),
-                lng: parseFloat(center.longitude)
-            };
-
-            const marker = new google.maps.Marker({
-                map: map,
-                position: position,
-                icon: {
-                    url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                    scaledSize: new google.maps.Size(32, 32)
-                },
-                title: center.name,
-                optimized: true
-            });
-
-            const infoWindow = new google.maps.InfoWindow({
-                content: createInfoContent(center)
-            });
-
-            marker.addListener("click", () => {
-                closeAllInfoWindows();
-                infoWindow.open(map, marker);
-                updateDistance(center, userMarker.getPosition());
-            });
-
-            markers.push({
-                marker,
-                infoWindow,
-                center
-            });
-        });
-    }
-
-    // Create info window content
-    function createInfoContent(center) {
-        return `
-            <div class="info-content">
-                <h3 class="info-title">${center.name}</h3>
-                <p class="info-distance">📍 Masofa: <span id="dist-${center.id}">Hisoblanmoqda...</span></p>
-                <p class="info-address">${center.address || 'Manzil ko\'rsatilmagan'}</p>
-                <a href="/blog-single/${center.id}" class="info-btn">Batafsil</a>
-                <a href="https://www.google.com/maps/dir/?api=1&destination=${center.latitude},${center.longitude}" 
-                   class="info-btn" target="_blank">Yo'nalish</a>
-            </div>
-        `;
-    }
-
-    // Close all info windows
-    function closeAllInfoWindows() {
-        markers.forEach(m => m.infoWindow.close());
-    }
-
-    // Setup event listeners
-    function setupEventListeners() {
-        // Map click
-        map.addListener("click", (e) => {
-            const pos = {
-                lat: e.latLng.lat(),
-                lng: e.latLng.lng()
-            };
-            userMarker.setPosition(pos);
-            updateLocation(pos.lat, pos.lng);
-        });
-
-        // Marker drag
-        userMarker.addListener("dragend", (e) => {
-            const pos = {
-                lat: e.latLng.lat(),
-                lng: e.latLng.lng()
-            };
-            updateLocation(pos.lat, pos.lng);
-        });
-
-        // Search functionality
-        const searchInput = document.getElementById('searchInput');
-        const searchResults = document.getElementById('searchResults');
-
-        let searchTimeout;
-        searchInput.addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            const query = this.value.toLowerCase().trim();
-
-            searchTimeout = setTimeout(() => {
-                searchResults.innerHTML = '';
-
-                if (query.length < 2) {
-                    searchResults.style.display = 'none';
+            /* ---------- init map ---------- */
+            _initMap() {
+                if (this._map) {
+                    google.maps.event.trigger(this._map, 'resize');
                     return;
                 }
+                if (!window.google || !window.google.maps) return;
 
-                const filtered = learningCentersData.filter(center =>
-                    center.name.toLowerCase().includes(query) ||
-                    center.address.toLowerCase().includes(query)
-                );
+                var el = document.getElementById('filterMapEl');
+                if (!el) return;
 
-                if (filtered.length === 0) {
-                    searchResults.innerHTML = '<div class="result-item">Natija topilmadi</div>';
-                    searchResults.style.display = 'block';
-                    return;
-                }
+                var center = {
+                    lat: this.lat  || DEFAULT_LAT,
+                    lng: this.lng  || DEFAULT_LNG,
+                };
 
-                searchResults.style.display = 'block';
+                var darkStyles = [
+                    { elementType: 'geometry',          stylers: [{ color: '#1a1d2e' }] },
+                    { elementType: 'labels.text.fill',  stylers: [{ color: '#8ec3b9' }] },
+                    { elementType: 'labels.text.stroke',stylers: [{ color: '#1a1d2e' }] },
+                    { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#2c2f45' }] },
+                    { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#3c3f5e' }] },
+                    { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#17263c' }] },
+                    { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#2c2d3a' }] },
+                    { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#263c3f' }] },
+                    { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#4a4e6a' }] },
+                ];
 
-                const fragment = document.createDocumentFragment();
-                filtered.forEach(center => {
-                    const div = document.createElement('div');
-                    div.className = 'result-item';
-                    div.innerHTML =
-                        `<strong>${center.name}</strong><br><small>${center.address || 'Manzil ko\'rsatilmagan'}</small>`;
-                    div.addEventListener('click', () => selectCenter(center));
-                    fragment.appendChild(div);
+                this._map = new google.maps.Map(el, {
+                    center:            center,
+                    zoom:              13,
+                    gestureHandling:   'greedy',
+                    mapTypeControl:    false,
+                    streetViewControl: false,
+                    fullscreenControl: false,
+                    zoomControl:       true,
+                    styles:            this.darkMode ? darkStyles : [],
                 });
-                searchResults.appendChild(fragment);
-            }, 300);
-        });
 
-        // Close search on outside click
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.search-box')) {
-                searchResults.style.display = 'none';
-            }
-        });
+                this._geo = new google.maps.Geocoder();
 
-        // Locate button
-        document.getElementById('locateBtn').addEventListener('click', getUserLocation);
+                /* User marker (blue circle) */
+                this._uMark = new google.maps.Marker({
+                    map:       this._map,
+                    position:  center,
+                    draggable: true,
+                    zIndex:    999,
+                    title:     'Sizning joylashuvingiz',
+                    icon: {
+                        path:         google.maps.SymbolPath.CIRCLE,
+                        scale:        10,
+                        fillColor:    '#4f46e5',
+                        fillOpacity:  1,
+                        strokeColor:  '#ffffff',
+                        strokeWeight: 2.5,
+                    },
+                });
 
-        // Handle window resize for map
-        window.addEventListener('resize', () => {
-            if (map && document.getElementById('map-container').classList.contains('active')) {
-                setTimeout(() => {
-                    google.maps.event.trigger(map, 'resize');
-                }, 100);
-            }
-        });
-    }
+                /* Radius circle */
+                this._circle = new google.maps.Circle({
+                    map:           this._map,
+                    center:        center,
+                    radius:        this.radius * 1000,
+                    fillColor:     '#6366f1',
+                    fillOpacity:   0.07,
+                    strokeColor:   '#6366f1',
+                    strokeOpacity: 0.45,
+                    strokeWeight:  1.5,
+                });
 
-    // Select center from search
-    function selectCenter(center) {
-        map.setCenter({
-            lat: center.latitude,
-            lng: center.longitude
-        });
-        map.setZoom(16);
+                /* Click on map */
+                this._map.addListener('click', (e) => {
+                    this._moveUser(e.latLng.lat(), e.latLng.lng());
+                });
 
-        const targetMarker = markers.find(m => m.center.id === center.id);
-        if (targetMarker) {
-            closeAllInfoWindows();
-            targetMarker.infoWindow.open(map, targetMarker.marker);
-        }
+                /* Drag user marker */
+                this._uMark.addListener('dragend', (e) => {
+                    this._moveUser(e.latLng.lat(), e.latLng.lng());
+                });
 
-        document.getElementById('searchResults').style.display = 'none';
-        document.getElementById('searchInput').value = '';
-    }
+                /* Add center markers */
+                this._addCenters();
 
-    // Get user location
-    function getUserLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    map.setCenter(pos);
-                    map.setZoom(15);
-                    userMarker.setPosition(pos);
-                    updateLocation(pos.lat, pos.lng);
-                },
-                () => {
-                    updateLocation(defaultLat, defaultLng);
+                this.mapReady = true;
+
+                /* Restore from URL */
+                if (this.lat && this.lng) {
+                    this._uMark.setPosition({ lat: this.lat, lng: this.lng });
+                    this._circle.setCenter({ lat: this.lat, lng: this.lng });
+                    this._map.setCenter({ lat: this.lat, lng: this.lng });
                 }
-            );
-        } else {
-            updateLocation(defaultLat, defaultLng);
-        }
+            },
+
+            /* ---------- add center markers ---------- */
+            _addCenters() {
+                var self = this;
+                var pin = function (color) {
+                    return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+                        '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">' +
+                        '<path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22S28 23.333 28 14C28 6.268 21.732 0 14 0z" fill="' + color + '"/>' +
+                        '<circle cx="14" cy="14" r="6" fill="white"/>' +
+                        '<circle cx="14" cy="14" r="3.5" fill="' + color + '"/>' +
+                        '</svg>'
+                    );
+                };
+
+                _CENTERS.forEach(function (c) {
+                    if (!c.latitude || !c.longitude) return;
+
+                    var marker = new google.maps.Marker({
+                        map:      self._map,
+                        position: { lat: c.latitude, lng: c.longitude },
+                        title:    c.name,
+                        icon: {
+                            url:        pin('#e53e3e'),
+                            scaledSize: new google.maps.Size(26, 33),
+                            anchor:     new google.maps.Point(13, 33),
+                        },
+                    });
+
+                    var iw = new google.maps.InfoWindow({
+                        maxWidth: 260,
+                    });
+
+                    marker.addListener('click', function () {
+                        self._iws.forEach(function (w) { w.close(); });
+                        iw.setContent(self._buildIW(c));
+                        iw.open(self._map, marker);
+                    });
+
+                    self._iws.push(iw);
+                });
+            },
+
+            /* ---------- info window HTML ---------- */
+            _buildIW(c) {
+                var dist = (this.lat && this.lng)
+                    ? this._haversine(this.lat, this.lng, c.latitude, c.longitude).toFixed(1) + ' km'
+                    : '—';
+                var dark = this.darkMode;
+                var bg  = dark ? '#1e2231' : '#ffffff';
+                var clr = dark ? '#f3f4f6' : '#111827';
+                var sub = dark ? '#9ca3af' : '#6b7280';
+                var btn2bg = dark ? 'rgba(255,255,255,.1)' : '#f3f4f6';
+                var btn2bd = dark ? 'rgba(255,255,255,.12)' : '#e5e7eb';
+                return '<div style="background:' + bg + ';border-radius:12px;padding:14px;min-width:210px;font-family:sans-serif;">' +
+                    '<div style="font-size:14px;font-weight:700;color:' + clr + ';margin-bottom:6px;">' + c.name + '</div>' +
+                    '<div style="font-size:12px;color:#6366f1;margin-bottom:4px;">📍 Masofa: ' + dist + '</div>' +
+                    '<div style="font-size:11px;color:' + sub + ';margin-bottom:10px;line-height:1.4;">' + (c.address || "Manzil ko'rsatilmagan") + '</div>' +
+                    '<div style="display:flex;gap:7px;">' +
+                    '<a href="/blog-single/' + c.id + '" style="flex:1;padding:6px 8px;border-radius:8px;font-size:12px;font-weight:600;text-align:center;text-decoration:none;background:#4f46e5;color:#fff;">Batafsil</a>' +
+                    '<a href="https://www.google.com/maps/dir/?api=1&destination=' + c.latitude + ',' + c.longitude + '" target="_blank" style="flex:1;padding:6px 8px;border-radius:8px;font-size:12px;font-weight:600;text-align:center;text-decoration:none;background:' + btn2bg + ';color:' + clr + ';border:1px solid ' + btn2bd + ';">Yo\'nalish</a>' +
+                    '</div></div>';
+            },
+
+            /* ---------- move user marker ---------- */
+            _moveUser(lat, lng, doGeocode) {
+                this.lat = lat;
+                this.lng = lng;
+                if (doGeocode === undefined) doGeocode = true;
+
+                var pos = { lat: lat, lng: lng };
+                if (this._uMark)  this._uMark.setPosition(pos);
+                if (this._circle) this._circle.setCenter(pos);
+
+                if (doGeocode && this._geo) {
+                    var self = this;
+                    this._geo.geocode({ location: pos }, function (res, status) {
+                        if (status === 'OK' && res[0]) {
+                            self.addressText = res[0].formatted_address;
+                        } else {
+                            self.addressText = lat.toFixed(5) + ', ' + lng.toFixed(5);
+                        }
+                    });
+                }
+            },
+
+            /* ---------- locate me ---------- */
+            locateMe() {
+                if (!navigator.geolocation) return;
+                this.locating = true;
+                var self = this;
+                navigator.geolocation.getCurrentPosition(
+                    function (pos) {
+                        self.locating = false;
+                        var lat = pos.coords.latitude;
+                        var lng = pos.coords.longitude;
+                        if (!self._map) {
+                            self.lat = lat; self.lng = lng;
+                            self._initMap();
+                            return;
+                        }
+                        self._map.setCenter({ lat: lat, lng: lng });
+                        self._map.setZoom(14);
+                        self._moveUser(lat, lng);
+                    },
+                    function () {
+                        self.locating = false;
+                        /* Fallback to Samarqand */
+                        if (self._map) {
+                            self._map.setCenter({ lat: DEFAULT_LAT, lng: DEFAULT_LNG });
+                            self._moveUser(DEFAULT_LAT, DEFAULT_LNG);
+                        }
+                    },
+                    { timeout: 8000 }
+                );
+            },
+
+            /* ---------- radius change ---------- */
+            onRadiusChange() {
+                if (this._circle) this._circle.setRadius(this.radius * 1000);
+            },
+
+            /* ---------- apply ---------- */
+            applyFilter() {
+                var finalLat = this.lat || DEFAULT_LAT;
+                var finalLng = this.lng || DEFAULT_LNG;
+
+                this.resultCount = _CENTERS.filter(function (c) {
+                    if (!c.latitude || !c.longitude) return false;
+                    return _haversine(finalLat, finalLng, c.latitude, c.longitude) <= this.radius;
+                }.bind(this)).length;
+                this.resultShown = true;
+
+                var params = new URLSearchParams(window.location.search);
+                params.set('latitude',  finalLat);
+                params.set('longitude', finalLng);
+                params.set('radius',    this.radius);
+                params.delete('searchText');
+                window.location.href = window.location.pathname + '?' + params.toString();
+            },
+
+            /* ---------- reset ---------- */
+            resetFilter() {
+                this.lat = null; this.lng = null;
+                this.resultShown = false;
+                this.addressText = 'Xaritadan joy tanlang yoki "Mening joylashuvim" tugmasini bosing';
+                if (this._uMark)  this._uMark.setPosition({ lat: DEFAULT_LAT, lng: DEFAULT_LNG });
+                if (this._circle) this._circle.setCenter({ lat: DEFAULT_LAT, lng: DEFAULT_LNG });
+                var params = new URLSearchParams(window.location.search);
+                params.delete('latitude'); params.delete('longitude'); params.delete('radius');
+                window.location.href = window.location.pathname + '?' + params.toString();
+            },
+
+            /* ---------- haversine ---------- */
+            _haversine(lat1, lon1, lat2, lon2) {
+                var R = 6371;
+                var dLat = (lat2 - lat1) * Math.PI / 180;
+                var dLon = (lon2 - lon1) * Math.PI / 180;
+                var a = Math.sin(dLat/2) * Math.sin(dLat/2)
+                      + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180)
+                      * Math.sin(dLon/2) * Math.sin(dLon/2);
+                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            },
+        };
+    };
+
+    /* module-level haversine for filter closure */
+    function _haversine(lat1,lon1,lat2,lon2){
+        var R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;
+        var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);
+        return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
     }
-
-    // Update location
-    function updateLocation(lat, lng) {
-        const url = `https://www.google.com/maps?q=${lat},${lng}`;
-
-        // Update form fields
-        document.getElementById("latitude").value = lat;
-        document.getElementById("longitude").value = lng;
-        document.getElementById("location").value = url;
-
-        // Geocode address
-        geocoder.geocode({
-            location: {
-                lat,
-                lng
-            }
-        }, (results, status) => {
-            if (status === "OK" && results[0]) {
-                const address = results[0].formatted_address;
-                document.getElementById("address").value = address;
-            }
-        });
-
-        // Calculate distances
-        calculateAllDistances({
-            lat,
-            lng
-        });
-    }
-
-    // Calculate all distances
-    function calculateAllDistances(userPos) {
-        markers.forEach(m => {
-            updateDistance(m.center, userPos);
-        });
-    }
-
-    // Update distance for one center
-    function updateDistance(center, userPos) {
-        const dist = getDistance(userPos.lat, userPos.lng, center.latitude, center.longitude);
-        const elem = document.getElementById(`dist-${center.id}`);
-        if (elem) {
-            elem.textContent = `${dist.toFixed(2)} km`;
-        }
-        center.distance = dist;
-    }
-
-    // Calculate distance (Haversine formula)
-    function getDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371;
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c;
-    }
-
-    window.initMap = initMap;
+})();
 </script>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=initMap">
-</script>
+{{--
+    ================================================================
+    Google Maps API — callback nomi __mfInitMap ga o'zgartirildi.
+    Bu @stack('scripts') yoki layout faylining pastida bo'lishi kerak.
+    Agar sahifada allaqachon Google Maps script bor bo'lsa,
+    quyidagi @once blokini olib tashlang va mavjud skriptga
+    &callback=__mfInitMap qo'shing.
+    ================================================================
+--}}
+@once
+    @push('scripts')
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=__mfInitMap">
+        </script>
+    @endpush
+@endonce

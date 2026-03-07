@@ -48,6 +48,48 @@
                             </a>
                         </div>
                         
+                        <!-- Personal Information -->
+                        <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 mb-8">
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Shaxsiy ma'lumotlar</h2>
+                            @if($userData)
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">Ism</label>
+                                        <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ $userData->first_name }}</p>
+                                    </div>
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">Familiya</label>
+                                        <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ $userData->last_name }}</p>
+                                    </div>
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">Telefon raqami</label>
+                                        <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ $userData->phone }}</p>
+                                    </div>
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">Jins</label>
+                                        <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ $userData->gender_uzbek }}</p>
+                                    </div>
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">Tug'ilgan kun</label>
+                                        <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ $userData->formatted_birthday }}</p>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="text-center py-8">
+                                    <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                    </svg>
+                                    <p class="text-gray-600 dark:text-gray-400 mb-4">Shaxsiy ma'lumotlar hali to'ldirilmagan</p>
+                                    <a href="{{ route('profile.edit') }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-lg hover:shadow-lg transition-all duration-300">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
+                                        Ma'lumotlarni to'ldirish
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                        
                         <!-- Stats Cards -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                             <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-6 border border-blue-200/50 dark:border-blue-700/50">

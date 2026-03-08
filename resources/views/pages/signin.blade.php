@@ -2,7 +2,7 @@
     <x-slot:title>Kirish sahifasi</x-slot:title>
 
     <div
-        class="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
+        class="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-blue-10 via-white-100 to-purple-100 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
         <!-- Background Shapes -->
         <div class="absolute inset-0">
             <div
@@ -17,7 +17,7 @@
         <!-- Sign In Card -->
         <div class="relative z-10 w-full max-w-md px-4">
             <div
-                class="border rounded-2xl border-gray-200/60 backdrop-blur-xl bg-white/90 dark:bg-gray-800/95 shadow-2xl dark:shadow-black/20 border-gray-200 dark:border-gray-700">
+                class="border rounded-2xl border-gray-200/60 backdrop-blur-xl bg-white dark:bg-gray-800/95 shadow-2xl dark:shadow-black/20 border-gray-200 dark:border-gray-700">
                 <div class="p-8">
                     <!-- Logo/Brand -->
                     <div class="text-center mb-8">
@@ -27,7 +27,7 @@
                                 class="w-16 h-16 rounded-full">
                         </div>
                         <h2
-                            class="text-2xl font-bold mb-2 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                            class="text-gray-900 dark:text-white text-2xl font-bold mb-2 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                             Hisobingizga kirish</h2>
                         <p class="mb-2 text-gray-600 dark:text-gray-300">FindCourse platformasiga xush kelibsiz</p>
                     </div>

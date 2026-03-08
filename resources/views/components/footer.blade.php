@@ -10,14 +10,15 @@
                 <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                     LCway - Learning-Center way yani Ta'lim sari eng qulay yo'lni topuvchi platforma
                 </p>
-                <div class="flex space-x-4">
+                <div class="flex items-center space-x-4">
                     <a href="https://t.me/lcway_channel" target="_blank"
-                        class="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                        class="w-10 h-10 bg-blue-500 rounded-lg text-white hover:bg-blue-600 transition-colors flex items-center justify-center">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.56c-.21 2.24-1.12 7.65-1.58 10.15-.2 1.07-.58 1.42-.96 1.46-.81.07-1.43-.53-2.21-1.04-1.23-.81-1.92-1.31-3.11-2.1-1.38-.91-.49-1.41.3-2.23.21-.21 3.77-3.45 3.84-3.74.01-.04.01-.18-.07-.26s-.2-.05-.29-.03c-.12.03-2.09 1.33-5.91 3.91-.56.38-1.06.57-1.52.56-.5-.01-1.46-.28-2.18-.51-.88-.28-1.57-.43-1.51-.91.03-.25.38-.51 1.04-.78 4.08-1.78 6.8-2.95 8.16-3.52 3.89-1.62 4.69-1.9 5.2-1.91.12 0 .37.03.54.17.14.12.18.28.2.44-.01.06 0 .24-.02.36z" />
                         </svg>
                     </a>
+                    <p class="text-xs">Telegram</p>
                 </div>
             </div>
 

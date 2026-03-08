@@ -232,66 +232,66 @@
                             class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2">
                                 @if (!isset($validated['name']))
-                                    <button type="button" onclick="applyFilter('sort', 'name'); applyFilter('name', 'asc')"
+                                    <button type="button" onclick="applySorting('name', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↑↓
                                     </button>
                                 @elseif ($validated['name'] == 'asc')
-                                    <button type="button" onclick="applyFilter('name', 'desc')"
+                                    <button type="button" onclick="applySorting('name', 'desc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↑
                                     </button>
                                 @elseif ($validated['name'] == 'desc')
-                                    <button type="button" onclick="applyFilter('name', 'asc')"
+                                    <button type="button" onclick="applySorting('name', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↓
                                     </button>
                                 @else
-                                    <button type="button" onclick="applyFilter('sort', 'name'); applyFilter('name', 'asc')"
+                                    <button type="button" onclick="applySorting('name', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Nomi ↑↓
                                     </button>
                                 @endif
 
                                 @if (!isset($validated['distance']))
-                                    <button type="button" onclick="applyFilter('sort', 'distance'); applyFilter('distance', 'asc')"
+                                    <button type="button" onclick="applySorting('distance', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↑↓
                                     </button>
                                 @elseif ($validated['distance'] == 'asc')
-                                    <button type="button" onclick="applyFilter('distance', 'desc')"
+                                    <button type="button" onclick="applySorting('distance', 'desc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↑
                                     </button>
                                 @elseif ($validated['distance'] == 'desc')
-                                    <button type="button" onclick="applyFilter('distance', 'asc')"
+                                    <button type="button" onclick="applySorting('distance', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↓
                                     </button>
                                 @else
-                                    <button type="button" onclick="applyFilter('sort', 'distance'); applyFilter('distance', 'asc')"
+                                    <button type="button" onclick="applySorting('distance', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Masofasi ↑↓
                                     </button>
                                 @endif
 
                                 @if (!isset($validated['favorites']))
-                                    <button type="button" onclick="applyFilter('sort', 'favorites'); applyFilter('favorites', 'asc')"
+                                    <button type="button" onclick="applySorting('favorites', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↑↓
                                     </button>
                                 @elseif ($validated['favorites'] == 'asc')
-                                    <button type="button" onclick="applyFilter('favorites', 'desc')"
+                                    <button type="button" onclick="applySorting('favorites', 'desc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↑
                                     </button>
                                 @elseif ($validated['favorites'] == 'desc')
-                                    <button type="button" onclick="applyFilter('favorites', 'asc')"
+                                    <button type="button" onclick="applySorting('favorites', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↓
                                     </button>
                                 @else
-                                    <button type="button" onclick="applyFilter('sort', 'favorites'); applyFilter('favorites', 'asc')"
+                                    <button type="button" onclick="applySorting('favorites', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
                                         Reytingi ↑↓
                                     </button>
@@ -497,6 +497,13 @@
     </section>
 </x-layout>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize sorting buttons based on current URL
+    updateSortingButtons();
+});
+</script>
+
 <!-- AJAX JavaScript -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -545,6 +552,70 @@ function applyFilter(type, value) {
     performSearch();
 }
 
+function applySorting(sortType, direction) {
+    // Clear all existing sort parameters
+    window.currentFilters.delete('name');
+    window.currentFilters.delete('distance');
+    window.currentFilters.delete('favorites');
+    window.currentFilters.delete('sort');
+    
+    // Set the new sort type and direction
+    window.currentFilters.set(sortType, direction);
+    window.currentFilters.set('sort', sortType);
+    performSearch();
+}
+
+function updateSortingButtons() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sortType = urlParams.get('sort');
+    const sortDirection = urlParams.get(sortType);
+    
+    // Update name sorting button
+    const nameButton = document.querySelector('[onclick*="applySorting(\'name\'"]');
+    if (nameButton) {
+        if (sortType === 'name' && sortDirection === 'asc') {
+            nameButton.setAttribute('onclick', "applySorting('name', 'desc')");
+            nameButton.innerHTML = 'Nomi ↑';
+        } else if (sortType === 'name' && sortDirection === 'desc') {
+            nameButton.setAttribute('onclick', "applySorting('name', 'asc')");
+            nameButton.innerHTML = 'Nomi ↓';
+        } else {
+            nameButton.setAttribute('onclick', "applySorting('name', 'asc')");
+            nameButton.innerHTML = 'Nomi ↑↓';
+        }
+    }
+    
+    // Update distance sorting button
+    const distanceButton = document.querySelector('[onclick*="applySorting(\'distance\'"]');
+    if (distanceButton) {
+        if (sortType === 'distance' && sortDirection === 'asc') {
+            distanceButton.setAttribute('onclick', "applySorting('distance', 'desc')");
+            distanceButton.innerHTML = 'Masofasi ↑';
+        } else if (sortType === 'distance' && sortDirection === 'desc') {
+            distanceButton.setAttribute('onclick', "applySorting('distance', 'asc')");
+            distanceButton.innerHTML = 'Masofasi ↓';
+        } else {
+            distanceButton.setAttribute('onclick', "applySorting('distance', 'asc')");
+            distanceButton.innerHTML = 'Masofasi ↑↓';
+        }
+    }
+    
+    // Update favorites sorting button
+    const favoritesButton = document.querySelector('[onclick*="applySorting(\'favorites\'"]');
+    if (favoritesButton) {
+        if (sortType === 'favorites' && sortDirection === 'asc') {
+            favoritesButton.setAttribute('onclick', "applySorting('favorites', 'desc')");
+            favoritesButton.innerHTML = 'Reytingi ↑';
+        } else if (sortType === 'favorites' && sortDirection === 'desc') {
+            favoritesButton.setAttribute('onclick', "applySorting('favorites', 'asc')");
+            favoritesButton.innerHTML = 'Reytingi ↓';
+        } else {
+            favoritesButton.setAttribute('onclick', "applySorting('favorites', 'asc')");
+            favoritesButton.innerHTML = 'Reytingi ↑↓';
+        }
+    }
+}
+
 function performSearch() {
     const loadingIndicator = document.getElementById('loadingIndicator');
     const centersGrid = document.getElementById('centersGrid');
@@ -577,6 +648,9 @@ function performSearch() {
             // Update centers grid
             centersGrid.innerHTML = data.html;
             
+            // Update sorting buttons based on current URL
+            updateSortingButtons();
+            
             // Reinitialize map component if needed
             if (typeof window.mapFilterComp === 'function') {
                 // Update centers data for map
@@ -607,6 +681,9 @@ function performSearch() {
             searchIcon.classList.remove('hidden');
             loadingIcon.classList.add('hidden');
         }
+        
+        // Close all dropdowns after AJAX request
+        closeAllDropdowns();
     });
 }
 
@@ -624,6 +701,37 @@ function updateMapCenters(centers) {
             };
         });
     }
+}
+
+function closeAllDropdowns() {
+    // Close all dropdown panels by clicking outside or setting their display to none
+    const dropdownPanels = document.querySelectorAll('[x-show]');
+    dropdownPanels.forEach(function(panel) {
+        // Check if this panel is currently shown
+        const xShowAttr = panel.getAttribute('x-show');
+        if (xShowAttr) {
+            // Try to evaluate the expression to see if it's true
+            try {
+                const context = panel.closest('[x-data]');
+                if (context && window.Alpine) {
+                    // Force the expression to be false by updating the underlying data
+                    if (xShowAttr === 'sortDropdown') {
+                        window.Alpine.evaluate(context, 'sortDropdown = false');
+                    } else if (xShowAttr === 'teacherDropdown') {
+                        window.Alpine.evaluate(context, 'teacherDropdown = false');
+                    } else if (xShowAttr === 'open') {
+                        window.Alpine.evaluate(context, 'open = false');
+                    }
+                }
+            } catch (e) {
+                // Fallback: hide the panel directly
+                panel.style.display = 'none';
+            }
+        }
+    });
+    
+    // Alternative approach: click outside to trigger @click.away
+    document.body.click();
 }
 
 // Handle browser back/forward buttons

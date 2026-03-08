@@ -135,7 +135,7 @@
                         </div>
                         <div class="absolute -top-4 -left-4 z-10">
                             <img src="{{ asset('images/we3.png') }}" alt="About"
-                                class="rounded-2xl shadow-xl opacity-60 w-24 h-24 object-cover">
+                                class="rounded-2xl shadow-xl opacity-60 w-32 h-32 object-cover">
                         </div>
                     </div>
 

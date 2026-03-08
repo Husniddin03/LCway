@@ -17,7 +17,7 @@
         <!-- Sign Up Card -->
         <div class="relative z-10 w-full max-w-md px-4">
             <div
-                class="border rounded-2xl border-gray-200/60 backdrop-blur-xl bg-white/90 dark:bg-gray-800/95 shadow-2xl dark:shadow-black/20 border-gray-200 dark:border-gray-700">
+                class="border rounded-2xl border-gray-200/60 backdrop-blur-xl bg-white dark:bg-gray-800/95 shadow-2xl dark:shadow-black/20 border-gray-200 dark:border-gray-700">
                 <div class="p-8">
                     <!-- Logo/Brand -->
                     <div class="text-center mb-8">
@@ -27,7 +27,7 @@
                                 class="w-16 h-16 rounded-full">
                         </div>
                         <h2
-                            class="text-2xl font-bold mb-2 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                            class="text-gray-900 dark:text-white text-2xl font-bold mb-2 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                             Ro'yxatdan o'tish</h2>
                         <p class="mb-2 text-gray-600 dark:text-gray-300">FindCourse platformasiga qo'shiling</p>
                     </div>

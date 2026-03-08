@@ -14,7 +14,23 @@ class WeekdaysController extends Controller
     {
         $LearningCenter = LearningCenter::find($id);
         Gate::authorize('isOun', $LearningCenter);
-        $weedays = Calendar::all();
+        
+        // Barcha kunlarni olish
+        $allDays = Calendar::all();
+        
+        // O'quv markazining mavjud vaqtlarini olish
+        $existingSchedules = LearningCentersCalendar::where('learning_centers_id', $id)
+            ->get()
+            ->keyBy('calendar_id');
+        
+        // Har bir kun uchun existing vaqtlarni qo'shish
+        $weedays = $allDays->map(function($day) use ($existingSchedules) {
+            $schedule = $existingSchedules->get($day->id);
+            $day->existing_open_time = $schedule->open_time ?? null;
+            $day->existing_close_time = $schedule->close_time ?? null;
+            return $day;
+        });
+        
         return view('course.weekday', compact('LearningCenter', 'weedays'));
     }
 

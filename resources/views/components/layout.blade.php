@@ -38,6 +38,79 @@
             overflow: hidden;
         }
 
+        /* Custom animations for weekday editor */
+        @keyframes blob {
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slide-in-left {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slide-in-right {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.6s ease-out;
+        }
+
+        .animate-slide-in-left {
+            animation: slide-in-left 0.6s ease-out;
+        }
+
+        .animate-slide-in-right {
+            animation: slide-in-right 0.6s ease-out;
+        }
+
         /* Dark mode text fixes */
         html.dark .text-gray-900 {
             color: rgb(243 244 246) !important;
@@ -114,6 +187,21 @@
 
         html:not(.dark) .border-gray-300 {
             border-color: rgb(209 213 219) !important;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .animate-slide-in-left,
+            .animate-slide-in-right {
+                animation: fade-in 0.6s ease-out;
+            }
+        }
+
+        /* Dark mode specific styles */
+        @media (prefers-color-scheme: dark) {
+            .filter.dark\:invert {
+                filter: invert(1);
+            }
         }
     </style>
 </head>

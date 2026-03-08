@@ -30,8 +30,10 @@
                     <!-- Main Image -->
                     <div class="mb-8">
                         <div class="relative rounded-2xl overflow-hidden shadow-xl">
-                            <img src="{{ asset('storage/' . $LearningCenter->logo) }}" alt="{{ $LearningCenter->name }}"
-                                class="w-full h-96 object-cover">
+                            <a href="{{ asset('storage/' . $LearningCenter->logo) }}" data-lightbox>
+                                <img src="{{ asset('storage/' . $LearningCenter->logo) }}" alt="{{ $LearningCenter->name }}"
+                                    class="w-full h-96 object-cover cursor-pointer hover:scale-105 transition-transform duration-300">
+                            </a>
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
                             </div>
@@ -96,8 +98,10 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 @foreach ($LearningCenter->images as $image)
                                     <div class="relative group overflow-hidden rounded-xl">
-                                        <img src="{{ asset('storage/' . $image->image) }}" alt="Gallery image"
-                                            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <a href="{{ asset('storage/' . $image->image) }}" data-lightbox>
+                                            <img src="{{ asset('storage/' . $image->image) }}" alt="Gallery image"
+                                                class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer">
+                                        </a>
                                         <div
                                             class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300">
                                         </div>
@@ -340,6 +344,205 @@
                         </div>
                     @endif
 
+                    <!-- Teacher Announcements Section -->
+                    @if ($LearningCenter->needTeachers->count() > 0)
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center">
+                                    <svg class="w-8 h-8 mr-3 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                                    </svg>
+                                    O'qituvchi e'lonlari
+                                </h2>
+                                @auth
+                                    @can('isOun', $LearningCenter)
+                                        <x-button variant="primary" 
+                                            href="{{ route('teacher.announcement', $LearningCenter->id) }}">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                            </svg>
+                                            Yangi elon
+                                        </x-button>
+                                    @endcan
+                                @endauth
+                            </div>
+
+                            <div class="space-y-6">
+                                @foreach ($LearningCenter->needTeachers as $announcement)
+                                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-700/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 group">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <div class="flex items-center mb-3">
+                                                    <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                                                            {{ $announcement->subject->name }} o'qituvchisi kerak
+                                                        </h3>
+                                                        <p class="text-sm text-gray-500 dark:text-gray-400 flex items-center mt-1">
+                                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                            </svg>
+                                                            {{ $announcement->created_at->diffForHumans() }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                
+                                                @if ($announcement->description)
+                                                    <div class="mt-4 p-4 bg-white dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
+                                                        <p class="text-gray-700 dark:text-gray-300 leading-relaxed">{{ $announcement->description }}</p>
+                                                    </div>
+                                                @endif
+                                                
+                                                <div class="mt-4 flex items-center">
+                                                    <span class="inline-flex items-center px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-sm font-medium">
+                                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                        </svg>
+                                                        Faol elon
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Announcement actions for owner -->
+                                            @auth
+                                                @can('isOun', $LearningCenter)
+                                                    <div class="flex items-center space-x-2 ml-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <form action="{{ route('teacher.delete_announcement', $announcement->id) }}" method="POST"
+                                                            onsubmit="return confirm('Rostdan ham ushbu elon o‘chirilsinmi?');">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                                                title="Elonni o'chirish">
+                                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                                </svg>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                @endcan
+                                            @endauth
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @else
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                            <div class="text-center py-8">
+                                <div class="w-16 h-16 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">O'qituvchi e'lonlari yo'q</h3>
+                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazida hozircha o'qituvchi e'lonlari yo'q</p>
+
+                                @auth
+                                    @can('isOun', $LearningCenter)
+                                        <x-button variant="primary" 
+                                            href="{{ route('teacher.announcement', $LearningCenter->id) }}">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                            </svg>
+                                            Birinchi elonni qo'shish
+                                        </x-button>
+                                    @endcan
+                                @endauth
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Social Networks Section -->
+                    @if ($LearningCenter->connections->count() > 0)
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center">
+                                    <svg class="w-8 h-8 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                    </svg>
+                                    Ijtimoiy tarmoqlar
+                                </h2>
+                                @auth
+                                    @can('isOun', $LearningCenter)
+                                        <x-button variant="primary" 
+                                            href="{{ route('connect.edit', $LearningCenter->id) }}">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                            </svg>
+                                            Boshqarish
+                                        </x-button>
+                                    @endcan
+                                @endauth
+                            </div>
+
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                @foreach ($LearningCenter->connections as $connection)
+                                    <a href="{{ $connection->connection->name == 'Phone' ? 'tel:' . $connection->url : ($connection->connection->name == 'Email' ? 'mailto:' . $connection->url : $connection->url) }}" 
+                                       target="{{ $connection->connection->name == 'Phone' || $connection->connection->name == 'Email' ? '_self' : '_blank' }}"
+                                        class="group relative rounded-xl p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-600/50">
+                                        <div class="text-center">
+                                            <div class="w-12 h-12 text-white-100 bg-white-100 dark:bg-gray-50 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-sm group-hover:shadow-md transition-shadow duration-300">
+                                                @if ($connection->connection->name == 'Phone')
+                                                    <svg class="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                                                    </svg>
+                                                @elseif($connection->connection->name == 'Email')
+                                                    <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                                                    </svg>
+                                                @elseif($connection->connection->name == 'Website')
+                                                    <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zM9.954 4.569c-.768 1.135-1.063 2.643-1.153 4.431h2.988c-.09-1.788-.385-3.296-1.153-4.431a6.016 6.016 0 00-.682 0zM14.917 9h-1.946c-.089 1.546-.383 2.97-.837 4.118A6.004 6.004 0 0014.917 9zM9.954 15.431c.768-1.135 1.063-2.643 1.153-4.431H8.119c.09 1.788.385 3.296 1.153 4.431a6.016 6.016 0 00.682 0z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                @else
+                                                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg" width="24" height="24" alt="{{ $connection->connection->name }}" />
+                                                @endif
+                                            </div>
+                                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">{{ $connection->connection->name }}</h3>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ $connection->url }}</p>
+                                        </div>
+                                        
+                                        <!-- External Link Indicator -->
+                                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                            </svg>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @else
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Ijtimoiy tarmoqlar yo'q</h3>
+                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazida hozircha ijtimoiy tarmoqlar ro'yxatlanmagan</p>
+
+                                @auth
+                                    @can('isOun', $LearningCenter)
+                                        <x-button variant="primary" 
+                                            href="{{ route('connect.edit', $LearningCenter->id) }}">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                            </svg>
+                                            Birinchi tarmoqni qo'shish
+                                        </x-button>
+                                    @endcan
+                                @endauth
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- Location Section -->
                     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
                         <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Manzil</h2>
@@ -381,14 +584,14 @@
                             </div>
 
                             <!-- Comment Form -->
-                            <form action="{{ route('comment.store') }}" method="POST" class="mb-8">
+                            <form id="commentForm" action="{{ route('comment.store') }}" method="POST" class="mb-8">
                                 @csrf
                                 <input type="hidden" name="learning_centers_id" value="{{ $LearningCenter->id }}">
                                 <div class="flex space-x-4">
-                                    <input name="comment" type="text"
+                                    <input name="comment" type="text" id="commentInput"
                                         placeholder="{{ $LearningCenter->name }} haqida fikringizni qoldiring..."
                                         class="text-gray-900 bg-white dark:text-white flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white">
-                                    <button type="submit"
+                                    <button type="submit" id="submitComment"
                                         class="text-gray-900 dark:text-white bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-xl transition-colors duration-200">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -399,9 +602,9 @@
                             </form>
 
                             <!-- Comments List -->
-                            <div class="space-y-4">
-                                <p class="text-gray-600 dark:text-gray-400">Jami izohlar:
-                                    {{ $LearningCenter->comments->count() }}</p>
+                            <div id="commentsList" class="space-y-4 max-h-96 overflow-y-auto">
+                                <p class="text-gray-600 dark:text-gray-400 sticky top-0 bg-white dark:bg-gray-800 z-10 py-2">Jami izohlar:
+                                    <span id="commentsCount">{{ $LearningCenter->comments->count() }}</span></p>
                                 @foreach ($LearningCenter->comments->reverse() as $comment)
                                     <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
                                         <div class="flex items-start justify-between">
@@ -419,7 +622,7 @@
                                         @auth
                                             @can('myComment', $comment)
                                                 <form action="{{ route('comment.delete', $comment->id) }}" method="POST"
-                                                    onsubmit="return confirm('Rostdan bu izohni o‘chirilsinmi?');" class="mt-4">
+                                                    onsubmit="return confirm('Rostdan bu izohni o\'chirilsinmi?');" class="mt-4">
                                                     @csrf
                                                     <button type="submit"
                                                         class="text-red-500 hover:text-red-700 text-sm transition-colors">
@@ -438,7 +641,7 @@
                 <!-- Sidebar -->
                 <div class="lg:col-span-1">
                     <!-- Quick Info Card -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 static md:sticky md:top-16 mb-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 static mb-8">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tezkor ma'lumot</h3>
 
                         <div class="space-y-4">
@@ -474,7 +677,7 @@
                             @can('isOun', $LearningCenter)
                                 <div class="mt-6 space-y-3">
                                     <x-button variant="primary" href="{{ route('course.edit', $LearningCenter->id) }}"
-                                        class="w-full">
+                                        class="w-full border border-gray-300 dark:border-gray-600">
                                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -487,7 +690,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="text-gray-900 dark:text-white w-full bg-danger-600 hover:bg-danger-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200">
+                                            class="text-white w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200">
                                             <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -660,119 +863,236 @@
         </div>
     </section>
 
-    <!-- Image Preview Modal -->
-    <div id="imagePreviewModal"
-        class="fixed inset-0 bg-black bg-opacity-90 z-[9999] hidden items-center justify-center p-4"
-        style="backdrop-filter: blur(4px);">
-        <div class="relative max-w-7xl max-h-full">
-            <button onclick="closeImagePreview()"
-                class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox hidden">
+        <div class="lightbox-content">
+            <button type="button" onclick="closeLightbox()" class="lightbox-close">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
-            <img id="previewImage" src="" alt="Preview"
-                class="max-w-full max-h-[80vh] rounded-lg shadow-2xl">
-            <div class="text-center mt-4">
-                <p id="imageCaption" class="text-white text-lg font-medium"></p>
-            </div>
+            
+            <button type="button" id="lightbox-prev" onclick="prevImage()" class="lightbox-nav lightbox-prev">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+            
+            <img id="lightbox-img" class="lightbox-img" src="" alt="Lightbox Image">
+            
+            <button type="button" id="lightbox-next" onclick="nextImage()" class="lightbox-nav lightbox-next">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+            
+            <div id="lightbox-counter" class="lightbox-counter"></div>
         </div>
     </div>
 
-    <!-- JavaScript for Image Preview -->
+    <!-- JavaScript for Lightbox -->
     <script>
-        function openImagePreview(imageSrc, caption = '') {
-            console.log('Opening image preview:', imageSrc); // Debug log
-            const modal = document.getElementById('imagePreviewModal');
-            const previewImage = document.getElementById('previewImage');
-            const imageCaption = document.getElementById('imageCaption');
-
-            previewImage.src = imageSrc;
-            imageCaption.textContent = caption;
-            modal.classList.remove('hidden');
-            modal.style.display = 'flex';
+        // Lightbox functionality
+        let currentImageIndex = 0;
+        let currentImages = [];
+        
+        function openLightbox(imageSrc, index, images) {
+            currentImageIndex = index;
+            currentImages = images;
+            
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            
+            lightboxImg.src = imageSrc;
+            lightbox.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+            
+            updateLightboxNavigation();
         }
-
-        function closeImagePreview() {
-            console.log('Closing image preview'); // Debug log
-            const modal = document.getElementById('imagePreviewModal');
-            modal.classList.add('hidden');
-            modal.style.display = 'none';
+        
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
-
-        // Close modal on ESC key
+        
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+            updateLightboxImage();
+        }
+        
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+            updateLightboxImage();
+        }
+        
+        function updateLightboxImage() {
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = currentImages[currentImageIndex];
+            updateLightboxNavigation();
+        }
+        
+        function updateLightboxNavigation() {
+            const prevBtn = document.getElementById('lightbox-prev');
+            const nextBtn = document.getElementById('lightbox-next');
+            const counter = document.getElementById('lightbox-counter');
+            
+            prevBtn.style.display = currentImages.length > 1 ? 'flex' : 'none';
+            nextBtn.style.display = currentImages.length > 1 ? 'flex' : 'none';
+            
+            if (counter) {
+                counter.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
+            }
+        }
+        
+        // Keyboard navigation
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeImagePreview();
+            const lightbox = document.getElementById('lightbox');
+            if (!lightbox.classList.contains('hidden')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
             }
         });
-
-        // Close modal on background click
-        document.getElementById('imagePreviewModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeImagePreview();
-            }
-        });
-
-        // Add click handlers to all images when page loads
+        
+        // Initialize lightbox for existing images
         document.addEventListener('DOMContentLoaded', function() {
-            // Main image - use more specific selector
-            const mainImage = document.querySelector('img[alt="{{ $LearningCenter->name }}"]');
-            if (mainImage) {
-                mainImage.style.cursor = 'pointer';
-                mainImage.addEventListener('click', function() {
-                    openImagePreview(this.src, '{{ $LearningCenter->name }}');
+            const imageLinks = document.querySelectorAll('[data-lightbox]');
+            
+            if (imageLinks.length > 0) {
+                const images = Array.from(imageLinks).map(link => link.href);
+                
+                imageLinks.forEach((link, index) => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        openLightbox(this.href, index, images);
+                    });
                 });
             }
-
-            // Gallery images - use better selector
-            const galleryImages = document.querySelectorAll('img[alt="Gallery image"]');
-            galleryImages.forEach(function(img) {
-                img.style.cursor = 'pointer';
-                img.addEventListener('click', function() {
-                    openImagePreview(this.src, 'Galereya rasmi');
-                });
-            });
-
-            // Teacher photos - use more specific selector
-            const teacherPhotos = document.querySelectorAll('img[alt*=""]');
-            teacherPhotos.forEach(function(img) {
-                // Skip main image and gallery images (already handled)
-                if (img.alt !== '{{ $LearningCenter->name }}' && img.alt !== 'Gallery image') {
-                    img.style.cursor = 'pointer';
-                    img.addEventListener('click', function() {
-                        const teacherCard = this.closest('.group');
-                        if (teacherCard) {
-                            const teacherName = teacherCard.querySelector('h4');
-                            if (teacherName) {
-                                openImagePreview(this.src, teacherName.textContent);
-                            } else {
-                                openImagePreview(this.src, 'Ustoz rasmi');
-                            }
-                        }
-                    });
-                }
-            });
-
-            // Also add preview to any other images that might be added dynamically
-            setTimeout(function() {
-                const allImages = document.querySelectorAll('img:not([onclick])');
-                allImages.forEach(function(img) {
-                    if (!img.style.cursor || img.style.cursor !== 'pointer') {
-                        img.style.cursor = 'pointer';
-                        img.addEventListener('click', function() {
-                            openImagePreview(this.src, img.alt || 'Rasm');
-                        });
-                    }
-                });
-            }, 1000);
         });
     </script>
 </x-layout>
 
 <style>
+    /* Lightbox styles */
+    .lightbox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.3s ease;
+    }
+    
+    .lightbox.hidden {
+        display: none;
+    }
+    
+    .lightbox-content {
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+    }
+    
+    .lightbox-img {
+        max-width: 100%;
+        max-height: 80vh;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    
+    .lightbox-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .lightbox-nav:hover {
+        background: rgba(255, 255, 255, 1);
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+    }
+    
+    .lightbox-prev {
+        left: -80px;
+    }
+    
+    .lightbox-next {
+        right: -80px;
+    }
+    
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .lightbox-close:hover {
+        background: rgba(255, 255, 255, 1);
+        transform: scale(1.1);
+        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+    }
+    
+    .lightbox-counter {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+        .lightbox-nav {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .lightbox-prev {
+            left: 10px;
+        }
+        
+        .lightbox-next {
+            right: 10px;
+        }
+    }
+    
     /* Rating System Styles */
     .star {
         cursor: pointer;
@@ -905,5 +1225,119 @@
 
         // Initialize rating
         initRating('rating1', 'result1');
+
+        // Comment form submission with Ajax
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = document.getElementById('submitComment');
+            const commentInput = document.getElementById('commentInput');
+            const commentsList = document.getElementById('commentsList');
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Yuborilmoqda...
+            `;
+            
+            fetch('{{ route("comment.store") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Clear form
+                    commentInput.value = '';
+                    
+                    // Create new comment element
+                    const newComment = document.createElement('div');
+                    newComment.className = 'p-4 bg-gray-50 dark:bg-gray-700 rounded-xl';
+                    newComment.innerHTML = `
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="font-semibold text-gray-900 dark:text-white">
+                                    ${data.comment.user.name}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    ${data.comment.user.email}</p>
+                            </div>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Hozirgacha</span>
+                        </div>
+                        <p class="mt-2 text-gray-600 dark:text-gray-300">${data.comment.comment}</p>
+                    `;
+                    
+                    // Insert at the beginning (after count paragraph)
+                    const countParagraph = commentsList.querySelector('p');
+                    if (countParagraph.nextSibling) {
+                        commentsList.insertBefore(newComment, countParagraph.nextSibling);
+                    } else {
+                        commentsList.appendChild(newComment);
+                    }
+                    
+                    // Update count
+                    const commentsCount = document.getElementById('commentsCount');
+                    const currentCount = parseInt(commentsCount.textContent);
+                    commentsCount.textContent = currentCount + 1;
+                    
+                    // Scroll to top of comments list
+                    commentsList.scrollTop = 0;
+                    
+                    // Show success message
+                    showNotification('Izoh muvaffaqiyatli qo\'shildi!', 'success');
+                    
+                } else {
+                    showNotification(data.message || 'Xatolik yuz berdi', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Izoh qo\'shishda xatolik yuz berdi', 'error');
+            })
+            .finally(() => {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                `;
+            });
+        });
+
+        // Notification function
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300 ${
+                type === 'success' 
+                    ? 'bg-green-500 text-white' 
+                    : 'bg-red-500 text-white'
+            }`;
+            notification.textContent = message;
+            notification.style.transform = 'translateX(400px)';
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
     });
 </script>

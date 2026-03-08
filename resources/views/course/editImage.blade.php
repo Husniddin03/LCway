@@ -67,6 +67,99 @@
         function clearFileInput() {
             closePreview();
         }
+        
+        // Lightbox functionality
+        let currentImageIndex = 0;
+        let currentImages = [];
+        
+        function openLightbox(imageSrc, index, images) {
+            console.log('Opening lightbox with:', { imageSrc, index, images });
+            currentImageIndex = index;
+            currentImages = images;
+            
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            
+            console.log('Lightbox element:', lightbox);
+            console.log('Lightbox image element:', lightboxImg);
+            
+            lightboxImg.src = imageSrc;
+            lightbox.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            console.log('Lightbox opened, classes:', lightbox.className);
+            
+            updateLightboxNavigation();
+        }
+        
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+            updateLightboxImage();
+        }
+        
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+            updateLightboxImage();
+        }
+        
+        function updateLightboxImage() {
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = currentImages[currentImageIndex];
+            updateLightboxNavigation();
+        }
+        
+        function updateLightboxNavigation() {
+            const prevBtn = document.getElementById('lightbox-prev');
+            const nextBtn = document.getElementById('lightbox-next');
+            const counter = document.getElementById('lightbox-counter');
+            
+            prevBtn.style.display = currentImages.length > 1 ? 'flex' : 'none';
+            nextBtn.style.display = currentImages.length > 1 ? 'flex' : 'none';
+            
+            if (counter) {
+                counter.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (!lightbox.classList.contains('hidden')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+            }
+        });
+        
+        // Initialize lightbox for existing images
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Lightbox initialization started...');
+            
+            const imageLinks = document.querySelectorAll('[data-lightbox]');
+            console.log('Found image links:', imageLinks.length);
+            
+            if (imageLinks.length > 0) {
+                const images = Array.from(imageLinks).map(link => link.href);
+                console.log('Images array:', images);
+                
+                imageLinks.forEach((link, index) => {
+                    console.log(`Adding click listener to image ${index}`);
+                    link.addEventListener('click', function(e) {
+                        console.log('Image clicked:', this.href);
+                        e.preventDefault();
+                        openLightbox(this.href, index, images);
+                    });
+                });
+            } else {
+                console.log('No images found with data-lightbox attribute');
+            }
+        });
     </script>
     <style>
         /* Custom animations */
@@ -237,10 +330,6 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            opacity: 0;
-        }
-        
-        .image-item:hover .delete-btn {
             opacity: 1;
         }
         
@@ -281,6 +370,109 @@
             margin-top: 16px;
         }
         
+        /* Lightbox styles */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+        
+        .lightbox.hidden {
+            display: none;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .lightbox-prev {
+            left: -80px;
+        }
+        
+        .lightbox-next {
+            right: -80px;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .lightbox-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+        
         /* Mobile responsive */
         @media (max-width: 768px) {
             .preview-grid {
@@ -306,14 +498,17 @@
                 gap: 1rem !important;
             }
             
-            .flex.gap-4 {
-                flex-direction: column !important;
-                gap: 0.75rem !important;
+            .lightbox-nav {
+                width: 40px;
+                height: 40px;
             }
             
-            .modern-btn {
-                width: 100% !important;
-                justify-content: center !important;
+            .lightbox-prev {
+                left: 10px;
+            }
+            
+            .lightbox-next {
+                right: 10px;
             }
         }
         
@@ -419,7 +614,7 @@
                             <div class="image-gallery">
                                 @foreach ($LearningCenter->images as $image)
                                     <div class="image-item">
-                                        <a href="{{ asset('storage/' . $image->image) }}" data-fslightbox>
+                                        <a href="{{ asset('storage/' . $image->image) }}" data-lightbox>
                                             <img src="{{ asset('storage/' . $image->image) }}" alt="Course Image" />
                                         </a>
                                         <form action="{{ route('course.deleteImage', $image->id) }}" method="post" 
@@ -493,17 +688,15 @@
                                     </div>
                                 </div>
                                 
-                                <div class="flex flex-col sm:flex-row gap-4">
-                                    <div class="flex flex-col sm:flex-row gap-2 flex-1">
-                                        <a href="{{ route('blog-single', $LearningCenter->id) }}" 
-                                           class="modern-btn bg-gray-500 hover:bg-gray-600">
-                                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                                            </svg>
-                                            Orqaga
-                                        </a>
-                                    </div>
-                                    <button type="submit" class="modern-btn flex-1 sm:flex-initial">
+                                <div class="flex gap-4">
+                                    <a href="{{ route('blog-single', $LearningCenter->id) }}" 
+                                       class="modern-btn bg-gray-500 hover:bg-gray-600 flex-1">
+                                        <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                        </svg>
+                                        Orqaga
+                                    </a>
+                                    <button type="submit" class="modern-btn flex-1">
                                         <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V2"></path>
                                         </svg>
@@ -518,4 +711,31 @@
         </div>
     </section>
     <!-- ===== Contact End ===== -->
+    
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox hidden">
+        <div class="lightbox-content">
+            <button type="button" onclick="closeLightbox()" class="lightbox-close">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            
+            <button type="button" id="lightbox-prev" onclick="prevImage()" class="lightbox-nav lightbox-prev">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+            
+            <img id="lightbox-img" class="lightbox-img" src="" alt="Lightbox Image">
+            
+            <button type="button" id="lightbox-next" onclick="nextImage()" class="lightbox-nav lightbox-next">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+            
+            <div id="lightbox-counter" class="lightbox-counter"></div>
+        </div>
+    </div>
 </x-layout>

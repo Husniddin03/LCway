@@ -300,37 +300,6 @@
                         </div>
                     </div>
 
-                    <!-- Filter by subjects -->
-                    <div class="text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
-                        <button @click="teacherDropdown = !teacherDropdown"
-                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
-                            Fanlar bo'yicha
-                            <svg class="w-4 h-4" :class="{ 'rotate-180': teacherDropdown }" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-
-                        <div x-show="teacherDropdown" @click.away="teacherDropdown = false"
-                            x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-150"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
-                            <div class="py-2 max-h-70 overflow-y-auto">
-                                @foreach ($subjects as $subject)
-                                    <button type="button" onclick="applyFilter('subject_id', '{{ $subject->id }}')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                        {{ $subject->name }}
-                                    </button>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Teacher Announcements Dropdown -->
                     <div class="text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
                         <button @click="teacherDropdown = !teacherDropdown"
@@ -352,6 +321,10 @@
                             x-transition:leave-end="transform opacity-0 scale-95"
                             class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2 max-h-70 overflow-y-auto">
+                                <button type="button" onclick="applyFilter('needTeachers', 'all')"
+                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                    Barcha e'lonlar
+                                </button>
                                 @foreach ($subjects as $subject)
                                     <button type="button" onclick="applyFilter('needTeachers', '{{ $subject->id }}')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
@@ -476,12 +449,18 @@
                                     <div class="space-y-2">
                                         <p class="text-sm font-medium text-success-600 dark:text-success-400">
                                             O'qituvchi kerak</p>
-                                        @foreach ($LearningCenter->needTeachers as $teacher)
+                                        @foreach ($LearningCenter->needTeachers->take(-1) as $teacher)
                                             <div class="flex items-center justify-between text-sm">
                                                 <span class="text-gray-700 dark:text-gray-300">🟢
                                                     {{ $teacher->subject->name }}</span>
                                                 <span
                                                     class="text-xs text-gray-500 dark:text-gray-400">{{ $teacher->created_at->diffForHumans() }}</span>
+                                            </div>
+                                            <div>
+                                                <a href="{{ route('blog-single', $LearningCenter->id) }}"
+                                                    class="text-sm text-primary-600 dark:text-primary-400 hover:underline">
+                                                    {{ $LearningCenter->needTeachers->count() > 1 ? 'Yana ' . ($LearningCenter->needTeachers->count() - 1) . ' ta e\'lon bor. Batafsil' : 'Batafsil' }}
+                                                </a>
                                             </div>
                                         @endforeach
                                     </div>
@@ -544,7 +523,7 @@ function clearAllFilters() {
 }
 
 function applyFilter(type, value) {
-    if (value) {
+    if (value && value !== 'all') {
         window.currentFilters.set(type, value);
     } else {
         window.currentFilters.delete(type);

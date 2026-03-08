@@ -18,7 +18,20 @@ class CommentController extends Controller
             'learning_centers_id' => 'required|exists:learning_centers,id',
             'comment' => 'required|string'
         ]);
-        LearningCentersComment::create($validate);
+        
+        $comment = LearningCentersComment::create($validate);
+        $comment->load('user'); // User ma'lumotlarini yuklab olamiz
+        
+        // Agar Ajax so'rovi bo'lsa JSON qaytaramiz
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Izoh muvaffaqiyatli qo\'shildi',
+                'comment' => $comment
+            ]);
+        }
+        
+        // Oddiy so'rov uchun redirect qilamiz
         return redirect()->route('blog-single', $validate['learning_centers_id'] . '#comment')
             ->with('success', 'Izohingiz muvaffaqiyatli qo‘shildi.');
     }

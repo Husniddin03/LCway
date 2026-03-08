@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>Yangi fan qo'shish</x-slot:title>
+    <x-slot:title>Fanni tahrirlash</x-slot:title>
     
     <!-- Modern Subject Creation Section -->
     <section class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -20,14 +20,14 @@
             <div class="text-center mb-16 animate-fade-in">
                 <!-- Badge -->
                 <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full mb-6">
-                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Fan qo'shish</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Fanni tahrirlash</span>
                 </div>
                 
                 <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 mb-6 leading-tight">
-                    {{ $LearningCenter->name }}ga yangi fan qo'shing
+                    {{ $LearningCenter->name }}dagi fanni tahrirlang
                 </h1>
                 <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                    Bu orqali talabalar fanlar orqali ham topa oladi
+                    Bu orqali mavjud fan ma'lumotlarini yangilashingiz mumkin
                 </p>
             </div>
 
@@ -125,8 +125,9 @@
                 <!-- Form Section -->
                 <div class="lg:col-span-2 animate-slide-in-right">
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-500 border border-white/20 dark:border-gray-700/50">
-                        <form action="{{ route('subject.storeid', ['id' => $LearningCenter->id]) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                        <form action="{{ route('subject.update', $subjectOfCenter->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                             @csrf
+                            @method('PUT')
                             
                             <!-- Form Header -->
                             <div class="text-center mb-8">
@@ -135,8 +136,8 @@
                                         <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
                                     </svg>
                                 </div>
-                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Yangi fan qo'shish</h2>
-                                <p class="text-gray-600 dark:text-gray-300 mt-2">Fan nomini va narxini kiriting</p>
+                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Fanni tahrirlash</h2>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">Fan ma'lumotlarini yangilang</p>
                             </div>
 
                             <!-- Form Fields -->
@@ -152,7 +153,7 @@
                                     <select id="subject" name="subject_id" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                                         <option value="">Fan tanlang...</option>
                                         @foreach ($subjects as $subject)
-                                            <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                            <option value="{{ $subject->id }}" {{ $subject->id == $subjectOfCenter->subject_id ? 'selected' : '' }}>{{ $subject->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('subject_id')
@@ -174,7 +175,7 @@
                                         </svg>
                                         Narxi (so'm)
                                     </label>
-                                    <input type="text" name="price" id="price" placeholder="500 000" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                    <input type="text" name="price" id="price" placeholder="500 000" value="{{ $subjectOfCenter->price }}" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                                     @error('price')
                                         <p class="text-red-500 text-sm mt-1 flex items-center">
                                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -200,7 +201,7 @@
                                     <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                     </svg>
-                                    Saqlash
+                                    Yangilash
                                 </button>
                             </div>
                         </form>

@@ -6,6 +6,7 @@ use App\Models\Favorite;
 use App\Models\LearningCenter;
 use App\Models\Subject;
 use App\Models\LearningCentersCalendar;
+use App\Models\NeedTeacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -27,8 +28,6 @@ class PageController extends Controller
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'radius' => 'nullable|numeric', // km
-            'subject_id' => 'nullable|exists:subjects,id',
-            'maxPrice' => 'nullable|numeric',
             'searchText' => 'nullable|string|max:255',
             'name' => 'nullable|in:asc,desc',
             'distance' => 'nullable|in:asc,desc',
@@ -44,8 +43,6 @@ class PageController extends Controller
             $latitude = $request->input('latitude');
             $longitude = $request->input('longitude');
             $radius = $request->input('radius');
-            $subject_id = $request->input('subject_id');
-            $maxPrice = $request->input('maxPrice');
             $searchText = $request->input('searchText');
             $name = $request->input('name');
             $distance = $request->input('distance');
@@ -102,15 +99,7 @@ class PageController extends Controller
                 // Filter conditions
                 $passRadiusFilter = $radius === null || $distance <= $radius;
 
-                // Check if subject exists in this learning center
-                $passSubjectFilter = $subject_id === null ||
-                    $LearningCenter->subjects->contains('subject_id', $subject_id);
-
-                // Check if price is within max price for that subject
-                $passPriceFilter = $maxPrice === null ||
-                    $LearningCenter->subjects->where('subject_id', $subject_id)->first()?->price <= $maxPrice;
-
-                if ($passRadiusFilter && $passSubjectFilter && $passPriceFilter) {
+                if ($passRadiusFilter) {
                     $filteredCenters->push($LearningCenter);
                 }
             }
@@ -125,8 +114,6 @@ class PageController extends Controller
         } elseif (isset($favorites) && $sort == 'favorites') {
             $LearningCenters = $LearningCenters->sortBy('favorite', SORT_NUMERIC, $favorites === 'desc');
         }
-
-        $subjects = Subject::all();
 
         // Handle AJAX requests
         if ($request->ajax() || $request->wantsJson()) {
@@ -250,11 +237,15 @@ class PageController extends Controller
             ]);
         }
 
+        $subjects = Subject::all();
+
         return view('pages.blog-grid', compact('LearningCenters', 'subjects', 'validated'));
     }
     public function blogSingle($id)
     {
-        $LearningCenter = LearningCenter::find($id);
+        $LearningCenter = LearningCenter::with(['needTeachers.subject', 'needTeachers.learningCenter', 'comments.user', 'favorites'])
+            ->withCount('comments')
+            ->find($id);
         return view('pages.blog-single')->with('LearningCenter', $LearningCenter);
     }
     public function signin()

@@ -562,10 +562,10 @@
                     </div>
 
                     <!-- Comments Section -->
-                    @auth
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Izohlar</h2>
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Izohlar</h2>
 
+                        @auth
                             <!-- Rating Form -->
                             <div class="mb-8">
                                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Markazni baholang</h3>
@@ -587,12 +587,12 @@
                             <form id="commentForm" action="{{ route('comment.store') }}" method="POST" class="mb-8">
                                 @csrf
                                 <input type="hidden" name="learning_centers_id" value="{{ $LearningCenter->id }}">
-                                <div class="flex space-x-4">
+                                <div class="flex space-x-4 relative">
                                     <input name="comment" type="text" id="commentInput"
-                                        placeholder="{{ $LearningCenter->name }} haqida fikringizni qoldiring..."
-                                        class="text-gray-900 bg-white dark:text-white flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white">
+                                        placeholder="Fikringizni qoldiring..."
+                                        class="text-gray-900 bg-white dark:text-white flex-1 px-2 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white">
                                     <button type="submit" id="submitComment"
-                                        class="text-gray-900 dark:text-white bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-xl transition-colors duration-200">
+                                        class="absolute h-full right-4 top-1/2 px-2 border border-gray-300 dark:border-gray-600 transform -translate-y-1/2 text-gray-900 dark:text-white bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-xl transition-colors duration-200">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -600,42 +600,63 @@
                                     </button>
                                 </div>
                             </form>
-
-                            <!-- Comments List -->
-                            <div id="commentsList" class="space-y-4 max-h-96 overflow-y-auto">
-                                <p class="text-gray-600 dark:text-gray-400 sticky top-0 bg-white dark:bg-gray-800 z-10 py-2">Jami izohlar:
-                                    <span id="commentsCount">{{ $LearningCenter->comments->count() }}</span></p>
-                                @foreach ($LearningCenter->comments->reverse() as $comment)
-                                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
-                                        <div class="flex items-start justify-between">
-                                            <div>
-                                                <p class="font-semibold text-gray-900 dark:text-white">
-                                                    {{ $comment->user->name }}</p>
-                                                <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                    {{ $comment->user->email }}</p>
-                                            </div>
-                                            <span
-                                                class="text-sm text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() }}</span>
-                                        </div>
-                                        <p class="mt-2 text-gray-600 dark:text-gray-300">{{ $comment->comment }}</p>
-
-                                        @auth
-                                            @can('myComment', $comment)
-                                                <form action="{{ route('comment.delete', $comment->id) }}" method="POST"
-                                                    onsubmit="return confirm('Rostdan bu izohni o\'chirilsinmi?');" class="mt-4">
-                                                    @csrf
-                                                    <button type="submit"
-                                                        class="text-red-500 hover:text-red-700 text-sm transition-colors">
-                                                        Izohni o'chirish
-                                                    </button>
-                                                </form>
-                                            @endcan
-                                        @endauth
+                        @else
+                            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Izoh qoldirish uchun ro'yxatdan o'ting</h2>
+                                <div class="text-center py-8">
+                                    <div class="mb-4">
+                                        <svg class="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
                                     </div>
-                                @endforeach
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Izoh qoldirish uchun ro'yxatdan o'ting</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 mb-6">Fikr va izohlaringizni baham ko'lish uchun tizimga kirishingiz kerak</p>
+                                    <div class="space-x-4">
+                                        <a href="{{ route('login') }}" class="inline-block bg-primary-600 hover:bg-primary-700 text-gray-900 dark:text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200">
+                                            Tizimga kirish
+                                        </a>
+                                        <a href="{{ route('register') }}" class="inline-block bg-gray-100 hover:bg-gray-200 dark:bg-gray-100 dark:hover:bg-gray-200 text-gray-900 dark:text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200">
+                                            Ro'yxatdan o'tish
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
+                        @endauth
+
+                        <!-- Comments List -->
+                        <div id="commentsList" class="space-y-4 max-h-96 overflow-y-auto">
+                            <p class="text-gray-600 dark:text-gray-400 sticky top-0 bg-white dark:bg-gray-800 z-10 py-2">Jami izohlar:
+                                <span id="commentsCount">{{ $LearningCenter->comments->count() }}</span></p>
+                            @foreach ($LearningCenter->comments->reverse() as $comment)
+                                <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                                    <div class="flex items-start justify-between">
+                                        <div>
+                                            <p class="font-semibold text-gray-900 dark:text-white">
+                                                {{ $comment->user->name }}</p>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                {{ $comment->user->email }}</p>
+                                        </div>
+                                        <span
+                                            class="text-sm text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <p class="mt-2 text-gray-600 dark:text-gray-300">{{ $comment->comment }}</p>
+
+                                    @auth
+                                        @can('myComment', $comment)
+                                            <form action="{{ route('comment.delete', $comment->id) }}" method="POST"
+                                                onsubmit="return confirm('Rostdan bu izohni o\'chirilsinmi?');" class="mt-4">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="text-red-500 hover:text-red-700 text-sm transition-colors">
+                                                    Izohni o'chirish
+                                                </button>
+                                            </form>
+                                        @endcan
+                                    @endauth
+                                </div>
+                            @endforeach
                         </div>
-                    @endauth
+                    </div>
                 </div>
 
                 <!-- Sidebar -->

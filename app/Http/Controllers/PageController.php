@@ -23,12 +23,12 @@ class PageController extends Controller
     }
     public function blogGrid(Request $request)
     {
-
         $validated = $request->validate([
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'radius' => 'nullable|numeric', // km
             'searchText' => 'nullable|string|max:255',
+            'subject_id' => 'nullable|exists:subjects,id',
             'name' => 'nullable|in:asc,desc',
             'distance' => 'nullable|in:asc,desc',
             'favorites' => 'nullable|in:asc,desc',
@@ -37,49 +37,47 @@ class PageController extends Controller
             'dayMode' => 'nullable|in:true',
         ]);
 
-        if (count($validated) === 0) {
-            $LearningCenters = LearningCenter::with('favorites')->with('needTeachers')->get();
-        } else {
-            $latitude = $request->input('latitude');
-            $longitude = $request->input('longitude');
-            $radius = $request->input('radius');
-            $searchText = $request->input('searchText');
-            $name = $request->input('name');
-            $distance = $request->input('distance');
-            $favorites = $request->input('favorites');
-            $sort = $request->input('sort');
-            $needTeachers = $request->input('needTeachers');
-            $dayMode = $request->input('dayMode');
+        // Start with all centers
+        $LearningCenters = LearningCenter::with('favorites')->with('needTeachers');
 
-            if (isset($validated['searchText'])) {
-                $LearningCenters = LearningCenter::where('name', 'LIKE', "%{$searchText}%")
-                    ->orWhere('province', 'LIKE', "%{$searchText}%")
-                    ->orWhere('region', 'LIKE', "%{$searchText}%")
-                    ->orWhere('address', 'LIKE', "%{$searchText}%")
-                    ->orWhere('type', 'LIKE', "%{$searchText}%")
-                    ->with('favorites')
-                    ->with('needTeachers')
-                    ->get();
-                foreach ($LearningCenters as $LearningCenter) {
-                    $LearningCenter->favorite = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
-                    $LearningCenter->date = $LearningCenter->created_at->diffForHumans();
-                }
+        // Apply search filter
+        if (!empty($validated['searchText'])) {
+            $searchText = $validated['searchText'];
+            $LearningCenters = $LearningCenters->where(function($query) use ($searchText) {
+                $query->where('name', 'LIKE', "%{$searchText}%")
+                      ->orWhere('province', 'LIKE', "%{$searchText}%")
+                      ->orWhere('region', 'LIKE', "%{$searchText}%")
+                      ->orWhere('address', 'LIKE', "%{$searchText}%")
+                      ->orWhere('type', 'LIKE', "%{$searchText}%");
+            });
+        }
 
-                $LearningCentersLocation = $LearningCenters;
-            } else if (isset($needTeachers)) {
-                $LearningCentersLocation = LearningCenter::with(['favorites', 'needTeachers'])
-                    ->whereHas('needTeachers', function ($query) use ($needTeachers) {
-                        $query->where('subject_id', $needTeachers);
-                    })
-                    ->get();
-            } else {
-                $LearningCentersLocation = LearningCenter::with('favorites')->with('needTeachers')->get();
-            }
+        // Apply subject filter
+        if (!empty($validated['subject_id'])) {
+            $LearningCenters = $LearningCenters->whereHas('subjects', function ($query) use ($validated) {
+                $query->where('subject_id', $validated['subject_id']);
+            });
+        }
+
+        // Apply need teachers filter
+        if (!empty($validated['needTeachers'])) {
+            $LearningCenters = $LearningCenters->whereHas('needTeachers', function ($query) use ($validated) {
+                $query->where('subject_id', $validated['needTeachers']);
+            });
+        }
+
+        // Get the filtered results
+        $LearningCenters = $LearningCenters->get();
+
+        // Apply location filtering if coordinates are provided
+        if (!empty($validated['latitude']) && !empty($validated['longitude'])) {
+            $latitude = $validated['latitude'];
+            $longitude = $validated['longitude'];
+            $radius = $validated['radius'] ?? null;
+            
             $filteredCenters = collect();
-
-            foreach ($LearningCentersLocation as $LearningCenter) {
-                $LearningCenter->favorite = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
-                $LearningCenter->date = $LearningCenter->created_at->diffForHumans();
+            
+            foreach ($LearningCenters as $LearningCenter) {
                 $coords = explode(',', $LearningCenter->location);
                 if (count($coords) < 2) {
                     $LearningCenter->distance = null;
@@ -96,24 +94,46 @@ class PageController extends Controller
 
                 $LearningCenter->distance = round($distance, 2);
 
-                // Filter conditions
-                $passRadiusFilter = $radius === null || $distance <= $radius;
-
-                if ($passRadiusFilter) {
+                // Filter by radius if provided
+                if ($radius === null || $distance <= $radius) {
                     $filteredCenters->push($LearningCenter);
                 }
             }
-
-            $LearningCenters = $filteredCenters->sortBy('distance')->values();
+            
+            $LearningCenters = $filteredCenters;
         }
 
-        if (isset($name) && $sort == 'name') {
-            $LearningCenters = $LearningCenters->sortBy('name', SORT_NATURAL, $name === 'desc');
-        } elseif (isset($distance) && $sort == 'distance') {
-            $LearningCenters = $LearningCenters->sortBy('distance', SORT_NUMERIC, $distance === 'desc');
-        } elseif (isset($favorites) && $sort == 'favorites') {
-            $LearningCenters = $LearningCenters->sortBy('favorite', SORT_NUMERIC, $favorites === 'desc');
+        // Add computed properties to all centers
+        foreach ($LearningCenters as $LearningCenter) {
+            $LearningCenter->favorite = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
+            $LearningCenter->date = $LearningCenter->created_at->diffForHumans();
         }
+
+        // Apply sorting
+        if (!empty($validated['sort'])) {
+            $sortField = $validated['sort'];
+            $sortDirection = $validated[$sortField] ?? 'asc';
+            
+            switch ($sortField) {
+                case 'name':
+                    $LearningCenters = $LearningCenters->sortBy('name', SORT_NATURAL, $sortDirection === 'desc');
+                    break;
+                case 'distance':
+                    $LearningCenters = $LearningCenters->sortBy('distance', SORT_NUMERIC, $sortDirection === 'desc');
+                    break;
+                case 'favorites':
+                    $LearningCenters = $LearningCenters->sortBy('favorite', SORT_NUMERIC, $sortDirection === 'desc');
+                    break;
+            }
+        } else {
+            // Default sort: if distance is available, sort by distance, otherwise by name
+            $LearningCenters = $LearningCenters->sortBy(function($center) {
+                return isset($center->distance) ? $center->distance : $center->name;
+            });
+        }
+
+        // Convert to array after sorting
+        $LearningCenters = $LearningCenters->values();
 
         // Handle AJAX requests
         if ($request->ajax() || $request->wantsJson()) {
@@ -199,13 +219,27 @@ class PageController extends Controller
                     $html .= '
                             <div class="space-y-2">
                                 <p class="text-sm font-medium text-success-600 dark:text-success-400">O\'qituvchi kerak</p>';
-                    foreach ($LearningCenter->needTeachers as $teacher) {
-                        $html .= '
+                    
+                    // Show only the first teacher
+                    $firstTeacher = $LearningCenter->needTeachers->last();
+                    $html .= '
                                 <div class="flex items-center justify-between text-sm">
-                                    <span class="text-gray-700 dark:text-gray-300">🟢 ' . $teacher->subject->name . '</span>
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">' . $teacher->created_at->diffForHumans() . '</span>
+                                    <span class="text-gray-700 dark:text-gray-300">🟢 ' . $firstTeacher->subject->name . '</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">' . $firstTeacher->created_at->diffForHumans() . '</span>
+                                </div>';
+                    
+                    // Show count of remaining teachers if more than 1
+                    if ($LearningCenter->needTeachers->count() > 1) {
+                        $remainingCount = $LearningCenter->needTeachers->count() - 1;
+                        $html .= '
+                                <div>
+                                    <a href="' . route('blog-single', $LearningCenter->id) . '"
+                                        class="text-sm text-primary-600 dark:text-primary-400 hover:underline">
+                                        Yana ' . $remainingCount . ' ta e\'lon bor. Batafsil
+                                    </a>
                                 </div>';
                     }
+                    
                     $html .= '
                             </div>';
                 } else {
@@ -216,6 +250,17 @@ class PageController extends Controller
                 $html .= '
                         </div>
                     </div>
+                </div>';
+            }
+            
+            // If no centers found, show empty state
+            if ($LearningCenters->isEmpty()) {
+                $html = '
+                <div class="col-span-full text-center py-12">
+                    <p class="text-gray-500 dark:text-gray-400">Hech qanday o\'quv markazi topilmadi</p>
+                    <button onclick="clearAllFilters()" class="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                        Filterni tozalash
+                    </button>
                 </div>';
             }
             

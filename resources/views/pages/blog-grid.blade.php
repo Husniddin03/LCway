@@ -300,6 +300,37 @@
                         </div>
                     </div>
 
+                    <!-- Filter by subjects -->
+                    <div class="text-gray-900 dark:text-white relative" x-data="{ subject_id: false }">
+                        <button @click="subject_id = !subject_id"
+                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
+                            Fanlar
+                            <svg class="w-4 h-4" :class="{ 'rotate-180': subject_id }" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <div x-show="subject_id" @click.away="subject_id = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+                            <div class="py-2 max-h-70 overflow-y-auto">
+                                @foreach ($subjects as $subject)
+                                    <button type="button" onclick="applyFilter('subject_id', '{{ $subject->id }}')"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                        {{ $subject->name }}
+                                    </button>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Teacher Announcements Dropdown -->
                     <div class="text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
                         <button @click="teacherDropdown = !teacherDropdown"
@@ -354,7 +385,7 @@
                 <p class="mt-2 text-gray-600 dark:text-gray-400">Qidiryapman...</p>
             </div>
             <div id="centersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                @foreach ($LearningCenters as $LearningCenter)
+                @forelse ($LearningCenters as $LearningCenter)
                     <div
                         class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
                         <!-- Image -->
@@ -456,13 +487,15 @@
                                                 <span
                                                     class="text-xs text-gray-500 dark:text-gray-400">{{ $teacher->created_at->diffForHumans() }}</span>
                                             </div>
+                                        @endforeach
+                                        @if ($LearningCenter->needTeachers->count() > 1)
                                             <div>
                                                 <a href="{{ route('blog-single', $LearningCenter->id) }}"
                                                     class="text-sm text-primary-600 dark:text-primary-400 hover:underline">
-                                                    {{ $LearningCenter->needTeachers->count() > 1 ? 'Yana ' . ($LearningCenter->needTeachers->count() - 1) . ' ta e\'lon bor. Batafsil' : 'Batafsil' }}
+                                                    Yana {{ $LearningCenter->needTeachers->count() - 1 }} ta e'lon bor. Batafsil
                                                 </a>
                                             </div>
-                                        @endforeach
+                                        @endif
                                     </div>
                                 @else
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Hozicha e'lon berilmagan!</p>
@@ -470,7 +503,14 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-span-full text-center py-12">
+                        <p class="text-gray-500 dark:text-gray-400">Hech qanday o'quv markazi topilmadi</p>
+                        <button onclick="clearAllFilters()" class="mt-4 px-4 py-2 bg-primary-600 text-gray-500 dark:text-gray-400 rounded-lg hover:bg-primary-700 transition-colors">
+                            Filterni tozalash
+                        </button>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>

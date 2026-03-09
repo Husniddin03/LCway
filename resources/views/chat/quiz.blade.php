@@ -1,388 +1,215 @@
-<x-minimal-layout>
+<x-layout>
 <x-slot:title>Kasbga yo'naltiruvchi test — RIASEC</x-slot:title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
-
-:root {
-    --ink:     #0b0d14;
-    --surface: #12151f;
-    --card:    #181c28;
-    --border:  #232839;
-    --muted:   #454d6a;
-    --text:    #c2c8d8;
-    --bright:  #edf0f8;
-    --accent:  #5b8fff;
-    --violet:  #8a5cf5;
-    --green:   #34d399;
-    --amber:   #fbbf24;
-    --red:     #f87171;
-    --radius:  16px;
-
-    --r-color: #f87171;
-    --i-color: #5b8fff;
-    --a-color: #c084fc;
-    --s-color: #34d399;
-    --e-color: #fbbf24;
-    --c-color: #94a3b8;
-}
-
-*{box-sizing:border-box;margin:0;padding:0;}
-
-.riasec-page {
-    font-family: 'Sora', sans-serif;
-    background: var(--ink);
-    min-height: 100vh;
-    padding: 3rem 1rem 4rem;
-    position: relative;
-    overflow-x: hidden;
-}
-
-/* ── Orbs ── */
-.orb {
-    position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
-    filter: blur(80px); opacity: .35;
-}
-.orb-1 { width:500px;height:500px; background:radial-gradient(circle,#3b5bff,transparent); top:-180px;left:-100px; }
-.orb-2 { width:400px;height:400px; background:radial-gradient(circle,#7c3aed,transparent); bottom:-100px;right:-80px; }
-
-.container {
-    max-width: 860px;
-    margin: 0 auto;
-    position: relative; z-index: 1;
-    display: flex; flex-direction: column; gap: 2rem;
-}
-
-/* ── Hero ── */
-.hero {
-    text-align: center;
-    animation: fadeUp .6s ease;
-}
-.hero-tag {
-    display: inline-block;
-    font-size: .72rem; font-weight: 700;
-    letter-spacing: .12em; text-transform: uppercase;
-    color: var(--accent);
-    background: rgba(91,143,255,.12);
-    border: 1px solid rgba(91,143,255,.25);
-    border-radius: 20px; padding: 5px 14px;
-    margin-bottom: 1rem;
-}
-.hero h1 {
-    font-size: clamp(1.9rem,5vw,3rem);
-    font-weight: 800; color: var(--bright);
-    line-height: 1.15; margin-bottom: .75rem;
-}
-.hero p {
-    font-size: .95rem; color: var(--text);
-    max-width: 540px; margin: 0 auto;
-    line-height: 1.7;
-}
-
-/* ── Type legend ── */
-.legend {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: .6rem;
-}
-@media(max-width:600px){ .legend{grid-template-columns:repeat(2,1fr);} }
-
-.legend-item {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: .65rem .9rem;
-    display: flex; align-items: center; gap: .6rem;
-    font-size: .78rem;
-    animation: fadeUp .5s ease both;
-}
-.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.legend-item span { color: var(--text); }
-.legend-item strong { color: var(--bright); display: block; font-size: .72rem; }
-
-/* ── Question card ── */
-.questions-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    animation: fadeUp .6s ease;
-}
-.questions-card-header {
-    padding: 1.2rem 1.5rem;
-    display: flex; align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-    background: rgba(255,255,255,.02);
-}
-.questions-card-header h2 {
-    font-size: .95rem; font-weight: 700;
-    color: var(--bright);
-}
-.progress-label {
-    font-size: .75rem; color: var(--muted);
-    font-family: 'JetBrains Mono', monospace;
-}
-.progress-bar-wrap {
-    height: 3px; background: var(--border);
-    margin: 0;
-}
-.progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--violet));
-    transition: width .4s ease;
-    width: 0%;
-}
-
-.questions-list { padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: .6rem; }
-
-.question-item {
-    display: flex; align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: .85rem 1rem;
-    border-radius: 10px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    transition: border-color .2s, background .2s;
-}
-.question-item.answered { border-color: rgba(91,143,255,.3); background: rgba(91,143,255,.04); }
-
-.question-text {
-    font-size: .85rem; color: var(--text);
-    line-height: 1.5; flex: 1;
-}
-.question-num {
-    font-size: .7rem; font-weight: 700;
-    color: var(--muted); margin-right: .2rem;
-    font-family: 'JetBrains Mono', monospace;
-    flex-shrink: 0;
-}
-
-.radio-group { display: flex; gap: .4rem; flex-shrink: 0; }
-
-/* Mobile: stack radio buttons vertically */
-@media(max-width:600px){ 
-    .radio-group { flex-direction: column; gap: .6rem; } 
-}
-
-.radio-pill {
-    display: flex; align-items: center; gap: 5px;
-    padding: 5px 12px; border-radius: 20px;
-    border: 1.5px solid var(--border);
-    background: var(--card);
-    cursor: pointer; font-size: .78rem;
-    color: var(--muted); transition: all .18s;
-    user-select: none;
-}
-.radio-pill input { display: none; }
-.radio-pill:hover { border-color: var(--accent); color: var(--accent); }
-.radio-pill.selected-yes { border-color: var(--green); background: rgba(52,211,153,.1); color: var(--green); }
-.radio-pill.selected-no  { border-color: var(--muted); background: rgba(255,255,255,.03); color: var(--muted); }
-
-/* ── Submit btn ── */
-.submit-wrap { padding: 1.2rem 1.5rem; border-top: 1px solid var(--border); }
-.submit-btn {
-    width: 100%; padding: 1rem;
-    background: linear-gradient(135deg, var(--accent), var(--violet));
-    border: none; border-radius: 12px;
-    color: #fff; font-family: 'Sora', sans-serif;
-    font-size: 1rem; font-weight: 700;
-    cursor: pointer; transition: all .25s;
-    box-shadow: 0 4px 20px rgba(91,143,255,.3);
-    display: flex; align-items: center; justify-content: center; gap: .5rem;
-}
-.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(91,143,255,.4); }
-.submit-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-
-/* ── Result ── */
-.result-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    display: none;
-    animation: fadeUp .5s ease;
-}
-.result-card.visible { display: block; }
-
-.result-header {
-    padding: 1.4rem 1.5rem;
-    background: linear-gradient(135deg,rgba(91,143,255,.1),rgba(138,92,245,.1));
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-}
-.result-header h2 { font-size: 1.3rem; font-weight: 800; color: var(--bright); margin-bottom: .3rem; }
-.result-header p  { font-size: .83rem; color: var(--text); }
-
-.chart-wrap { padding: 1.5rem; }
-
-/* Score bars */
-.score-bars { display: flex; flex-direction: column; gap: .7rem; padding: 0 1.5rem; }
-.score-row { display: flex; align-items: center; gap: .75rem; }
-.score-label {
-    width: 130px; flex-shrink: 0;
-    font-size: .78rem; color: var(--text);
-}
-.score-label strong { color: var(--bright); }
-.score-track {
-    flex: 1; height: 10px;
-    background: var(--surface); border-radius: 6px; overflow: hidden;
-}
-.score-fill { height: 100%; border-radius: 6px; transition: width 1s cubic-bezier(.22,1,.36,1); width: 0%; }
-.score-pct {
-    width: 36px; text-align: right;
-    font-size: .75rem; font-weight: 700;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--bright);
-}
-
-.chart-canvas-wrap { padding: 0 1.5rem 1.5rem; }
-
-/* AI section */
-.ai-section { padding: 1.5rem; border-top: 1px solid var(--border); }
-.ai-section-title {
-    display: flex; align-items: center; gap: .5rem;
-    font-size: .8rem; font-weight: 700; letter-spacing: .08em;
-    text-transform: uppercase; color: var(--muted);
-    margin-bottom: 1rem;
-}
-.ai-response-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 1.2rem;
-    font-size: .86rem; line-height: 1.75;
-    color: var(--text); min-height: 80px;
-}
-.ai-response-box h2 { color: var(--bright); font-size: 1rem; margin: .8rem 0 .4rem; border-bottom: 1px solid var(--border); padding-bottom: .4rem; }
-.ai-response-box h3 { color: var(--text); font-size: .88rem; margin: .6rem 0 .3rem; }
+.ai-response-box h2 { color: #f1f5f9; font-size: 1rem; margin: .8rem 0 .4rem; border-bottom: 1px solid #475569; padding-bottom: .4rem; }
+.ai-response-box h3 { color: #94a3b8; font-size: .88rem; margin: .6rem 0 .3rem; }
 .ai-response-box ul,.ai-response-box ol { margin-left: 1.2rem; margin-top: .3rem; }
 .ai-response-box li { margin-bottom: .3rem; }
 .ai-response-box p { margin-bottom: .5rem; }
-.ai-response-box strong { color: var(--bright); }
+.ai-response-box strong { color: #f1f5f9; }
 .ai-response-box code { background:rgba(255,255,255,.06); padding:1px 5px; border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:.8rem; color:#a5c8ff; }
 
-.typing-dots { display:flex; gap:4px; align-items:center; padding:.4rem 0; }
-.typing-dots span { width:6px;height:6px; background:var(--accent); border-radius:50%; animation:bounce 1.2s ease infinite; }
-.typing-dots span:nth-child(2){animation-delay:.2s;}
-.typing-dots span:nth-child(3){animation-delay:.4s;}
-@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.5;}40%{transform:translateY(-6px);opacity:1;}}
+/* Light mode styles */
+.light-mode .bg-slate-950 { background-color: #ffffff !important; }
+.light-mode .bg-slate-800 { background-color: #f8fafc !important; }
+.light-mode .bg-slate-900 { background-color: #ffffff !important; }
+.light-mode .bg-slate-700\/10 { background-color: rgba(241,245,249,0.1) !important; }
+.light-mode .bg-slate-700\/30 { background-color: rgba(241,245,249,0.3) !important; }
+.light-mode .bg-slate-800\/50 { background-color: rgba(248,250,252,0.5) !important; }
 
-.reset-btn {
-    margin: 1rem 1.5rem 1.5rem;
-    width: calc(100% - 3rem);
-    padding: .85rem; border: 1.5px solid var(--border);
-    border-radius: 10px; background: none;
-    color: var(--text); font-family:'Sora',sans-serif;
-    font-size: .88rem; cursor: pointer;
-    transition: all .2s;
-}
-.reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+.light-mode .text-slate-300 { color: #475569 !important; }
+.light-mode .text-slate-100 { color: #1e293b !important; }
+.light-mode .text-slate-500 { color: #64748b !important; }
+.light-mode .text-slate-400 { color: #64748b !important; }
 
-/* ── History table ── */
-.history-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    animation: fadeUp .7s ease;
-    overflow-x: auto !important;
-}
-.history-card-header {
-    padding: .9rem 1.2rem;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: .5rem;
-    font-size: .78rem; font-weight: 700;
-    letter-spacing: .07em; text-transform: uppercase;
-    color: var(--muted);
-}
-.htable { width:100%; border-collapse:collapse; font-size:.8rem; }
-.htable th { padding:.6rem 1rem; text-align:left; font-weight:600; color:var(--muted); font-size:.7rem; letter-spacing:.07em; text-transform:uppercase; background:rgba(255,255,255,.02); border-bottom:1px solid var(--border); }
-.htable td { padding:.65rem 1rem; color:var(--text); border-bottom:1px solid rgba(255,255,255,.04); }
-.htable tr:last-child td { border-bottom:none; }
-.htable tr:hover td { background:rgba(255,255,255,.02); }
-.mini-score { display:flex; gap:4px; }
-.mini-pill { font-size:.65rem; font-weight:700; padding:2px 6px; border-radius:4px; font-family:'JetBrains Mono',monospace; }
+.light-mode .border-slate-700 { border-color: #e2e8f0 !important; }
+.light-mode .border-slate-600 { border-color: #cbd5e1 !important; }
+.light-mode .border-slate-500\/20 { border-color: rgba(59,130,246,0.2) !important; }
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.light-mode .bg-blue-500\/10 { background-color: rgba(59,130,246,0.1) !important; }
+.light-mode .bg-blue-500\/20 { background-color: rgba(59,130,246,0.2) !important; }
+.light-mode .text-blue-500 { color: #3b82f6 !important; }
+.light-mode .border-blue-500\/22 { border-color: rgba(59,130,246,0.22) !important; }
+.light-mode .border-blue-500 { border-color: #3b82f6 !important; }
+
+.light-mode .bg-emerald-500\/15 { background-color: rgba(16,185,129,0.15) !important; }
+.light-mode .text-emerald-500 { color: #10b981 !important; }
+
+.light-mode .bg-red-500\/8 { background-color: rgba(239,68,68,0.08) !important; }
+.light-mode .border-red-500\/15 { border-color: rgba(239,68,68,0.15) !important; }
+.light-mode .text-red-400 { color: #ef4444 !important; }
+
+.light-mode .bg-gradient-to-r { 
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
+}
+
+/* ═══════════════════════════════════════════
+   THEME MANAGEMENT
+═══════════════════════════════════════════ */
+function initTheme() {
+    const container = document.getElementById('quiz-container');
+    const saved = localStorage.getItem('quiz-theme');
+    
+    // Check if user has saved preference
+    if (saved === 'light') {
+        container.classList.remove('dark-mode');
+        container.classList.add('light-mode');
+    } else {
+        container.classList.remove('light-mode');
+        container.classList.add('dark-mode');
+        localStorage.setItem('quiz-theme', 'dark'); // default to dark
+    }
+}
+
+function toggleTheme() {
+    const container = document.getElementById('quiz-container');
+    const isDark = container.classList.contains('dark-mode');
+    
+    if (isDark) {
+        container.classList.remove('dark-mode');
+        container.classList.add('light-mode');
+        localStorage.setItem('quiz-theme', 'light');
+    } else {
+        container.classList.remove('light-mode');
+        container.classList.add('dark-mode');
+        localStorage.setItem('quiz-theme', 'dark');
+    }
+}
+
+// Add theme toggle button
+function addThemeToggle() {
+    const hero = document.querySelector('.text-center.animate-fade-in');
+    if (!hero) return;
+    
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'fixed top-6 right-6 w-10 h-10 rounded-lg bg-slate-700/50 border border-slate-600 flex items-center justify-center transition-all duration-200 hover:bg-slate-600/50 hover:border-slate-500 z-50';
+    toggleBtn.onclick = toggleTheme;
+    toggleBtn.title = 'Tungi/Kunduzgi rejim';
+    toggleBtn.innerHTML = `
+        <svg class="w-5 h-5 text-slate-300 dark-mode-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        </svg>
+        <svg class="w-5 h-5 text-slate-300 light-mode-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+    `;
+    
+    document.body.appendChild(toggleBtn);
+    updateThemeIcon();
+}
+
+function updateThemeIcon() {
+    const container = document.getElementById('quiz-container');
+    const darkIcon = document.querySelector('.dark-mode-icon');
+    const lightIcon = document.querySelector('.light-mode-icon');
+    
+    if (container.classList.contains('dark-mode')) {
+        darkIcon?.classList.remove('hidden');
+        lightIcon?.classList.add('hidden');
+    } else {
+        darkIcon?.classList.add('hidden');
+        lightIcon?.classList.remove('hidden');
+    }
+}
+
+// Override the original toggleTheme function to also update icon
+const originalToggleTheme = toggleTheme;
+toggleTheme = function() {
+    originalToggleTheme();
+    updateThemeIcon();
+}
+
+/* Dark mode - default (slate colors already work) */
+.dark-mode .ai-response-box h2 { color: #f1f5f9; }
+.dark-mode .ai-response-box h3 { color: #94a3b8; }
+.dark-mode .ai-response-box strong { color: #f1f5f9; }
+.dark-mode .ai-response-box code { color: #a5c8ff; }
 </style>
 
-<div class="riasec-page">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    
-    <!-- Simple back navigation -->
-    <div class="back-nav" style="position: fixed; top: 20px; left: 20px; z-index: 100;">
-        <a href="{{ route('index') }}" 
-           style="display: flex; align-items: center; gap: 8px; 
-                  background: rgba(24, 28, 40, 0.9); 
-                  border: 1px solid var(--border); 
-                  color: var(--text); 
-                  padding: 8px 16px; 
-                  border-radius: 8px; 
-                  text-decoration: none; 
-                  font-size: 0.85rem; 
-                  backdrop-filter: blur(10px);
-                  transition: all 0.2s;"
-           onmouseover="this.style.background='var(--accent)'; this.style.color='#fff'; this.style.borderColor='var(--accent)'"
-           onmouseout="this.style.background='rgba(24, 28, 40, 0.9)'; this.style.color='var(--text)'; this.style.borderColor='var(--border)'">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Asosiy sahifa
-        </a>
-    </div>
 
-    <div class="container">
+<div class="font-sans bg-slate-950 min-h-screen p-4 md:p-8 relative overflow-x-hidden dark-mode" id="quiz-container">
+    <!-- Orbs -->
+    <div class="fixed w-[500px] h-[500px] rounded-full pointer-events-none z-0 blur-[80px] opacity-35 bg-gradient-to-r from-blue-600 to-transparent -top-48 -left-24"></div>
+    <div class="fixed w-[400px] h-[400px] rounded-full pointer-events-none z-0 blur-[80px] opacity-35 bg-gradient-to-r from-purple-600 to-transparent -bottom-24 -right-20"></div>
+
+    <div class="max-w-4xl mx-auto relative z-10 flex flex-col gap-8">
 
         <!-- Hero -->
-        <div class="hero">
-            <div class="hero-tag">RIASEC Test</div>
-            <h1>Kasbga yo'naltiruvchi<br>psixologik test</h1>
-            <p>24 ta savolga «Ha» yoki «Yo'q» deb javob bering. Natijada sizga eng mos yo'nalishlar foizlarda chiqadi.</p>
+        <div class="text-center animate-fade-in">
+            <a href="{{ route('chat.riasec') }}" class="inline-block">
+                <div class="inline-block text-xs font-bold tracking-widest uppercase text-blue-500 bg-blue-500/10 border border-blue-500/25 rounded-full px-3 py-1 mb-4 hover:bg-blue-500/20 transition-colors">
+                    RIASEC Test
+                </div>
+            </a>
+            <h1 class="text-3xl md:text-5xl font-black text-slate-100 leading-tight mb-3">
+                Kasbga yo'naltiruvchi<br>psixologik test
+            </h1>
+            <p class="text-sm text-slate-400 max-w-lg mx-auto leading-relaxed">
+                24 ta savolga «Ha» yoki «Yo'q» deb javob bering. Natijada sizga eng mos yo'nalishlar foizlarda chiqadi.
+            </p>
         </div>
 
         <!-- Legend -->
-        <div class="legend">
-            <div class="legend-item" style="animation-delay:.05s">
-                <div class="legend-dot" style="background:var(--r-color)"></div>
-                <div><strong>R — Realistic</strong><span>Amaliy, texnika, sport</span></div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+            <div class="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center gap-2 text-xs animate-fade-in" style="animation-delay:.05s">
+                <div class="w-2.5 h-2.5 bg-red-400 rounded-full flex-shrink-0"></div>
+                <div>
+                    <strong class="block text-slate-100 text-[11px]">R — Realistic</strong>
+                    <span class="text-slate-400">Amaliy, texnika, sport</span>
+                </div>
             </div>
-            <div class="legend-item" style="animation-delay:.1s">
-                <div class="legend-dot" style="background:var(--i-color)"></div>
-                <div><strong>I — Investigative</strong><span>Tadqiqot, fan, tahlil</span></div>
+            <div class="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center gap-2 text-xs animate-fade-in" style="animation-delay:.1s">
+                <div class="w-2.5 h-2.5 bg-blue-500 rounded-full flex-shrink-0"></div>
+                <div>
+                    <strong class="block text-slate-100 text-[11px]">I — Investigative</strong>
+                    <span class="text-slate-400">Tadqiqot, fan, tahlil</span>
+                </div>
             </div>
-            <div class="legend-item" style="animation-delay:.15s">
-                <div class="legend-dot" style="background:var(--a-color)"></div>
-                <div><strong>A — Artistic</strong><span>San'at, ijod, dizayn</span></div>
+            <div class="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center gap-2 text-xs animate-fade-in" style="animation-delay:.15s">
+                <div class="w-2.5 h-2.5 bg-purple-400 rounded-full flex-shrink-0"></div>
+                <div>
+                    <strong class="block text-slate-100 text-[11px]">A — Artistic</strong>
+                    <span class="text-slate-400">San'at, ijod, dizayn</span>
+                </div>
             </div>
-            <div class="legend-item" style="animation-delay:.2s">
-                <div class="legend-dot" style="background:var(--s-color)"></div>
-                <div><strong>S — Social</strong><span>Yordam berish, muloqot</span></div>
+            <div class="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center gap-2 text-xs animate-fade-in" style="animation-delay:.2s">
+                <div class="w-2.5 h-2.5 bg-emerald-400 rounded-full flex-shrink-0"></div>
+                <div>
+                    <strong class="block text-slate-100 text-[11px]">S — Social</strong>
+                    <span class="text-slate-400">Yordam berish, muloqot</span>
+                </div>
             </div>
-            <div class="legend-item" style="animation-delay:.25s">
-                <div class="legend-dot" style="background:var(--e-color)"></div>
-                <div><strong>E — Enterprising</strong><span>Biznes, liderlik</span></div>
+            <div class="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center gap-2 text-xs animate-fade-in" style="animation-delay:.25s">
+                <div class="w-2.5 h-2.5 bg-amber-400 rounded-full flex-shrink-0"></div>
+                <div>
+                    <strong class="block text-slate-100 text-[11px]">E — Enterprising</strong>
+                    <span class="text-slate-400">Biznes, liderlik</span>
+                </div>
             </div>
-            <div class="legend-item" style="animation-delay:.3s">
-                <div class="legend-dot" style="background:var(--c-color)"></div>
-                <div><strong>C — Conventional</strong><span>Tartib, tizim, hujjat</span></div>
+            <div class="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center gap-2 text-xs animate-fade-in" style="animation-delay:.3s">
+                <div class="w-2.5 h-2.5 bg-slate-400 rounded-full flex-shrink-0"></div>
+                <div>
+                    <strong class="block text-slate-100 text-[11px]">C — Conventional</strong>
+                    <span class="text-slate-400">Tartib, tizim, hujjat</span>
+                </div>
             </div>
         </div>
 
         <!-- Questions -->
-        <div class="questions-card">
-            <div class="questions-card-header">
-                <h2>Savollar</h2>
-                <span class="progress-label" id="progress-label">0 / 24</span>
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden animate-fade-in">
+            <div class="p-5 flex items-center justify-between border-b border-slate-700 bg-slate-800/50">
+                <h2 class="text-sm font-bold text-slate-100">Savollar</h2>
+                <span class="text-xs text-slate-500 font-mono" id="progress-label">0 / 24</span>
             </div>
-            <div class="progress-bar-wrap">
-                <div class="progress-bar-fill" id="progress-fill"></div>
+            <div class="h-1 bg-slate-700">
+                <div class="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-400" id="progress-fill" style="width: 0%"></div>
             </div>
 
-            <div class="questions-list" id="questions-list"></div>
+            <div class="p-5 flex flex-col gap-2" id="questions-list"></div>
 
-            <div class="submit-wrap">
-                <button class="submit-btn" onclick="submitTest()" id="submit-btn">
+            <div class="p-5 border-t border-slate-700">
+                <button class="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl text-white font-bold text-base cursor-pointer transition-all duration-250 shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none" onclick="submitTest()" id="submit-btn">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                     Natijani ko'rish
                 </button>
@@ -390,48 +217,52 @@
         </div>
 
         <!-- Result -->
-        <div class="result-card" id="result-card">
-            <div class="result-header">
-                <h2>🎯 Sizning natijangiz</h2>
-                <p>RIASEC profilingiz quyida ko'rsatilgan</p>
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden hidden animate-fade-in" id="result-card">
+            <div class="p-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-b border-slate-700 text-center">
+                <h2 class="text-xl font-black text-slate-100 mb-1">🎯 Sizning natijangiz</h2>
+                <p class="text-sm text-slate-400">RIASEC profilingiz quyida ko'rsatilgan</p>
             </div>
 
             <!-- Score bars -->
-            <div class="score-bars" id="score-bars"></div>
+            <div class="flex flex-col gap-3 p-0" id="score-bars"></div>
 
             <!-- Chart -->
-            <div class="chart-canvas-wrap" style="padding-top:1.2rem;">
+            <div class="p-6 pt-5">
                 <canvas id="resultChart" style="max-height:280px;"></canvas>
             </div>
 
             <!-- AI Tavsiya -->
-            <div class="ai-section">
-                <div class="ai-section-title">
+            <div class="p-6 border-t border-slate-700">
+                <div class="flex items-center gap-2 text-xs font-bold tracking-wide uppercase text-slate-500 mb-4">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
                     AI tavsiyasi
                 </div>
-                <div class="ai-response-box" id="ai-response">
-                    <div class="typing-dots"><span></span><span></span><span></span></div>
+                <div class="bg-slate-900 border border-slate-700 rounded-lg p-5 text-sm leading-relaxed text-slate-400 min-h-20 ai-response-box" id="ai-response">
+                    <div class="flex gap-1 items-center p-1">
+                        <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce"></span>
+                        <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.2s"></span>
+                        <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.4s"></span>
+                    </div>
                 </div>
             </div>
 
-            <button class="reset-btn" onclick="resetTest()">↺ Testni qayta topshirish</button>
+            <button class="mx-6 mb-6 w-[calc(100%-3rem)] py-3 border border-slate-700 rounded-lg bg-transparent text-slate-400 font-sans text-sm cursor-pointer transition-all duration-200 hover:border-blue-500 hover:text-blue-500" onclick="resetTest()">↺ Testni qayta topshirish</button>
         </div>
 
         <!-- History table -->
         @if($history->count())
-        <div class="history-card">
-            <div class="history-card-header">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden animate-fade-in overflow-x-auto">
+            <div class="p-4 border-b border-slate-700 flex items-center gap-2 text-xs font-bold tracking-wide uppercase text-slate-500">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/><path d="M12 6v6l4 2"/></svg>
                 Oldingi natijalar ({{ $history->count() }} ta)
             </div>
-            <table class="htable">
+            <table class="w-full border-collapse text-sm">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Natijalar</th>
-                        <th>Eng yuqori</th>
-                        <th>Sana</th>
+                        <th class="p-3 text-left font-semibold text-slate-500 text-[10px] tracking-wide uppercase bg-slate-800/50 border-b border-slate-700">#</th>
+                        <th class="p-3 text-left font-semibold text-slate-500 text-[10px] tracking-wide uppercase bg-slate-800/50 border-b border-slate-700">Natijalar</th>
+                        <th class="p-3 text-left font-semibold text-slate-500 text-[10px] tracking-wide uppercase bg-slate-800/50 border-b border-slate-700">Eng yuqori</th>
+                        <th class="p-3 text-left font-semibold text-slate-500 text-[10px] tracking-wide uppercase bg-slate-800/50 border-b border-slate-700">Sana</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -443,22 +274,22 @@
                         $colors = ['R'=>'#f87171','I'=>'#5b8fff','A'=>'#c084fc','S'=>'#34d399','E'=>'#fbbf24','C'=>'#94a3b8'];
                     @endphp
                     <tr>
-                        <td style="color:var(--muted);font-size:.7rem;font-family:'JetBrains Mono',monospace;">{{ $i+1 }}</td>
-                        <td>
-                            <div class="mini-score">
+                        <td class="p-3 text-slate-500 text-[10px] font-mono">{{ $i+1 }}</td>
+                        <td class="p-3">
+                            <div class="flex gap-1">
                                 @foreach(['R','I','A','S','E','C'] as $k)
-                                <span class="mini-pill" style="background:{{ $colors[$k] }}22;color:{{ $colors[$k] }}">
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded font-mono" style="background:{{ $colors[$k] }}22;color:{{ $colors[$k] }}">
                                     {{ $k }}{{ $r->{strtolower($k).'_score'} }}%
                                 </span>
                                 @endforeach
                             </div>
                         </td>
-                        <td>
-                            <span class="mini-pill" style="background:{{ $colors[$top] }}22;color:{{ $colors[$top] }};font-size:.75rem;">
+                        <td class="p-3">
+                            <span class="text-[11px] font-bold px-1.5 py-0.5 rounded font-mono" style="background:{{ $colors[$top] }}22;color:{{ $colors[$top] }}">
                                 {{ $top }} — {{ $scores[$top] }}%
                             </span>
                         </td>
-                        <td style="font-size:.72rem;color:var(--muted);white-space:nowrap;">
+                        <td class="p-3 text-[11px] text-slate-500 whitespace-nowrap">
                             {{ $r->created_at->format('d.m.Y H:i') }}
                         </td>
                     </tr>
@@ -514,27 +345,33 @@ const typeDesc   = { R:'Amaliy, texnika', I:'Tadqiqot, fan', A:'San\'at, ijod', 
 let answeredCount = 0;
 let chart = null;
 
+// Initialize theme on load
+window.addEventListener('load', () => {
+    initTheme();
+    addThemeToggle();
+});
+
 // Build questions
 const list = document.getElementById('questions-list');
 questions.forEach((q, i) => {
     const div = document.createElement('div');
-    div.className = 'question-item';
+    div.className = 'question-item flex items-center justify-between gap-4 p-4 rounded-lg bg-slate-900 border border-slate-700 transition-all duration-200';
     div.id = `q-item-${i}`;
 
     // Detect type
     const type = Object.keys(groups).find(k => groups[k].includes(i));
-    const dot = `<span style="width:7px;height:7px;border-radius:50%;background:${typeColors[type]};display:inline-block;margin-right:4px;flex-shrink:0;"></span>`;
+    const dot = `<span class="w-1.5 h-1.5 rounded-full bg-red-400 inline-block mr-1 flex-shrink-0" style="background:${typeColors[type]}"></span>`;
 
     div.innerHTML = `
-        <span class="question-num">${String(i+1).padStart(2,'0')}</span>
+        <span class="question-num text-[10px] font-bold text-slate-500 mr-0.5 font-mono flex-shrink-0">${String(i+1).padStart(2,'0')}</span>
         ${dot}
-        <span class="question-text">${q}</span>
-        <div class="radio-group">
-            <label class="radio-pill" id="pill-yes-${i}" onclick="pickAnswer(${i},1)">
-                <input type="radio" name="q${i}" value="1">✓ Ha
+        <span class="question-text text-sm text-slate-400 leading-relaxed flex-1">${q}</span>
+        <div class="radio-group flex gap-1 flex-shrink-0 md:flex-row flex-col">
+            <label class="radio-pill flex items-center gap-1 px-3 py-1 rounded-full border border-slate-600 bg-slate-800 cursor-pointer text-xs text-slate-500 transition-all duration-180 hover:border-blue-500 hover:text-blue-500" id="pill-yes-${i}" onclick="pickAnswer(${i},1)">
+                <input type="radio" name="q${i}" value="1" class="hidden">✓ Ha
             </label>
-            <label class="radio-pill" id="pill-no-${i}" onclick="pickAnswer(${i},0)">
-                <input type="radio" name="q${i}" value="0">✗ Yo'q
+            <label class="radio-pill flex items-center gap-1 px-3 py-1 rounded-full border border-slate-600 bg-slate-800 cursor-pointer text-xs text-slate-500 transition-all duration-180 hover:border-blue-500 hover:text-blue-500" id="pill-no-${i}" onclick="pickAnswer(${i},0)">
+                <input type="radio" name="q${i}" value="0" class="hidden">✗ Yo'q
             </label>
         </div>`;
     list.appendChild(div);
@@ -549,10 +386,15 @@ function pickAnswer(i, val) {
 
     const yesP = document.getElementById(`pill-yes-${i}`);
     const noP  = document.getElementById(`pill-no-${i}`);
-    yesP.className = 'radio-pill' + (val === 1 ? ' selected-yes' : '');
-    noP.className  = 'radio-pill' + (val === 0 ? ' selected-no' : '');
+    yesP.className = val === 1 
+        ? 'radio-pill flex items-center gap-1 px-3 py-1 rounded-full border border-emerald-500 bg-emerald-500/10 cursor-pointer text-xs text-emerald-500 transition-all duration-180' 
+        : 'radio-pill flex items-center gap-1 px-3 py-1 rounded-full border border-slate-600 bg-slate-800 cursor-pointer text-xs text-slate-500 transition-all duration-180 hover:border-blue-500 hover:text-blue-500';
+    noP.className  = val === 0 
+        ? 'radio-pill flex items-center gap-1 px-3 py-1 rounded-full border border-slate-500 bg-slate-700/30 cursor-pointer text-xs text-slate-500 transition-all duration-180' 
+        : 'radio-pill flex items-center gap-1 px-3 py-1 rounded-full border border-slate-600 bg-slate-800 cursor-pointer text-xs text-slate-500 transition-all duration-180 hover:border-blue-500 hover:text-blue-500';
 
-    document.getElementById(`q-item-${i}`).classList.add('answered');
+    document.getElementById(`q-item-${i}`).classList.add('border-blue-500/30', 'bg-blue-500/4');
+    document.getElementById(`q-item-${i}`).classList.remove('border-slate-700', 'bg-slate-900');
 
     if (!wasAnswered) {
         answeredCount++;
@@ -571,9 +413,12 @@ function submitTest() {
         for (let i = 0; i < 24; i++) {
             if (!document.querySelector(`input[name="q${i}"]:checked`)) {
                 document.getElementById(`q-item-${i}`).scrollIntoView({ behavior:'smooth', block:'center' });
-                document.getElementById(`q-item-${i}`).style.borderColor = '#f87171';
+                const item = document.getElementById(`q-item-${i}`);
+                item.classList.remove('border-slate-700', 'bg-slate-900');
+                item.classList.add('border-red-400', 'bg-red-400/10');
                 setTimeout(() => {
-                    document.getElementById(`q-item-${i}`).style.borderColor = '';
+                    item.classList.remove('border-red-400', 'bg-red-400/10');
+                    item.classList.add('border-slate-700', 'bg-slate-900');
                 }, 1500);
                 break;
             }
@@ -595,7 +440,8 @@ function submitTest() {
 
 function showResult(scores) {
     const card = document.getElementById('result-card');
-    card.classList.add('visible');
+    card.classList.remove('hidden');
+    card.classList.add('block');
     card.scrollIntoView({ behavior:'smooth', block:'start' });
 
     // Score bars
@@ -604,13 +450,15 @@ function showResult(scores) {
     for (const t in scores) {
         const pct = Math.round(scores[t]);
         const row = document.createElement('div');
-        row.className = 'score-row';
+        row.className = 'score-row flex items-center gap-3';
         row.innerHTML = `
-            <div class="score-label"><strong>${t}</strong> ${typeDesc[t]}</div>
-            <div class="score-track">
-                <div class="score-fill" id="fill-${t}" style="background:${typeColors[t]};width:0%"></div>
+            <div class="score-label w-32 flex-shrink-0 text-xs text-slate-400">
+                <strong class="text-slate-100">${t}</strong> ${typeDesc[t]}
             </div>
-            <div class="score-pct" style="color:${typeColors[t]}">${pct}%</div>`;
+            <div class="score-track flex-1 h-2.5 bg-slate-900 rounded-full overflow-hidden">
+                <div class="score-fill h-full rounded-full transition-all duration-1000 ease-out" id="fill-${t}" style="background:${typeColors[t]};width:0%"></div>
+            </div>
+            <div class="score-pct w-9 text-right text-xs font-bold font-mono" style="color:${typeColors[t]}">${pct}%</div>`;
         barsEl.appendChild(row);
         setTimeout(() => { document.getElementById(`fill-${t}`).style.width = pct + '%'; }, 100);
     }
@@ -637,11 +485,11 @@ function showResult(scores) {
             scales: {
                 y: {
                     beginAtZero: true, max: 100,
-                    ticks: { callback: v => v+'%', color:'#4a5068', font:{size:11} },
+                    ticks: { callback: v => v+'%', color: '#64748b', font:{size:11} },
                     grid: { color:'rgba(255,255,255,.05)' }
                 },
                 x: {
-                    ticks: { color:'#c2c8d8', font:{size:11} },
+                    ticks: { color: '#cbd5e1', font:{size:11} },
                     grid: { display: false }
                 }
             }
@@ -654,7 +502,7 @@ function showResult(scores) {
 
 async function askAI(scores) {
     const aiBox = document.getElementById('ai-response');
-    aiBox.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+    aiBox.innerHTML = '<div class="flex gap-1 items-center p-1"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce"></span><span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.2s"></span><span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.4s"></span></div>';
 
     const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
 
@@ -715,7 +563,7 @@ Quyidagi formatda javob bering (o'zbek tilida, aniq va qisqacha):
         });
 
     } catch(err) {
-        aiBox.innerHTML = '<span style="color:#f87171">❌ Xatolik yuz berdi.</span>';
+        aiBox.innerHTML = '<span class="text-red-400">❌ Xatolik yuz berdi.</span>';
         console.error(err);
     }
 }
@@ -723,14 +571,18 @@ Quyidagi formatda javob bering (o'zbek tilida, aniq va qisqacha):
 function resetTest() {
     document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
     document.querySelectorAll('.radio-pill').forEach(p => {
-        p.className = 'radio-pill';
+        p.className = 'radio-pill flex items-center gap-1 px-3 py-1 rounded-full border border-slate-600 bg-slate-800 cursor-pointer text-xs text-slate-500 transition-all duration-180 hover:border-blue-500 hover:text-blue-500';
     });
-    document.querySelectorAll('.question-item').forEach(i => i.classList.remove('answered'));
+    document.querySelectorAll('.question-item').forEach(i => {
+        i.classList.remove('border-blue-500/30', 'bg-blue-500/4');
+        i.classList.add('border-slate-700', 'bg-slate-900');
+    });
     answeredCount = 0;
     updateProgress();
-    document.getElementById('result-card').classList.remove('visible');
+    document.getElementById('result-card').classList.add('hidden');
+    document.getElementById('result-card').classList.remove('block');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
 
-</x-minimal-layout>
+</x-layout>

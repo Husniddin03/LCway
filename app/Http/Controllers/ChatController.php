@@ -245,8 +245,7 @@ class ChatController extends Controller
 
     public function riasec()
     {
-        
-        return view('chat.riasec', compact('history'));
+        return view('chat.riasec');
     }
 
     public function saveRiasec(Request $request)

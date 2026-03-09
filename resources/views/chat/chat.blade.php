@@ -1,4 +1,4 @@
-<x-minimal-layout>
+<x-layout>
 <x-slot:title>AI Maslahatchi</x-slot:title>
 
 @php $maxMsgs = \App\Models\ChatSession::MAX_MESSAGES; @endphp
@@ -6,279 +6,13 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-:root {
-    --bg:     #0f1117;
-    --sb:     #161820;
-    --panel:  #1c1e2a;
-    --border: #2a2d3e;
-    --muted:  #4b5163;
-    --text:   #c9cdd8;
-    --bright: #eef0f6;
-    --accent: #5b8aff;
-    --grad:   linear-gradient(135deg,#5b8aff,#8b5cf6);
-    --green:  #34d399;
-    --red:    #f87171;
-    --sw:     280px;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-button { cursor: pointer; border: none; background: none; font-family: inherit; }
-textarea, input { font-family: inherit; }
-
-.app {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    height: 100vh;
-    display: flex;
-    overflow: hidden;
-    color: var(--text);
-}
-
-/* ════ SIDEBAR ════ */
-.sb {
-    width: var(--sw);
-    background: var(--sb);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    transition: transform .3s cubic-bezier(.4,0,.2,1);
-    z-index: 40;
-}
-@media (max-width: 768px) {
-    .sb { position: fixed; top: 0; left: 0; height: 100%; transform: translateX(-100%); }
-    .sb.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,.5); }
-    .ov { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 39; }
-    .ov.show { display: block; }
-}
-.sb-head {
-    padding: 1rem;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: .6rem;
-}
-.sb-logo {
-    width: 34px; height: 34px;
-    background: var(--grad);
-    border-radius: 9px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; flex-shrink: 0;
-}
-.sb-title { font-size: .88rem; font-weight: 700; color: var(--bright); }
-
-.new-btn {
-    margin: .75rem 1rem .25rem;
-    width: calc(100% - 2rem);
-    padding: .6rem 1rem;
-    display: flex; align-items: center; gap: .5rem;
-    background: rgba(91,138,255,.1);
-    border: 1px solid rgba(91,138,255,.22);
-    border-radius: 10px;
-    color: var(--accent);
-    font-size: .82rem; font-weight: 600;
-    transition: all .18s;
-}
-.new-btn:hover { background: rgba(91,138,255,.2); border-color: var(--accent); }
-
-.sb-label {
-    padding: .5rem 1rem .3rem;
-    font-size: .63rem; font-weight: 700;
-    letter-spacing: .1em; text-transform: uppercase;
-    color: var(--muted);
-}
-
-.sess-list {
-    flex: 1; overflow-y: auto;
-    padding: 0 .5rem .5rem;
-}
-.sess-list::-webkit-scrollbar { width: 4px; }
-.sess-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-.si {
-    padding: .65rem .75rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background .15s;
-    margin-bottom: 2px;
-    border: 1px solid transparent;
-}
-.si:hover { background: rgba(255,255,255,.04); }
-.si.active { background: rgba(91,138,255,.1); border-color: rgba(91,138,255,.2); }
-.si-title {
-    font-size: .8rem; font-weight: 500; color: var(--bright);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    margin-bottom: 3px;
-}
-.si-meta { display: flex; align-items: center; gap: .4rem; font-size: .67rem; color: var(--muted); }
-.si-prev {
-    font-size: .71rem; color: var(--muted);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    margin-top: 2px;
-}
-.bdg { font-size: .6rem; font-weight: 700; padding: 1px 5px; border-radius: 4px; }
-.b-a { background: rgba(52,211,153,.15); color: var(--green); }
-.b-c { background: rgba(255,255,255,.06); color: var(--muted); }
-
-/* ════ MAIN ════ */
-.main { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
-
-.topbar {
-    padding: .75rem 1.25rem;
-    background: var(--panel);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: .75rem;
-    flex-shrink: 0;
-}
-.tb-tog { display: none; color: var(--text); padding: 4px; align-items: center; }
-@media (max-width: 768px) { .tb-tog { display: flex; } }
-.tb-info { flex: 1; min-width: 0; }
-.tb-title {
-    font-size: .9rem; font-weight: 600; color: var(--bright);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.tb-sub { font-size: .72rem; color: var(--muted); margin-top: 1px; }
-.prog-wrap { display: flex; align-items: center; gap: .5rem; width: 110px; flex-shrink: 0; }
-.prog-bar { flex: 1; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
-.prog-fill { height: 100%; background: var(--grad); border-radius: 2px; transition: width .3s; }
-.prog-txt { font-size: .65rem; color: var(--muted); white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
-
-.home-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 11px;
-    background: linear-gradient(135deg, rgba(91,138,255,.08), rgba(139,92,246,.08));
-    border: 1px solid rgba(91,138,255,.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all .25s cubic-bezier(.4,0,.2,1);
-    color: var(--accent);
-    margin-left: .75rem;
-    position: relative;
-    overflow: hidden;
-}
-.home-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--grad);
-    opacity: 0;
-    transition: opacity .25s;
-    border-radius: 10px;
-}
-.home-btn:hover {
-    transform: scale(1.08) translateY(-1px);
-    border-color: var(--accent);
-    box-shadow: 0 4px 16px rgba(91,138,255,.25);
-}
-.home-btn:hover::before {
-    opacity: .1;
-}
-.home-btn:active {
-    transform: scale(1.02) translateY(0);
-    transition: all .1s;
-}
-.home-btn svg {
-    width: 20px;
-    height: 20px;
-    position: relative;
-    z-index: 1;
-    transition: transform .25s;
-}
-.home-btn:hover svg {
-    transform: scale(1.1);
-}
-
-.full-banner {
-    display: none;
-    padding: .5rem 1.25rem;
-    background: rgba(248,113,113,.08);
-    border-bottom: 1px solid rgba(248,113,113,.15);
-    font-size: .78rem; color: var(--red);
-    align-items: center; gap: .5rem;
-    flex-shrink: 0;
-}
-.full-banner.show { display: flex; }
-
-/* ════ MESSAGES ════ */
-.msgs {
-    flex: 1; overflow-y: auto;
-    padding: 1.5rem 1.25rem;
-    display: flex; flex-direction: column; gap: .85rem;
-    scroll-behavior: smooth;
-}
-.msgs::-webkit-scrollbar { width: 5px; }
-.msgs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-.empty-state {
-    flex: 1;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center; gap: .8rem;
-    padding: 2rem;
-    animation: fadeUp .4s ease;
-}
-.empty-icon {
-    width: 64px; height: 64px;
-    background: linear-gradient(135deg, rgba(91,138,255,.12), rgba(139,92,246,.12));
-    border: 1px solid rgba(91,138,255,.18);
-    border-radius: 20px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px;
-}
-.empty-state h3 { font-size: 1rem; font-weight: 600; color: var(--bright); }
-.empty-state p { font-size: .82rem; color: var(--muted); max-width: 300px; line-height: 1.65; }
-.chips { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; margin-top: .25rem; }
-.chip {
-    padding: .4rem .9rem;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    font-size: .75rem; color: var(--text);
-    cursor: pointer; transition: all .15s;
-}
-.chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(91,138,255,.06); }
-
-/* Bubbles */
-.msg { display: flex; gap: .65rem; animation: fadeUp .25s ease; }
-.msg.user { flex-direction: row-reverse; }
-.avatar {
-    width: 32px; height: 32px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: .72rem; font-weight: 700; flex-shrink: 0;
-    font-family: 'JetBrains Mono', monospace;
-}
-.msg.user .avatar { background: var(--grad); color: #fff; }
-.msg.ai   .avatar { background: var(--panel); border: 1px solid var(--border); color: var(--accent); }
-.msg-body { max-width: 74%; display: flex; flex-direction: column; }
-.msg.user .msg-body { align-items: flex-end; }
-.bubble { padding: .8rem 1rem; border-radius: 14px; font-size: .86rem; line-height: 1.7; }
-.msg.user .bubble { background: var(--grad); color: #fff; border-bottom-right-radius: 4px; }
-.msg.ai   .bubble { background: var(--panel); border: 1px solid var(--border); color: var(--text); border-bottom-left-radius: 4px; }
-.msg-time { font-size: .64rem; color: var(--muted); margin-top: 4px; padding: 0 2px; }
-
-/* Typing */
-.dots { display: flex; gap: 4px; align-items: center; padding: 2px 0; }
-.dots span {
-    width: 6px; height: 6px;
-    background: var(--accent); border-radius: 50%;
-    animation: bounce 1.2s ease infinite;
-}
-.dots span:nth-child(2) { animation-delay: .2s; }
-.dots span:nth-child(3) { animation-delay: .4s; }
-@keyframes bounce { 0%,80%,100%{transform:translateY(0);opacity:.4} 40%{transform:translateY(-6px);opacity:1} }
-
-/* AI markdown */
 .ai-md p   { margin-bottom: .5rem; }
 .ai-md p:last-child { margin-bottom: 0; }
-.ai-md h1, .ai-md h2, .ai-md h3 { color: var(--bright); margin: .8rem 0 .35rem; font-size: .95rem; }
+.ai-md h1, .ai-md h2, .ai-md h3 { color: #f1f5f9; margin: .8rem 0 .35rem; font-size: .95rem; }
 .ai-md ul, .ai-md ol { margin: .35rem 0 .35rem 1.25rem; }
 .ai-md li  { margin-bottom: .3rem; }
-.ai-md strong { color: var(--bright); }
-.ai-md a   { color: var(--accent); text-decoration: underline; }
+.ai-md strong { color: #f1f5f9; }
+.ai-md a   { color: #3b82f6; text-decoration: underline; }
 .ai-md code {
     font-family: 'JetBrains Mono', monospace;
     font-size: .79rem;
@@ -288,129 +22,108 @@ textarea, input { font-family: inherit; }
 }
 .ai-md pre {
     background: rgba(0,0,0,.4);
-    border: 1px solid var(--border);
+    border: 1px solid #374151;
     border-radius: 8px; padding: .85rem;
     overflow-x: auto; margin: .5rem 0;
 }
-.ai-md pre code { background: none; padding: 0; color: var(--text); }
+.ai-md pre code { background: none; padding: 0; color: #d1d5db; }
 .ai-md table { width: 100%; border-collapse: collapse; font-size: .82rem; margin: .5rem 0; }
-.ai-md th, .ai-md td { padding: .4rem .65rem; border: 1px solid var(--border); text-align: left; }
-.ai-md th { background: rgba(255,255,255,.04); color: var(--bright); }
-.ai-md hr { border: none; border-top: 1px solid var(--border); margin: .75rem 0; }
+.ai-md th, .ai-md td { padding: .4rem .65rem; border: 1px solid #374151; text-align: left; }
+.ai-md th { background: rgba(255,255,255,.04); color: #f9fafb; }
+.ai-md hr { border: none; border-top: 1px solid #374151; margin: .75rem 0; }
 
-/* Markaz karta (AI javobida) */
 .center-tag {
     display: inline-block;
     padding: 2px 8px;
-    background: rgba(91,138,255,.12);
-    border: 1px solid rgba(91,138,255,.2);
+    background: rgba(59,130,246,.12);
+    border: 1px solid rgba(59,130,246,.2);
     border-radius: 6px;
-    font-size: .72rem; color: var(--accent);
+    font-size: .72rem; color: #3b82f6;
     margin: 2px 2px 2px 0;
 }
 
-/* ════ INPUT ════ */
-.inp-area {
-    padding: .9rem 1.25rem 1rem;
-    background: var(--panel);
-    border-top: 1px solid var(--border);
-    flex-shrink: 0;
-}
-.inp-row {
-    display: flex; gap: .6rem; align-items: flex-end;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: .6rem .6rem .6rem .9rem;
-    transition: border-color .2s;
-}
-.inp-row:focus-within { border-color: var(--accent); }
-.inp-ta {
-    flex: 1; background: none; border: none; outline: none;
-    color: var(--bright); font-size: .875rem; line-height: 1.5;
-    resize: none; min-height: 24px; max-height: 130px; padding: 0;
-}
-.inp-ta::placeholder { color: var(--muted); }
-.send-btn {
-    width: 36px; height: 36px; border-radius: 9px;
-    background: var(--grad);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; transition: all .18s;
-    box-shadow: 0 2px 10px rgba(91,138,255,.28);
-}
-.send-btn:hover:not(:disabled) { transform: scale(1.08); box-shadow: 0 4px 16px rgba(91,138,255,.42); }
-.send-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
-.send-btn svg { color: #fff; }
-.inp-foot {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-top: .45rem; padding: 0 .2rem;
-    font-size: .68rem; color: var(--muted);
-}
-.inp-foot kbd {
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: 3px; padding: 1px 4px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .65rem; color: var(--text);
-}
-
-/* Searching indicator */
-.search-indicator {
-    display: none;
-    padding: .35rem .75rem;
-    background: rgba(91,138,255,.08);
-    border: 1px solid rgba(91,138,255,.15);
-    border-radius: 8px;
-    font-size: .75rem; color: var(--accent);
-    align-items: center; gap: .4rem;
-    margin-bottom: .5rem;
-    animation: fadeUp .2s ease;
-}
-.search-indicator.show { display: flex; }
-.search-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: bounce 1s ease infinite; }
-.search-dot:nth-child(2) { animation-delay: .15s; }
-.search-dot:nth-child(3) { animation-delay: .3s; }
-
 @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* Light mode styles */
+.light-mode .bg-slate-950 { background-color: #ffffff !important; }
+.light-mode .bg-slate-800 { background-color: #f8fafc !important; }
+.light-mode .bg-slate-800\/50 { background-color: rgba(248,250,252,0.5) !important; }
+.light-mode .bg-slate-900 { background-color: #ffffff !important; }
+.light-mode .bg-slate-700\/10 { background-color: rgba(241,245,249,0.1) !important; }
+.light-mode .bg-slate-700\/30 { background-color: rgba(241,245,249,0.3) !important; }
+.light-mode .bg-slate-800\/50 { background-color: rgba(248,250,252,0.5) !important; }
+
+.light-mode .text-slate-300 { color: #475569 !important; }
+.light-mode .text-slate-100 { color: #1e293b !important; }
+.light-mode .text-slate-500 { color: #64748b !important; }
+.light-mode .text-slate-400 { color: #64748b !important; }
+
+.light-mode .border-slate-700 { border-color: #e2e8f0 !important; }
+.light-mode .border-slate-600 { border-color: #cbd5e1 !important; }
+.light-mode .border-slate-500\/20 { border-color: rgba(59,130,246,0.2) !important; }
+
+.light-mode .bg-blue-500\/10 { background-color: rgba(59,130,246,0.1) !important; }
+.light-mode .bg-blue-500\/20 { background-color: rgba(59,130,246,0.2) !important; }
+.light-mode .text-blue-500 { color: #3b82f6 !important; }
+.light-mode .border-blue-500\/22 { border-color: rgba(59,130,246,0.22) !important; }
+.light-mode .border-blue-500 { border-color: #3b82f6 !important; }
+
+.light-mode .bg-emerald-500\/15 { background-color: rgba(16,185,129,0.15) !important; }
+.light-mode .text-emerald-500 { color: #10b981 !important; }
+
+.light-mode .bg-red-500\/8 { background-color: rgba(239,68,68,0.08) !important; }
+.light-mode .border-red-500\/15 { border-color: rgba(239,68,68,0.15) !important; }
+.light-mode .text-red-400 { color: #ef4444 !important; }
+
+.light-mode .bg-gradient-to-r { 
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
+}
+
+/* Dark mode - default (slate colors already work) */
+.dark-mode .ai-md h1, .dark-mode .ai-md h2, .dark-mode .ai-md h3 { color: #f1f5f9; }
+.dark-mode .ai-md strong { color: #f1f5f9; }
+.dark-mode .ai-md a { color: #3b82f6; }
+.dark-mode .center-tag { background: rgba(59,130,246,.12); border: 1px solid rgba(59,130,246,.2); color: #3b82f6; }
 </style>
 
 {{-- Overlay --}}
-<div class="ov" id="ov" onclick="closeSB()"></div>
+<div class="hidden fixed inset-0 bg-black/55 z-[39] md:hidden" id="ov" onclick="closeSB()"></div>
 
-<div class="app">
+<div class="font-inter bg-slate-950 h-screen flex overflow-hidden text-slate-300 dark-mode" id="chat-container">
 
 {{-- ═══════════════ SIDEBAR ═══════════════ --}}
-<aside class="sb" id="sb">
-    <div class="sb-head">
-        <div class="sb-logo">🤖</div>
-        <span class="sb-title">AI Maslahatchi</span>
+<aside class="w-[280px] bg-slate-800 border-r border-slate-700 flex flex-col flex-shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] z-40 md:relative fixed top-0 left-0 h-full -translate-x-full md:translate-x-0" id="sb">
+    <div class="p-4 border-b border-slate-700 flex items-center gap-2.5">
+        <div class="w-8.5 h-8.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-base flex-shrink-0">🤖</div>
+        <span class="text-sm font-bold text-slate-100">AI Maslahatchi</span>
     </div>
 
-    <button class="new-btn" onclick="newChat()">
+    <button class="mx-4 my-3 w-[calc(100%-2rem)] px-4 py-2.5 flex items-center gap-2 bg-blue-500/10 border border-blue-500/22 rounded-lg text-blue-500 text-sm font-semibold transition-all duration-180 hover:bg-blue-500/20 hover:border-blue-500" onclick="newChat()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
         Yangi suhbat
     </button>
 
-    <div class="sb-label">Suhbatlar tarixi</div>
+    <div class="px-4 py-2 text-[10px] font-bold tracking-widest uppercase text-slate-500">Suhbatlar tarixi</div>
 
-    <div class="sess-list" id="sess-list">
+    <div class="flex-1 overflow-y-auto p-2" id="sess-list">
         @forelse($sessions as $s)
-        <div class="si {{ $currentSession?->id == $s->id ? 'active' : '' }}"
+        <div class="p-2.5 px-3 rounded-lg cursor-pointer transition-colors duration-150 mb-0.5 border border-transparent hover:bg-white/4 {{ $currentSession?->id == $s->id ? 'bg-blue-500/10 border-blue-500/20' : '' }}"
              id="si-{{ $s->id }}"
              onclick="loadSess({{ $s->id }})">
-            <div class="si-title">{{ $s->title }}</div>
-            <div class="si-meta">
-                <span class="bdg {{ $s->status === 'active' ? 'b-a' : 'b-c' }}">
+            <div class="text-xs font-medium text-slate-100 truncate mb-1">{{ $s->title }}</div>
+            <div class="flex items-center gap-1 text-[10px] text-slate-500">
+                <span class="text-[9px] font-bold px-1 py-0.5 rounded {{ $s->status === 'active' ? 'bg-emerald-500/15 text-emerald-500' : 'bg-white/6 text-slate-500' }}">
                     {{ $s->status === 'active' ? 'Faol' : 'Yopiq' }}
                 </span>
                 <span>{{ $s->message_count }}/{{ $maxMsgs }}</span>
                 <span>{{ $s->created_at->format('d.m') }}</span>
             </div>
             @if($s->lastMessage)
-            <div class="si-prev">{{ Str::limit($s->lastMessage->content, 48) }}</div>
+            <div class="text-[11px] text-slate-500 truncate mt-0.5">{{ Str::limit($s->lastMessage->content, 48) }}</div>
             @endif
         </div>
         @empty
-        <div id="sess-empty" style="padding:1.5rem 1rem;text-align:center;font-size:.78rem;color:var(--muted)">
+        <div id="sess-empty" class="p-6 text-center text-xs text-slate-500">
             Hali suhbat yo'q
         </div>
         @endforelse
@@ -418,82 +131,75 @@ textarea, input { font-family: inherit; }
 </aside>
 
 {{-- ═══════════════ MAIN ═══════════════ --}}
-<div class="main">
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-    {{-- Topbar --}}
-    <div class="topbar">
-        <button class="tb-tog" onclick="openSB()">
+    <!-- Topbar -->
+    <div class="p-3 bg-slate-800/50 border-b border-slate-700 flex items-center gap-3 flex-shrink-0">
+        <button class="flex text-slate-300 p-1 items-center md:hidden" onclick="openSB()">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="tb-info">
-            <div class="tb-title" id="tb-title">{{ $currentSession?->title ?? 'AI Maslahatchi' }}</div>
-            <div class="tb-sub" id="tb-sub">
+        <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold text-slate-100 truncate" id="tb-title">{{ $currentSession?->title ?? 'AI Maslahatchi' }}</div>
+            <div class="text-xs text-slate-500 mt-0.5" id="tb-sub">
                 {{ $currentSession ? ($currentSession->message_count . '/' . $maxMsgs . ' xabar') : 'Yangi suhbat boshlang' }}
             </div>
         </div>
-        <div class="prog-wrap">
-            <div class="prog-bar">
-                <div class="prog-fill" id="prog-fill"
-                     style="width:{{ $currentSession ? round($currentSession->message_count / $maxMsgs * 100) : 0 }}%">
-                </div>
+        <div class="flex items-center gap-2 w-28 flex-shrink-0">
+            <div class="flex-1 h-0.5 bg-slate-700 rounded-sm overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-sm transition-all duration-300" id="prog-fill"
+                     style="width:{{ $currentSession ? round($currentSession->message_count / $maxMsgs * 100) : 0 }}%"></div>
             </div>
-            <span class="prog-txt" id="prog-txt">{{ $currentSession?->message_count ?? 0 }}/{{ $maxMsgs }}</span>
+            <span class="text-[10px] text-slate-500 whitespace-nowrap font-mono" id="prog-txt">{{ $currentSession?->message_count ?? 0 }}/{{ $maxMsgs }}</span>
         </div>
-        <button class="home-btn" onclick="window.location.href='{{route('index')}}'" title="Asosiy sahifaga qaytish">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9,22 9,12 15,12 15,22"/>
-            </svg>
-        </button>
     </div>
 
-    {{-- To'lganlik banneri --}}
-    <div class="full-banner {{ $currentSession?->isFull() ? 'show' : '' }}" id="full-banner">
+    <!-- To'lganlik banneri -->
+    <div class="hidden p-2 bg-red-500/8 border-b border-red-500/15 text-sm text-red-400 items-center gap-2 flex-shrink-0 {{ $currentSession?->isFull() ? 'flex' : '' }}" id="full-banner">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         Bu suhbat to'ldi ({{ $maxMsgs }} xabar).
-        <button onclick="newChat()" style="color:var(--accent);text-decoration:underline;font-size:.78rem;margin-left:.25rem;">
+        <button onclick="newChat()" class="text-blue-500 underline text-xs ml-1">
             Yangi suhbat ochish →
         </button>
     </div>
 
     {{-- Messages --}}
-    <div class="msgs" id="msgs">
+    <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-3.5 scroll-smooth" id="msgs">
 
         {{-- Qidiruv indikatori --}}
-        <div class="search-indicator" id="search-indicator">
-            <div class="search-dot"></div>
-            <div class="search-dot"></div>
-            <div class="search-dot"></div>
+        <div class="hidden p-2 px-3 bg-blue-500/8 border border-blue-500/15 rounded-lg text-sm text-blue-500 items-center gap-2 mb-2 animate-fadeUp" id="search-indicator">
+            <div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce"></div>
+            <div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.15s"></div>
+            <div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.3s"></div>
             <span id="search-text">Markazlar qidirilmoqda...</span>
         </div>
 
         @if($messages->isEmpty())
-        <div class="empty-state" id="empty-state">
-            <div class="empty-icon">💬</div>
-            <h3>Salom! Men AI maslahatchi</h3>
-            <p>O'quv markazlar, kurslar va ta'lim haqida savol bering</p>
-            <div class="chips">
-                <button class="chip" onclick="fillIn(this.textContent)">Toshkentda matematika kurslari</button>
-                <button class="chip" onclick="fillIn(this.textContent)">Ingliz tili o'rganmoqchiman</button>
-                <button class="chip" onclick="fillIn(this.textContent)">Dasturlash kurslari qayerda?</button>
-                <button class="chip" onclick="fillIn(this.textContent)">Arzon o'quv markazlar</button>
-                <button class="chip" onclick="fillIn(this.textContent)">Samarqandda IT kurslari</button>
-                <button class="chip" onclick="fillIn(this.textContent)">Qaysi o'quv markaz yaxshi?</button>
+        <div class="flex-1 flex flex-col items-center justify-center text-center gap-3 p-8 animate-fadeUp" id="empty-state">
+            <div class="w-16 h-16 bg-gradient-to-r from-blue-500/12 to-purple-500/12 border border-blue-500/18 rounded-xl flex items-center justify-center text-2xl">💬</div>
+            <h3 class="text-base font-semibold text-slate-100">Salom! Men AI maslahatchi</h3>
+            <p class="text-xs text-slate-500 max-w-[300px] leading-relaxed">O'quv markazlar, kurslar va ta'lim haqida savol bering</p>
+            <div class="flex flex-wrap gap-1 justify-center mt-1">
+                <button class="px-3.5 py-1.5 bg-slate-800/50 border border-slate-600 rounded-full text-xs text-slate-300 cursor-pointer transition-all duration-150 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/6" onclick="fillIn(this.textContent)">Toshkentda matematika kurslari</button>
+                <button class="px-3.5 py-1.5 bg-slate-800/50 border border-slate-600 rounded-full text-xs text-slate-300 cursor-pointer transition-all duration-150 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/6" onclick="fillIn(this.textContent)">Ingliz tili o'rganmoqchiman</button>
+                <button class="px-3.5 py-1.5 bg-slate-800/50 border border-slate-600 rounded-full text-xs text-slate-300 cursor-pointer transition-all duration-150 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/6" onclick="fillIn(this.textContent)">Dasturlash kurslari qayerda?</button>
+                <button class="px-3.5 py-1.5 bg-slate-800/50 border border-slate-600 rounded-full text-xs text-slate-300 cursor-pointer transition-all duration-150 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/6" onclick="fillIn(this.textContent)">Arzon o'quv markazlar</button>
+                <button class="px-3.5 py-1.5 bg-slate-800/50 border border-slate-600 rounded-full text-xs text-slate-300 cursor-pointer transition-all duration-150 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/6" onclick="fillIn(this.textContent)">Samarqandda IT kurslari</button>
+                <button class="px-3.5 py-1.5 bg-slate-800/50 border border-slate-600 rounded-full text-xs text-slate-300 cursor-pointer transition-all duration-150 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/6" onclick="fillIn(this.textContent)">Qaysi o'quv markaz yaxshi?</button>
             </div>
         </div>
         @else
         @foreach($messages as $m)
-        <div class="msg {{ $m->role === 'user' ? 'user' : 'ai' }}">
-            <div class="avatar">{{ $m->role === 'user' ? 'S' : 'AI' }}</div>
-            <div class="msg-body">
-                <div class="bubble">
+        <div class="flex gap-2.5 animate-fadeUp {{ $m->role === 'user' ? 'flex-row-reverse' : '' }}">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 font-mono {{ $m->role === 'user' ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' : 'bg-slate-800/50 border border-slate-600 text-blue-500' }}">{{ $m->role === 'user' ? 'S' : 'AI' }}</div>
+            <div class="max-w-[74%] flex flex-col {{ $m->role === 'user' ? 'items-end' : '' }}">
+                <div class="px-4 py-3 rounded-[14px] text-sm leading-relaxed {{ $m->role === 'user' ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-br-sm' : 'bg-slate-800/50 border border-slate-600 text-slate-300 rounded-bl-sm' }}">
                     @if($m->role === 'assistant')
                         <div class="ai-md">{!! \Illuminate\Support\Str::markdown($m->content) !!}</div>
                     @else
                         {{ $m->content }}
                     @endif
                 </div>
-                <div class="msg-time">{{ $m->created_at->format('H:i') }}</div>
+                <div class="text-[10px] text-slate-500 mt-1 px-0.5">{{ $m->created_at->format('H:i') }}</div>
             </div>
         </div>
         @endforeach
@@ -501,24 +207,24 @@ textarea, input { font-family: inherit; }
     </div>
 
     {{-- Input --}}
-    <div class="inp-area">
-        <div class="inp-row">
+    <div class="p-4 bg-slate-800/50 border-t border-slate-600 flex-shrink-0">
+        <div class="flex gap-1.5 items-end bg-slate-950 border border-slate-600 rounded-[14px] px-3.5 py-2.5 transition-colors duration-200 focus-within:border-blue-500">
             <textarea
                 id="inp"
-                class="inp-ta"
+                class="flex-1 bg-transparent border-none outline-none text-slate-100 text-sm leading-relaxed resize-none min-6 max-32 p-0"
                 placeholder="Savol yozing... (masalan: Toshkentda ingliz tili kursi)"
                 rows="1"
             ></textarea>
-            <button class="send-btn" id="send-btn" onclick="send()">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <button class="w-9 h-9 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0 transition-all duration-180 shadow-lg shadow-blue-500/28 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/42 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none" id="send-btn" onclick="send()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
                     <line x1="22" y1="2" x2="11" y2="13"/>
                     <polygon points="22 2 15 22 11 13 2 9 22 2"/>
                 </svg>
             </button>
         </div>
-        <div class="inp-foot">
-            <span><kbd>Enter</kbd> yuborish · <kbd>Shift+Enter</kbd> yangi qator</span>
-            <span id="char-count" style="font-family:'JetBrains Mono',monospace">0/2000</span>
+        <div class="flex justify-between items-center mt-2 px-0.5 text-xs text-slate-500">
+            <span><kbd class="bg-slate-950 border border-slate-600 rounded px-1 py-0.5 font-mono text-[9px] text-slate-300">Enter</kbd> yuborish · <kbd class="bg-slate-950 border border-slate-600 rounded px-1 py-0.5 font-mono text-[9px] text-slate-300">Shift+Enter</kbd> yangi qator</span>
+            <span id="char-count" class="font-mono">0/2000</span>
         </div>
     </div>
 
@@ -544,8 +250,84 @@ const MODEL_MAIN   = 'deepseek/deepseek-r1';        // Asosiy — chuqur fikrlas
 const MODEL_FAST   = 'deepseek/deepseek-chat';      // Tez — keyword extraction
 
 /* ═══════════════════════════════════════════
-   HOLAT
+   THEME MANAGEMENT
 ═══════════════════════════════════════════ */
+function initTheme() {
+    const container = document.getElementById('chat-container');
+    const saved = localStorage.getItem('chat-theme');
+    
+    // Check if user has saved preference
+    if (saved === 'light') {
+        container.classList.remove('dark-mode');
+        container.classList.add('light-mode');
+    } else {
+        container.classList.remove('light-mode');
+        container.classList.add('dark-mode');
+        localStorage.setItem('chat-theme', 'dark'); // default to dark
+    }
+}
+
+function toggleTheme() {
+    const container = document.getElementById('chat-container');
+    const isDark = container.classList.contains('dark-mode');
+    
+    if (isDark) {
+        container.classList.remove('dark-mode');
+        container.classList.add('light-mode');
+        localStorage.setItem('chat-theme', 'light');
+    } else {
+        container.classList.remove('light-mode');
+        container.classList.add('dark-mode');
+        localStorage.setItem('chat-theme', 'dark');
+    }
+}
+
+// Add theme toggle button
+function addThemeToggle() {
+    const topbar = document.querySelector('.p-3.bg-slate-800\/50');
+    if (!topbar) return;
+    
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'w-8 h-8 rounded-lg bg-slate-700\/50 border border-slate-600 flex items-center justify-center flex-shrink-0 transition-all duration-200 hover:bg-slate-600\/50 hover:border-slate-500';
+    toggleBtn.onclick = toggleTheme;
+    toggleBtn.title = 'Tungi/Kunduzgi rejim';
+    toggleBtn.innerHTML = `
+        <svg class="w-4 h-4 text-slate-300 dark-mode-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        </svg>
+        <svg class="w-4 h-4 text-slate-300 light-mode-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+    `;
+    
+    // Insert before the last element in topbar
+    const lastChild = topbar.lastElementChild;
+    topbar.insertBefore(toggleBtn, lastChild);
+    
+    // Update icon based on current theme
+    updateThemeIcon();
+}
+
+function updateThemeIcon() {
+    const container = document.getElementById('chat-container');
+    const darkIcon = document.querySelector('.dark-mode-icon');
+    const lightIcon = document.querySelector('.light-mode-icon');
+    
+    if (container.classList.contains('dark-mode')) {
+        darkIcon?.classList.remove('hidden');
+        lightIcon?.classList.add('hidden');
+    } else {
+        darkIcon?.classList.add('hidden');
+        lightIcon?.classList.remove('hidden');
+    }
+}
+
+// Override the original toggleTheme function to also update icon
+const originalToggleTheme = toggleTheme;
+toggleTheme = function() {
+    originalToggleTheme();
+    updateThemeIcon();
+};
 let currentSID   = {{ $currentSession?->id ?? 'null' }};
 let sessionFull  = {{ $currentSession?->isFull() ? 'true' : 'false' }};
 let msgCount     = {{ $currentSession?->message_count ?? 0 }};
@@ -563,12 +345,16 @@ localHistory.push({
    SIDEBAR
 ═══════════════════════════════════════════ */
 function openSB()  {
-    document.getElementById('sb').classList.add('open');
-    document.getElementById('ov').classList.add('show');
+    document.getElementById('sb').classList.remove('-translate-x-full');
+    document.getElementById('sb').classList.add('translate-x-0', 'shadow-2xl');
+    document.getElementById('ov').classList.remove('hidden');
+    document.getElementById('ov').classList.add('block');
 }
 function closeSB() {
-    document.getElementById('sb').classList.remove('open');
-    document.getElementById('ov').classList.remove('show');
+    document.getElementById('sb').classList.add('-translate-x-full');
+    document.getElementById('sb').classList.remove('translate-x-0', 'shadow-2xl');
+    document.getElementById('ov').classList.add('hidden');
+    document.getElementById('ov').classList.remove('block');
 }
 
 /* ═══════════════════════════════════════════
@@ -587,8 +373,15 @@ async function loadSess(id) {
     if (id === currentSID) return;
 
     // Active state
-    document.querySelectorAll('.si').forEach(e => e.classList.remove('active'));
-    document.getElementById('si-' + id)?.classList.add('active');
+    document.querySelectorAll('.group\/\[280px\] > div > div > div').forEach(e => {
+        e.classList.remove('bg-blue-500/10', 'border-blue-500/20');
+        e.classList.add('border-transparent', 'hover:bg-white\/4');
+    });
+    const activeEl = document.getElementById('si-' + id);
+    if (activeEl) {
+        activeEl.classList.remove('border-transparent', 'hover:bg-white/4');
+        activeEl.classList.add('bg-blue-500/10', 'border-blue-500/20');
+    }
 
     const d = await api(URL_SESSION + '/' + id);
     if (!d.ok) return;
@@ -609,9 +402,9 @@ async function loadSess(id) {
 
     // Qidiruv indikatorini qayta qo'shish
     const ind = document.createElement('div');
-    ind.className = 'search-indicator';
+    ind.className = 'hidden p-2 px-3 bg-blue-500/8 border border-blue-500/15 rounded-lg text-sm text-blue-500 items-center gap-2 mb-2 animate-fadeUp';
     ind.id = 'search-indicator';
-    ind.innerHTML = `<div class="search-dot"></div><div class="search-dot"></div><div class="search-dot"></div><span id="search-text">Markazlar qidirilmoqda...</span>`;
+    ind.innerHTML = `<div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce"></div><div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.15s"></div><div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.3s"></div><span id="search-text">Markazlar qidirilmoqda...</span>`;
     box.appendChild(ind);
 
     if (d.messages.length === 0) {
@@ -705,10 +498,11 @@ async function searchCenters(kw) {
 function showSearchIndicator(text) {
     const el = document.getElementById('search-indicator');
     const tx = document.getElementById('search-text');
-    if (el) { el.classList.add('show'); if (tx) tx.textContent = text; }
+    if (el) { el.classList.remove('hidden'); el.classList.add('flex'); if (tx) tx.textContent = text; }
 }
 function hideSearchIndicator() {
-    document.getElementById('search-indicator')?.classList.remove('show');
+    const el = document.getElementById('search-indicator');
+    if (el) { el.classList.add('hidden'); el.classList.remove('flex'); }
 }
 
 /* ═══════════════════════════════════════════
@@ -869,27 +663,33 @@ function appendMsg(role, content, time, isStreaming = false) {
     const box  = document.getElementById('msgs');
     const t    = time || new Date().toLocaleTimeString('uz', { hour: '2-digit', minute: '2-digit' });
     const div  = document.createElement('div');
-    div.className = 'msg ' + role;
-
-    if (role === 'user') {
-        div.innerHTML = `
-            <div class="avatar">S</div>
-            <div class="msg-body">
-                <div class="bubble">${esc(content)}</div>
-                <div class="msg-time">${t}</div>
-            </div>`;
+    div.className = `flex gap-2.5 animate-fadeUp ${role === 'user' ? 'flex-row-reverse' : ''}`;
+    
+    const avatar = document.createElement('div');
+    avatar.className = `w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 font-mono ${role === 'user' ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' : 'bg-slate-800/50 border border-slate-600 text-blue-500'}`;
+    avatar.textContent = role === 'user' ? 'S' : 'AI';
+    
+    const body = document.createElement('div');
+    body.className = `max-w-[74%] flex flex-col ${role === 'user' ? 'items-end' : ''}`;
+    
+    const bubble = document.createElement('div');
+    bubble.className = `px-4 py-3 rounded-[14px] text-sm leading-relaxed ${role === 'user' ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-br-sm' : 'bg-slate-800/50 border border-slate-600 text-slate-300 rounded-bl-sm'}`;
+    if (role === 'assistant') {
+        bubble.innerHTML = `<div class="ai-md">${isStreaming ? '' : marked.parse(content)}</div>`;
     } else {
-        div.innerHTML = `
-            <div class="avatar">AI</div>
-            <div class="msg-body">
-                <div class="bubble">
-                    <div class="ai-md">${isStreaming ? '' : marked.parse(content)}</div>
-                </div>
-                <div class="msg-time">${t}</div>
-            </div>`;
+        bubble.textContent = content;
     }
-
+    
+    const msgTime = document.createElement('div');
+    msgTime.className = 'text-[10px] text-slate-500 mt-1 px-0.5';
+    msgTime.textContent = time ? (new Date(time)).toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }) : (new Date()).toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
+    
+    body.appendChild(bubble);
+    body.appendChild(msgTime);
+    div.appendChild(avatar);
+    div.appendChild(body);
     box.appendChild(div);
+    
     scrollBot();
     return div;
 }
@@ -897,16 +697,24 @@ function appendMsg(role, content, time, isStreaming = false) {
 function appendTyping() {
     const box = document.getElementById('msgs');
     const div = document.createElement('div');
-    div.className = 'msg ai';
-    div.id = 'typing-indicator';
-    div.innerHTML = `
-        <div class="avatar">AI</div>
-        <div class="msg-body">
-            <div class="bubble">
-                <div class="dots"><span></span><span></span><span></span></div>
-            </div>
-        </div>`;
+    div.className = 'flex gap-2.5 animate-fadeUp';
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 font-mono bg-slate-800/50 border border-slate-600 text-blue-500';
+    avatar.textContent = 'AI';
+    
+    const body = document.createElement('div');
+    body.className = 'max-w-[74%] flex flex-col';
+    
+    const bubble = document.createElement('div');
+    bubble.className = 'px-4 py-3 rounded-[14px] text-sm leading-relaxed bg-slate-800/50 border border-slate-600 text-slate-300 rounded-bl-sm';
+    bubble.innerHTML = '<div class="flex gap-1 items-center p-0.5"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce"></span><span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.2s"></span><span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.4s"></span></div>';
+    
+    body.appendChild(bubble);
+    div.appendChild(avatar);
+    div.appendChild(body);
     box.appendChild(div);
+    
     scrollBot();
     return div;
 }
@@ -989,9 +797,11 @@ async function api(url, method = 'GET', body = null) {
    INIT
 ═══════════════════════════════════════════ */
 window.addEventListener('load', () => {
+    initTheme();
+    addThemeToggle();
     scrollBot();
     inp.focus();
 });
 </script>
 
-</x-minimal-layout>
+</x-layout>

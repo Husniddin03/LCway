@@ -217,7 +217,9 @@
     </main>
 
     <!-- Footer -->
-    <x-footer />
+    @unless(request()->routeIs('chat.*'))
+        <x-footer />
+    @endunless
 
     <!-- Floating Action Buttons -->
     <div class="fixed bottom-6 right-6 flex flex-col space-y-3 z-40">

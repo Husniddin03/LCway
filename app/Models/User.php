@@ -53,4 +53,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserData::class, 'user_id');
     }
+    
+    public function aiChats()
+    {
+        return $this->hasMany(AiChat::class, 'user_id');
+    }
+    
+    public function riasecResults()
+    {
+        return $this->hasMany(RiasecResult::class, 'user_id');
+    }
 }

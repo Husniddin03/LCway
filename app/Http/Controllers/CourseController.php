@@ -49,28 +49,6 @@ class CourseController extends Controller
         ]);
 
 
-        $validated1 = $request->validate([
-            'days' => 'nullable|array',
-            'days.*.calendar_id' => 'nullable|exists:calendar,id',
-            'days.*.open_time'   => 'nullable',
-            'days.*.close_time'  => 'nullable',
-        ]);
-
-        $validated2 = $request->validate([
-            'subjects'             => 'nullable|array',
-            'subjects.*.id'        => 'required|exists:subjects,id',
-            'subjects.*.price'     => 'nullable|string|max:255',
-        ]);
-
-        $validated3 = $request->validate([
-            'connections'           => 'nullable|array',
-            'connections.*.id'      => 'required|exists:connection,id',
-            'connections.*.url' => [
-                'required',
-                'regex:/^(https?:\/\/[^\s]+|mailto:[^\s]+@[^\s]+|\+?[\d\-\s\(\)]+)$/i'
-            ],
-        ]);
-
 
         $validated4 = $request->validate([
             'images' => 'nullable|array',
@@ -96,38 +74,6 @@ class CourseController extends Controller
                 ]);
             }
         }
-
-        foreach ($validated1['days'] as $day) {
-            LearningCentersCalendar::create([
-                'learning_centers_id' => $center->id,
-                'calendar_id'        => $day['calendar_id'],
-                'open_time'          => $day['open_time'],
-                'close_time'         => $day['close_time'],
-            ]);
-        }
-
-
-
-        if (!empty($validated2['subjects'])) {
-            foreach ($validated2['subjects'] as $subject) {
-                SubjectsOfLearningCenter::create([
-                    'learning_centers_id' => $center->id,
-                    'subject_id'          => $subject['id'],
-                    'price'               => $subject['price'] ?? null,
-                ]);
-            }
-        }
-
-        if (!empty($validated3['connections'])) {
-            foreach ($validated3['connections'] as $connec) {
-                LearningCentersConnect::create([
-                    'learning_centers_id' => $center->id,
-                    'connection_id'       => $connec['id'],
-                    'url'                 => $connec['url'],
-                ]);
-            }
-        }
-
 
         return redirect()->route('blog-single', $center->id)
             ->with('success', 'O‘quv markaz muvaffaqiyatli qo‘shildi.');

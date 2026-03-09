@@ -121,11 +121,19 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [UserDataController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [UserDataController::class, 'destroy'])->name('profile.destroy');
     // chat uchun route lar
-    Route::get('chat/chat', [ChatController::class, 'chat'])->name('chat.chat');
-    Route::get('chat/riasec', [ChatController::class, 'riasec'])->name('chat.riasec');
-    Route::get('chat/quiz', [ChatController::class, 'quiz'])->name('chat.quiz');
-    Route::get('chat/answer', [ChatController::class, 'answer'])->name('chat.answer');
-    Route::post('chat/think', [ChatController::class, 'think'])->name('chat.think');
+    Route::get('/chat',                  [ChatController::class, 'chat'])->name('chat.chat');
+    Route::post('/chat/save',            [ChatController::class, 'saveChat'])->name('chat.save');
+    Route::post('/chat/new-session',     [ChatController::class, 'newSession'])->name('chat.new-session');
+    Route::get('/chat/session/{id}',     [ChatController::class, 'getSession'])->name('chat.get-session');
+    Route::get('/chat/sessions',         [ChatController::class, 'getSessions'])->name('chat.get-sessions');
+    Route::post('/chat/search-centers',  [ChatController::class, 'searchCenters'])->name('chat.search-centers');
+
+    // ── RIASEC ──
+    Route::get('/riasec',                [ChatController::class, 'riasec'])->name('chat.riasec');
+    Route::post('/riasec/save',          [ChatController::class, 'saveRiasec'])->name('riasec.save');
+
+    // ── Quiz ──
+    Route::get('/quiz',                  [ChatController::class, 'quiz'])->name('chat.quiz');
     // course uchun route
     Route::resource('course', CourseController::class);
     // teacher uchun route lar

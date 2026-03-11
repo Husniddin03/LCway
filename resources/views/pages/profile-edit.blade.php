@@ -42,8 +42,15 @@
                             <!-- Avatar Section -->
                             <div class="text-center mb-8">
                                 <div class="relative inline-block">
-                                    @isset(Auth::user()->avatar)
-                                        <img id="avatar-preview" src="{{ Auth::user()->avatar }}"
+                                    @isset(Auth::user()->avatar)    
+                                        @php
+                                            if (str_starts_with(Auth::user()->avatar, 'http')) {
+                                                $avatarUrl = Auth::user()->avatar;
+                                            } else {
+                                                $avatarUrl = Storage::url(Auth::user()->avatar);
+                                            }
+                                        @endphp
+                                        <img id="avatar-preview" src="{{ $avatarUrl }}"
                                             alt="{{ Auth::user()->name }}"
                                             class="w-24 h-24 rounded-full ring-4 ring-white dark:ring-gray-800 shadow-xl">
                                     @else

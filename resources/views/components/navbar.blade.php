@@ -4,6 +4,7 @@
 ])
 
 @php
+    use Illuminate\Support\Facades\Storage;
     $navClasses = $transparent
         ? 'nav-transparent'
         : 'nav-sticky bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50';
@@ -108,7 +109,14 @@
                         <button @click="profileOpen = !profileOpen"
                             class="flex items-center space-x-2 p-2 rounded-full roup-hover:scale-110 transition-transform duration-300">
                             @isset(Auth::user()->avatar)
-                                <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}"
+                                @php
+                                    if (str_starts_with(Auth::user()->avatar, 'http')) {
+                                        $avatarUrl = Auth::user()->avatar;
+                                    } else {
+                                        $avatarUrl = Storage::url(Auth::user()->avatar);
+                                    }
+                                @endphp
+                                <img src="{{ $avatarUrl }}" alt="{{ Auth::user()->name }}"
                                     class="w-8 h-8 rounded-full ring-2 ring-primary-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900">
                             @else
                                 <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random&size=32"

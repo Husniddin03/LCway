@@ -67,16 +67,19 @@ Route::get('/auth/google', function () {
 })->name('google.redirect');
 
 Route::get('/auth/google/callback', function () {
-    $googleUser = Socialite::driver('google')->user();
-    $user = User::updateOrCreate(
-        ['email' => $googleUser->getEmail()],
-        [
-            'name' => $googleUser->getName(),
-            'google_id' => $googleUser->getId(),       // endi null bo‘lmaydi ✅
-            'avatar' => $googleUser->getAvatar(),      // endi null bo‘lmaydi ✅
-            'password' => bcrypt(Str::random(16)),
-        ]
-    );
+    $googleUser = Socialite::driver('google')->stateless()->user();
+    $user = User::where('google_id', $googleUser->id)->first();
+    if(!$user){
+        $user = User::updateOrCreate(
+            ['email' => $googleUser->getEmail()],
+            [
+                'name' => $googleUser->getName(),
+                'google_id' => $googleUser->getId(),       // endi null bo‘lmaydi ✅
+                'avatar' => $googleUser->getAvatar(),      // endi null bo‘lmaydi ✅
+                'password' => bcrypt(Str::random(16)),
+            ]
+        );
+    }
     Auth::login($user);
     return redirect('/');
 });

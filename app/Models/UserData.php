@@ -19,6 +19,7 @@ class UserData extends Model
         'phone',
         'gander',
         'birthday',
+        'bio'
     ];
 
     protected $casts = [

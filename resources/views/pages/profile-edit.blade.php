@@ -19,7 +19,7 @@
             <div class="max-w-2xl mx-auto">
                 <!-- Edit Profile Card -->
                 <div
-                    class="border rounded-2xl border-gray-200/60 backdrop-blur-xl bg-white/90 dark:bg-gray-800/95 shadow-2xl dark:shadow-black/20 border-gray-200 dark:border-gray-700">
+                    class="border rounded-2xl border-gray-200/60 backdrop-blur-xl bg-white dark:bg-gray-800/95 shadow-2xl dark:shadow-black/20 border-gray-200 dark:border-gray-700">
                     <div class="p-8">
                         <!-- Header -->
                         <div class="text-center mb-8">
@@ -28,8 +28,7 @@
                                 <img src="{{ asset('images/lcwayfavicon.png') }}" alt="FindCourse"
                                     class="w-16 h-16 rounded-full">
                             </div>
-                            <h1
-                                class="text-2xl font-bold mb-2 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
                                 Profilni tahrirlash</h1>
                             <p class="text-gray-600 dark:text-gray-300">Shaxsiy ma'lumotlaringizni yangilang</p>
                         </div>
@@ -248,11 +247,11 @@
                             <!-- Buttons -->
                             <div class="flex space-x-4 pt-6">
                                 <button type="submit"
-                                    class="flex-1 px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium">
+                                    class="flex-1 px-6 py-3 bg-green-500 text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium">
                                     Saqlash
                                 </button>
                                 <a href="{{ route('profile') }}"
-                                    class="flex-1 px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200 font-medium text-center">
+                                    class="flex-1 px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-200 font-medium text-center">
                                     Bekor qilish
                                 </a>
                             </div>
@@ -277,4 +276,25 @@
             }
         }
     </script>
+
+    <style>
+        /* Override autofill colors for light mode */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px white inset !important;
+            -webkit-text-fill-color: #111827 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+        
+        /* Dark mode autofill */
+        .dark input:-webkit-autofill,
+        .dark input:-webkit-autofill:hover,
+        .dark input:-webkit-autofill:focus,
+        .dark input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
+            -webkit-text-fill-color: #f9fafb !important;
+        }
+    </style>
 </x-layout>

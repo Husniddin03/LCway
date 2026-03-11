@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
 <x-layout>
     <x-slot:title>Profil</x-slot:title>
 
@@ -19,13 +23,20 @@
             <div class="max-w-4xl mx-auto">
                 <!-- Profile Card -->
                 <div
-                    class="border rounded-2xl border-gray-200/60 backdrop-blur-xl bg-white/90 dark:bg-gray-800/95 shadow-2xl dark:shadow-black/20 border-gray-200 dark:border-gray-700">
+                    class="border rounded-2xl border-gray-200/60 backdrop-blur-xl bg-white dark:bg-gray-800/95 shadow-2xl dark:shadow-black/20 border-gray-200 dark:border-gray-700">
                     <!-- Profile Header -->
                     <div class="relative h-32 bg-gradient-to-r from-primary-600 to-accent-600 rounded-t-2xl">
                         <div class="absolute -bottom-16 left-8">
                             <div class="relative">
                                 @isset(Auth::user()->avatar)
-                                    <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}"
+                                    @php
+                                        if (str_starts_with(Auth::user()->avatar, 'http')) {
+                                            $avatarUrl = Auth::user()->avatar;
+                                        } else {
+                                            $avatarUrl = Storage::url(Auth::user()->avatar);
+                                        }
+                                    @endphp
+                                    <img src="{{ $avatarUrl }}" alt="{{ Auth::user()->name }}"
                                         class="w-32 h-32 rounded-full ring-4 ring-white dark:ring-gray-800 shadow-xl">
                                 @else
                                     <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random&size=128"
@@ -41,7 +52,7 @@
 
                     <!-- Profile Info -->
                     <div class="pt-20 px-8 pb-8">
-                        <div class="flex items-start justify-between mb-8">
+                        <div class="flex items-start justify-between mb-8 bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 mb-8">
                             <div>
                                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                                     {{ Auth::user()->name }}</h1>
@@ -58,13 +69,17 @@
                                 </div>
                             </div>
                             <a href="{{ route('profile.edit') }}"
-                                class="px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-lg hover:shadow-lg transition-all duration-300">
-                                Profilni tahrirlash
+                                class="p-2 border border-gray-200 dark:border-gray-700 bg-gradient-to-r from-primary-600 to-accent-600 text-gray-900 dark:text-white rounded-lg hover:shadow-lg transition-all duration-300">
+                                <!-- qalamcha svg -->
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
                             </a>
                         </div>
 
                         <!-- Personal Information -->
-                        <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 mb-8">
+                        <div class="bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 mb-8">
                             <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Shaxsiy ma'lumotlar</h2>
                             @if ($userData)
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -96,6 +111,11 @@
                                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
                                             {{ $userData->formatted_birthday }}</p>
                                     </div>
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">Bio</label>
+                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">
+                                            {{ $userData->bio }}</p>
+                                    </div>
                                 </div>
                             @else
                                 <div class="text-center py-8">
@@ -107,7 +127,7 @@
                                     <p class="text-gray-600 dark:text-gray-400 mb-4">Shaxsiy ma'lumotlar hali
                                         to'ldirilmagan</p>
                                     <a href="{{ route('profile.edit') }}"
-                                        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-lg hover:shadow-lg transition-all duration-300">
+                                        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 text-gray-900 dark:text-white rounded-lg hover:shadow-lg transition-all duration-300">
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -168,7 +188,7 @@
                         </div>
 
                         <!-- Recent Activity -->
-                        <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6">
+                        <div class="bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
                             <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">So'nggi faoliyat</h2>
                             <div class="space-y-4">
                                 <div

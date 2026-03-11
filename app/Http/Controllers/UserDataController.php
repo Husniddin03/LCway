@@ -29,6 +29,7 @@ class UserDataController extends Controller
             'phone' => 'required|string|max:20',
             'gander' => 'required|in:male,female',
             'birthday' => 'required|date|before:today',
+            'bio' => 'nullable|string|max:1000',
         ], [
             'first_name.required' => 'Ism maydoni to\'ldirilishi shart.',
             'last_name.required' => 'Familiya maydoni to\'ldirilishi shart.',
@@ -38,6 +39,7 @@ class UserDataController extends Controller
             'birthday.required' => 'Tug\'ilgan kun maydoni to\'ldirilishi shart.',
             'birthday.date' => 'Tug\'ilgan kun sana formati noto\'g\'ri.',
             'birthday.before' => 'Tug\'ilgan kun bugungi sanadan oldin bo\'lishi kerak.',
+            'bio.max' => 'Bio maydoni 1000 belgidan oshmasligi kerak.',
         ]);
 
         if ($validator->fails()) {
@@ -46,6 +48,23 @@ class UserDataController extends Controller
                 ->withInput();
         }
 
+        // Update User model data (name, email, bio, avatar)
+        $user = Auth::user();
+        if ($request->has('name')) {
+            $user->name = $request->name;
+        }
+        if ($request->has('email')) {
+            $user->email = $request->email;
+        }
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $filename = time() . '_' . $avatar->getClientOriginalName();
+            $path = $avatar->storeAs('avatars', $filename, 'public');
+            $user->avatar = $path;
+        }
+        $user->save();
+
+        // Update UserData model data (personal information)
         $userData = UserData::updateOrCreate(
             ['user_id' => Auth::id()],
             [
@@ -55,6 +74,7 @@ class UserDataController extends Controller
                 'phone' => $request->phone,
                 'gander' => $request->gander,
                 'birthday' => $request->birthday,
+                'bio' => $request->bio,
             ]
         );
 

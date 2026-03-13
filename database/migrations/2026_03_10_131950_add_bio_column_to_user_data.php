@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('user_data', function (Blueprint $table) {
-            $table->text('bio')->nullable();
-        });
+        // Schema::table('user_data', function (Blueprint $table) {
+        //     $table->text('bio')->nullable();
+        // });
     }
 
     /**

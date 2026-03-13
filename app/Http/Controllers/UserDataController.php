@@ -31,9 +31,7 @@ class UserDataController extends Controller
             'gander' => 'required|in:male,female',
             'birthday' => 'required|date|before:today',
             'bio' => 'nullable|string|max:1000',
-            // 'name'     => 'required|string|max:255',
-            // 'email'    => 'required|string|email|max:255|unique:users',
-            // 'password' => 'required|string|min:6',
+            'name'     => 'required|string|max:32',
         ], [
             'first_name.required' => 'Ism maydoni to\'ldirilishi shart.',
             'last_name.required' => 'Familiya maydoni to\'ldirilishi shart.',
@@ -44,7 +42,8 @@ class UserDataController extends Controller
             'birthday.date' => 'Tug\'ilgan kun sana formati noto\'g\'ri.',
             'birthday.before' => 'Tug\'ilgan kun bugungi sanadan oldin bo\'lishi kerak.',
             'bio.max' => 'Bio maydoni 1000 belgidan oshmasligi kerak.',
-
+            'name.required' => 'Ism maydoni to\'ldirilishi shart.',
+            'name.max' => 'Ism 32 belgidan oshmasligi kerak.',
         ]);
 
         if ($validator->fails()) {
@@ -57,9 +56,6 @@ class UserDataController extends Controller
         $user = Auth::user();
         if ($request->has('name')) {
             $user->name = $request->name;
-        }
-        if ($request->has('email')) {
-            $user->email = $request->email;
         }
         if ($request->hasFile('avatar')) {
             // remove old avatar img

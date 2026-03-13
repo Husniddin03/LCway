@@ -1,25 +1,13 @@
 <x-layout>
     <x-slot:title>Profilni tahrirlash</x-slot:title>
 
-    <div
-        class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
-        <!-- Background Shapes -->
-        <div class="absolute inset-0">
-            <div
-                class="absolute top-20 left-20 w-72 h-72 bg-gradient-to-br from-blue-200/20 to-blue-300/20 dark:bg-blue-400/10 rounded-full blur-3xl animate-pulse">
-            </div>
-            <div class="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-br from-purple-200/20 to-purple-300/20 dark:bg-purple-400/10 rounded-full blur-3xl animate-pulse"
-                style="animation-delay: 1s"></div>
-            <div class="absolute top-1/2 left-1/3 w-64 h-64 bg-gradient-to-br from-indigo-200/15 to-indigo-300/15 dark:bg-indigo-400/8 rounded-full blur-2xl animate-pulse"
-                style="animation-delay: 2s"></div>
-        </div>
-
-        <!-- Edit Profile Container -->
-        <div class="relative z-10 container mx-auto px-4 py-12">
-            <div class="max-w-2xl mx-auto">
-                <!-- Edit Profile Card -->
-                <div
-                    class="border rounded-2xl border-gray-200/60 backdrop-blur-xl bg-white dark:bg-gray-800/95 shadow-2xl dark:shadow-black/20 border-gray-200 dark:border-gray-700">
+    <!-- Main Content Container -->
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Profile Edit Section -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
                     <div class="p-8">
                         <!-- Header -->
                         <div class="text-center mb-8">
@@ -97,13 +85,11 @@
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Email
                                 </label>
-                                <input type="email" id="email" name="email" value="{{ Auth::user()->email }}"
-                                    required
-                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                                <input type="email" id="email" value="{{ Auth::user()->email }}"
+                                    disabled
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed transition-all duration-200"
                                     placeholder="email@example.com">
-                                @error('email')
-                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                @enderror
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Emailni o'zgartirib bo'lmaydi</p>
                             </div>
 
                             <!-- Bio Field -->
@@ -114,7 +100,7 @@
                                 </label>
                                 <textarea id="bio" name="bio" rows="4"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="O'zingiz haqida qisqacha...">{{ Auth::user()->bio ?? '' }}</textarea>
+                                    placeholder="O'zingiz haqida qisqacha...">{{ $userData->bio ?? '' }}</textarea>
                                 @error('bio')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
@@ -157,13 +143,26 @@
                                     <div>
                                         <label for="phone"
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Telefon raqami
+                                            Telefon
                                         </label>
                                         <input type="tel" id="phone" name="phone"
                                             value="{{ $userData->phone ?? '' }}" required
                                             class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                            placeholder="+998 90 123 45 67">
+                                            placeholder="+998 XX XXX XX XX">
                                         @error('phone')
+                                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div>
+                                        <label for="birthday"
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Tug'ilgan kun
+                                        </label>
+                                        <input type="date" id="birthday" name="birthday"
+                                            value="{{ $userData->birthday ?? '' }}" required
+                                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                                        @error('birthday')
                                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                         @enderror
                                     </div>
@@ -175,96 +174,98 @@
                                         </label>
                                         <select id="gander" name="gander" required
                                             class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
-                                            <option value="">Jinsni tanlang</option>
-                                            <option value="male"
-                                                {{ ($userData->gander ?? '') == 'male' ? 'selected' : '' }}>Erkak
+                                            <option value="">Tanlang</option>
+                                            <option value="male" {{ ($userData->gander ?? '') == 'male' ? 'selected' : '' }}>Erkak
                                             </option>
-                                            <option value="female"
-                                                {{ ($userData->gander ?? '') == 'female' ? 'selected' : '' }}>Ayol
+                                            <option value="female" {{ ($userData->gander ?? '') == 'female' ? 'selected' : '' }}>Ayol
                                             </option>
                                         </select>
                                         @error('gander')
                                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                         @enderror
                                     </div>
-
-                                    <div>
-                                        <label for="birthday"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Tug'ilgan kun
-                                        </label>
-                                        <input type="date" id="birthday" name="birthday"
-                                            value="{{ $userData?->birthday?->format('Y-m-d') ?? '' }}" required
-                                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
-                                        @error('birthday')
-                                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                        @enderror
-                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Password Fields -->
-                            <div class="border-t pt-6">
-                                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Parolni o'zgartirish
-                                </h3>
-
-                                <div class="space-y-4">
-                                    <div>
-                                        <label for="current_password"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Joriy parol
-                                        </label>
-                                        <input type="password" id="current_password" name="current_password"
-                                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                            placeholder="Joriy parol">
-                                        @error('current_password')
-                                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <div>
-                                        <label for="password"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Yangi parol
-                                        </label>
-                                        <input type="password" id="password" name="password"
-                                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                            placeholder="Yangi parol">
-                                        @error('password')
-                                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <div>
-                                        <label for="password_confirmation"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Yangi parolni tasdiqlang
-                                        </label>
-                                        <input type="password" id="password_confirmation"
-                                            name="password_confirmation"
-                                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                            placeholder="Yangi parolni qayta kiriting">
-                                        @error('password_confirmation')
-                                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Buttons -->
+                            <!-- Submit Buttons -->
                             <div class="flex space-x-4 pt-6">
-                                <button type="submit"
-                                    class="flex-1 px-6 py-3 bg-green-500 text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium">
-                                    Saqlash
-                                </button>
                                 <a href="{{ route('profile') }}"
                                     class="flex-1 px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-200 font-medium text-center">
                                     Bekor qilish
                                 </a>
+                                <button type="submit"
+                                    class="flex-1 px-6 py-3 bg-green-100 text-green-700 rounded-lg transition-all duration-200 font-medium">
+                                    Saqlash
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
+
+                <!-- Password Change Section -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
+                    <div class="p-8">
+                        <!-- Header -->
+                        <div class="text-center mb-8">
+                            <div
+                                class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-100 via-red-50 to-pink-100 dark:from-gray-700 dark:to-gray-600 rounded-full mb-4 shadow-lg border border-red-200/50 dark:border-gray-600">
+                                <svg class="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                                </svg>
+                            </div>
+                            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                                Parolni o'zgartirish</h1>
+                            <p class="text-gray-600 dark:text-gray-300">Xavfsizlik uchun parolingizni yangilang</p>
+                        </div>
+
+                        <!-- Password Change Form -->
+                        <form action="#" method="POST" class="space-y-6">
+                            @csrf
+                            
+                            <!-- Current Password -->
+                            <div>
+                                <label for="current_password"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Joriy parol
+                                </label>
+                                <input type="password" id="current_password" name="current_password" required
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                                    placeholder="Joriy parolingiz">
+                            </div>
+
+                            <!-- New Password -->
+                            <div>
+                                <label for="new_password"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Yangi parol
+                                </label>
+                                <input type="password" id="new_password" name="new_password" required
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                                    placeholder="Yangi parolingiz">
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div>
+                                <label for="password_confirmation"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Yangi parolni tasdiqlash
+                                </label>
+                                <input type="password" id="password_confirmation" name="password_confirmation" required
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                                    placeholder="Yangi parolni qayta kiriting">
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="flex space-x-4">
+                                <button type="submit"
+                                    class="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200 font-medium">
+                                    Parolni o'zgartirish
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

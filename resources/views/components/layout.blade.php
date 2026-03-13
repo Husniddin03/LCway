@@ -217,7 +217,7 @@
     </main>
 
     <!-- Footer -->
-    @unless(request()->routeIs('chat.*'))
+    @unless(request()->routeIs('chat.*') || request()->routeIs('signin') || request()->routeIs('signup'))
         <x-footer />
     @endunless
 
@@ -235,7 +235,7 @@
         </button>
 
         <!-- Chat Quiz -->
-        <a href="{{ route('chat.quiz') }}"
+        <a href="{{ route('chat.quiz') }}" title="RIASEC testi"
             class="bg-white dark:bg-gray-800 text-primary-600 dark:text-primary-400 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -244,7 +244,7 @@
         </a>
 
         <!-- Chat -->
-        <a href="{{ route('chat.chat') }}"
+        <a href="{{ route('chat.chat') }}" title="Chat"
             class="bg-white dark:bg-gray-800 text-primary-600 dark:text-primary-400 bg-gradient-to-r from-primary-600 to-accent-600 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

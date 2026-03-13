@@ -49,7 +49,7 @@
                     <!-- Dropdown -->
                     <div class="relative" x-data="{ dropdownOpen: false }">
                         <button @click="dropdownOpen = !dropdownOpen"
-                            class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 inline-flex items-center relative group">
+                            class="cursor-pointer text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 inline-flex items-center relative group">
                             Sahifalar
                             <svg class="ml-2 h-4 w-4 transition-transform" :class="{ 'rotate-180': dropdownOpen }"
                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,7 +87,7 @@
             <div class="hidden md:flex items-center space-x-4">
                 <!-- Theme toggle button -->
                 <button onclick="toggleTheme()"
-                    class="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
+                    class="p-2 cursor-pointer rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-700 dark:hover:bg-gray-100 transition-all duration-200"
                     title="Rejimni o'zgartirish">
                     <!-- Sun icon (shown in dark mode) -->
                     <svg id="theme-icon-sun" class="h-5 w-5 hidden dark:block" fill="none" stroke="currentColor"
@@ -107,7 +107,7 @@
                 @auth
                     <div class="relative" x-data="{ profileOpen: false }">
                         <button @click="profileOpen = !profileOpen"
-                            class="flex items-center space-x-2 p-2 rounded-full roup-hover:scale-110 transition-transform duration-300">
+                            class="flex cursor-pointer items-center space-x-2 p-2 rounded-full roup-hover:scale-110 transition-transform duration-300">
                             @isset(Auth::user()->avatar)
                                 @php
                                     if (str_starts_with(Auth::user()->avatar, 'http')) {
@@ -141,7 +141,7 @@
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md transition-colors duration-200">
+                                        class="block cursor-pointer w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md transition-colors duration-200">
                                         Chiqish
                                     </button>
                                 </form>

@@ -139,169 +139,179 @@ use Illuminate\Support\Facades\Storage;
                             @endif
                         </div>
 
-                        <!-- Stats Cards -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                            <div onclick="toggleCoursesSection()"
-                                class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-6 border border-blue-200/50 dark:border-blue-700/50 cursor-pointer hover:shadow-lg transition-all duration-300">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                        </svg>
+                        @if ($userData)
+                            <!-- Stats Cards -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                <div onclick="toggleCoursesSection()"
+                                    class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-6 border border-blue-200/50 dark:border-blue-700/50 cursor-pointer hover:shadow-lg transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{$userData->user->centers->count()}}</span>
                                     </div>
-                                    <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{$userData->user->centers->count()}}</span>
+                                    <h3 class="text-gray-700 dark:text-gray-300 font-medium">Qo'shilgan markazlar</h3>
                                 </div>
-                                <h3 class="text-gray-700 dark:text-gray-300 font-medium">Qo'shilgan markazlar</h3>
+
+                                <div onclick="toggleSubjectsSection()"
+                                    class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl p-6 border border-green-200/50 dark:border-green-700/50 cursor-pointer hover:shadow-lg transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-2xl font-bold text-green-600 dark:text-green-400">{{$userData->user->centers->sum(function($center) { return $center->subjects->count(); })}}</span>
+                                    </div>
+                                    <h3 class="text-gray-700 dark:text-gray-300 font-medium">Fanlar</h3>
+                                </div>
+
+                                <div onclick="toggleTeachersSection()"
+                                    class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl p-6 border border-purple-200/50 dark:border-purple-700/50 cursor-pointer hover:shadow-lg transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{$userData->user->centers->sum(function($center) { return $center->teachers->count(); })}}</span>
+                                    </div>
+                                    <h3 class="text-gray-700 dark:text-gray-300 font-medium">O'qituvchilar</h3>
+                                </div>
                             </div>
 
-                            <div onclick="toggleSubjectsSection()"
-                                class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl p-6 border border-green-200/50 dark:border-green-700/50 cursor-pointer hover:shadow-lg transition-all duration-300">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
-                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                        </svg>
-                                    </div>
-                                    <span class="text-2xl font-bold text-green-600 dark:text-green-400">{{$userData->user->centers->sum(function($center) { return $center->subjects->count(); })}}</span>
-                                </div>
-                                <h3 class="text-gray-700 dark:text-gray-300 font-medium">Fanlar</h3>
-                            </div>
-
-                            <div onclick="toggleTeachersSection()"
-                                class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl p-6 border border-purple-200/50 dark:border-purple-700/50 cursor-pointer hover:shadow-lg transition-all duration-300">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
-                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                        </svg>
-                                    </div>
-                                    <span class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{$userData->user->centers->sum(function($center) { return $center->teachers->count(); })}}</span>
-                                </div>
-                                <h3 class="text-gray-700 dark:text-gray-300 font-medium">O'qituvchilar</h3>
-                            </div>
-                        </div>
-
-                        <!-- Kurslar -->
-                        <div id="courses-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
-                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">O'quv markazlar</h2>
-                            @forelse($userData->user->centers as $center)
-                                <a href="{{ route('blog-single', $center->id) }}"
-                                    class="flex items-center justify-between p-4 mb-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                                    <div class="flex items-center space-x-4">
-                                        @if($center->logo)
-                                            <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}" class="w-10 h-10 rounded-lg object-cover">
-                                        @else
-                                            <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                                </svg>
+                            <!-- Kurslar -->
+                            <div id="courses-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
+                                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">O'quv markazlar</h2>
+                                @forelse($userData->user->centers as $center)
+                                    <a href="{{ route('blog-single', $center->id) }}"
+                                        class="flex items-center justify-between p-4 mb-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                                        <div class="flex items-center space-x-4">
+                                            @if($center->logo)
+                                                <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}" class="w-10 h-10 rounded-lg object-cover">
+                                            @else
+                                                <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                                                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                    </svg>
+                                                </div>
+                                            @endif
+                                            <div>
+                                                <p class="font-medium text-gray-900 dark:text-white">{{ $center->name }}
+                                                </p>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $center->created_at->diffForHumans() }}</p>
                                             </div>
-                                        @endif
-                                        <div>
-                                            <p class="font-medium text-gray-900 dark:text-white">{{ $center->name }}
-                                            </p>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $center->created_at->diffForHumans() }}</p>
                                         </div>
-                                    </div>
-                                </a>
-                            @empty
-                                <p class="text-gray-600 dark:text-gray-400">O'quv markazlar hali qo'shilmagan</p>
-                            @endforelse
-                        </div>
+                                    </a>
+                                @empty
+                                    <p class="text-gray-600 dark:text-gray-400">O'quv markazlar hali qo'shilmagan</p>
+                                @endforelse
+                            </div>
 
-                        <!-- Fanlar -->
-                        <div id="subjects-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
-                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Fanlar</h2>
-                            @forelse($userData->user->centers as $center)
-                                @if($center->subjects->count() > 0)
-                                    <div class="mb-6">
-                                        <div class="flex items-center space-x-3 mb-3">
-                                            @if($center->logo)
-                                                <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}" class="w-8 h-8 rounded-lg object-cover">
-                                            @else
-                                                <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                                    </svg>
-                                                </div>
-                                            @endif
-                                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">{{ $center->name }}</h3>
-                                        </div>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                            @foreach($center->subjects as $subject)
-                                                <a href="{{ route('blog-single', $center->id) }}" class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
-                                                    <div class="flex items-center space-x-3">
-                                                        <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                                                            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                                            </svg>
-                                                        </div>
-                                                        <div class="flex-1">
-                                                            <p class="font-medium text-gray-900 dark:text-white">{{ $subject->subject->name ?? 'Noma\'lum fan' }}</p>
-                                                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $subject->price ?? 0 }} so'm</p>
-                                                        </div>
+                            <!-- Fanlar -->
+                            <div id="subjects-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
+                                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Fanlar</h2>
+                                @forelse($userData->user->centers as $center)
+                                    @if($center->subjects->count() > 0)
+                                        <div class="mb-6">
+                                            <div class="flex items-center space-x-3 mb-3">
+                                                @if($center->logo)
+                                                    <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}" class="w-8 h-8 rounded-lg object-cover">
+                                                @else
+                                                    <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                        </svg>
                                                     </div>
-                                                </a>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endif
-                            @empty
-                                <p class="text-gray-600 dark:text-gray-400">Fanlar hali qo'shilmagan</p>
-                            @endforelse
-                        </div>
-
-                        <!-- O'qituvchilar -->
-                        <div id="teachers-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
-                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">O'qituvchilar</h2>
-                            @forelse($userData->user->centers as $center)
-                                @if($center->teachers->count() > 0)
-                                    <div class="mb-6">
-                                        <div class="flex items-center space-x-3 mb-3">
-                                            @if($center->logo)
-                                                <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}" class="w-8 h-8 rounded-lg object-cover">
-                                            @else
-                                                <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                                    </svg>
-                                                </div>
-                                            @endif
-                                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">{{ $center->name }}</h3>
-                                        </div>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                            @foreach($center->teachers as $teacher)
-                                                <a href="{{ route('blog-single', $center->id) }}" class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
-                                                    <div class="flex items-center space-x-3">
-                                                        @if($teacher->photo)
-                                                            <img src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}" class="w-10 h-10 rounded-lg object-cover">
-                                                        @else
-                                                            <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                                                                <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                @endif
+                                                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">{{ $center->name }}</h3>
+                                            </div>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                @foreach($center->subjects as $subject)
+                                                    <a href="{{ route('blog-single', $center->id) }}" class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
+                                                        <div class="flex items-center space-x-3">
+                                                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                                                                <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                                                 </svg>
                                                             </div>
-                                                        @endif
-                                                        <div class="flex-1">
-                                                            <p class="font-medium text-gray-900 dark:text-white">{{ $teacher->name ?? 'Noma\'lum o\'qituvchi' }}</p>
-                                                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $teacher->subject->name ?? 'Noma\'lum fan' }}</p>
+                                                            <div class="flex-1">
+                                                                <p class="font-medium text-gray-900 dark:text-white">{{ $subject->subject->name ?? 'Noma\'lum fan' }}</p>
+                                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $subject->price ?? 0 }} so'm</p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </a>
-                                            @endforeach
+                                                    </a>
+                                                @endforeach
+                                            </div>
                                         </div>
-                                    </div>
-                                @endif
-                            @empty
-                                <p class="text-gray-600 dark:text-gray-400">O'qituvchilar hali qo'shilmagan</p>
-                            @endforelse
-                        </div>
+                                    @endif
+                                @empty
+                                    <p class="text-gray-600 dark:text-gray-400">Fanlar hali qo'shilmagan</p>
+                                @endforelse
+                            </div>
+
+                            <!-- O'qituvchilar -->
+                            <div id="teachers-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
+                                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">O'qituvchilar</h2>
+                                @forelse($userData->user->centers as $center)
+                                    @if($center->teachers->count() > 0)
+                                        <div class="mb-6">
+                                            <div class="flex items-center space-x-3 mb-3">
+                                                @if($center->logo)
+                                                    <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}" class="w-8 h-8 rounded-lg object-cover">
+                                                @else
+                                                    <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                        </svg>
+                                                    </div>
+                                                @endif
+                                                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">{{ $center->name }}</h3>
+                                            </div>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                @foreach($center->teachers as $teacher)
+                                                    <a href="{{ route('blog-single', $center->id) }}" class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
+                                                        <div class="flex items-center space-x-3">
+                                                            @if($teacher->photo)
+                                                                <img src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}" class="w-10 h-10 rounded-lg object-cover">
+                                                            @else
+                                                                <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                                                                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                                    </svg>
+                                                                </div>
+                                                            @endif
+                                                            <div class="flex-1">
+                                                                <p class="font-medium text-gray-900 dark:text-white">{{ $teacher->name ?? 'Noma\'lum o\'qituvchi' }}</p>
+                                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $teacher->subject->name ?? 'Noma\'lum fan' }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+                                @empty
+                                    <p class="text-gray-600 dark:text-gray-400">O'qituvchilar hali qo'shilmagan</p>
+                                @endforelse
+                            </div>
+                        @else
+                            <div class="text-center py-8">
+                                <!-- sizda hali markazlar mavjud emas svg bilan -->
+                                <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                                <p class="text-gray-600 dark:text-gray-400">Sizda hali markazlar mavjud emas</p>
+                            </div>
+                        @endif
 
                         <!-- Recent Activity -->
                         <div class="bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6">

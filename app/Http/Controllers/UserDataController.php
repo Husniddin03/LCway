@@ -100,4 +100,54 @@ class UserDataController extends Controller
         return redirect()->route('profile')
             ->with('error', 'O\'chiriladigan ma\'lumot topilmadi.');
     }
+
+    public function changePassword(Request $request) {
+        $user = Auth::user();
+        
+        // Different validation rules based on password_status
+        if ($user->password_status === 'google') {
+            // For Google users, only new password is required
+            $validator = Validator::make($request->all(), [
+                'password' => 'required|string|min:8|confirmed',
+            ], [
+                'password.required' => 'Yangi parol maydoni to\'ldirilishi shart.',
+                'password.min' => 'Yangi parol kamida 8 belgidan iborat bo\'lishi kerak.',
+                'password.confirmed' => 'Yangi parol tasdiqlashi bilan mos kelmaydi.',
+            ]);
+        } else {
+            // For regular users, current password is required
+            $validator = Validator::make($request->all(), [
+                'current_password' => 'required|string',
+                'password' => 'required|string|min:8|confirmed',
+            ], [
+                'current_password.required' => 'Joriy parol maydoni to\'ldirilishi shart.',
+                'password.required' => 'Yangi parol maydoni to\'ldirilishi shart.',
+                'password.min' => 'Yangi parol kamida 8 belgidan iborat bo\'lishi kerak.',
+                'password.confirmed' => 'Yangi parol tasdiqlashi bilan mos kelmaydi.',
+            ]);
+        }
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Check current password only for regular users
+        if ($user->password_status !== 'google') {
+            if (!password_verify($request->current_password, $user->password)) {
+                return redirect()->back()
+                    ->with('error', 'Joriy parol noto\'g\'ri.')
+                    ->withInput();
+            }
+        }
+
+        // Update password and status
+        $user->password = bcrypt($request->password);
+        $user->password_status = 'user';
+        $user->save();
+
+        return redirect()->route('profile.edit')
+            ->with('success', 'Parol muvaffaqiyatli o\'zgartirildi!');
+    }
 }

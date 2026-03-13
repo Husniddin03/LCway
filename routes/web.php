@@ -77,6 +77,7 @@ Route::get('/auth/google/callback', function () {
                 'google_id' => $googleUser->getId(),       // endi null bo‘lmaydi ✅
                 'avatar' => $googleUser->getAvatar(),      // endi null bo‘lmaydi ✅
                 'password' => bcrypt(Str::random(16)),
+                'password_status' => 'google',
             ]
         );
     }
@@ -122,6 +123,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [UserDataController::class, 'index'])->name('profile');
     Route::get('/profile/edit', [UserDataController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [UserDataController::class, 'update'])->name('profile.update');
+    Route::put('/profile/change-password', [UserDataController::class, 'changePassword'])->name('profile.change-password');
     Route::delete('/profile', [UserDataController::class, 'destroy'])->name('profile.destroy');
     // chat uchun route lar
     Route::get('/chat',                  [ChatController::class, 'chat'])->name('chat.chat');

@@ -752,14 +752,14 @@
                                         <div class="flex items-center space-x-3">
                                             <div class="w-8 h-8 flex items-center justify-center">
                                                 <!-- @if (isset($subject->subject->icon))
-<img src="{{ asset('storage/' . $subject->subject->icon) }}"
+                                                    <img src="{{ asset('storage/' . $subject->subject->icon) }}"
                                                          alt="{{ $subject->subject->name }}"
                                                          class="w-8 h-8 rounded-full object-cover">
-@else
-<div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                                    @else
+                                                    <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
                                                         {{ strtoupper(substr($subject->subject->name, 0, 1)) }}
                                                     </div>
-@endif -->
+                                                    @endif -->
                                                 <div
                                                     class="text-gray-900 dark:text-white w-8 h-8 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white font-bold text-sm bg-gray-100 border border-gray-200 dark:bg-gray-800">
                                                     {{ strtoupper(substr($subject->subject->name, 0, 1)) }}

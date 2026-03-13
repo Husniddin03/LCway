@@ -219,9 +219,10 @@
                         </div>
 
                         <!-- Password Change Form -->
-                        <form action="#" method="POST" class="space-y-6">
+                        <form action="{{route('profile.change-password')}}" method="POST" class="space-y-6">
                             @csrf
-                            
+                            @method('PUT')
+                            @if(Auth::user()->password_status !== 'google')
                             <!-- Current Password -->
                             <div>
                                 <label for="current_password"
@@ -231,35 +232,42 @@
                                 <input type="password" id="current_password" name="current_password" required
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                                     placeholder="Joriy parolingiz">
+                                @error('current_password')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
+                            @endif
 
                             <!-- New Password -->
                             <div>
-                                <label for="new_password"
+                                <label for="password"
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Yangi parol
+                                    {{ Auth::user()->password_status === 'google' ? 'Parol yarating' : 'Yangi parol' }}
                                 </label>
-                                <input type="password" id="new_password" name="new_password" required
+                                <input type="password" id="password" name="password" required
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="Yangi parolingiz">
+                                    placeholder="{{ Auth::user()->password_status === 'google' ? 'Yangi parol yarating' : 'Yangi parolingiz' }}">
+                                @error('password')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Confirm Password -->
                             <div>
                                 <label for="password_confirmation"
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Yangi parolni tasdiqlash
+                                    {{ Auth::user()->password_status === 'google' ? 'Parolni tasdiqlang' : 'Yangi parolni tasdiqlash' }}
                                 </label>
                                 <input type="password" id="password_confirmation" name="password_confirmation" required
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="Yangi parolni qayta kiriting">
+                                    placeholder="{{ Auth::user()->password_status === 'google' ? 'Parolni qayta kiriting' : 'Yangi parolni qayta kiriting' }}">
                             </div>
 
                             <!-- Submit Button -->
                             <div class="flex space-x-4">
                                 <button type="submit"
                                     class="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200 font-medium">
-                                    Parolni o'zgartirish
+                                    {{ Auth::user()->password_status === 'google' ? 'Parol yaratish' : 'Parolni o\'zgartirish' }}
                                 </button>
                             </div>
                         </form>

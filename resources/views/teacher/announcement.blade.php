@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>O'qituvchi izohi berish</x-slot:title>
+    <x-slot:title>{{ __('teacher-announcement.title') }}</x-slot:title>
     
     <!-- Modern Teacher Announcement Section -->
     <section class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -20,14 +20,14 @@
             <div class="text-center mb-16 animate-fade-in">
                 <!-- Badge -->
                 <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 rounded-full mb-6">
-                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">O'qituvchi izohi</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __('teacher-announcement.header.badge') }}</span>
                 </div>
                 
                 <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 dark:from-amber-400 dark:via-orange-400 dark:to-red-400 mb-6 leading-tight">
-                    {{ $LearningCenter->name }}ga o'qituvchi izlayabsizmi?
+                    {{ $LearningCenter->name }}{{ __('teacher-announcement.header.title_suffix') }}
                 </h1>
                 <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                    Bu yerda o'qituvchi izohi bering, eng yaxshi mutaxassislar siz bilan bog'lanishadi
+                    {{ __('teacher-announcement.header.subtitle') }}
                 </p>
             </div>
 
@@ -45,7 +45,7 @@
                             <!-- Status Badge -->
                             <div class="inline-flex items-center px-3 py-1 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
                                 <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-                                <span class="text-xs font-semibold text-green-700 dark:text-green-300">Faol</span>
+                                <span class="text-xs font-semibold text-green-700 dark:text-green-300">{{ __('teacher-announcement.info.status') }}</span>
                             </div>
                             
                             <!-- Learning Center Info -->
@@ -68,7 +68,7 @@
                                         <svg class="w-5 h-5 mr-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
                                         </svg>
-                                        Mavjud fanlar
+                                        {{ __('teacher-announcement.info.subjects_title') }}
                                     </h4>
                                     <div class="space-y-2">
                                         @foreach ($LearningCenter->subjects as $subject)
@@ -86,7 +86,7 @@
                                         <svg class="w-5 h-5 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
                                         </svg>
-                                        Bog'lanish
+                                        {{ __('teacher-announcement.contact.title') }}
                                     </h4>
                                     <div class="flex space-x-3">
                                         @foreach ($LearningCenter->connections as $connection)
@@ -122,8 +122,8 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
                                     </svg>
                                 </div>
-                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">O'qituvchi izohi berish</h2>
-                                <p class="text-gray-600 dark:text-gray-300 mt-2">Kerakli mutaxassislikni tanlang va izoh qoldiring</p>
+                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('teacher-announcement.form.title') }}</h2>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">{{ __('teacher-announcement.form.subtitle') }}</p>
                             </div>
 
                             <!-- Error Messages -->
@@ -134,7 +134,7 @@
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-9a1 1 0 00-1 1v4a1 1 0 102 2v-4a1 1 0 00-1-1zm-2 0a2 2 0 00-2 2v4a2 2 0 002 2h1a2 2 0 002-2v-4a2 2 0 00-2-2h-1z" clip-rule="evenodd"/>
                                         </svg>
                                         <div>
-                                            <h4 class="text-sm font-medium text-red-800 dark:text-red-200">Iltimos, xatolarni to'g'irlang:</h4>
+                                            <h4 class="text-sm font-medium text-red-800 dark:text-red-200">{{ __('teacher-announcement.errors.title') }}</h4>
                                             <ul class="mt-2 text-sm text-red-700 dark:text-red-300 space-y-1">
                                                 @foreach ($errors->all() as $error)
                                                     <li>• {{ $error }}</li>
@@ -153,10 +153,10 @@
                                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                                         </svg>
-                                        Mutaxasisligi <span class="text-red-500">*</span>
+                                        {{ __('teacher-announcement.form.teacher_label') }} <span class="text-red-500">{{ __('teacher-announcement.form.teacher_required') }}</span>
                                     </label>
                                     <select name="subject_id" id="subject" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200" required>
-                                        <option value="" disabled>Fanni tanlang...</option>
+                                        <option value="" disabled>{{ __('teacher-announcement.form.teacher_placeholder') }}</option>
                                         @foreach ($subjects as $subject)
                                             <option value="{{ $subject->id }}">{{ $subject->name }}</option>
                                         @endforeach
@@ -177,9 +177,9 @@
                                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                         </svg>
-                                        Qisqaca tavsif bering
+                                        {{ __('teacher-announcement.form.description_label') }}
                                     </label>
-                                    <textarea name="description" id="message" rows="6" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 resize-none" placeholder="Qisqaca tavsif bering..." required></textarea>
+                                    <textarea name="description" id="message" rows="6" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 resize-none" placeholder="{{ __('teacher-announcement.form.description_placeholder') }}" required></textarea>
                                 </div>
                             </div>
 
@@ -190,14 +190,14 @@
                                     <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                     </svg>
-                                    Bekor qilish
+                                    {{ __('teacher-announcement.buttons.back') }}
                                 </a>
                                 <button type="submit"
                                         class="flex-1 px-8 py-4 bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 hover:from-amber-700 hover:via-orange-700 hover:to-red-700 text-white font-bold rounded-2xl transition-all duration-300 text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-3 group">
                                     <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
                                     </svg>
-                                    Elon berish
+                                    {{ __('teacher-announcement.buttons.submit') }}
                                 </button>
                             </div>
                         </form>

@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>
-        Ish vaqtlarini tahrirlash
+        {{ __('course-weekday.title') }}
     </x-slot>
     
     <!-- Modern Weekday Editor Section -->
@@ -19,11 +19,11 @@
         </div>
 
         <!-- Section Title -->
-        <div x-data="{ sectionTitle: `{{ $LearningCenter->name }}`, sectionTitleText: `{{ $LearningCenter->name }} ish vaqtlarini o'zgartiring!` }" class="relative text-gray-900 dark:text-white">
+        <div x-data="{ sectionTitle: `{{ $LearningCenter->name }}`, sectionTitleText: `{{ $LearningCenter->name }}{{ __('course-weekday.header.title_suffix') }}` }" class="relative text-gray-900 dark:text-white">
             <div class="text-center max-w-4xl mx-auto mb-16 animate-fade-in">
                 <!-- Badge -->
                 <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full mb-6">
-                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Ish vaqtlari tahriri</span>
+                    <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">{{ __('course-weekday.header.badge') }}</span>
                 </div>
                 
                 <h2 x-text="sectionTitle" class="text-5xl sm:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 mb-6 leading-tight">
@@ -48,7 +48,7 @@
                             <!-- Status Badge -->
                             <div class="inline-flex items-center px-3 py-1 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
                                 <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-                                <span class="text-xs font-semibold text-green-700 dark:text-green-300">Faol</span>
+                                <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">{{ __('course-weekday.status.active') }}</span>
                             </div>
                             
                             <div class="mb-8">
@@ -63,7 +63,7 @@
                                     <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
                                     </svg>
-                                    Bog'lanish
+                                    {{ __('course-weekday.contact.title') }}
                                 </h4>
                                 <ul class="space-y-4">
                                     @foreach ($LearningCenter->connections as $connection)
@@ -81,7 +81,7 @@
                                                     </div>
                                                     <div class="flex-1">
                                                         <span class="text-gray-900 dark:text-white font-medium">{{ $connection->url }}</span>
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400">Telefon</p>
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('course-weekday.contact.phone') }}</p>
                                                     </div>
                                                 </a>
                                             </li>
@@ -97,7 +97,7 @@
                                                     </div>
                                                     <div class="flex-1">
                                                         <span class="text-gray-900 dark:text-white font-medium truncate">{{ $connection->url }}</span>
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400">Email</p>
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('course-weekday.contact.email') }}</p>
                                                     </div>
                                                 </a>
                                             </li>
@@ -113,7 +113,7 @@
                                                     </div>
                                                     <div class="flex-1">
                                                         <span class="text-gray-900 dark:text-white font-medium">Web sayt</span>
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400">Veb-sahifa</p>
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('course-weekday.contact.website') }}</p>
                                                     </div>
                                                 </a>
                                             </li>
@@ -129,7 +129,7 @@
                                                     </div>
                                                     <div class="flex-1">
                                                         <span class="text-gray-900 dark:text-white font-medium truncate">{{ $connection->connection->name }}</span>
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400">Bog'lanish</p>
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('course-weekday.contact.other') }}</p>
                                                     </div>
                                                 </a>
                                             </li>
@@ -156,8 +156,8 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 class="text-2xl font-black text-gray-900 dark:text-white">Ish vaqtlari</h3>
-                                    <p class="text-gray-600 dark:text-gray-300">Har bir kun uchun ochilish va yopilish vaqtini kiriting</p>
+                                    <h3 class="text-2xl font-black text-gray-900 dark:text-white">{{ __('course-weekday.form.title') }}</h3>
+                                    <p class="text-gray-600 dark:text-gray-300">{{ __('course-weekday.header.subtitle') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                 </svg>
-                                                Ish vaqti
+                                                {{ __('course-weekday.form.opening_time') }}
                                             </div>
                                         </div>
                                         
@@ -190,7 +190,7 @@
                                                     <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                                     </svg>
-                                                    Ochilishi
+                                                    {{ __('course-weekday.form.opening_time') }}
                                                 </label>
                                                 <div class="relative">
                                                     <input type="time" 
@@ -220,7 +220,7 @@
                                                     <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                                     </svg>
-                                                    Yopilishi
+                                                    {{ __('course-weekday.form.closing_time') }}
                                                 </label>
                                                 <div class="relative">
                                                     <input type="time" 
@@ -263,14 +263,14 @@
                                 <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                                 </svg>
-                                Orqaga
+                                {{ __('course-weekday.buttons.back') }}
                             </a>
                             <button type="submit" 
                                     class="flex-1 px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white font-bold rounded-2xl transition-all duration-300 text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-3 group">
                                 <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Saqlash
+                                {{ __('course-weekday.buttons.save') }}
                             </button>
                         </div>
                     </form>

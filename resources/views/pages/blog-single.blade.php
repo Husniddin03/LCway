@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>{{ $LearningCenter->name }} haqida batafsil ma'lumot</x-slot:title>
+    <x-slot:title>{{ __('blog-single.title', ['name' => $LearningCenter->name]) }}</x-slot:title>
 
     <!-- Hero Section -->
     <section
@@ -27,35 +27,37 @@
             <div class="grid grid-cols-1 lg:grid-cols-1 gap-12">
                 <!-- Main Content Area -->
                 <div class="lg:col-span-2" x-data="{ activeTab: 1 }" x-init="$watch('activeTab', (value) => { 
-    // Center the active button in the horizontal scroll container
-    $nextTick(() => {
-        const container = $el.querySelector('.scrollbar-hide');
-        const buttons = container.querySelectorAll('button');
-        const activeButton = buttons[value - 1];
-        
-        if (activeButton && container) {
-            const containerRect = container.getBoundingClientRect();
-            const buttonRect = activeButton.getBoundingClientRect();
-            
-            // Calculate the scroll position to center the button
-            const buttonCenter = buttonRect.left + buttonRect.width / 2;
-            const containerCenter = containerRect.left + containerRect.width / 2;
-            const scrollPosition = container.scrollLeft + (buttonCenter - containerCenter);
-            
-            // Smooth scroll to center position
-            container.scrollTo({
-                left: scrollPosition,
-                behavior: 'smooth'
-            });
-        }
-    });
-})">
+                        // Center the active button in the horizontal scroll container
+                        $nextTick(() => {
+                            const container = $el.querySelector('.scrollbar-hide');
+                            const buttons = container.querySelectorAll('button');
+                            const activeButton = buttons[value - 1];
+                            
+                            if (activeButton && container) {
+                                const containerRect = container.getBoundingClientRect();
+                                const buttonRect = activeButton.getBoundingClientRect();
+                                
+                                // Calculate the scroll position to center the button
+                                const buttonCenter = buttonRect.left + buttonRect.width / 2;
+                                const containerCenter = containerRect.left + containerRect.width / 2;
+                                const scrollPosition = container.scrollLeft + (buttonCenter - containerCenter);
+                                
+                                // Smooth scroll to center position
+                                container.scrollTo({
+                                    left: scrollPosition,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        });
+                    })">
                     <!-- Main Image -->
                     <div class="mb-8">
                         <div class="relative rounded-2xl overflow-hidden shadow-xl">
                             <a href="{{ asset('storage/' . $LearningCenter->logo) }}" data-lightbox>
-                                <img src="{{ asset('storage/' . $LearningCenter->logo) }}" alt="{{ $LearningCenter->name }}"
-                                    class="w-full h-96 object-cover cursor-pointer hover:scale-105 transition-transform duration-300">
+                                <img src="{{ asset('storage/' . $LearningCenter->logo) }}" 
+                                    alt="{{ $LearningCenter->name }}"
+                                    class="w-full h-96 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                                    onclick="openLightbox(-1)">
                             </a>
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
@@ -112,42 +114,42 @@
                                 <button @click="activeTab = 1" 
                                     :class="activeTab === 1 ? 'bg-primary-600 border border-blue-100' : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'"
                                     class="px-4 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap">
-                                    Tezkor ma'lumot
+                                    {{ __('blog-single.tabs.quick_info') }}
                                 </button>
                                 <button @click="activeTab = 2" 
                                     :class="activeTab === 2 ? 'bg-primary-600 border border-blue-100' : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'"
                                     class="px-4 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap">
-                                    Rasmlar
+                                    {{ __('blog-single.tabs.images') }}
                                 </button>
                                 <button @click="activeTab = 3" 
                                     :class="activeTab === 3 ? 'bg-primary-600 border border-blue-100' : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'"
                                     class="px-4 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap">
-                                    Fanlar
+                                    {{ __('blog-single.tabs.subjects') }}
                                 </button>
                                 <button @click="activeTab = 4" 
                                     :class="activeTab === 4 ? 'bg-primary-600 border border-blue-100' : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'"
                                     class="px-4 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap">
-                                    O'qituvchilar
+                                    {{ __('blog-single.tabs.teachers') }}
                                 </button>
                                 <button @click="activeTab = 5" 
                                     :class="activeTab === 5 ? 'bg-primary-600 border border-blue-100' : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'"
                                     class="px-4 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap">
-                                    Markaz haqida
+                                    {{ __('blog-single.tabs.about_center') }}
                                 </button>
                                 <button @click="activeTab = 6" 
                                     :class="activeTab === 6 ? 'bg-primary-600 border border-blue-100' : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'"
                                     class="px-4 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap">
-                                    Manzil
+                                    {{ __('blog-single.tabs.location') }}
                                 </button>
                                 <button @click="activeTab = 7" 
                                     :class="activeTab === 7 ? 'bg-primary-600 border border-blue-100' : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'"
                                     class="px-4 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap">
-                                    E'lonlar
+                                    {{ __('blog-single.tabs.announcements') }}
                                 </button>
                                 <button @click="activeTab = 8" 
                                     :class="activeTab === 8 ? 'bg-primary-600 border border-blue-100' : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'"
                                     class="px-4 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap">
-                                    Izohlar
+                                    {{ __('blog-single.tabs.comments') }}
                                 </button>
                             </div>
                         </div>
@@ -156,16 +158,16 @@
                     <!-- button 1 -->
                     <!-- Quick Info Card -->
                     <div x-show="activeTab === 1" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 static mb-8">
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tezkor ma'lumot</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('blog-single.quick_info.title') }}</h3>
 
                         <div class="space-y-4">
                             <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Turi</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('blog-single.quick_info.type') }}</p>
                                 <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->type }}</p>
                             </div>
 
                             <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Manzil</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('blog-single.quick_info.address') }}</p>
                                 <a href="https://www.google.com/maps?q={{ $LearningCenter->location }}"
                                     target="_blank"
                                     class="text-primary-600 dark:text-primary-400 hover:underline text-sm">
@@ -174,13 +176,13 @@
                             </div>
 
                             <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Qo'shilgan sana</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('blog-single.quick_info.added_date') }}</p>
                                 <p class="font-medium text-gray-900 dark:text-white">
                                     {{ $LearningCenter->created_at->diffForHumans() }}</p>
                             </div>
 
                             <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">O'quvchilar soni</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('blog-single.quick_info.student_count') }}</p>
                                 <p class="font-medium text-gray-900 dark:text-white">
                                     {{ $LearningCenter->student_count ?? 0 }}</p>
                             </div>
@@ -196,11 +198,11 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>
-                                        Tahrirlash
+                                        {{ __('blog-single.quick_info.edit_center') }}
                                     </x-button>
 
                                     <form action="{{ route('course.destroy', $LearningCenter->id) }}" method="POST"
-                                        onsubmit="return confirm('Rostdan ham {{ $LearningCenter->name }} markazini o‘chirilsinmi?');">
+                                        onsubmit="return confirm('{{ __('blog-single.quick_info.delete_confirm', ['name' => $LearningCenter->name]) }}');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
@@ -210,7 +212,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                             </svg>
-                                            O'chirish
+                                            {{ __('blog-single.quick_info.delete_center') }}
                                         </button>
                                     </form>
                                 </div>
@@ -220,7 +222,7 @@
 
                     <!-- About Section -->
                     <div x-show="activeTab === 5" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Markaz haqida</h2>
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{ __('blog-single.about_center.title') }}</h2>
                         <div class="prose prose-lg max-w-none text-gray-600 dark:text-gray-300">
                             <p>{{ $LearningCenter->about }}</p>
                         </div>
@@ -228,7 +230,7 @@
 
                     <!-- Location Section -->
                     <div x-show="activeTab === 6" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Manzil</h2>
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{ __('blog-single.location.title') }}</h2>
                         <div class="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden">
                             <iframe
                                 src="https://www.google.com/maps?q={{ $LearningCenter->location }}&hl=uz&z=14&output=embed"
@@ -250,17 +252,15 @@
                     <!-- Image Gallery -->
                     @if ($LearningCenter->images->count() > 0)
                         <div x-show="activeTab === 2" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Rasmlar</h2>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{ __('blog-single.images.title') }}</h2>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                @foreach ($LearningCenter->images as $image)
+                                @foreach ($LearningCenter->images as $index => $image)
                                     <div class="relative group overflow-hidden rounded-xl">
-                                        <a href="{{ asset('storage/' . $image->image) }}" data-lightbox>
-                                            <img src="{{ asset('storage/' . $image->image) }}" alt="Gallery image"
-                                                class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer">
-                                        </a>
-                                        <div
-                                            class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300">
-                                        </div>
+                                        <img src="{{ asset('storage/' . $image->image) }}" 
+                                            alt="{{ __('blog-single.images.title') }}"
+                                            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
+                                            onclick="openLightbox({{ $index }})">
+                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
                                     </div>
                                 @endforeach
                             </div>
@@ -274,7 +274,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
-                                            Rasmlarni tahrirlash
+                                            {{ __('blog-single.images.edit_images') }}
                                         </x-button>
                                     </div>
                                 @endcan
@@ -282,7 +282,7 @@
                         </div>
                     @else
                         <div x-show="activeTab === 2" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Rasmlar</h2>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{ __('blog-single.images.title') }}</h2>
 
 
                             @auth
@@ -294,7 +294,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
-                                            Rasmlar qo'shish
+                                            {{ __('blog-single.images.add_images') }}
                                         </x-button>
                                     </div>
                                 @endcan
@@ -307,7 +307,7 @@
                     <!-- Schedule Section -->
                     @if ($LearningCenter->calendar->count() > 0)
                         <div x-show="activeTab === 7" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Ish grafigi</h2>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{ __('blog-single.schedule.title') }}</h2>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 @foreach ($LearningCenter->calendar as $calendar)
                                     <div
@@ -333,7 +333,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            Grafikni tahrirlash
+                                            {{ __('blog-single.schedule.edit_schedule') }}
                                         </x-button>
                                     </div>
                                 @endcan
@@ -341,7 +341,7 @@
                         </div>
                     @else
                         <div x-show="activeTab === 7" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Ish grafigi</h2>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{ __('blog-single.schedule.title') }}</h2>
 
                             @auth
                                 @can('isOun', $LearningCenter)
@@ -352,7 +352,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            Grafikni qo'shish
+                                            {{ __('blog-single.schedule.add_schedule') }}
                                         </x-button>
                                     </div>
                                 @endcan
@@ -366,7 +366,7 @@
                     @if ($LearningCenter->subjects->count() > 0)
                         <div x-show="activeTab === 3" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
                             <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Fanlar</h3>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ __('blog-single.subjects.title') }}</h3>
                                 @auth
                                     @can('isOun', $LearningCenter)
                                         <x-button variant="outline" size="sm"
@@ -376,7 +376,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 4v16m8-8H4" />
                                             </svg>
-                                            Qo'shish
+                                            {{ __('blog-single.subjects.add_subject') }}
                                         </x-button>
                                     @endcan
                                 @endauth
@@ -427,7 +427,7 @@
                                                     </x-button>
                                                     <form action="{{ route('subject.destroy', $subject->id) }}"
                                                         method="POST"
-                                                        onsubmit="return confirm('Rostdan ham {{ $subject->subject->name }} fani o‘chirilsinmi?');">
+                                                        onsubmit="return confirm('{{ __('blog-single.subjects.delete_confirm', ['name' => $subject->subject->name]) }}');">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit"
@@ -458,10 +458,8 @@
                                             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Fanlar hozircha
-                                    yo'q</h3>
-                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazida hozircha fanlar
-                                    ro'yxatlanmagan</p>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ __('blog-single.subjects.no_subjects') }}</h3>
+                                <p class="text-gray-600 dark:text-gray-400 mb-4">{{ __('blog-single.subjects.no_subjects_desc') }}</p>
 
                                 @auth
                                     @can('isOun', $LearningCenter)
@@ -472,7 +470,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 4v16m8-8H4" />
                                             </svg>
-                                            Birinchi fanni qo'shish
+                                            {{ __('blog-single.subjects.add_first_subject') }}
                                         </x-button>
                                     @endcan
                                 @endauth
@@ -486,7 +484,7 @@
                     @if ($LearningCenter->teachers->count() > 0)
                         <div x-show="activeTab === 4" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
                             <div class="flex items-center justify-between mb-6">
-                                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Ustozlar</h2>
+                                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">{{ __('blog-single.teachers.title') }}</h2>
                                 @auth
                                     @can('isOun', $LearningCenter)
                                         <x-button variant="primary"
@@ -496,7 +494,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 4v16m8-8H4" />
                                             </svg>
-                                            Yangi ustoz
+                                            {{ __('blog-single.teachers.add_teacher') }}
                                         </x-button>
                                     @endcan
                                 @endauth
@@ -569,7 +567,7 @@
                                                             </x-button>
                                                             <form action="{{ route('teacher.destroy', $teacher->id) }}"
                                                                 method="POST"
-                                                                onsubmit="return confirm('Rostdan ham {{ $teacher->name }}ni o‘chirilsinmi?');">
+                                                                onsubmit="return confirm('{{ __('blog-single.teachers.delete_confirm', ['name' => $teacher->name]) }}');">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit"
@@ -602,10 +600,8 @@
                                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Ustozlar hozircha
-                                    yo'q</h3>
-                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazida hozircha ustozlar
-                                    ro'yxatlanmagan</p>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ __('blog-single.teachers.no_teachers') }}</h3>
+                                <p class="text-gray-600 dark:text-gray-400 mb-4">{{ __('blog-single.teachers.no_teachers_desc') }}</p>
 
                                 @auth
                                     @can('isOun', $LearningCenter)
@@ -616,7 +612,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 4v16m8-8H4" />
                                             </svg>
-                                            Birinchi ustozni qo'shish
+                                            {{ __('blog-single.teachers.add_first_teacher') }}
                                         </x-button>
                                     @endcan
                                 @endauth
@@ -634,7 +630,7 @@
                                     <svg class="w-8 h-8 mr-3 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
                                     </svg>
-                                    O'qituvchi e'lonlari
+                                    {{ __('blog-single.announcements.title') }}
                                 </h2>
                                 @auth
                                     @can('isOun', $LearningCenter)
@@ -643,7 +639,7 @@
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                                             </svg>
-                                            Yangi elon
+                                            {{ __('blog-single.announcements.add_announcement') }}
                                         </x-button>
                                     @endcan
                                 @endauth
@@ -662,7 +658,7 @@
                                                     </div>
                                                     <div>
                                                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-                                                            {{ $announcement->subject->name }} o'qituvchisi kerak
+                                                            {{ $announcement->subject->name }} {{ __('blog-single.announcements.teacher_needed') }}
                                                         </h3>
                                                         <p class="text-sm text-gray-500 dark:text-gray-400 flex items-center mt-1">
                                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -684,7 +680,7 @@
                                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                                         </svg>
-                                                        Faol elon
+                                                        {{ __('blog-single.announcements.active_announcement') }}
                                                     </span>
                                                 </div>
                                             </div>
@@ -694,11 +690,11 @@
                                                 @can('isOun', $LearningCenter)
                                                     <div class="flex items-center space-x-2 ml-4 opacity-0 group-hover:opacity-100 transition-opacity">
                                                         <form action="{{ route('teacher.delete_announcement', $announcement->id) }}" method="POST"
-                                                            onsubmit="return confirm('Rostdan ham ushbu elon o‘chirilsinmi?');">
+                                                            onsubmit="return confirm('{{ __('blog-single.announcements.delete_confirm') }}');">
                                                             @csrf
                                                             <button type="submit"
                                                                 class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                                                                title="Elonni o'chirish">
+                                                                title="{{ __('blog-single.announcements.delete_announcement') }}">
                                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                                                 </svg>
@@ -720,8 +716,8 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">O'qituvchi e'lonlari yo'q</h3>
-                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazida hozircha o'qituvchi e'lonlari yo'q</p>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ __('blog-single.announcements.no_announcements') }}</h3>
+                                <p class="text-gray-600 dark:text-gray-400 mb-4">{{ __('blog-single.announcements.no_announcements_desc') }}</p>
 
                                 @auth
                                     @can('isOun', $LearningCenter)
@@ -730,7 +726,7 @@
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                                             </svg>
-                                            Birinchi elonni qo'shish
+                                            {{ __('blog-single.announcements.add_first_announcement') }}
                                         </x-button>
                                     @endcan
                                 @endauth
@@ -749,7 +745,7 @@
                                     <svg class="w-8 h-8 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
                                     </svg>
-                                    Ijtimoiy tarmoqlar
+                                    {{ __('blog-single.social.title') }}
                                 </h2>
                                 @auth
                                     @can('isOun', $LearningCenter)
@@ -758,7 +754,7 @@
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                                             </svg>
-                                            Boshqarish
+                                            {{ __('blog-single.social.manage') }}
                                         </x-button>
                                     @endcan
                                 @endauth
@@ -804,8 +800,8 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Ijtimoiy tarmoqlar yo'q</h3>
-                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazida hozircha ijtimoiy tarmoqlar ro'yxatlanmagan</p>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ __('blog-single.social.no_socials') }}</h3>
+                                <p class="text-gray-600 dark:text-gray-400 mb-4">{{ __('blog-single.social.no_socials_desc') }}</p>
 
                                 @auth
                                     @can('isOun', $LearningCenter)
@@ -814,7 +810,7 @@
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                                             </svg>
-                                            Birinchi tarmoqni qo'shish
+                                            {{ __('blog-single.social.add_first_network') }}
                                         </x-button>
                                     @endcan
                                 @endauth
@@ -824,12 +820,12 @@
 
                     <!-- Comments Section -->
                     <div x-show="activeTab === 8" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
-                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Izohlar</h2>
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{ __('blog-single.comments.title') }}</h2>
 
                         @auth
                             <!-- Rating Form -->
                             <div class="mb-8">
-                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Markazni baholang</h3>
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{{ __('blog-single.comments.rate_center') }}</h3>
                                 <div class="flex items-center space-x-4">
                                     <div class="flex text-2xl" id="rating1"
                                         data-center-id="{{ $LearningCenter->id }}">
@@ -850,7 +846,7 @@
                                 <input type="hidden" name="learning_centers_id" value="{{ $LearningCenter->id }}">
                                 <div class="flex space-x-4 relative">
                                     <input name="comment" type="text" id="commentInput"
-                                        placeholder="Fikringizni qoldiring..."
+                                        placeholder="{{ __('blog-single.comments.comment_placeholder') }}"
                                         class="text-gray-900 bg-white dark:text-white flex-1 px-2 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white">
                                     <button type="submit" id="submitComment"
                                         class="absolute h-full right-4 top-1/2 px-2 border border-gray-300 dark:border-gray-600 transform -translate-y-1/2 text-gray-900 dark:text-white bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-xl transition-colors duration-200">
@@ -863,21 +859,21 @@
                             </form>
                         @else
                             <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
-                                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Izoh qoldirish uchun ro'yxatdan o'ting</h2>
+                                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{ __('blog-single.comments.login_to_comment') }}</h2>
                                 <div class="text-center py-8">
                                     <div class="mb-4">
                                         <svg class="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
                                     </div>
-                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Izoh qoldirish uchun ro'yxatdan o'ting</h3>
-                                    <p class="text-gray-600 dark:text-gray-400 mb-6">Fikr va izohlaringizni baham ko'lish uchun tizimga kirishingiz kerak</p>
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ __('blog-single.comments.login_to_comment') }}</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 mb-6">{{ __('blog-single.comments.login_desc') }}</p>
                                     <div class="space-x-4">
                                         <a href="{{ route('login') }}" class="inline-block bg-primary-600 hover:bg-primary-700 text-gray-900 dark:text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200">
-                                            Tizimga kirish
+                                            {{ __('blog-single.comments.login') }}
                                         </a>
                                         <a href="{{ route('register') }}" class="inline-block bg-gray-100 hover:bg-gray-200 dark:bg-gray-100 dark:hover:bg-gray-200 text-gray-900 dark:text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200">
-                                            Ro'yxatdan o'tish
+                                            {{ __('blog-single.comments.register') }}
                                         </a>
                                     </div>
                                 </div>
@@ -886,7 +882,7 @@
 
                         <!-- Comments List -->
                         <div id="commentsList" class="space-y-4 max-h-96 overflow-y-auto">
-                            <p class="text-gray-600 dark:text-gray-400 sticky top-0 bg-white dark:bg-gray-800 z-10 py-2">Jami izohlar:
+                            <p class="text-gray-600 dark:text-gray-400 sticky top-0 bg-white dark:bg-gray-800 z-10 py-2">{{ __('blog-single.comments.total_comments') }}:
                                 <span id="commentsCount">{{ $LearningCenter->comments->count() }}</span></p>
                             @foreach ($LearningCenter->comments->reverse() as $comment)
                                 <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
@@ -905,11 +901,11 @@
                                     @auth
                                         @can('myComment', $comment)
                                             <form action="{{ route('comment.delete', $comment->id) }}" method="POST"
-                                                onsubmit="return confirm('Rostdan bu izohni o\'chirilsinmi?');" class="mt-4">
+                                                onsubmit="return confirm('{{ __('blog-single.comments.delete_confirm') }}');" class="mt-4">
                                                 @csrf
                                                 <button type="submit"
                                                     class="text-red-500 hover:text-red-700 text-sm transition-colors">
-                                                    Izohni o'chirish
+                                                    {{ __('blog-single.comments.delete_comment') }}
                                                 </button>
                                             </form>
                                         @endcan
@@ -930,10 +926,10 @@
     <section class="py-16 bg-gradient-to-r from-primary-600 to-accent-600">
         <div class="max-w-7xl mx-auto px-6 text-center">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 text-gray-900 dark:text-white">
-                Ushbu markazga qiziqish bildiraysizmi?
+                {{ __('blog-single.cta.title') }}
             </h2>
             <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto text-gray-900 dark:text-white">
-                Bog'lanish orqali qo'shimcha ma'lumot oling yoki to'g'ridan-to'g'ri markazga murojaat qiling
+                {{ __('blog-single.cta.description') }}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{{ route('login') }}" class="bg-white text-primary-600 hover:bg-gray-50 font-semibold py-3 px-6 rounded-xl transition-colors duration-200">
@@ -941,7 +937,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    Tizimga kirish
+                    {{ __('blog-single.cta.login') }}
                 </a>
             </div>
         </div>
@@ -976,59 +972,64 @@
 
     <!-- JavaScript for Lightbox -->
     <script>
-        // Lightbox functionality
+        // Barcha rasmlar massivi (PHP dan)
+        const ALL_IMAGES = @json($LearningCenter->images->map(fn($img) => asset('storage/' . $img->image)));
+        const LOGO_URL = "{{ asset('storage/' . $LearningCenter->logo) }}";
+
         let currentImageIndex = 0;
         let currentImages = [];
-        
-        function openLightbox(imageSrc, index, images) {
-            currentImageIndex = index;
-            currentImages = images;
-            
+
+        function openLightbox(index) {
+            if (index === -1) {
+                // Logo bosilganda
+                currentImages = [LOGO_URL];
+                currentImageIndex = 0;
+            } else {
+                currentImages = ALL_IMAGES;
+                currentImageIndex = index;
+            }
+
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
-            
-            lightboxImg.src = imageSrc;
+
+            lightboxImg.src = currentImages[currentImageIndex];
             lightbox.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
-            
+
             updateLightboxNavigation();
         }
-        
+
         function closeLightbox() {
-            const lightbox = document.getElementById('lightbox');
-            lightbox.classList.add('hidden');
-            document.body.style.overflow = 'auto';
+            document.getElementById('lightbox').classList.add('hidden');
+            document.body.style.overflow = '';
         }
-        
+
         function nextImage() {
             currentImageIndex = (currentImageIndex + 1) % currentImages.length;
-            updateLightboxImage();
-        }
-        
-        function prevImage() {
-            currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
-            updateLightboxImage();
-        }
-        
-        function updateLightboxImage() {
-            const lightboxImg = document.getElementById('lightbox-img');
-            lightboxImg.src = currentImages[currentImageIndex];
+            document.getElementById('lightbox-img').src = currentImages[currentImageIndex];
             updateLightboxNavigation();
         }
-        
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+            document.getElementById('lightbox-img').src = currentImages[currentImageIndex];
+            updateLightboxNavigation();
+        }
+
         function updateLightboxNavigation() {
             const prevBtn = document.getElementById('lightbox-prev');
             const nextBtn = document.getElementById('lightbox-next');
             const counter = document.getElementById('lightbox-counter');
-            
-            prevBtn.style.display = currentImages.length > 1 ? 'flex' : 'none';
-            nextBtn.style.display = currentImages.length > 1 ? 'flex' : 'none';
-            
+
+            const show = currentImages.length > 1;
+            prevBtn.style.display = show ? 'flex' : 'none';
+            nextBtn.style.display = show ? 'flex' : 'none';
+
             if (counter) {
                 counter.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
             }
         }
-        
+
         // Keyboard navigation
         document.addEventListener('keydown', function(e) {
             const lightbox = document.getElementById('lightbox');
@@ -1038,21 +1039,10 @@
                 if (e.key === 'ArrowLeft') prevImage();
             }
         });
-        
-        // Initialize lightbox for existing images
-        document.addEventListener('DOMContentLoaded', function() {
-            const imageLinks = document.querySelectorAll('[data-lightbox]');
-            
-            if (imageLinks.length > 0) {
-                const images = Array.from(imageLinks).map(link => link.href);
-                
-                imageLinks.forEach((link, index) => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        openLightbox(this.href, index, images);
-                    });
-                });
-            }
+
+        // Lightbox background click = close
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
         });
     </script>
 </x-layout>
@@ -1431,6 +1421,211 @@
                     document.body.removeChild(notification);
                 }, 300);
             }, 3000);
+        }
+    });
+
+    // Lightbox functionality
+    let currentImageIndex = 0;
+    let currentImages = [];
+    
+    function openLightbox(imageSrc, index) {
+        currentImageIndex = parseInt(index);
+        currentImages = @json($LearningCenter->images);
+        
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        
+        if (!lightbox || !lightboxImg) {
+            // Create lightbox if it doesn't exist
+            createLightbox();
+            openLightbox(imageSrc, index);
+            return;
+        }
+        
+        lightboxImg.src = imageSrc;
+        lightbox.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        updateLightboxCounter();
+    }
+    
+    function createLightbox() {
+        const lightboxHTML = `
+            <div id="lightbox" class="lightbox hidden">
+                <div class="lightbox-content">
+                    <button type="button" onclick="closeLightbox()" class="lightbox-close">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                    
+                    <button type="button" id="lightbox-prev" onclick="prevImage()" class="lightbox-nav lightbox-prev">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    
+                    <img id="lightbox-img" class="lightbox-img" src="" alt="Lightbox Image">
+                    
+                    <button type="button" id="lightbox-next" onclick="nextImage()" class="lightbox-nav lightbox-next">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                    
+                    <div id="lightbox-counter" class="lightbox-counter"></div>
+                </div>
+            </div>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', lightboxHTML);
+        
+        // Add styles for lightbox
+        const style = document.createElement('style');
+        style.textContent = `
+            .lightbox {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                z-index: 9999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .lightbox:not(.hidden) {
+                opacity: 1;
+            }
+            .lightbox-content {
+                position: relative;
+                max-width: 90%;
+                max-height: 90%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .lightbox-img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+                border-radius: 8px;
+            }
+            .lightbox-close {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: rgba(255, 255, 255, 0.9);
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+            .lightbox-close:hover {
+                background: rgba(255, 255, 255, 1);
+            }
+            .lightbox-nav {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                background: rgba(255, 255, 255, 0.9);
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+            .lightbox-prev {
+                left: 20px;
+            }
+            .lightbox-next {
+                right: 20px;
+            }
+            .lightbox-nav:hover {
+                background: rgba(255, 255, 255, 1);
+            }
+            .lightbox-counter {
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.7);
+                color: white;
+                padding: 8px 16px;
+                border-radius: 20px;
+                font-size: 14px;
+            }
+            .hidden {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    function closeLightbox() {
+        const lightbox = document.getElementById('lightbox');
+        if (lightbox) {
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+    }
+    
+    function prevImage() {
+        if (currentImages.length > 0) {
+            currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+            updateLightboxImage();
+        }
+    }
+    
+    function nextImage() {
+        if (currentImages.length > 0) {
+            currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+            updateLightboxImage();
+        }
+    }
+    
+    function updateLightboxImage() {
+        const lightboxImg = document.getElementById('lightbox-img');
+        if (lightboxImg && currentImages[currentImageIndex]) {
+            lightboxImg.src = '/storage/' + currentImages[currentImageIndex].image;
+            updateLightboxCounter();
+        }
+    }
+    
+    function updateLightboxCounter() {
+        const counter = document.getElementById('lightbox-counter');
+        if (counter && currentImages.length > 0) {
+            counter.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
+        }
+    }
+    
+    // Initialize lightbox on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        createLightbox();
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        const lightbox = document.getElementById('lightbox');
+        if (lightbox && !lightbox.classList.contains('hidden')) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowLeft') {
+                prevImage();
+            } else if (e.key === 'ArrowRight') {
+                nextImage();
+            }
         }
     });
 </script>

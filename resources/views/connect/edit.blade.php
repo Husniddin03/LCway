@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>Ijtimoiy tarmoqlar - {{ $LearningCenter->name }}</x-slot:title>
+    <x-slot:title>{{ __('connect-edit.title') }} - {{ $LearningCenter->name }}</x-slot:title>
     
     <!-- Modern Social Networks Section -->
     <section class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -20,14 +20,14 @@
             <div class="text-center mb-16 animate-fade-in">
                 <!-- Badge -->
                 <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-full mb-6">
-                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Ijtimoiy tarmoqlar</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __('connect-edit.header.badge') }}</span>
                 </div>
                 
                 <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 dark:from-blue-400 dark:via-cyan-400 dark:to-teal-400 mb-6 leading-tight">
                     {{ $LearningCenter->name }}
                 </h1>
                 <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                    Ijtimoiy tarmoqlar orqali bog'lanish yo'llarini boshqaring
+                    {{ __('connect-edit.header.subtitle') }}
                 </p>
             </div>
 
@@ -48,7 +48,7 @@
                                     <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
                                     </svg>
-                                    Joriy bog'lanishlar
+                                    {{ __('connect-edit.current.title') }}
                                 </h2>
                                 <span class="inline-flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900/30 rounded-full">
                                     <span class="text-sm font-semibold text-blue-700 dark:text-blue-300">{{ $LearningCenter->connections->count() }}</span>
@@ -100,14 +100,14 @@
                                             <div class="flex items-center space-x-2 opacity-0 group-hover/item:opacity-100 transition-opacity">
                                                 <a href="{{ $connection->connection->name == 'Phone' ? 'tel:' . $connection->url : ($connection->connection->name == 'Email' ? 'mailto:' . $connection->url : $connection->url) }}" 
                                                     target="{{ $connection->connection->name == 'Phone' || $connection->connection->name == 'Email' ? '_self' : '_blank' }}"
-                                                    class="p-2 text-blue-500 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors" title="Ochish">
+                                                    class="p-2 text-blue-500 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors" title="{{ __('connect-edit.buttons.open') }}">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                                                     </svg>
                                                 </a>
-                                                <form action="{{ route('connect.delete', $connection->id) }}" method="POST" onsubmit="return confirm('Rostdan ham {{ $connection->connection->name }}ni o‘chirilsinmi?');">
+                                                <form action="{{ route('connect.delete', $connection->id) }}" method="POST" onsubmit="return confirm('{{ __('connect-edit.errors.delete_confirm', ['name' => $connection->connection->name]) }}');">
                                                     @csrf
-                                                    <button type="submit" class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" title="O'chirish">
+                                                    <button type="submit" class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" title="{{ __('connect-edit.buttons.delete') }}">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                                         </svg>
@@ -123,7 +123,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
                                             </svg>
                                         </div>
-                                        <p class="text-gray-600 dark:text-gray-300">Hozircha bog'lanishlar yo'q</p>
+                                        <p class="text-gray-600 dark:text-gray-300">{{ __('connect-edit.current.no_connections') }}</p>
                                     </div>
                                 @endif
                             </div>
@@ -144,8 +144,8 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                                     </svg>
                                 </div>
-                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Yangi bog'lanish qo'shish</h2>
-                                <p class="text-gray-600 dark:text-gray-300 mt-2">Ijtimoiy tarmoq yoki bog'lanish usulini tanlang</p>
+                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('connect-edit.form.title') }}</h2>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">{{ __('connect-edit.form.subtitle') }}</p>
                             </div>
 
                             <!-- Error Messages -->
@@ -156,7 +156,7 @@
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-9a1 1 0 00-1 1v4a1 1 0 102 2v-4a1 1 0 00-1-1zm-2 0a2 2 0 00-2 2v4a2 2 0 002 2h1a2 2 0 002-2v-4a2 2 0 00-2-2h-1z" clip-rule="evenodd"/>
                                         </svg>
                                         <div>
-                                            <h4 class="text-sm font-medium text-red-800 dark:text-red-200">Iltimos, xatolarni to'g'irlang:</h4>
+                                            <h4 class="text-sm font-medium text-red-800 dark:text-red-200">{{ __('connect-edit.errors.title') }}</h4>
                                             <ul class="mt-2 text-sm text-red-700 dark:text-red-300 space-y-1">
                                                 @foreach ($errors->all() as $error)
                                                     <li>• {{ $error }}</li>
@@ -175,10 +175,10 @@
                                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
                                         </svg>
-                                        Bog'lanish turi <span class="text-red-500">*</span>
+                                        {{ __('connect-edit.form.connection_type') }} <span class="text-red-500">{{ __('connect-edit.required') }}</span>
                                     </label>
                                     <select name="connection_id" id="connection_id" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" required>
-                                        <option value="" disabled>Bog'lanish turini tanlang...</option>
+                                        <option value="" disabled>{{ __('connect-edit.form.select_type') }}</option>
                                         @foreach ($connections as $connection)
                                             <option value="{{ $connection->id }}">{{ $connection->name }}</option>
                                         @endforeach
@@ -199,9 +199,9 @@
                                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
                                         </svg>
-                                        Manzil <span class="text-red-500">*</span>
+                                        {{ __('connect-edit.form.url') }} <span class="text-red-500">{{ __('connect-edit.required') }}</span>
                                     </label>
-                                    <input type="text" name="url" id="url" placeholder="https://t.me/username yoki +998901234567" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" required>
+                                    <input type="text" name="url" id="url" placeholder="{{ __('connect-edit.form.url_placeholder') }}" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" required>
                                     @error('url')
                                         <p class="text-red-500 text-sm mt-1 flex items-center">
                                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -210,7 +210,7 @@
                                             {{ $message }}
                                         </p>
                                     @enderror
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Telegram, Instagram, Facebook, telefon raqam yoki email manzilini kiriting</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ __('connect-edit.form.url_hint') }}</p>
                                 </div>
                             </div>
 
@@ -221,14 +221,14 @@
                                     <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                     </svg>
-                                    Orqaga
+                                    {{ __('connect-edit.buttons.back') }}
                                 </a>
                                 <button type="submit"
                                         class="flex-1 px-8 py-4 bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 hover:from-blue-700 hover:via-cyan-700 hover:to-teal-700 text-white font-bold rounded-2xl transition-all duration-300 text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-3 group">
                                     <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                                     </svg>
-                                    Saqlash
+                                    {{ __('connect-edit.buttons.save') }}
                                 </button>
                             </div>
                         </form>

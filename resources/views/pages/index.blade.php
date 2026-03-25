@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>FindCourse - Eng yaxshi o'quv markazlari</x-slot-title>
+    <x-slot:title>{{ __('index.title') }}</x-slot:title>
 
         <!-- Hero Section -->
         <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -20,17 +20,16 @@
                 <div class="animate-fade-in">
                     <h1
                         class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-gray-900 dark:text-white">
-                        Assalomu alaykum,<br>
+                        {{ __('index.hero.greeting') }},<br>
                         <span class="text-yellow-600 dark:text-yellow-300">
                             FindCourse
                         </span>
-                        ga xush kelibsiz!
+                        {{ __('index.hero.welcome') }}
                     </h1>
 
                     <p
                         class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed text-gray-700 dark:text-white/90">
-                        Bu yerda siz o'zingizga mos bo'lgan o'quv markazlarni topishingiz mumkin.
-                        Biz sizga eng yaxshi xizmatni taqdim etamiz.
+                        {{ __('index.hero.description') }}
                     </p>
 
                     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
@@ -40,7 +39,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
-                            Hoziroq kurslarni tanlash
+                            {{ __('index.hero.browse_courses') }}
                         </x-button>
 
                         <x-button variant="outline" size="lg"
@@ -54,7 +53,7 @@
                     </div>
 
                     <p class="text-sm text-gray-600 dark:text-white/80">
-                        Har qanday savol yoki taklif uchun biz bilan bog'laning
+                        {{ __('index.hero.contact_info') }}
                     </p>
                 </div>
             </div>
@@ -83,9 +82,8 @@
                                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">O'qituvchilar tanlovi</h3>
-                        <p class="text-gray-600 dark:text-gray-400">O'zingizga munosib ko'rgan o'qituvchilarni tanlang.
-                        </p>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{{ __('index.features.teacher_selection.title') }}</h3>
+                        <p class="text-gray-600 dark:text-gray-400">{{ __('index.features.teacher_selection.description') }}
                     </div>
 
                     <!-- Feature 2 -->
@@ -98,10 +96,9 @@
                                     d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Butun O'zbekiston bo'ylab
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{{ __('index.features.nationwide.title') }}
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-400">Butun O'zbekiston bo'ylab barcha o'quv markazlarini
-                            topishingiz mumkin.</p>
+                        <p class="text-gray-600 dark:text-gray-400">{{ __('index.features.nationwide.description') }}</p>
                     </div>
 
                     <!-- Feature 3 -->
@@ -114,8 +111,8 @@
                                     d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Markazlar reytingi</h3>
-                        <p class="text-gray-600 dark:text-gray-400">O'quv markazlari reytingi bo'yicha qidiring.</p>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{{ __('index.features.ratings.title') }}</h3>
+                        <p class="text-gray-600 dark:text-gray-400">{{ __('index.features.ratings.description') }}</p>
                     </div>
                 </div>
             </div>
@@ -140,13 +137,12 @@
                     </div>
 
                     <div>
-                        <x-badge variant="primary" class="mb-4">Nima uchun bizni tanlaysiz</x-badge>
+                        <x-badge variant="primary" class="mb-4">{{ __('index.about.badge') }}</x-badge>
                         <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-                            Biz eng yaxshi xizmatlarni taqdim etamiz
+                            {{ __('index.about.title') }}
                         </h2>
                         <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
-                            Biz haqimizda ko'proq ma'lumot olish uchun pastdagi videoni koring va biz haqimizda o'z
-                            fikringizni qoldiring.
+                            {{ __('index.about.description') }}
                         </p>
 
                         <div class="flex flex-col space-y-4">
@@ -168,8 +164,8 @@
                                     </div>
                                 </div>
                                 <div class="mt-3 text-center">
-                                    <div class="font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">Bizning ishga munosabatingiz qanday?</div>
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">Videoni tomosha qiling</div>
+                                    <div class="font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">{{ __('index.about.video_question') }}</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ __('index.about.watch_video') }}</div>
                                 </div>
                             </button>
                         </div>
@@ -189,7 +185,7 @@
                                 <!-- Video Player -->
                                 <video id="videoPlayer" class="w-full rounded-lg shadow-2xl" controls>
                                     <source src="{{ asset('videos/aboutme.mp4') }}" type="video/mp4">
-                                    Sizning brauzeringiz video elementini qo'llab-quvvatlamaydi.
+                                    {{ __('index.about.video_not_supported') }}.
                                 </video>
                             </div>
                         </div>
@@ -203,10 +199,10 @@
             <div class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                        Biz siz uchun eng yaxshi sifatli xizmatni taklif etamiz
+                        {{ __('index.services.title') }}
                     </h2>
                     <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                        Bu yerda biz qila oladigan ishlar berilgan
+                        {{ __('index.services.description') }}
                     </p>
                 </div>
 
@@ -221,10 +217,9 @@
                                     d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Startup ishlab chiqish
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{{ __('index.services.startup_development.title') }}
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-400">Turli xil mavzularda startup loyihalar ishlab
-                            chiqamiz.</p>
+                        <p class="text-gray-600 dark:text-gray-400">{{ __('index.services.startup_development.description') }}</p>
                     </x-card>
 
                     <!-- Service 2 -->
@@ -237,9 +232,8 @@
                                     d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Yuqori sifatli dizayn</h3>
-                        <p class="text-gray-600 dark:text-gray-400">Foydalanuvchilarga hush yoqadigan yuqori sifatli
-                            dizayn.</p>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{{ __('index.services.high_quality_design.title') }}</h3>
+                        <p class="text-gray-600 dark:text-gray-400">{{ __('index.services.high_quality_design.description') }}</p>
                     </x-card>
 
                     <!-- Service 3 -->
@@ -252,8 +246,8 @@
                                     d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Websaytlar</h3>
-                        <p class="text-gray-600 dark:text-gray-400">Biz siz uchun veb-sayt qilib berishimiz mumkin.</p>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{{ __('index.services.websites.title') }}</h3>
+                        <p class="text-gray-600 dark:text-gray-400">{{ __('index.services.websites.description') }}</p>
                     </x-card>
 
                     <!-- Service 4 -->
@@ -266,8 +260,8 @@
                                     d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Optimal tezlik</h3>
-                        <p class="text-gray-600 dark:text-gray-400">Foydalanuvchilar uchun tezlikda hizmat qilish.</p>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{{ __('index.services.optimal_speed.title') }}</h3>
+                        <p class="text-gray-600 dark:text-gray-400">{{ __('index.services.optimal_speed.description') }}</p>
                     </x-card>
 
                     <!-- Service 5 -->
@@ -280,9 +274,8 @@
                                     d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">To'liq moslashish</h3>
-                        <p class="text-gray-600 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit.</p>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{{ __('index.services.full_compatibility.title') }}</h3>
+                        <p class="text-gray-600 dark:text-gray-400">{{ __('index.services.full_compatibility.description') }}</p>
                     </x-card>
 
                     <!-- Service 6 -->
@@ -295,9 +288,8 @@
                                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Har ikkala tomondan</h3>
-                        <p class="text-gray-600 dark:text-gray-400">Ham frontend ham backend bo'limlarni birdek
-                            bajarish.</p>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{{ __('index.services.both_sides.title') }}</h3>
+                        <p class="text-gray-600 dark:text-gray-400">{{ __('index.services.both_sides.description') }}</p>
                     </x-card>
                 </div>
             </div>
@@ -308,10 +300,10 @@
             <div class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-12">
                     <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                        Mashhur o'quv markazlari
+                        {{ __('index.featured_courses.title') }}
                     </h2>
                     <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                        Eng yaxshi reytingga ega o'quv markazlari bilan tanishing
+                        {{ __('index.featured_courses.description') }}
                     </p>
                 </div>
 
@@ -395,13 +387,13 @@
                                                 <p class="text-2xl font-bold text-primary-600 dark:text-primary-400">
                                                     {{ $center->subjects->min('price') ?? 0 }}
                                                 </p>
-                                                <p class="text-xs text-gray-500 dark:text-gray-400">so'm/oydan</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('index.featured_courses.per_month') }}</p>
                                             </div>
                                         @endif
 
                                         <x-button variant="outline" size="sm"
                                             href="{{ route('blog-single', $center->id) }}">
-                                            Batafsil
+                                            {{ __('index.featured_courses.details') }}
                                         </x-button>
                                     </div>
                                 </div>
@@ -427,7 +419,7 @@
                 <div class="text-center mt-12">
                     <x-button variant="primary" size="lg" href="{{ route('blog-grid') }}"
                         class="dark:bg-primary-600 text-gray-900 dark:text-white dark:hover:bg-primary-700">
-                        Barcha markazlarni ko'rish
+                        {{ __('index.featured_courses.view_all') }}
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -442,29 +434,16 @@
             <div class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-12">
                     <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                        O'qish yo'nalishlari
+                        {{ __('index.categories.title') }}
                     </h2>
                     <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                        O'zingizga mos bo'lgan yo'nalishni tanlang
+                        {{ __('index.categories.description') }}
                     </p>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-3">
                     @php
-                        $categories = [
-                            'IT va dasturlash',
-                            'Chet tillari',
-                            'Matematika',
-                            'Fizika',
-                            'Kimyo',
-                            'Biologiya',
-                            'Tarix',
-                            'Adabiyot',
-                            'San\'at',
-                            'Biznes',
-                            'Marketing',
-                            'Dizayn',
-                        ];
+                        $categories = __('index.categories.items');
                     @endphp
 
                     @foreach ($categories as $category)
@@ -482,10 +461,10 @@
             <div class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-12">
                     <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                        O'quvchilarimiz fikrlari
+                        {{ __('index.testimonials.title') }}
                     </h2>
                     <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                        Bitiruvchilarimiz tajribasi va muvaffaqiyatlari
+                        {{ __('index.testimonials.description') }}
                     </p>
                 </div>
 
@@ -500,12 +479,11 @@
                                     <span class="text-yellow-400 text-lg">★</span>
                                 @endfor
                             </div>
-                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Ali Valiyev</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Web Dasturchi</p>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('index.testimonials.testimonial1.name') }}</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('index.testimonials.testimonial1.role') }}</p>
                         </div>
                         <blockquote class="text-gray-600 dark:text-gray-300 italic">
-                            "FindCourse orqali o'zim uchun eng yaxshi IT kursini topdim. Endi yirik kompaniyada
-                            ishlayman. Ushbu platforma har qanday yosh uchun foydalidir!"
+                            "{{ __('index.testimonials.testimonial1.content') }}"
                         </blockquote>
                     </x-card>
 
@@ -519,12 +497,11 @@
                                     <span class="text-yellow-400 text-lg">★</span>
                                 @endfor
                             </div>
-                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Malika Karimova</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Ingliz tuli o'qituvchisi</p>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('index.testimonials.testimonial2.name') }}</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('index.testimonials.testimonial2.role') }}</p>
                         </div>
                         <blockquote class="text-gray-600 dark:text-gray-300 italic">
-                            "Chet tili kursini topish juda oson bo'ldi. Sifatli o'qituvchilar va qulay jadval. Hozir
-                            o'zim ham o'qituvchi sifatida faoliyat yuritaman."
+                            "{{ __('index.testimonials.testimonial2.content') }}"
                         </blockquote>
                     </x-card>
 
@@ -539,12 +516,11 @@
                                 @endfor
                                 <span class="text-yellow-400 text-lg opacity-30">★</span>
                             </div>
-                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Javohir Toshmatov</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Grafik dizayner</p>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('index.testimonials.testimonial3.name') }}</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('index.testimonials.testimonial3.role') }}</p>
                         </div>
                         <blockquote class="text-gray-600 dark:text-gray-300 italic">
-                            "Dizayn yo'nalishida bir nechta kurslarni solishtirdim. Platforma orqali eng yaxshi markazni
-                            topdim va hozir o'z ishimga asos soldim."
+                            "{{ __('index.testimonials.testimonial3.content') }}"
                         </blockquote>
                     </x-card>
                 </div>
@@ -566,11 +542,11 @@
             <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
                 <div class="max-w-3xl mx-auto">
                     <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 text-gray-900 dark:text-white mb-4">
-                        Hozirda ro'yxatdan o'tganlar o'quv markazlar soni: <span
-                            class="text-yellow-300">{{ $centers->count() ?? 0 }} ta</span>
+                        {{ __('index.cta.title') }}: <span
+                            class="text-yellow-300">{{ $centers->count() ?? 0 }} {{ __('index.cta.count_suffix') }}</span>
                     </h2>
                     <p class="text-xl text-white/90 mb-8">
-                        Ular safida siz ham bo'ling va o'zingizning o'quv markazingizni qo'shing!
+                        {{ __('index.cta.description') }}
                     </p>
                     <x-button variant="secondary" size="lg" href="{{ route('course.create') }}"
                         class="bg-white text-primary-600 hover:bg-gray-50">
@@ -578,7 +554,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 4v16m8-8H4" />
                         </svg>
-                        Hoziroq qo'shiling
+                        {{ __('index.cta.button') }}
                     </x-button>
                 </div>
             </div>
@@ -598,11 +574,10 @@
                 <!-- Section Title -->
                 <div class="text-center mb-16">
                     <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-                        Aloqa uchun
+                        {{ __('index.contact.title') }}
                     </h2>
                     <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                        Agar sizda biror loyiha websayt yoki taklif bo'lsa biz siz bilan albatta bog'lanamiz.
-                        Buning uchun bizga o'z malumotlaringizni yuboring yoki berilgan manzillar bilan bog'laning!
+                        {{ __('index.contact.description') }}
                     </p>
                 </div>
 
@@ -617,7 +592,7 @@
                         </div>
 
                         <div class="relative z-10">
-                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Biz bilan bog'laning</h3>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">{{ __('index.contact.contact_us') }}</h3>
 
                             <!-- Contact Items -->
                             <div class="space-y-6">
@@ -626,14 +601,13 @@
                                     <div
                                         class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 dark:group-hover:bg-blue-900/50 transition-colors">
                                         <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
+                                           stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Elektron pochta
-                                        </h4>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white mb-1">{{ __('index.contact.email') }}</h4>
                                         <a href="mailto:husniddin13124041@gmail.com"
                                             class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                             husniddin13124041@gmail.com
@@ -654,7 +628,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Manzil</h4>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white mb-1">{{ __('index.contact.address') }}</h4>
                                         <p class="text-gray-600 dark:text-gray-400">
                                             M254+HFP, улица Усто Умара Джуракулова, Samarqand, Samarqand viloyati,
                                             Uzbekistan
@@ -673,7 +647,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Telefon raqam</h4>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white mb-1">{{ __('index.contact.phone') }}</h4>
                                         <a href="tel:+998770252677"
                                             class="text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
                                             +998 77 025 26 77
@@ -684,7 +658,7 @@
 
                             <!-- Social Media -->
                             <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-                                <h4 class="font-semibold text-gray-900 dark:text-white mb-4">Ijtimoiy tarmoqlar</h4>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-4">{{ __('index.contact.social') }}</h4>
                                 <div class="flex space-x-3">
                                     <a href="https://t.me/matritsachi" target="_blank"
                                         class="w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-xl flex items-center justify-center text-white transition-all transform hover:scale-110 shadow-lg">
@@ -700,21 +674,21 @@
 
                     <!-- Contact Form -->
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Xabar yuboring</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">{{ __('index.contact.form.title') }}</h3>
 
                         <form class="space-y-6" id="contactForm">
                             @csrf
                             <div id="successMessage" class="hidden mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-xl">
-                                Xabar muvaffaqiyatli yuborildi!
+                                {{ __('index.contact.form.success') }}
                             </div>
                             <div id="errorMessage" class="hidden mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-xl">
-                                Xabarni yuborishda xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.
+                                {{ __('index.contact.form.error') }}
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        To'liq ismingiz
+                                        {{ __('index.contact.form.fullname') }}
                                     </label>
                                     <input type="text" name="fullname" placeholder="Husniddin"
                                         class="w-full px-4 py-3 rounded-xl border border-gray-300" required />
@@ -722,7 +696,7 @@
 
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Elektron pochtangiz
+                                        {{ __('index.contact.form.email') }}
                                     </label>
                                     <input type="email" name="email" placeholder="husniddin@gmail.com"
                                         class="w-full px-4 py-3 rounded-xl border border-gray-300" required />
@@ -731,7 +705,7 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Xabar
+                                    {{ __('index.contact.form.message') }}
                                 </label>
                                 <textarea name="message" rows="4"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-300"
@@ -740,7 +714,7 @@
 
                             <button type="submit" id="submitBtn"
                                 class="w-full bg-blue-600 text-white py-4 rounded-xl cursor-pointer">
-                                Xabarni yuborish
+                                {{ __('index.contact.form.submit') }}
                             </button>
                         </form>
                     </div>

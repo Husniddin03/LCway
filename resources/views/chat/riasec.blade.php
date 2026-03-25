@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>Kasbga yo'naltiruvchi test</x-slot:title>
+    <x-slot:title>{{ __('riasec.title') }}</x-slot:title>
 
     <main class="max-w-4xl mx-auto mt-20 p-6 space-y-6">
         <section class="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
@@ -7,12 +7,10 @@
                 <svg class="w-8 h-8 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                 </svg>
-                RIASEC testi nima?
+                {{ __('riasec.hero.what_is') }}
             </h2>
             <p class="text-gray-600 leading-relaxed text-lg">
-                RIASEC testi — bu odamning qaysi kasb yo‘nalishiga ko‘proq mos kelishini aniqlash uchun ishlatiladigan
-                psixologik testdir.
-                U John Holland tomonidan ishlab chiqilgan va dunyo bo‘yicha millionlab odamlar tomonidan qo‘llanadi.
+                {{ __('riasec.hero.description') }}
             </p>
         </section>
 
@@ -30,9 +28,9 @@
                         <h3 class="text-xl font-semibold text-gray-800">Realistic</h3>
                     </div>
                     <p class="text-gray-700 text-sm leading-relaxed">
-                        <strong>Texnika, jismoniy ish</strong> - Texnika, mexanika, sport va jismoniy ishlar bilan shug'ullanishni yoqtiradiganlar uchun.
+                        <strong>{{ __('riasec.types.realistic.description') }}</strong> {{ __('riasec.types.realistic.details') }}
                     </p>
-                    <p class="text-gray-600 text-xs mt-2 font-medium">Misol: muhandis, quruvchi, elektrik</p>
+                    <p class="text-gray-600 text-xs mt-2 font-medium">{{ __('riasec.types.realistic.example') }}</p>
                 </div>
                 
                 <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
@@ -41,9 +39,9 @@
                         <h3 class="text-xl font-semibold text-gray-800">Investigative</h3>
                     </div>
                     <p class="text-gray-700 text-sm leading-relaxed">
-                        <strong>Ilmiy, tahliliy</strong> - Ilmiy tadqiqotlar, mantiqiy masalalar, IT va kod yozishni yoqtiradiganlar uchun.
+                        <strong>{{ __('riasec.types.investigative.description') }}</strong> {{ __('riasec.types.investigative.details') }}
                     </p>
-                    <p class="text-gray-600 text-xs mt-2 font-medium">Misol: dasturchi, ilmiy tadqiqotchi</p>
+                    <p class="text-gray-600 text-xs mt-2 font-medium">{{ __('riasec.types.investigative.example') }}</p>
                 </div>
                 
                 <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
@@ -52,9 +50,9 @@
                         <h3 class="text-xl font-semibold text-gray-800">Artistic</h3>
                     </div>
                     <p class="text-gray-700 text-sm leading-relaxed">
-                        <strong>Ijodiy, san'at</strong> - San'at, dizayn, musiqiy yoki ijodiy mashg'ulotlarni yoqtiradiganlar uchun.
+                        <strong>{{ __('riasec.types.artistic.description') }}</strong> {{ __('riasec.types.artistic.details') }}
                     </p>
-                    <p class="text-gray-600 text-xs mt-2 font-medium">Misol: rassom, dizayner, arxitektor</p>
+                    <p class="text-gray-600 text-xs mt-2 font-medium">{{ __('riasec.types.artistic.example') }}</p>
                 </div>
                 
                 <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
@@ -63,9 +61,9 @@
                         <h3 class="text-xl font-semibold text-gray-800">Social</h3>
                     </div>
                     <p class="text-gray-700 text-sm leading-relaxed">
-                        <strong>Ijtimoiy, yordam</strong> - Odamlarga yordam berish va ularga ta'lim berishni yoqtiradiganlar uchun.
+                        <strong>{{ __('riasec.types.social.description') }}</strong> {{ __('riasec.types.social.details') }}
                     </p>
-                    <p class="text-gray-600 text-xs mt-2 font-medium">Misol: o'qituvchi, shifokor, psixolog</p>
+                    <p class="text-gray-600 text-xs mt-2 font-medium">{{ __('riasec.types.social.example') }}</p>
                 </div>
                 
                 <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
@@ -74,9 +72,9 @@
                         <h3 class="text-xl font-semibold text-gray-800">Enterprising</h3>
                     </div>
                     <p class="text-gray-700 text-sm leading-relaxed">
-                        <strong>Tadbirkor, rahbar</strong> - Biznes, liderlik, strategik qarorlar qabul qilishni yoqtiradiganlar uchun.
+                        <strong>{{ __('riasec.types.enterprising.description') }}</strong> {{ __('riasec.types.enterprising.details') }}
                     </p>
-                    <p class="text-gray-600 text-xs mt-2 font-medium">Misol: menejer, biznesmen, marketolog</p>
+                    <p class="text-gray-600 text-xs mt-2 font-medium">{{ __('riasec.types.enterprising.example') }}</p>
                 </div>
                 
                 <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
@@ -85,9 +83,9 @@
                         <h3 class="text-xl font-semibold text-gray-800">Conventional</h3>
                     </div>
                     <p class="text-gray-700 text-sm leading-relaxed">
-                        <strong>An'anaviy, tizimli</strong> - Tizimli ishlar, hujjatlar, hisob-kitob va ma'lumotlarni boshqarishni yoqtiradiganlar uchun.
+                        <strong>{{ __('riasec.types.conventional.description') }}</strong> {{ __('riasec.types.conventional.details') }}
                     </p>
-                    <p class="text-gray-600 text-xs mt-2 font-medium">Misol: buxgalter, arxivchi</p>
+                    <p class="text-gray-600 text-xs mt-2 font-medium">{{ __('riasec.types.conventional.example') }}</p>
                 </div>
             </div>
         </section>
@@ -100,9 +98,8 @@
                 RIASEC testi qanday ishlaydi?
             </h2>
             <p class="text-gray-600 leading-relaxed text-lg">
-                Test odatda 20–60 ta "Ha/Yo'q" savollaridan iborat bo'ladi.
-                Savollar orqali sizning qaysi yo'nalishga qiziqishingiz aniqlanadi.
-                Natijada sizga mos keladigan kasblar va kuchli tomonlaringizni ko'rasiz.
+                {{ __('riasec.test.how_it_works') }}da 20–60 ta "Ha/Yo'q" savollaridan iborat bo'ladi.
+                {{ __('riasec.test.description') }}
             </p>
         </section>
 
@@ -111,35 +108,35 @@
                 <svg class="w-8 h-8 mr-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                Testdan foyda
+                {{ __('riasec.test.start_test') }}
             </h2>
             <p class="text-gray-600 leading-relaxed text-lg mb-4">
-                RIASEC testi yordamida siz:
+                {{ __('riasec.results.title') }}
             </p>
             <ul class="space-y-3">
                 <li class="flex items-start">
                     <svg class="w-6 h-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-gray-700">O'z qiziqishlaringizni aniqlaysiz</span>
+                    <span class="text-gray-700">{{ __('riasec.results.identify_interests') }}</span>
                 </li>
                 <li class="flex items-start">
                     <svg class="w-6 h-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-gray-700">Kuchli va zaif tomonlaringizni bilib olasiz</span>
+                    <span class="text-gray-700">{{ __('riasec.results.strengths_weaknesses') }}</span>
                 </li>
                 <li class="flex items-start">
                     <svg class="w-6 h-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-gray-700">Kelajakdagi kasb tanlashingizni osonlashtirasiz</span>
+                    <span class="text-gray-700">{{ __('riasec.results.choose_career') }}</span>
                 </li>
                 <li class="flex items-start">
                     <svg class="w-6 h-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-gray-700">Shaxsiy va kasbiy rivojlanishingizga yo'l ochasiz</span>
+                    <span class="text-gray-700">{{ __('riasec.results.develop_skills') }}</span>
                 </li>
             </ul>
         </section>

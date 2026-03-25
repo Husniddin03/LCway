@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ConnectController;
@@ -107,6 +108,9 @@ Route::get('/404', [PageController::class, 'notFound'])->name('404');
 Route::get('/searchMap', [PageController::class, 'searchMap'])->name('searchMap');
 Route::get('/search', [PageController::class, 'search'])->name('search');
 Route::get('/blog-single/{id}', [PageController::class, 'blogSingle'])->name('blog-single');
+
+// Language switching route
+Route::get('/language/{lang}', [LanguageController::class, 'switch'])->name('language.switch');
 
 // auth uchun route lar
 Route::middleware('guest')->group(function () {

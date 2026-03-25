@@ -1,14 +1,14 @@
 <x-layout>
-    <x-slot:title>Barcha o'quv markazlar</x-slot:title>
+    <x-slot:title>{{ __('blog-grid.title') }}</x-slot:title>
 
     <!-- Hero Section -->
     <section
         class="text-gray-900 dark:text-white bg-gradient-to-br from-primary-800 via-accent-800 to-primary-900 dark:from-primary-700 dark:via-accent-700 dark:to-primary-900 text-white py-16">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">O'quv markazlar</h1>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ __('blog-grid.hero.title') }}</h1>
                 <p class="text-xl text-gray-900 dark:text-white text-white/90 max-w-2xl mx-auto">
-                    O'zbekiston bo'ylab eng yaxshi o'quv markazlarini toping va o'zingizga mos kurslarni tanlang
+                    {{ __('blog-grid.hero.description') }}
                 </p>
             </div>
         </div>
@@ -26,7 +26,7 @@
                         @endif
                     @endforeach
                     <div class="relative max-w-2xl mx-auto">
-                        <input type="text" name="searchText" id="searchText" placeholder="O'quv markazini qidiring..."
+                        <input type="text" name="searchText" id="searchText" placeholder="{{ __('blog-grid.search_filter.search_placeholder') }}"
                             value="{{ $validated['searchText'] ?? '' }}"
                             class="w-full px-6 py-4 pr-12 text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
                         <button type="submit" id="searchBtn"
@@ -49,7 +49,7 @@
                 <div class="flex flex-wrap gap-2">
                     <button type="button" onclick="clearAllFilters()"
                         class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
-                        Barchasi
+                        {{ __('blog-grid.search_filter.all') }}
                     </button>
 
                     <!-- Filter by maps -->
@@ -67,7 +67,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            Xarita bo'yicha
+                            {{ __('blog-grid.search_filter.map_filter') }}
                             <svg class="mf-chevron" width="13" height="13" fill="none" stroke="currentColor"
                                 stroke-width="2.5" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -96,8 +96,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="mf-htitle">Xarita orqali qidirish</div>
-                                        <div class="mf-hsub">Joylashuvingizni belgilang va radius kiriting</div>
+                                        <div class="mf-htitle">{{ __('blog-grid.search_filter.map_search') }}</div>
+                                        <div class="mf-hsub">{{ __('blog-grid.search_filter.map_subtitle') }}</div>
                                     </div>
                                 </div>
                                 <button type="button" class="mf-close-btn" @click="open = false">
@@ -119,7 +119,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M9 20l-5.447-9.132A1 1 0 013.382 9.5h17.236a1 1 0 01.838 1.368L16 20M9 20h6M9 20V9m6 11V9" />
                                     </svg>
-                                    <span>Xarita yuklanmoqda...</span>
+                                    <span>{{ __('blog-grid.search_filter.map_loading') }}</span>
                                 </div>
 
                                 {{-- Locate button --}}
@@ -130,10 +130,10 @@
                                         <circle cx="12" cy="12" r="3" />
                                         <path d="M12 2v3m0 14v3M2 12h3m14 0h3" />
                                     </svg>
-                                    <span x-text="locating ? 'Aniqlanmoqda...' : 'Mening joylashuvim'"></span>
+                                    <span x-text="locating ? '{{ __('blog-grid.search_filter.locating') }}' : '{{ __('blog-grid.search_filter.my_location') }}'"></span>
                                 </button>
 
-                                <div class="mf-map-hint">🖱 Xaritaga bosing yoki markerni sudrang</div>
+                                <div class="mf-map-hint">{{ __('blog-grid.search_filter.map_hint') }}</div>
                             </div>
 
                             {{-- Controls --}}
@@ -143,7 +143,7 @@
                                 <div class="mf-loc-box">
                                     <div class="mf-loc-dot"></div>
                                     <div style="flex:1;min-width:0;">
-                                        <div class="mf-loc-label">Tanlangan joylashuv</div>
+                                        <div class="mf-loc-label">{{ __('blog-grid.search_filter.selected_location') }}</div>
                                         <div class="mf-loc-text" x-text="addressText"></div>
                                         <div class="mf-loc-coords" x-show="lat && lng">
                                             <span x-text="lat ? lat.toFixed(5) : ''"></span>,
@@ -160,7 +160,7 @@
                                             <circle cx="12" cy="12" r="9" />
                                             <circle cx="12" cy="12" r="3" />
                                         </svg>
-                                        Qidiruv radiusi
+                                        {{ __('blog-grid.search_filter.search_radius') }}
                                     </div>
                                     <div class="mf-radius-badge" x-text="radius + ' km'"></div>
                                 </div>
@@ -190,20 +190,20 @@
                                 {{-- Actions --}}
                                 <div class="mf-actions">
                                     <button type="button" class="mf-reset-btn"
-                                        @click="resetFilter()">Tozalash</button>
+                                        @click="resetFilter()">{{ __('blog-grid.search_filter.clear') }}</button>
                                     <button type="button" class="mf-apply-btn" @click="applyFilter()">
                                         <svg width="14" height="14" fill="none" stroke="currentColor"
                                             stroke-width="2.5" viewBox="0 0 24 24">
                                             <circle cx="11" cy="11" r="8" />
                                             <path stroke-linecap="round" d="m21 21-4.35-4.35" />
                                         </svg>
-                                        Qidirish
+                                        {{ __('blog-grid.search_filter.search') }}
                                     </button>
                                 </div>
 
                                 <div class="mf-result" x-show="resultShown">
-                                    <strong x-text="resultCount"></strong> ta markaz topildi
-                                    (<span x-text="radius"></span> km radiusda)
+                                    <strong x-text="resultCount"></strong> {{ __('blog-grid.search_filter.results_found') }}
+                                    (<span x-text="radius"></span> {{ __('blog-grid.search_filter.results_radius') }})
                                 </div>
                             </div>
                         </div>
@@ -214,7 +214,7 @@
                     <div class="text-gray-900 dark:text-white relative" x-data="{ sortDropdown: false }">
                         <button @click="sortDropdown = !sortDropdown"
                             class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
-                            Saralash
+                            {{ __('blog-grid.search_filter.sort') }}
                             <svg class="w-4 h-4" :class="{ 'rotate-180': sortDropdown }" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -234,66 +234,66 @@
                                 @if (!isset($validated['name']))
                                     <button type="button" onclick="applySorting('name', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        Nomi ↑↓
+                                        {{ __('blog-grid.search_filter.sort_name') }} ↑↓
                                     </button>
                                 @elseif ($validated['name'] == 'asc')
                                     <button type="button" onclick="applySorting('name', 'desc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        Nomi ↑
+                                        {{ __('blog-grid.search_filter.sort_name') }} ↑
                                     </button>
                                 @elseif ($validated['name'] == 'desc')
                                     <button type="button" onclick="applySorting('name', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        Nomi ↓
+                                        {{ __('blog-grid.search_filter.sort_name') }} ↓
                                     </button>
                                 @else
                                     <button type="button" onclick="applySorting('name', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        Nomi ↑↓
+                                        {{ __('blog-grid.search_filter.sort_name') }} ↑↓
                                     </button>
                                 @endif
 
                                 @if (!isset($validated['distance']))
                                     <button type="button" onclick="applySorting('distance', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        Masofasi ↑↓
+                                        {{ __('blog-grid.search_filter.sort_distance') }} ↑↓
                                     </button>
                                 @elseif ($validated['distance'] == 'asc')
                                     <button type="button" onclick="applySorting('distance', 'desc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        Masofasi ↑
+                                        {{ __('blog-grid.search_filter.sort_distance') }} ↑
                                     </button>
                                 @elseif ($validated['distance'] == 'desc')
                                     <button type="button" onclick="applySorting('distance', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        Masofasi ↓
+                                        {{ __('blog-grid.search_filter.sort_distance') }} ↓
                                     </button>
                                 @else
                                     <button type="button" onclick="applySorting('distance', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        Masofasi ↑↓
+                                        {{ __('blog-grid.search_filter.sort_distance') }} ↑↓
                                     </button>
                                 @endif
 
                                 @if (!isset($validated['favorites']))
                                     <button type="button" onclick="applySorting('favorites', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        Reytingi ↑↓
+                                        {{ __('blog-grid.search_filter.sort_rating') }} ↑↓
                                     </button>
                                 @elseif ($validated['favorites'] == 'asc')
                                     <button type="button" onclick="applySorting('favorites', 'desc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        Reytingi ↑
+                                        {{ __('blog-grid.search_filter.sort_rating') }} ↑
                                     </button>
                                 @elseif ($validated['favorites'] == 'desc')
                                     <button type="button" onclick="applySorting('favorites', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        Reytingi ↓
+                                        {{ __('blog-grid.search_filter.sort_rating') }} ↓
                                     </button>
                                 @else
                                     <button type="button" onclick="applySorting('favorites', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        Reytingi ↑↓
+                                        {{ __('blog-grid.search_filter.sort_rating') }} ↑↓
                                     </button>
                                 @endif
                             </div>
@@ -304,7 +304,7 @@
                     <div class="text-gray-900 dark:text-white relative" x-data="{ subject_id: false }">
                         <button @click="subject_id = !subject_id"
                             class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
-                            Fanlar
+                            {{ __('blog-grid.search_filter.subjects') }}
                             <svg class="w-4 h-4" :class="{ 'rotate-180': subject_id }" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -335,7 +335,7 @@
                     <div class="text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
                         <button @click="teacherDropdown = !teacherDropdown"
                             class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
-                            O'qituvchi e'lonlari
+                            {{ __('blog-grid.search_filter.teacher_announcements') }}
                             <svg class="w-4 h-4" :class="{ 'rotate-180': teacherDropdown }" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -354,7 +354,7 @@
                             <div class="py-2 max-h-70 overflow-y-auto">
                                 <button type="button" onclick="applyFilter('needTeachers', 'all')"
                                     class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                    Barcha e'lonlar
+                                    {{ __('blog-grid.search_filter.all_announcements') }}
                                 </button>
                                 @foreach ($subjects as $subject)
                                     <button type="button" onclick="applyFilter('needTeachers', '{{ $subject->id }}')"
@@ -368,7 +368,7 @@
                 </div>
 
                 <div class="text-gray-600 dark:text-gray-400">
-                    <span id="resultsCount">{{ $LearningCenters->count() }}</span> ta o'quv markaz topildi
+                    <span id="resultsCount">{{ $LearningCenters->count() }}</span> {{ __('blog-grid.search_filter.results_count') }}
                 </div>
             </div>
         </div>
@@ -382,7 +382,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
-                <p class="mt-2 text-gray-600 dark:text-gray-400">Qidiryapman...</p>
+                <p class="mt-2 text-gray-600 dark:text-gray-400">{{ __('blog-grid.search_filter.searching') }}</p>
             </div>
             <div id="centersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @forelse ($LearningCenters as $LearningCenter)
@@ -398,7 +398,7 @@
                             </div>
                             <a href="{{ route('blog-single', $LearningCenter->id) }}"
                                 class="absolute bottom-4 left-4 bg-white dark:bg-gray-800 text-primary-600 dark:text-primary-400 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                                Ko'proq o'qish
+                                {{ __('blog-grid.centers_grid.read_more') }}
                             </a>
                         </div>
 
@@ -473,13 +473,13 @@
                                                 d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                                         </svg>
                                     </div>
-                                    <h4 class="font-semibold text-gray-900 dark:text-white">E'lon</h4>
+                                    <h4 class="font-semibold text-gray-900 dark:text-white">{{ __('blog-grid.centers_grid.announcement') }}</h4>
                                 </div>
 
                                 @if ($LearningCenter->needTeachers->count() > 0)
                                     <div class="space-y-2">
                                         <p class="text-sm font-medium text-success-600 dark:text-success-400">
-                                            O'qituvchi kerak</p>
+                                            {{ __('blog-grid.centers_grid.teacher_needed') }}</p>
                                         @foreach ($LearningCenter->needTeachers->take(-1) as $teacher)
                                             <div class="flex items-center justify-between text-sm">
                                                 <span class="text-gray-700 dark:text-gray-300">🟢
@@ -492,22 +492,22 @@
                                             <div>
                                                 <a href="{{ route('blog-single', $LearningCenter->id) }}"
                                                     class="text-sm text-primary-600 dark:text-primary-400 hover:underline">
-                                                    Yana {{ $LearningCenter->needTeachers->count() - 1 }} ta e'lon bor. Batafsil
+                                                    {{ __('blog-grid.centers_grid.more_announcements', ['count' => $LearningCenter->needTeachers->count() - 1]) }}
                                                 </a>
                                             </div>
                                         @endif
                                     </div>
                                 @else
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Hozicha e'lon berilmagan!</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('blog-grid.centers_grid.no_announcements') }}</p>
                                 @endif
                             </div>
                         </div>
                     </div>
                 @empty
                     <div class="col-span-full text-center py-12">
-                        <p class="text-gray-500 dark:text-gray-400">Hech qanday o'quv markazi topilmadi</p>
+                        <p class="text-gray-500 dark:text-gray-400">{{ __('blog-grid.centers_grid.no_centers_found') }}</p>
                         <button onclick="clearAllFilters()" class="mt-4 px-4 py-2 bg-primary-600 text-gray-500 dark:text-gray-400 rounded-lg hover:bg-primary-700 transition-colors">
-                            Filterni tozalash
+                            {{ __('blog-grid.centers_grid.clear_filters') }}
                         </button>
                     </div>
                 @endforelse
@@ -1864,7 +1864,7 @@ window.addEventListener('popstate', function() {
                 lng: null,
                 radius: 5,
                 darkMode: false,
-                addressText: 'Xaritadan joy tanlang yoki "Mening joylashuvim" tugmasini bosing',
+                addressText: '{{ __('blog-grid.search_filter.map_hint') }}',
 
                 /* private */
                 _map: null,
@@ -2238,7 +2238,7 @@ window.addEventListener('popstate', function() {
                     this.lat = null;
                     this.lng = null;
                     this.resultShown = false;
-                    this.addressText = 'Xaritadan joy tanlang yoki "Mening joylashuvim" tugmasini bosing';
+                    this.addressText = '{{ __('blog-grid.search_filter.map_hint') }}';
                     if (this._uMark) this._uMark.setPosition({
                         lat: DEFAULT_LAT,
                         lng: DEFAULT_LNG

@@ -3,7 +3,7 @@ use Illuminate\Support\Facades\Storage;
 @endphp
 
 <x-layout>
-    <x-slot:title>Profil</x-slot:title>
+    <x-slot:title>{{ __('profile.title') }}</x-slot:title>
 
     <div
         class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
@@ -80,39 +80,38 @@ use Illuminate\Support\Facades\Storage;
 
                         <!-- Personal Information -->
                         <div class="bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 mb-8">
-                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Shaxsiy ma'lumotlar</h2>
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">{{ __('profile.personal_info.title') }}</h2>
                             @if ($userData)
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">Ism</label>
+                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('profile.personal_info.name') }}</label>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
                                             {{ $userData->first_name }}</p>
                                     </div>
                                     <div>
                                         <label
-                                            class="text-sm font-medium text-gray-600 dark:text-gray-400">Familiya</label>
+                                            class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('profile.personal_info.family') }}</label>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
                                             {{ $userData->last_name }}</p>
                                     </div>
                                     <div>
-                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">Telefon
+                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('profile.personal_info.phone') }}
                                             raqami</label>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
                                             {{ $userData->phone }}</p>
                                     </div>
                                     <div>
-                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">Jins</label>
+                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('profile.personal_info.gender') }}</label>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
                                             {{ $userData->gender_uzbek }}</p>
                                     </div>
                                     <div>
-                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">Tug'ilgan
-                                            kun</label>
+                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('profile.personal_info.birthday') }}</label>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
                                             {{ $userData->formatted_birthday }}</p>
                                     </div>
                                     <div>
-                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">Bio</label>
+                                        <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('profile.personal_info.bio') }}</label>
                                         <p class="text-sm font-semibold text-gray-900 dark:text-white">
                                             {{ $userData->bio }}</p>
                                     </div>
@@ -124,8 +123,7 @@ use Illuminate\Support\Facades\Storage;
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
-                                    <p class="text-gray-600 dark:text-gray-400 mb-4">Shaxsiy ma'lumotlar hali
-                                        to'ldirilmagan</p>
+                                    <p class="text-gray-600 dark:text-gray-400 mb-4">{{ __('profile.personal_info.not_filled') }}</p>
                                     <a href="{{ route('profile.edit') }}"
                                         class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 text-gray-900 dark:text-white rounded-lg hover:shadow-lg transition-all duration-300">
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
@@ -133,7 +131,7 @@ use Illuminate\Support\Facades\Storage;
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>
-                                        Ma'lumotlarni to'ldirish
+                                        {{ __('profile.personal_info.edit_profile') }}
                                     </a>
                                 </div>
                             @endif
@@ -154,7 +152,7 @@ use Illuminate\Support\Facades\Storage;
                                         </div>
                                         <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{$userData->user->centers->count()}}</span>
                                     </div>
-                                    <h3 class="text-gray-700 dark:text-gray-300 font-medium">Qo'shilgan markazlar</h3>
+                                    <h3 class="text-gray-700 dark:text-gray-300 font-medium">{{ __('profile.stats.courses') }}</h3>
                                 </div>
 
                                 <div onclick="toggleSubjectsSection()"
@@ -169,7 +167,7 @@ use Illuminate\Support\Facades\Storage;
                                         </div>
                                         <span class="text-2xl font-bold text-green-600 dark:text-green-400">{{$userData->user->centers->sum(function($center) { return $center->subjects->count(); })}}</span>
                                     </div>
-                                    <h3 class="text-gray-700 dark:text-gray-300 font-medium">Fanlar</h3>
+                                    <h3 class="text-gray-700 dark:text-gray-300 font-medium">{{ __('profile.stats.subjects') }}</h3>
                                 </div>
 
                                 <div onclick="toggleTeachersSection()"
@@ -184,13 +182,13 @@ use Illuminate\Support\Facades\Storage;
                                         </div>
                                         <span class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{$userData->user->centers->sum(function($center) { return $center->teachers->count(); })}}</span>
                                     </div>
-                                    <h3 class="text-gray-700 dark:text-gray-300 font-medium">O'qituvchilar</h3>
+                                    <h3 class="text-gray-700 dark:text-gray-300 font-medium">{{ __('profile.stats.teachers') }}</h3>
                                 </div>
                             </div>
 
                             <!-- Kurslar -->
                             <div id="courses-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
-                                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">O'quv markazlar</h2>
+                                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('profile.stats.courses') }}</h2>
                                 @forelse($userData->user->centers as $center)
                                     <a href="{{ route('blog-single', $center->id) }}"
                                         class="flex items-center justify-between p-4 mb-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
@@ -212,13 +210,13 @@ use Illuminate\Support\Facades\Storage;
                                         </div>
                                     </a>
                                 @empty
-                                    <p class="text-gray-600 dark:text-gray-400">O'quv markazlar hali qo'shilmagan</p>
+                                    <p class="text-gray-600 dark:text-gray-400">{{ __('profile.recent_activity.no_data_yet') }}</p>
                                 @endforelse
                             </div>
 
                             <!-- Fanlar -->
                             <div id="subjects-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
-                                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Fanlar</h2>
+                                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('profile.stats.subjects') }}</h2>
                                 @forelse($userData->user->centers as $center)
                                     @if($center->subjects->count() > 0)
                                         <div class="mb-6">
@@ -254,13 +252,13 @@ use Illuminate\Support\Facades\Storage;
                                         </div>
                                     @endif
                                 @empty
-                                    <p class="text-gray-600 dark:text-gray-400">Fanlar hali qo'shilmagan</p>
+                                    <p class="text-gray-600 dark:text-gray-400">{{ __('profile.recent_activity.no_data_yet') }}</p>
                                 @endforelse
                             </div>
 
                             <!-- O'qituvchilar -->
                             <div id="teachers-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
-                                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">O'qituvchilar</h2>
+                                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('profile.stats.teachers') }}</h2>
                                 @forelse($userData->user->centers as $center)
                                     @if($center->teachers->count() > 0)
                                         <div class="mb-6">
@@ -290,8 +288,8 @@ use Illuminate\Support\Facades\Storage;
                                                                 </div>
                                                             @endif
                                                             <div class="flex-1">
-                                                                <p class="font-medium text-gray-900 dark:text-white">{{ $teacher->name ?? 'Noma\'lum o\'qituvchi' }}</p>
-                                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $teacher->subject->name ?? 'Noma\'lum fan' }}</p>
+                                                                <p class="font-medium text-gray-900 dark:text-white">{{ $teacher->name ?? __('profile.labels.no_name') }}</p>
+                                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $teacher->subject->name ?? __('profile.labels.no_subject') }}</p>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -300,7 +298,7 @@ use Illuminate\Support\Facades\Storage;
                                         </div>
                                     @endif
                                 @empty
-                                    <p class="text-gray-600 dark:text-gray-400">O'qituvchilar hali qo'shilmagan</p>
+                                    <p class="text-gray-600 dark:text-gray-400">{{ __('profile.recent_activity.no_data_yet') }}</p>
                                 @endforelse
                             </div>
                         @else
@@ -309,13 +307,13 @@ use Illuminate\Support\Facades\Storage;
                                 <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                 </svg>
-                                <p class="text-gray-600 dark:text-gray-400">Sizda hali markazlar mavjud emas</p>
+                                <p class="text-gray-600 dark:text-gray-400">{{ __('profile.recent_activity.no_data_yet') }}</p>
                             </div>
                         @endif
 
                         <!-- Recent Activity -->
                         <div class="bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
-                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Yangi qo'shish</h2>
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('profile.recent_activity.title') }}</h2>
                             <div class="space-y-4">
                                 <a href="{{ route('course.create') }}"
                                     class="flex items-center justify-between p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
@@ -329,7 +327,7 @@ use Illuminate\Support\Facades\Storage;
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="font-medium text-gray-900 dark:text-white">Yangi markaz qo'shish</p>
+                                            <p class="font-medium text-gray-900 dark:text-white">{{ __('profile.recent_activity.new_course') }}</p>
                                         </div>
                                     </div>
                                 </a>

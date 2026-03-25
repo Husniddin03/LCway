@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>Profilni tahrirlash</x-slot:title>
+    <x-slot:title>{{ __('profile-edit.title') }}</x-slot:title>
 
     <!-- Main Content Container -->
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
@@ -16,9 +16,9 @@
                                 <img src="{{ asset('images/lcwayfavicon.png') }}" alt="FindCourse"
                                     class="w-16 h-16 rounded-full">
                             </div>
-                            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-                                Profilni tahrirlash</h1>
-                            <p class="text-gray-600 dark:text-gray-300">Shaxsiy ma'lumotlaringizni yangilang</p>
+                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                                {{ __('profile-edit.edit_profile.title') }}</h2>
+                            <p class="text-gray-600 dark:text-gray-300">{{ __('profile-edit.edit_profile.subtitle') }}</p>
                         </div>
 
                         <!-- Edit Profile Form -->
@@ -49,6 +49,7 @@
                                     @endisset
                                     <label for="avatar"
                                         class="absolute bottom-0 right-0 w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-primary-700 transition-colors duration-200">
+                                        {{ __('profile-edit.upload_avatar') }}
                                         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -60,20 +61,20 @@
                                     <input type="file" id="avatar" name="avatar" class="hidden" accept="image/*"
                                         onchange="previewAvatar(event)">
                                 </div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Rasmni o'zgartirish uchun
-                                    kameraga bosing</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">{{ __('profile-edit.remove_avatar') }}
+                                kameraga bosing</p>
                             </div>
 
                             <!-- Name Field -->
                             <div>
                                 <label for="name"
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Ism
+                                    {{ __('profile-edit.personal_info.name') }}
                                 </label>
                                 <input type="text" id="name" name="name" value="{{ Auth::user()->name }}"
                                     required
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="Ismingiz">
+                                    placeholder="{{ __('profile-edit.personal_info.name_placeholder') }}">
                                 @error('name')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
@@ -83,24 +84,24 @@
                             <div>
                                 <label for="email"
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Email
+                                    {{ __('profile-edit.email') }}
                                 </label>
                                 <input type="email" id="email" value="{{ Auth::user()->email }}"
                                     disabled
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed transition-all duration-200"
-                                    placeholder="email@example.com">
-                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Emailni o'zgartirib bo'lmaydi</p>
+                                    placeholder="{{ __('profile-edit.email_placeholder') }}">
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ __('profile-edit.email_description') }}</p>
                             </div>
 
                             <!-- Bio Field -->
                             <div>
                                 <label for="bio"
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Bio
+                                    {{ __('profile-edit.bio') }}
                                 </label>
                                 <textarea id="bio" name="bio" rows="4"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="O'zingiz haqida qisqacha...">{{ $userData->bio ?? '' }}</textarea>
+                                    placeholder="{{ __('profile-edit.bio_placeholder') }}">{{ $userData->bio ?? '' }}</textarea>
                                 @error('bio')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
@@ -108,19 +109,19 @@
 
                             <!-- Personal Information Section -->
                             <div class="border-t pt-6">
-                                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Shaxsiy ma'lumotlar
+                                <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('profile-edit.personal_info.title') }}
                                 </h3>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label for="first_name"
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Ism
+                                            {{ __('profile-edit.personal_info.name') }}
                                         </label>
                                         <input type="text" id="first_name" name="first_name"
                                             value="{{ $userData->first_name ?? '' }}" required
                                             class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                            placeholder="Ismingiz">
+                                            placeholder="{{ __('profile-edit.edit_profile.subtitle') }}">
                                         @error('first_name')
                                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                         @enderror
@@ -129,12 +130,12 @@
                                     <div>
                                         <label for="last_name"
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Familiya
+                                            {{ __('profile-edit.personal_info.family') }}
                                         </label>
                                         <input type="text" id="last_name" name="last_name"
                                             value="{{ $userData->last_name ?? '' }}" required
                                             class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                            placeholder="Familiyangiz">
+                                            placeholder="{{ __('profile-edit.edit_profile.subtitle') }}">
                                         @error('last_name')
                                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                         @enderror
@@ -143,7 +144,7 @@
                                     <div>
                                         <label for="phone"
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Telefon
+                                            {{ __('profile-edit.personal_info.phone') }}
                                         </label>
                                         <input type="tel" id="phone" name="phone"
                                             value="{{ $userData->phone ?? '' }}" required
@@ -157,7 +158,7 @@
                                     <div>
                                         <label for="birthday"
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Tug'ilgan kun
+                                            {{ __('profile-edit.personal_info.birthday') }}
                                         </label>
                                         <input type="date" id="birthday" name="birthday"
                                             value="{{ $userData->birthday ?? '' }}" required
@@ -168,19 +169,18 @@
                                     </div>
 
                                     <div>
-                                        <label for="gander"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Jins
+                                        <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            {{ __('profile-edit.personal_info.gender') }}
                                         </label>
-                                        <select id="gander" name="gander" required
+                                        <select id="gender" name="gender" required
                                             class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
-                                            <option value="">Tanlang</option>
-                                            <option value="male" {{ ($userData->gander ?? '') == 'male' ? 'selected' : '' }}>Erkak
+                                            <option value="">{{ __('profile-edit.personal_info.select') }}</option>
+                                            <option value="male" {{ ($userData->gender ?? '') == 'male' ? 'selected' : '' }}>{{ __('profile-edit.personal_info.male') }}
                                             </option>
-                                            <option value="female" {{ ($userData->gander ?? '') == 'female' ? 'selected' : '' }}>Ayol
+                                            <option value="female" {{ ($userData->gender ?? '') == 'female' ? 'selected' : '' }}>{{ __('profile-edit.personal_info.female') }}
                                             </option>
                                         </select>
-                                        @error('gander')
+                                        @error('gender')
                                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                         @enderror
                                     </div>
@@ -189,13 +189,11 @@
 
                             <!-- Submit Buttons -->
                             <div class="flex space-x-4 pt-6">
-                                <a href="{{ route('profile') }}"
-                                    class="flex-1 px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-200 font-medium text-center">
-                                    Bekor qilish
+                                <a href="{{ route('profile') }}" class="flex-1 px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-200 font-medium text-center">
+                                    {{ __('profile-edit.buttons.back') }}
                                 </a>
-                                <button type="submit"
-                                    class="flex-1 px-6 py-3 bg-green-100 text-green-700 rounded-lg transition-all duration-200 font-medium">
-                                    Saqlash
+                                <button type="submit" class="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200 font-medium">
+                                    {{ __('profile-edit.buttons.save') }}
                                 </button>
                             </div>
                         </form>
@@ -214,8 +212,8 @@
                                 </svg>
                             </div>
                             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-                                Parolni o'zgartirish</h1>
-                            <p class="text-gray-600 dark:text-gray-300">Xavfsizlik uchun parolingizni yangilang</p>
+                                {{ __('profile-edit.password_change.title') }}</h1>
+                            <p class="text-gray-600 dark:text-gray-300">{{ __('profile-edit.password_change.description') }}</p>
                         </div>
 
                         <!-- Password Change Form -->
@@ -225,13 +223,12 @@
                             @if(Auth::user()->password_status !== 'google')
                             <!-- Current Password -->
                             <div>
-                                <label for="current_password"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Joriy parol
+                                <label for="current_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ __('profile-edit.password_change.current_password.label') }}
                                 </label>
                                 <input type="password" id="current_password" name="current_password" required
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="Joriy parolingiz">
+                                    placeholder="{{ __('profile-edit.password_change.current_password.placeholder') }}">
                                 @error('current_password')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
@@ -240,13 +237,12 @@
 
                             <!-- New Password -->
                             <div>
-                                <label for="password"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    {{ Auth::user()->password_status === 'google' ? 'Parol yarating' : 'Yangi parol' }}
+                                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ __('profile-edit.password_change.new_password.label') }}
                                 </label>
                                 <input type="password" id="password" name="password" required
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="{{ Auth::user()->password_status === 'google' ? 'Yangi parol yarating' : 'Yangi parolingiz' }}">
+                                    placeholder="{{ __('profile-edit.password_change.new_password.placeholder') }}">
                                 @error('password')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
@@ -254,20 +250,19 @@
 
                             <!-- Confirm Password -->
                             <div>
-                                <label for="password_confirmation"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    {{ Auth::user()->password_status === 'google' ? 'Parolni tasdiqlang' : 'Yangi parolni tasdiqlash' }}
+                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ __('profile-edit.password_change.confirm_password.label') }}
                                 </label>
                                 <input type="password" id="password_confirmation" name="password_confirmation" required
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="{{ Auth::user()->password_status === 'google' ? 'Parolni qayta kiriting' : 'Yangi parolni qayta kiriting' }}">
+                                    placeholder="{{ __('profile-edit.password_change.confirm_password.placeholder') }}">
                             </div>
 
                             <!-- Submit Button -->
                             <div class="flex space-x-4">
                                 <button type="submit"
                                     class="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200 font-medium">
-                                    {{ Auth::user()->password_status === 'google' ? 'Parol yaratish' : 'Parolni o\'zgartirish' }}
+                                    {{ __('profile-edit.buttons.save') }}
                                 </button>
                             </div>
                         </form>

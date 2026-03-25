@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>404 - Sahifa topilmadi</x-slot:title>
+    <x-slot:title>{{ __('404.title') }}</x-slot:title>
 
     <div
         class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-600 via-accent-600 to-primary-800 relative overflow-hidden">
@@ -15,7 +15,7 @@
             <div class="animate-fade-in">
                 <!-- 404 Number -->
                 <div class="text-9xl md:text-[12rem] font-bold text-white/20 mb-8">
-                    404
+                    {{ __('404.error_title') }}
                 </div>
 
                 <!-- Error Illustration -->
@@ -31,11 +31,11 @@
 
                 <!-- Error Message -->
                 <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
-                    Kechirasiz, sahifa topilmadi
+                    {{ __('404.error_message') }}
                 </h1>
                 <p class="text-xl text-white/80 mb-8 max-w-lg mx-auto leading-relaxed">
-                    Siz qidirayotgan sahifa ko'chirilgan, o'chirilgan yoki mavjud emas.
-                    Asosiy sahifaga qaytib, kerakli ma'lumotni topishingiz mumkin.
+                    {{ __('404.error_description') }}
+                    {{ __('404.error_action') }}
                 </p>
 
                 <!-- Action Buttons -->
@@ -46,7 +46,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
-                        Asosiy sahifaga qaytish
+                        {{ __('404.home_button') }}ga qaytish
                     </x-button>
 
                     <x-button variant="outline" size="lg" href="#"
@@ -55,13 +55,13 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                         </svg>
-                        Biz bilan bog'lanish
+                        {{ __('404.help.contact_us') }}
                     </x-button>
                 </div>
 
                 <!-- Help Text -->
                 <div class="mt-12 text-white/60 text-sm">
-                    Agar muammo davom etsa, iltimos, biz bilan bog'laning:
+                    {{ __('404.help.problem_continues') }}
                     <a href="tel:+9987702502677" class="text-white/80 hover:text-white transition-colors">
                         (+998) 77 025 02 67
                     </a>

@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>O'quv markazni tahrirlash</x-slot:title>
+    <x-slot:title>{{ __('course-edit.title') }}</x-slot:title>
 
     <style>
         @keyframes fade-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
@@ -30,9 +30,9 @@
 
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                    {{ $center->name }} markazini tahrirlash
+                    {{ __('course-edit.header.title', ['name' => $center->name]) }}
                 </h1>
-                <p class="text-gray-600 dark:text-gray-400">O'quv markaz ma'lumotlarini yangilang</p>
+                <p class="text-gray-600 dark:text-gray-400">{{ __('course-edit.header.description') }}</p>
             </div>
 
             <x-card class="mb-8">
@@ -48,7 +48,7 @@
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                                     </svg>
                                     <div>
-                                        <h4 class="text-sm font-semibold text-red-800 dark:text-red-200">Iltimos, xatolarni to'g'rilang:</h4>
+                                        <h4 class="text-sm font-semibold text-red-800 dark:text-red-200">{{ __('course-edit.error.title') }}</h4>
                                         <ul class="mt-2 text-sm text-red-700 dark:text-red-300 space-y-1">
                                             @foreach ($errors->all() as $error)
                                                 <li>• {{ $error }}</li>
@@ -73,7 +73,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                 </svg>
                             </div>
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Asosiy ma'lumotlar</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('course-edit.basic_info.title') }}</h3>
                         </div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -81,9 +81,9 @@
                             {{-- Existing Logo --}}
                             @if(!empty($center->logo))
                                 <div class="lg:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mavjud Logo</label>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('course-edit.basic_info.existing_logo') }}</label>
                                     <div class="w-28 h-28 rounded-xl overflow-hidden border-2 border-gray-200 dark:border-gray-700">
-                                        <img src="{{ asset('storage/' . $center->logo) }}" alt="Mavjud logo" class="w-full h-full object-cover">
+                                        <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ __('course-edit.basic_info.existing_logo') }}" class="w-full h-full object-cover">
                                     </div>
                                 </div>
                             @endif
@@ -91,8 +91,8 @@
                             {{-- New Logo Upload --}}
                             <div class="lg:col-span-2">
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Yangi Logo
-                                    <span class="text-xs text-gray-500 ml-1">(PNG, JPG, WebP — maks 1MB. Bo'sh qoldirsangiz eski logo saqlanadi)</span>
+                                    {{ __('course-edit.basic_info.new_logo') }}
+                                    <span class="text-xs text-gray-500 ml-1">{{ __('course-edit.basic_info.new_logo_note') }}</span>
                                 </label>
                                 <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-500 transition-all duration-300 cursor-pointer group hover:bg-blue-50/50 dark:hover:bg-blue-900/10"
                                     onclick="document.getElementById('logo').click()">
@@ -113,7 +113,7 @@
                                         </button>
                                     </div>
                                     <p class="text-sm text-gray-600 dark:text-gray-400 group-hover:text-blue-600 transition-colors">
-                                        Yangi logo yuklash uchun bosing yoki torting
+                                        {{ __('course-edit.basic_info.new_logo_hint') }}
                                     </p>
                                 </div>
                                 @error('logo')
@@ -124,11 +124,11 @@
                             {{-- Name --}}
                             <div>
                                 <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Nomi <span class="text-red-500">*</span>
+                                    {{ __('course-edit.basic_info.name_label') }} {{ __('course-edit.required') }}
                                 </label>
                                 <x-input type="text" name="name" id="name"
                                     value="{{ old('name', $center->name) }}"
-                                    placeholder="O'quv markaz nomini kiriting" required/>
+                                    placeholder="{{ __('course-edit.basic_info.name_placeholder') }}" required/>
                                 @error('name')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                                 @enderror
@@ -137,15 +137,16 @@
                             {{-- Type --}}
                             <div>
                                 <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Turi <span class="text-red-500">*</span>
+                                    {{ __('course-edit.basic_info.type_label') }} {{ __('course-edit.required') }}
                                 </label>
                                 <select name="type" id="type"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required>
-                                    <option value="" disabled>Markaz turini tanlang...</option>
-                                    @foreach(["O'quv markaz", "Akademiya", "Kollej", "Universitet"] as $t)
-                                        <option value="{{ $t }}" {{ old('type', $center->type) == $t ? 'selected' : '' }}>{{ $t }}</option>
-                                    @endforeach
+                                    <option value="" disabled>{{ __('course-edit.basic_info.type_placeholder') }}</option>
+                                        <option value="O'quv markaz" {{ old('type', $center->type) == "O'quv markaz" ? 'selected' : '' }}>{{ __('course-edit.types.center') }}</option>
+                                        <option value="Akademiya" {{ old('type', $center->type) == 'Akademiya' ? 'selected' : '' }}>{{ __('course-edit.types.academy') }}</option>
+                                        <option value="Kollej" {{ old('type', $center->type) == 'Kollej' ? 'selected' : '' }}>{{ __('course-edit.types.college') }}</option>
+                                        <option value="Universitet" {{ old('type', $center->type) == 'Universitet' ? 'selected' : '' }}>{{ __('course-edit.types.university') }}</option>
                                 </select>
                                 @error('type')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
@@ -154,11 +155,11 @@
 
                             {{-- About --}}
                             <div class="lg:col-span-2">
-                                <label for="about" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Haqida</label>
+                                <label for="about" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('course-edit.basic_info.about_label') }}</label>
                                 <div class="relative">
                                     <textarea name="about" id="about" rows="4" maxlength="500"
                                         class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="O'quv markaz haqida qisqacha ma'lumot...">{{ old('about', $center->about) }}</textarea>
+                                        placeholder="{{ __('course-edit.basic_info.about_placeholder') }}">{{ old('about', $center->about) }}</textarea>
                                     <div class="absolute bottom-3 right-3 text-xs text-gray-500">
                                         <span id="about-char-count">{{ strlen(old('about', $center->about) ?? '') }}</span>/500
                                     </div>
@@ -179,7 +180,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 </svg>
                             </div>
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Manzil ma'lumotlari</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('course-edit.location.title') }}</h3>
                         </div>
 
                         {{-- Map --}}
@@ -194,7 +195,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     </svg>
-                                    Joriy joylashuv
+                                    {{ __('course-edit.location.current_location') }}
                                 </button>
                             </div>
                         </div>
@@ -205,7 +206,7 @@
                                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                                 </svg>
                                 <p class="text-sm text-blue-800 dark:text-blue-200">
-                                    Xaritaga bosing yoki markerni sudrab manzilni o'zgartiring — viloyat, tuman va manzil avtomatik yangilanadi.
+                                    {{ __('course-edit.location.hint') }}
                                 </p>
                             </div>
                         </div>
@@ -214,12 +215,12 @@
                             {{-- Province --}}
                             <div>
                                 <label for="region" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Viloyat <span class="text-red-500">*</span>
+                                    {{ __('course-edit.location.province_label') }} {{ __('course-edit.required') }}
                                 </label>
                                 <select name="province" id="region"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required>
-                                    <option value="" disabled>Viloyatni tanlang...</option>
+                                    <option value="" disabled>{{ __('course-edit.location.province_placeholder') }}</option>
                                     @foreach(["Toshkent","Sirdaryo","Jizzax","Samarqand","Buxoro","Navoiy","Qashqadaryo","Surxandaryo","Xorazm","Andijon","Namangan","Farg'ona","Qoraqalpog'iston"] as $p)
                                         <option value="{{ $p }}" {{ old('province', $center->province) == $p ? 'selected' : '' }}>{{ $p }}</option>
                                     @endforeach
@@ -232,7 +233,7 @@
                             {{-- District --}}
                             <div>
                                 <label for="district" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Tuman <span class="text-red-500">*</span>
+                                    {{ __('course-edit.location.district_label') }} {{ __('course-edit.required') }}
                                 </label>
                                 <select name="region" id="district"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -248,11 +249,11 @@
                             {{-- Address --}}
                             <div class="md:col-span-2">
                                 <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Manzil <span class="text-red-500">*</span>
+                                    {{ __('course-edit.location.address_label') }} {{ __('course-edit.required') }}
                                 </label>
                                 <x-input type="text" name="address" id="address"
                                     value="{{ old('address', $center->address) }}"
-                                    placeholder="To'liq manzilni kiriting" required/>
+                                    placeholder="{{ __('course-edit.location.address_placeholder') }}" required/>
                                 @error('address')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                                 @enderror
@@ -261,11 +262,11 @@
                             {{-- Location (lat,lng string) --}}
                             <div class="md:col-span-2">
                                 <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Joylashuv koordinatalari (lat,lng)
+                                    {{ __('course-edit.location.coordinates_label') }}
                                 </label>
                                 <x-input type="text" name="location" id="location"
                                     value="{{ old('location', $center->location) }}"
-                                    placeholder="Xaritadan tanlasangiz avtomatik to'ldiriladi"/>
+                                    placeholder="{{ __('course-edit.location.coordinates_placeholder') }}"/>
                                 @error('location')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                                 @enderror
@@ -284,15 +285,15 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                                 </svg>
                             </div>
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Qo'shimcha ma'lumotlar</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('course-edit.additional_info.title') }}</h3>
                         </div>
                         <div>
                             <label for="studentCount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Hozirda markazingizdagi o'quvchilar soni
+                                {{ __('course-edit.additional_info.students_label') }}
                             </label>
                             <x-input type="number" name="student_count" id="studentCount"
                                 value="{{ old('student_count', $center->student_count) }}"
-                                placeholder="0" min="0"/>
+                                placeholder="{{ __('course-edit.additional_info.students_placeholder') }}" min="0"/>
                             @error('student_count')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                             @enderror
@@ -306,14 +307,14 @@
                             <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                             </svg>
-                            Orqaga
+                            {{ __('course-edit.buttons.back') }}
                         </a>
                         <button type="submit" id="submit-btn"
                             class="flex-1 px-8 py-4 bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 hover:from-blue-700 hover:via-cyan-700 hover:to-teal-700 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-3 group">
                             <svg id="submit-icon" class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
-                            <span id="submit-text">Saqlash</span>
+                            <span id="submit-text">{{ __('course-edit.buttons.save') }}</span>
                         </button>
                     </div>
                 </form>
@@ -326,7 +327,7 @@
         function previewLogo(input) {
             if (!input.files || !input.files[0]) return;
             if (input.files[0].size > 1024 * 1024) {
-                showNotification('Fayl hajmi 1MB dan oshmasligi kerak!', 'error');
+                showNotification('{{ __('course-edit.error.file_size') }}', 'error');
                 input.value = ''; return;
             }
             const reader = new FileReader();
@@ -399,7 +400,7 @@
         document.querySelector('form').addEventListener('submit', function() {
             const btn = document.getElementById('submit-btn');
             btn.disabled = true;
-            document.getElementById('submit-text').textContent = 'Saqlanmoqda...';
+            document.getElementById('submit-text').textContent = '{{ __('course-edit.buttons.saving') }}';
             document.getElementById('submit-icon').innerHTML =
                 '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>';
             document.getElementById('submit-icon').classList.add('animate-spin');
@@ -439,7 +440,7 @@
                 position: center,
                 draggable: true,
                 animation: google.maps.Animation.DROP,
-                title: "O'quv markaz manzili"
+                title: "{{ __('course-edit.map.marker_title') }}"
             });
 
             map.addListener('click', function(e) {
@@ -455,9 +456,9 @@
 
         function getCurrentLocation() {
             if (!navigator.geolocation) {
-                showNotification("Brauzeringiz joylashuvni qo'llab-quvvatlamaydi!", 'error'); return;
+                showNotification('{{ __('course-edit.error.location_not_supported') }}', 'error'); return;
             }
-            showNotification('Joylashuv aniqlanmoqda...', 'info');
+            showNotification('{{ __('course-edit.error.location_detecting') }}', 'info');
             navigator.geolocation.getCurrentPosition(
                 pos => {
                     const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
@@ -465,9 +466,9 @@
                     marker.setPosition(loc);
                     marker.setAnimation(google.maps.Animation.DROP);
                     updateCoords(loc.lat, loc.lng);
-                    showNotification('Joriy joylashuv topildi!', 'success');
+                    showNotification('{{ __('course-edit.error.location_found') }}', 'success');
                 },
-                () => showNotification('Joylashuvni olish imkonsiz!', 'error'),
+                () => showNotification('{{ __('course-edit.error.location_failed') }}', 'error'),
                 { timeout: 10000 }
             );
         }

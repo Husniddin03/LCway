@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>
-        Rasimlarni tahrirlash
+        {{ __('course-edit-image.title') }}
     </x-slot>
     <script>
         // Image preview functionality
@@ -532,7 +532,7 @@
 
         <div class="container mx-auto px-4 py-12 relative z-10">
             <!-- Header Section -->
-            <div class="text-center mb-12" x-data="{ sectionTitle: `{{ $LearningCenter->name }}`, sectionTitleText: `{{ $LearningCenter->name }}ga yangi rasimlar yuklang!` }">
+            <div class="text-center mb-12" x-data="{ sectionTitle: `{{ $LearningCenter->name }}`, sectionTitleText: `{{ $LearningCenter->name }}{{ __('course-edit-image.header.title_suffix') }}` }">
                 <div class="inline-block">
                     <h1 x-text="sectionTitle" class="text-5xl font-bold mb-4">
                     </h1>
@@ -562,7 +562,7 @@
                                 <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                Bog'lanish
+                                {{ __('course-edit-image.header.contact') }}
                             </h4>
                             <div class="space-y-3">
                                 @foreach ($LearningCenter->connections as $connection)
@@ -571,21 +571,21 @@
                                             <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a2 2 0 011.94 1.515l.62 2.48a2 2 0 01-.45 1.885l-1.516 1.516a16 16 0 006.586 6.586l1.516-1.516a2 2 0 011.885-.45l2.48.62A2 2 0 0121 17.72V21a2 2 0 01-2 2h-1c-9.94 0-18-8.06-18-18V5z"></path>
                                             </svg>
-                                            <span>{{ $connection->url }}</span>
+                                            <span>{{ __('course-edit-image.header.phone') }}</span>
                                         </a>
                                     @elseif($connection->connection->name == 'Email')
                                         <a href="mailto:{{ $connection->url }}" class="contact-item">
                                             <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                             </svg>
-                                            <span>Email</span>
+                                            <span>{{ __('course-edit-image.header.email') }}</span>
                                         </a>
                                     @elseif($connection->connection->name == 'Website')
                                         <a href="{{ $connection->url }}" class="contact-item">
                                             <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
                                             </svg>
-                                            <span>Website</span>
+                                            <span>{{ __('course-edit-image.header.website') }}</span>
                                         </a>
                                     @else
                                         <a href="{{ $connection->url }}" class="contact-item">
@@ -607,7 +607,7 @@
                             <svg class="w-6 h-6 mr-3 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
-                            Mavjud Rasmlar
+                            {{ __('course-edit-image.images.title') }}
                         </h2>
                         
                         @if($LearningCenter->images->count() > 0)
@@ -615,10 +615,10 @@
                                 @foreach ($LearningCenter->images as $image)
                                     <div class="image-item">
                                         <a href="{{ asset('storage/' . $image->image) }}" data-lightbox>
-                                            <img src="{{ asset('storage/' . $image->image) }}" alt="Course Image" />
+                                            <img src="{{ asset('storage/' . $image->image) }}" alt="{{ __('course-edit-image.images.alt_text') }}" />
                                         </a>
                                         <form action="{{ route('course.deleteImage', $image->id) }}" method="post" 
-                                              onsubmit="return confirm('Rostdan ham rasimni o‘chirilsinmi?');">
+                                              onsubmit="return confirm('{{ __('course-edit-image.images.delete_confirm') }}');">
                                             @csrf
                                             <button type="submit" class="delete-btn">
                                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -634,7 +634,7 @@
                                 <svg class="w-24 h-24 text-gray-300 dark:text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
-                                <p class="text-gray-500 dark:text-gray-400 text-lg">Hozircha rasmlar yuklanmagan</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-lg">{{ __('course-edit-image.images.no_images') }}</p>
                             </div>
                         @endif
 
@@ -644,7 +644,7 @@
                                 <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                                 </svg>
-                                Yangi Rasmlar Yuklash
+                                {{ __('course-edit-image.images.upload_title') }}
                             </h3>
                             
                             <form action="{{ route('course.storeImages', ['id' => $LearningCenter->id]) }}" 
@@ -653,7 +653,7 @@
                                 
                                 <div>
                                     <label for="images" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Rasimlarni tanlang
+                                        {{ __('course-edit-image.images.select_label') }}
                                     </label>
                                     <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-primary-500 transition-colors cursor-pointer"
                                          onclick="document.getElementById('images').click()">
@@ -664,7 +664,7 @@
                                             </svg>
                                         </div>
                                         <p class="text-sm text-gray-600 dark:text-gray-400">
-                                            Rasimlarni tanlash uchun bosing
+                                            {{ __('course-edit-image.images.select_hint') }}
                                         </p>
                                     </div>
                                     @error('images')
@@ -675,7 +675,7 @@
                                 <!-- Image Preview -->
                                 <div id="image-preview-container" class="hidden">
                                     <div class="flex items-center justify-between mb-4">
-                                        <h4 class="text-lg font-medium text-gray-800 dark:text-white">Tanlangan rasmlar</h4>
+                                        <h4 class="text-lg font-medium text-gray-800 dark:text-white">{{ __('course-edit-image.images.selected_title') }}</h4>
                                         <button type="button" onclick="closePreview()" 
                                                 class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -684,7 +684,7 @@
                                         </button>
                                     </div>
                                     <div id="image-preview" class="preview-grid">
-                                        <p class="text-gray-500 dark:text-gray-400 text-center col-span-full">Rasmlar tanlanmagan</p>
+                                        <p class="text-gray-500 dark:text-gray-400 text-center col-span-full">{{ __('course-edit-image.images.no_selected') }}</p>
                                     </div>
                                 </div>
                                 
@@ -694,13 +694,13 @@
                                         <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                                         </svg>
-                                        Orqaga
+                                        {{ __('course-edit-image.buttons.back') }}
                                     </a>
                                     <button type="submit" class="modern-btn flex-1">
                                         <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V2"></path>
                                         </svg>
-                                        Saqlash
+                                        {{ __('course-edit-image.buttons.save') }}
                                     </button>
                                 </div>
                             </form>
@@ -727,7 +727,7 @@
                 </svg>
             </button>
             
-            <img id="lightbox-img" class="lightbox-img" src="" alt="Lightbox Image">
+            <img id="lightbox-img" class="lightbox-img" src="" alt="{{ __('course-edit-image.lightbox.alt_text') }}">
             
             <button type="button" id="lightbox-next" onclick="nextImage()" class="lightbox-nav lightbox-next">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

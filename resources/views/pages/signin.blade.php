@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>Kirish sahifasi</x-slot:title>
+    <x-slot:title>{{ __('signin.title') }}</x-slot:title>
 
     <div
         class="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-blue-10 via-white-100 to-purple-100 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
@@ -21,15 +21,14 @@
                 <div class="p-8">
                     <!-- Logo/Brand -->
                     <div class="text-center mb-8">
-                        <div
-                            class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-100 via-blue-50 to-indigo-100 dark:from-gray-700 dark:to-gray-600 rounded-full mb-4 shadow-lg border border-blue-200/50 dark:border-gray-600">
-                            <img src="{{ asset('images/lcwayfavicon.png') }}" alt="FindCourse"
+                        <div class="inline-flex items-center justify-center w-16 h-16 mb-4 shadow-lg">
+                            <img src="{{ asset('images/2.png') }}" alt="FindCourse"
                                 class="w-16 h-16 rounded-full">
                         </div>
                         <h2
                             class="text-gray-900 dark:text-white text-2xl font-bold mb-2 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-                            Hisobingizga kirish</h2>
-                        <p class="mb-2 text-gray-600 dark:text-gray-300">FindCourse platformasiga xush kelibsiz</p>
+                            {{ __('signin.header.title') }}</h2>
+                        <p class="mb-2 text-gray-600 dark:text-gray-300">{{ __('signin.header.subtitle') }}</p>
                     </div>
 
                     <!-- Social Login -->
@@ -46,7 +45,7 @@
                                 <path fill="#EA4335"
                                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                             </svg>
-                            <span class="font-medium">Google bilan kirish</span>
+                            <span class="font-medium">{{ __('signin.social_login.google') }}</span>
                         </a>
                     </div>
 
@@ -57,8 +56,7 @@
                         </div>
                         <div class="relative flex justify-center text-sm">
                             <span
-                                class="px-4 bg-white/80 dark:bg-transparent text-gray-500 dark:text-gray-400 font-medium">Yoki
-                                email bilan</span>
+                                class="px-4 bg-white/80 dark:bg-transparent text-gray-500 dark:text-gray-400 font-medium">{{ __('signin.divider') }}</span>
                         </div>
                     </div>
 
@@ -85,9 +83,9 @@
                         <div>
                             <label for="email"
                                 class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                                Email manzil
+                                {{ __('signin.form.email_label') }}
                             </label>
-                            <input type="email" name="email" id="email" placeholder="example@gmail.com"
+                            <input type="email" name="email" id="email" placeholder="{{ __('signin.form.email_placeholder') }}"
                                 class="border rounded-lg px-4 py-3 w-full transition-all duration-200 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:focus:border-blue-400 dark:focus:ring-blue-400/20 shadow-sm hover:shadow-md hover:border-gray-400 dark:hover:border-gray-500"
                                 required />
                         </div>
@@ -96,9 +94,9 @@
                         <div>
                             <label for="password"
                                 class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                                Parol
+                                {{ __('signin.form.password_label') }}
                             </label>
-                            <input type="password" name="password" id="password" placeholder="•••••••••"
+                            <input type="password" name="password" id="password" placeholder="{{ __('signin.form.password_placeholder') }}"
                                 class="border rounded-lg px-4 py-3 w-full transition-all duration-200 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:focus:border-blue-400 dark:focus:ring-blue-400/20 shadow-sm hover:shadow-md hover:border-gray-400 dark:hover:border-gray-500"
                                 required />
                         </div>
@@ -108,27 +106,27 @@
                             <label class="flex items-center">
                                 <input type="checkbox" name="remember"
                                     class="rounded transition-colors duration-200 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-blue-600 focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 focus:ring-offset-2 dark:focus:ring-offset-0 hover:border-blue-400 dark:hover:border-blue-500">
-                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Eslab qolish</span>
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{{ __('signin.form.remember_me') }}</span>
                             </label>
 
                             <a href="#"
                                 class="text-sm transition-colors text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium hover:underline">
-                                Parolni unutdingizmi?
+                                {{ __('signin.form.forgot_password') }}
                             </a>
                         </div>
 
                         <!-- Submit Button -->
                         <button type="submit"
-                            class="w-full py-3 px-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl focus:ring-blue-500/50 dark:focus:ring-offset-gray-800 dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 hover:shadow-blue-500/25">Kirish</button>
+                            class="w-full py-3 px-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl focus:ring-blue-500/50 dark:focus:ring-offset-gray-800 dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 hover:shadow-blue-500/25">{{ __('signin.form.submit') }}</button>
                     </form>
 
                     <!-- Sign Up Link -->
                     <div class="mt-6 text-center">
                         <p class="text-gray-600 dark:text-gray-400">
-                            Hisobingiz yo'qmi?
+                            {{ __('signin.signup.text') }}
                             <a href="{{ route('signup') }}"
                                 class="font-medium transition-colors text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline">
-                                Ro'yxatdan o'ting
+                                {{ __('signin.signup.link') }}
                             </a>
                         </p>
                     </div>

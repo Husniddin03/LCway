@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>Yangi o'qituvchi qo'shish</x-slot:title>
+    <x-slot:title>{{ __('teacher-create.title') }}</x-slot:title>
     
     <!-- Modern Teacher Creation Section -->
     <section class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -21,14 +21,14 @@
                 <!-- Badge -->
 
                 <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full mb-6">
-                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">O'qituvchi qo'shish</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __('teacher-create.header.badge') }}</span>
                 </div>
                 
                 <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 mb-6 leading-tight">
-                    {{ $LearningCenter->name }}ga yangi o'qituvchi qo'shing
+                    {{ $LearningCenter->name }}{{ __('teacher-create.header.title_suffix') }}
                 </h1>
                 <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                    Bu orqali talabalar o'qituvchilarni ham topa oladi
+                    {{ __('teacher-create.header.subtitle') }}
                 </p>
             </div>
 
@@ -46,7 +46,7 @@
                             <!-- Status Badge -->
                             <div class="inline-flex items-center px-3 py-1 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
                                 <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-                                <span class="text-xs font-semibold text-green-700 dark:text-green-300">Faol</span>
+                                <span class="text-xs font-semibold text-green-700 dark:text-green-300">{{ __('teacher-create.info.status') }}</span>
                             </div>
                             
                             <div class="text-center mb-8">
@@ -69,7 +69,7 @@
                                         <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314-11.314l4.244 4.243a8 8 0 01-2.828 5.828z"></path>
                                         </svg>
-                                        Manzil
+                                        {{ __('teacher-create.info.address') }}
                                     </h4>
                                     <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ $LearningCenter->address }}</p>
                                 </div>
@@ -79,7 +79,7 @@
                                         <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
                                         </svg>
-                                        Bog'lanish
+                                        {{ __('teacher-create.info.contact') }}
                                     </h4>
                                     <div class="flex flex-wrap gap-3">
                                         @foreach ($LearningCenter->connections as $connection)
@@ -136,8 +136,8 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 class="text-2xl font-black text-gray-900 dark:text-white">O'qituvchi ma'lumotlari</h3>
-                                    <p class="text-gray-600 dark:text-gray-300">Yangi o'qituvchi uchun ma'lumotlarni kiriting</p>
+                                    <h3 class="text-2xl font-black text-gray-900 dark:text-white">{{ __('teacher-create.form.title') }}</h3>
+                                    <p class="text-gray-600 dark:text-gray-300">{{ __('teacher-create.form.subtitle') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
                                             @foreach ($errors->all() as $error)
                                                 <li class="flex items-start gap-2">
                                                     <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
                                                     </svg>
                                                     <span>{{ $error }}</span>
                                                 </li>
@@ -175,7 +175,7 @@
                                     <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
-                                    Ustoz rasmi (ixtiyoriy)
+                                    {{ __('teacher-create.form.photo_label') }}
                                 </label>
                                 <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-2xl p-8 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-300 cursor-pointer group-hover:border-blue-400 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20"
                                     onclick="document.getElementById('photo').click()">
@@ -188,7 +188,7 @@
                                         </svg>
                                     </div>
                                     <p class="text-gray-600 dark:text-gray-400 font-medium">
-                                        Rasm yuklash uchun bosing
+                                        {{ __('teacher-create.form.photo_hint') }}
                                     </p>
                                 </div>
                                 @error('photo')
@@ -208,9 +208,9 @@
                                         <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
-                                        To'liq ismi <span class="text-red-500">*</span>
+                                        {{ __('teacher-create.form.name_label') }} <span class="text-red-500">{{ __('teacher-create.required') }}</span>
                                     </label>
-                                    <input type="text" name="name" id="fullname" placeholder="Devid Wonder" required
+                                    <input type="text" name="name" id="fullname" placeholder="{{ __('teacher-create.form.name_placeholder') }}" required
                                         class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm" />
                                     @error('name')
                                         <p class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
@@ -227,9 +227,9 @@
                                         <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a2 2 0 011.94 1.515l.62 2.48a2 2 0 01-.45 1.885l-1.516 1.516a16 16 0 006.586 6.586l1.516-1.516a2 2 0 011.885-.45l2.48.62A2 2 0 0121 17.72V21a2 2 0 01-2 2h-1c-9.94 0-18-8.06-18-18V5z" />
                                         </svg>
-                                        Telefon (ixtiyoriy)
+                                        {{ __('teacher-create.form.phone_label') }}
                                     </label>
-                                    <input type="tel" name="phone" id="phone" placeholder="+998 90 123 45 67"
+                                    <input type="tel" name="phone" id="phone" placeholder="{{ __('teacher-create.form.phone_placeholder') }}"
                                         class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm" />
                                     @error('phone')
                                         <p class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
@@ -248,11 +248,11 @@
                                     <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                     </svg>
-                                    Mutaxasisligi <span class="text-red-500">*</span>
+                                    {{ __('teacher-create.form.subject_label') }} <span class="text-red-500">{{ __('teacher-create.required') }}</span>
                                 </label>
                                 <select name="subject_id" id="subject" required
                                     class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm">
-                                    <option value="" disabled>Fanni tanlang...</option>
+                                    <option value="" disabled>{{ __('teacher-create.form.subject_placeholder') }}</option>
                                     @foreach ($LearningCenter->subjects as $subject)
                                         <option value="{{ $subject->subject->id }}">{{ $subject->subject->name }}</option>
                                     @endforeach
@@ -273,9 +273,9 @@
                                     <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
-                                    Ustoz haqida (ixtiyoriy)
+                                    {{ __('teacher-create.form.about_label') }}
                                 </label>
-                                <textarea name="about" id="message" rows="4" placeholder="Ustoz haqida qisqacha ma'lumot..."
+                                <textarea name="about" id="message" rows="4" placeholder="{{ __('teacher-create.form.about_placeholder') }}"
                                     class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm resize-none"></textarea>
                                 @error('about')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
@@ -295,14 +295,14 @@
                                 <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
-                                Bekor qilish
+                                {{ __('teacher-create.buttons.back') }}
                             </a>
                             <button type="submit"
                                     class="flex-1 px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white font-bold rounded-2xl transition-all duration-300 text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-3 group">
                                 <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
-                                Saqlash
+                                {{ __('teacher-create.buttons.save') }}
                             </button>
                         </div>
                     </form>

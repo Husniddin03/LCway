@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>AI Maslahatchi</x-slot:title>
+    <x-slot:title>{{ __('chat.title') }}</x-slot:title>
 
     @php $maxMsgs = \App\Models\ChatSession::MAX_MESSAGES; @endphp
 
@@ -248,7 +248,7 @@
                 <div
                     class="w-8.5 h-8.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-base flex-shrink-0">
                     🤖</div>
-                <span class="text-sm font-bold text-slate-100">AI Maslahatchi</span>
+                <span class="text-sm font-bold text-slate-100">{{ __('chat.sidebar.title') }}</span>
             </div>
 
             <button
@@ -258,10 +258,10 @@
                     stroke-width="2.5">
                     <path d="M12 5v14M5 12h14" />
                 </svg>
-                Yangi suhbat
+                {{ __('chat.sidebar.new_chat') }}
             </button>
 
-            <div class="px-4 py-2 text-[10px] font-bold tracking-widest uppercase text-slate-500">Suhbatlar tarixi</div>
+            <div class="px-4 py-2 text-[10px] font-bold tracking-widest uppercase text-slate-500">{{ __('chat.sidebar.history') }}</div>
 
             <div class="flex-1 overflow-y-auto p-2" id="sess-list">
                 @forelse($sessions as $s)
@@ -283,7 +283,7 @@
                     </div>
                 @empty
                     <div id="sess-empty" class="p-6 text-center text-xs text-slate-500">
-                        Hali suhbat yo'q
+                        {{ __('chat.sidebar.no_sessions') }}
                     </div>
                 @endforelse
             </div>
@@ -304,9 +304,9 @@
                 </button>
                 <div class="flex-1 min-w-0">
                     <div class="text-sm font-semibold text-slate-100 truncate" id="tb-title">
-                        {{ $currentSession?->title ?? 'AI Maslahatchi' }}</div>
+                        {{ $currentSession?->title ?? __('chat.topbar.title_default') }}</div>
                     <div class="text-xs text-slate-500 mt-0.5" id="tb-sub">
-                        {{ $currentSession ? $currentSession->message_count . '/' . $maxMsgs . ' xabar' : 'Yangi suhbat boshlang' }}
+                        {{ $currentSession ? $currentSession->message_count . '/' . $maxMsgs . ' ' . __('chat.topbar.subtitle_with_count') : __('chat.topbar.subtitle') }}
                     </div>
                 </div>
                 <div class="flex items-center gap-2 w-28 flex-shrink-0">
@@ -330,9 +330,9 @@
                     <line x1="12" y1="8" x2="12" y2="12" />
                     <line x1="12" y1="16" x2="12.01" y2="16" />
                 </svg>
-                Bu suhbat to'ldi ({{ $maxMsgs }} xabar).
+                {{ __('chat.full_banner.message', ['count' => $maxMsgs]) }}
                 <button onclick="newChat()" class="text-blue-500 underline text-xs ml-1">
-                    Yangi suhbat ochish →
+                    {{ __('chat.full_banner.new_chat') }}
                 </button>
             </div>
 
@@ -345,7 +345,7 @@
                     <div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce"></div>
                     <div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.15s"></div>
                     <div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.3s"></div>
-                    <span id="search-text">Markazlar qidirilmoqda...</span>
+                    <span id="search-text">{{ __('chat.search.indicator') }}</span>
                 </div>
 
                 @if ($messages->isEmpty())
@@ -354,19 +354,18 @@
                         <div
                             class="w-16 h-16 bg-gradient-to-r from-blue-500/12 to-purple-500/12 border border-blue-500/18 rounded-xl flex items-center justify-center text-2xl">
                             💬</div>
-                        <h3 class="text-base font-semibold text-slate-100">Salom! Men AI maslahatchi</h3>
-                        <p class="text-xs text-slate-500 max-w-[300px] leading-relaxed">O'quv markazlar, kurslar va
-                            ta'lim haqida savol bering</p>
+                        <h3 class="text-base font-semibold text-slate-100">{{ __('chat.empty.greeting') }}</h3>
+                        <p class="text-xs text-slate-500 max-w-[300px] leading-relaxed">{{ __('chat.empty.description') }}</p>
                         <div class="flex flex-wrap gap-1 justify-center mt-1">
                             <button
                                 class="px-3.5 py-1.5 bg-slate-800/50 border border-slate-600 rounded-full text-xs text-slate-300 cursor-pointer transition-all duration-150 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/6"
-                                onclick="fillIn(this.textContent)">Toshkentda matematika kurslari</button>
+                                onclick="fillIn(this.textContent)">{{ __('chat.empty.suggestions.math_courses') }}</button>
                             <button
                                 class="px-3.5 py-1.5 bg-slate-800/50 border border-slate-600 rounded-full text-xs text-slate-300 cursor-pointer transition-all duration-150 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/6"
-                                onclick="fillIn(this.textContent)">Ingliz tili o'rganmoqchiman</button>
+                                onclick="fillIn(this.textContent)">{{ __('chat.empty.suggestions.english_learning') }}</button>
                             <button
                                 class="px-3.5 py-1.5 bg-slate-800/50 border border-slate-600 rounded-full text-xs text-slate-300 cursor-pointer transition-all duration-150 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/6"
-                                onclick="fillIn(this.textContent)">Dasturlash kurslari qayerda?</button>
+                                onclick="fillIn(this.textContent)">{{ __('chat.empty.suggestions.programming_courses') }}</button>
                             <button
                                 class="px-3.5 py-1.5 bg-slate-800/50 border border-slate-600 rounded-full text-xs text-slate-300 cursor-pointer transition-all duration-150 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/6"
                                 onclick="fillIn(this.textContent)">Arzon o'quv markazlar</button>
@@ -375,7 +374,7 @@
                                 onclick="fillIn(this.textContent)">Samarqandda IT kurslari</button>
                             <button
                                 class="px-3.5 py-1.5 bg-slate-800/50 border border-slate-600 rounded-full text-xs text-slate-300 cursor-pointer transition-all duration-150 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/6"
-                                onclick="fillIn(this.textContent)">Qaysi o'quv markaz yaxshi?</button>
+                                onclick="fillIn(this.textContent)">{{ __('chat.empty.suggestions.best_region') }}</button>
                         </div>
                     </div>
                 @else
@@ -407,7 +406,7 @@
                     class="flex gap-1.5 items-end bg-slate-950 border border-slate-600 rounded-[14px] px-3.5 py-2.5 transition-colors duration-200 focus-within:border-blue-500">
                     <textarea id="inp"
                         class="flex-1 bg-transparent border-none outline-none text-slate-100 text-sm leading-relaxed resize-none min-6 max-32 p-0"
-                        placeholder="Savol yozing... (masalan: Toshkentda ingliz tili kursi)" rows="1"></textarea>
+                        placeholder="{{ __('chat.search.placeholder') }}" rows="1"></textarea>
                     <button
                         class="w-9 h-9 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0 transition-all duration-180 shadow-lg shadow-blue-500/28 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/42 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none"
                         id="send-btn" onclick="send()">
@@ -421,9 +420,9 @@
                 <div class="flex justify-between items-center mt-2 px-0.5 text-xs text-slate-500">
                     <span><kbd
                             class="bg-slate-950 border border-slate-600 rounded px-1 py-0.5 font-mono text-[9px] text-slate-300">Enter</kbd>
-                        yuborish · <kbd
+                        {{ __('chat.input.send_btn') }} · <kbd
                             class="bg-slate-950 border border-slate-600 rounded px-1 py-0.5 font-mono text-[9px] text-slate-300">Shift+Enter</kbd>
-                        yangi qator</span>
+                        {{ __('chat.input.keyboard_shortcut') }}</span>
                     <span id="char-count" class="font-mono">0/2000</span>
                 </div>
             </div>
@@ -491,9 +490,10 @@
             toggleBtn.className =
                 'w-8 h-8 rounded-lg bg-slate-700\/50 border border-slate-600 flex items-center justify-center flex-shrink-0 transition-all duration-200 hover:bg-slate-600\/50 hover:border-slate-500';
             toggleBtn.onclick = toggleTheme;
-            toggleBtn.title = 'Tungi/Kunduzgi rejim';
+            toggleBtn.title = '{{ __('chat.theme.toggle_title') }}';
             toggleBtn.innerHTML = `
-        <svg class="w-4 h-4 text-slate-300 dark-mode-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 text-slate-300 dark-mode-icon" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
         </svg>
         <svg class="w-4 h-4 text-slate-300 light-mode-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -840,7 +840,7 @@ Foydalanuvchi so'rovi: "${userMsg}"`;
         } catch (err) {
             typingEl?.remove();
             hideSearchIndicator();
-            appendMsg('ai', '❌ Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.');
+            appendMsg('ai', '{{ __('chat.messages.error') }}');
             console.error(err);
         } finally {
             document.getElementById('send-btn').disabled = false;
@@ -915,7 +915,7 @@ Foydalanuvchi so'rovi: "${userMsg}"`;
         const avatar = document.createElement('div');
         avatar.className =
             `w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 font-mono ${role === 'user' ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' : 'bg-slate-800/50 border border-slate-600 text-blue-500'}`;
-        avatar.textContent = role === 'user' ? 'S' : 'AI';
+        avatar.textContent = role === 'user' ? '{{ __('chat.messages.user_prefix') }}' : '{{ __('chat.messages.ai_prefix') }}';
 
         const body = document.createElement('div');
         body.className = `max-w-[74%] flex flex-col ${role === 'user' ? 'items-end' : ''}`;

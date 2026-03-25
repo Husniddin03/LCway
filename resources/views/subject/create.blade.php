@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>Yangi fan qo'shish</x-slot:title>
+    <x-slot:title>{{ __('subject-create.title') }}</x-slot:title>
     
     <!-- Modern Subject Creation Section -->
     <section class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -20,14 +20,14 @@
             <div class="text-center mb-16 animate-fade-in">
                 <!-- Badge -->
                 <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full mb-6">
-                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Fan qo'shish</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __('subject-create.header.badge') }}</span>
                 </div>
                 
                 <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 mb-6 leading-tight">
-                    {{ $LearningCenter->name }}ga yangi fan qo'shing
+                    {{ $LearningCenter->name }}{{ __('subject-create.header.title_suffix') }}
                 </h1>
                 <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                    Bu orqali talabalar fanlar orqali ham topa oladi
+                    {{ __('subject-create.header.subtitle') }}
                 </p>
             </div>
 
@@ -45,7 +45,7 @@
                             <!-- Status Badge -->
                             <div class="inline-flex items-center px-3 py-1 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
                                 <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-                                <span class="text-xs font-semibold text-green-700 dark:text-green-300">Faol</span>
+                                <span class="text-xs font-semibold text-green-700 dark:text-green-300">{{ __('subject-create.info.status') }}</span>
                             </div>
                             
                             <!-- Learning Center Info -->
@@ -68,7 +68,7 @@
                                         <svg class="w-5 h-5 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
                                         </svg>
-                                        Mavjud fanlar
+                                        {{ __('subject-create.info.subjects_title') }}
                                     </h4>
                                     <div class="space-y-2">
                                         @foreach ($LearningCenter->subjects as $subject)
@@ -86,7 +86,7 @@
                                         <svg class="w-5 h-5 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
                                         </svg>
-                                        Bog'lanish
+                                        {{ __('subject-create.contact.title') }}
                                     </h4>
                                     <div class="flex space-x-3">
                                         @foreach ($LearningCenter->connections as $connection)
@@ -135,8 +135,8 @@
                                         <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
                                     </svg>
                                 </div>
-                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Yangi fan qo'shish</h2>
-                                <p class="text-gray-600 dark:text-gray-300 mt-2">Fan nomini va narxini kiriting</p>
+                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('subject-create.form.title') }}</h2>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">{{ __('subject-create.form.subtitle') }}</p>
                             </div>
 
                             <!-- Form Fields -->
@@ -147,10 +147,10 @@
                                         <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
                                         </svg>
-                                        Fanni tanlang
+                                        {{ __('subject-create.form.subject_label') }}
                                     </label>
                                     <select id="subject" name="subject_id" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                                        <option value="">Fan tanlang...</option>
+                                        <option value="">{{ __('subject-create.form.subject_placeholder') }}</option>
                                         @foreach ($subjects as $subject)
                                             <option value="{{ $subject->id }}">{{ $subject->name }}</option>
                                         @endforeach
@@ -172,7 +172,7 @@
                                             <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
                                         </svg>
-                                        Narxi (so'm)
+                                        {{ __('subject-create.form.price_label') }}
                                     </label>
                                     <input type="text" name="price" id="price" placeholder="500 000" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                                     @error('price')
@@ -193,14 +193,14 @@
                                     <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
-                                    Bekor qilish
+                                    {{ __('subject-create.buttons.back') }}
                                 </a>
                                 <button type="submit"
                                         class="flex-1 px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white font-bold rounded-2xl transition-all duration-300 text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-3 group">
                                     <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                     </svg>
-                                    Saqlash
+                                    {{ __('subject-create.buttons.save') }}
                                 </button>
                             </div>
                         </form>

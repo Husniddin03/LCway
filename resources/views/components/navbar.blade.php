@@ -18,7 +18,7 @@
                 <a href="{{ route('index') }}" class="flex items-center space-x-3 group">
                     <div
                         class="w-10 h-10 rounded-full bg-gradient-to-r from-primary-600 to-accent-600 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
-                        <img src="{{ asset('images/lcwayfavicon.png') }}" alt="FindCourse" class="w-8 h-8 rounded-full">
+                        <img src="{{ asset('images/2.png') }}" alt="FindCourse" class="w-8 h-8 rounded-full">
                     </div>
                     <span class="text-xl font-bold gradient-text sm:block">FindCourse</span>
                 </a>
@@ -29,19 +29,19 @@
                 <div class="ml-10 flex items-baseline space-x-8">
                     <a href="{{ route('index') }}"
                         class="text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 relative group">
-                        Asosiy
+                        {{ __('navbar.main') }}
                         <span
                             class="absolute bottom-0 left-0 w-full h-0.5 bg-primary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
                     </a>
                     <a href="{{ route('blog-grid') }}"
                         class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 relative group">
-                        O'quv markazlar
+                        {{ __('navbar.centers') }}
                         <span
                             class="absolute bottom-0 left-0 w-full h-0.5 bg-primary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
                     </a>
                     <a href="{{ route('course.create') }}"
                         class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 relative group">
-                        Markaz qo'shish
+                        {{ __('navbar.add_center') }}
                         <span
                             class="absolute bottom-0 left-0 w-full h-0.5 bg-primary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
                     </a>
@@ -50,7 +50,7 @@
                     <div class="relative" x-data="{ dropdownOpen: false }">
                         <button @click="dropdownOpen = !dropdownOpen"
                             class="cursor-pointer text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 inline-flex items-center relative group">
-                            Sahifalar
+                            {{ __('navbar.pages') }}
                             <svg class="ml-2 h-4 w-4 transition-transform" :class="{ 'rotate-180': dropdownOpen }"
                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -71,15 +71,58 @@
                             <div class="py-2">
                                 <a href="{{ route('index') }}#features"
                                     class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md transition-colors duration-200">
-                                    Biz haqimizda
+                                    {{ __('navbar.features') }}
                                 </a>
                                 <a href="{{ route('index') }}#support"
                                     class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md transition-colors duration-200">
-                                    Qo'llab-quvvatlash
+                                    {{ __('navbar.support') }}
                                 </a>
                             </div>
                         </div>
                     </div>
+
+                    <div class="relative" x-data="{ dropdownOpen: false }">
+                        <button @click="dropdownOpen = !dropdownOpen"
+                            class="cursor-pointer text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 inline-flex items-center relative group">
+                            {{ __('navbar.languages') }}
+                            <svg class="ml-2 h-4 w-4 transition-transform" :class="{ 'rotate-180': dropdownOpen }"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-primary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+                        </button>
+
+                        <div x-show="dropdownOpen" @click.away="dropdownOpen = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute right-0 mt-2 w-48 rounded-xl shadow-floating bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none border border-gray-200 dark:border-gray-700">
+                            <div class="py-2">
+                                <a href="{{ route('language.switch', 'uz') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md transition-colors duration-200">
+                                    {{ __('common.uzbek') }}
+                                </a>
+                                <a href="{{ route('language.switch', 'en') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md transition-colors duration-200">
+                                    {{ __('common.english') }}
+                                </a>
+                                <a href="{{ route('language.switch', 'ru') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md transition-colors duration-200">
+                                    {{ __('common.russian') }}
+                                </a>
+                                <a href="{{ route('language.switch', 'kaa') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md transition-colors duration-200">
+                                    {{ __('common.karakalpak') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -88,7 +131,7 @@
                 <!-- Theme toggle button -->
                 <button onclick="toggleTheme()"
                     class="p-2 cursor-pointer rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-700 dark:hover:bg-gray-100 transition-all duration-200"
-                    title="Rejimni o'zgartirish">
+                    title="{{ __('navbar.toggle_theme') }}">
                     <!-- Sun icon (shown in dark mode) -->
                     <svg id="theme-icon-sun" class="h-5 w-5 hidden dark:block" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -136,13 +179,13 @@
                             <div class="py-2">
                                 <a href="{{ route('profile') }}"
                                     class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md transition-colors duration-200">
-                                    Profil
+                                    {{ __('navbar.profile') }}
                                 </a>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit"
                                         class="block cursor-pointer w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md transition-colors duration-200">
-                                        Chiqish
+                                        {{ __('navbar.logout') }}
                                     </button>
                                 </form>
                             </div>
@@ -153,10 +196,10 @@
                 @guest
                     <a href="{{ route('signin') }}"
                         class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
-                        Kirish
+                        {{ __('navbar.login') }}
                     </a>
                     <x-button variant="primary" href="{{ route('signup') }}">
-                        Ro'yxatdan o'tish
+                        {{ __('navbar.register') }}
                     </x-button>
                 @endguest
             </div>
@@ -207,29 +250,29 @@
                         </svg>
 
                         <span class="text-sm font-medium text-gray-900 dark:text-white">
-                            Rejimni o'zgartirish
+                            {{ __('navbar.toggle_theme') }}
                         </span>
                     </button>
                 </div>
 
                 <a href="{{ route('index') }}"
                     class="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
-                    Asosiy
+                    {{ __('navbar.main') }}
                 </a>
                 <a href="{{ route('blog-grid') }}"
                     class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
-                    O'quv markazlar
+                    {{ __('navbar.centers') }}
                 </a>
                 <a href="{{ route('course.create') }}"
                     class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
-                    Markaz qo'shish
+                    {{ __('navbar.add_center') }}
                 </a>
 
                 <!-- Mobile dropdown for Sahifalar -->
                 <div class="relative" x-data="{ mobileDropdownOpen: false }">
                     <button @click="mobileDropdownOpen = !mobileDropdownOpen"
                         class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 w-full text-left flex items-center justify-between">
-                        Sahifalar
+                        {{ __('navbar.pages') }}
                         <svg class="h-4 w-4 transition-transform" :class="{ 'rotate-180': mobileDropdownOpen }"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -245,36 +288,73 @@
                         x-transition:leave-end="transform opacity-0 scale-95" class="mt-1 ml-4 space-y-1">
                         <a href="{{ route('index') }}#features"
                             class="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                            Biz haqimizda
+                            {{ __('navbar.about') }}
                         </a>
                         <a href="{{ route('index') }}#support"
                             class="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                            Qo'llab-quvvatlash
+                            {{ __('navbar.help') }}
                         </a>
                     </div>
                 </div>
 
+                <!-- Mobile dropdown for language -->
+                <div class="relative" x-data="{ mobileLangDropdownOpen: false }">
+                    <button @click="mobileLangDropdownOpen = !mobileLangDropdownOpen"
+                        class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 w-full text-left flex items-center justify-between">
+                        {{ __('navbar.languages') }}
+                        <svg class="h-4 w-4 transition-transform" :class="{ 'rotate-180': mobileLangDropdownOpen }"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <div x-show="mobileLangDropdownOpen" x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="transform opacity-0 scale-95"
+                        x-transition:enter-end="transform opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-150"
+                        x-transition:leave-start="transform opacity-100 scale-100"
+                        x-transition:leave-end="transform opacity-0 scale-95" class="mt-1 ml-4 space-y-1">
+                        <a href="{{ route('language.switch', 'uz') }}"
+                            class="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            {{ __('common.uzbek') }}
+                        </a>
+                        <a href="{{ route('language.switch', 'en') }}"
+                            class="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            {{ __('common.english') }}
+                        </a>
+                        <a href="{{ route('language.switch', 'ru') }}"
+                            class="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            {{ __('common.russian') }}
+                        </a>
+                        <a href="{{ route('language.switch', 'kaa') }}"
+                            class="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            {{ __('common.karakalpak') }}
+                        </a>
+                    </div>
+                </div>
+                 
                 @guest
                     <a href="{{ route('signin') }}"
                         class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
-                        Kirish
+                        {{ __('navbar.login') }}
                     </a>
                     <a href="{{ route('signup') }}"
                         class="bg-gradient-to-r from-primary-600 to-accent-600 text-white block px-3 py-2 rounded-md text-base font-medium">
-                        Ro'yxatdan o'tish
+                        {{ __('navbar.register') }}
                     </a>
                 @endguest
 
                 @auth
                     <a href="{{ route('profile') }}"
                         class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
-                        Profil
+                        {{ __('navbar.profile') }}
                     </a>
                     <form action="{{ route('logout') }}" method="POST" class="block">
                         @csrf
                         <button type="submit"
                             class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
-                            Chiqish
+                            {{ __('navbar.logout') }}
                         </button>
                     </form>
                 @endauth

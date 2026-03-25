@@ -1,0 +1,32 @@
+<?php
+
+return [
+    // Company Info
+    'description' => 'LCway - Learning-Center way, a platform that finds the most convenient path to education',
+    'telegram' => 'Telegram',
+    
+    // Quick Links
+    'quick_links' => 'Quick Links',
+    'home' => 'Home',
+    'about' => 'About Us',
+    'centers' => 'Learning Centers',
+    'add_center' => 'Add Learning Center',
+    
+    // Services
+    'services' => 'Services',
+    'fullstack' => 'Full Stack Developer',
+    'frontend' => 'Frontend',
+    'backend' => 'Backend',
+    'ui_ux' => 'UI/UX Design',
+    
+    // Contact
+    'contact' => 'Contact',
+    'phone' => '(+998) 77 025 026 77',
+    'email' => 'info@findcourse.uz',
+    'location' => 'Uzbekistan',
+    
+    // Bottom Section
+    'copyright' => '&copy; :year FindCourse. All rights reserved.',
+    'privacy_policy' => 'Privacy Policy',
+    'terms_of_service' => 'Terms of Service',
+];

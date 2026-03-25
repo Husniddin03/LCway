@@ -1,5 +1,5 @@
 <x-layout>
-<x-slot:title>Kasbga yo'naltiruvchi test — RIASEC</x-slot:title>
+<x-slot:title>{{ __('quiz.title') }}</x-slot:title>
 
 <style>
 .ai-response-box h2 { color: #f1f5f9; font-size: 1rem; margin: .8rem 0 .4rem; border-bottom: 1px solid #475569; padding-bottom: .4rem; }
@@ -85,7 +85,7 @@ function addThemeToggle() {
     const toggleBtn = document.createElement('button');
     toggleBtn.className = 'fixed top-6 right-6 w-10 h-10 rounded-lg bg-slate-700/50 border border-slate-600 flex items-center justify-center transition-all duration-200 hover:bg-slate-600/50 hover:border-slate-500 z-50';
     toggleBtn.onclick = toggleTheme;
-    toggleBtn.title = 'Tungi/Kunduzgi rejim';
+    toggleBtn.title = '{{ __('quiz.theme.toggle_title') }}';
     toggleBtn.innerHTML = `
         <svg class="w-5 h-5 text-slate-300 dark-mode-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
@@ -139,14 +139,14 @@ toggleTheme = function() {
         <div class="text-center animate-fade-in">
             <a href="{{ route('chat.riasec') }}" class="inline-block">
                 <div class="inline-block text-xs font-bold tracking-widest uppercase text-blue-500 bg-blue-500/10 border border-blue-500/25 rounded-full px-3 py-1 mb-4 hover:bg-blue-500/20 transition-colors">
-                    RIASEC Test
+                    {{ __('quiz.hero.badge') }}
                 </div>
             </a>
             <h1 class="text-3xl md:text-5xl font-black text-slate-100 leading-tight mb-3">
-                Kasbga yo'naltiruvchi<br>psixologik test
+                {{ __('quiz.hero.title') }}
             </h1>
             <p class="text-sm text-slate-400 max-w-lg mx-auto leading-relaxed">
-                24 ta savolga «Ha» yoki «Yo'q» deb javob bering. Natijada sizga eng mos yo'nalishlar foizlarda chiqadi.
+                {{ __('quiz.hero.description') }}
             </p>
         </div>
 
@@ -155,43 +155,43 @@ toggleTheme = function() {
             <div class="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center gap-2 text-xs animate-fade-in" style="animation-delay:.05s">
                 <div class="w-2.5 h-2.5 bg-red-400 rounded-full flex-shrink-0"></div>
                 <div>
-                    <strong class="block text-slate-100 text-[11px]">R — Realistic</strong>
-                    <span class="text-slate-400">Amaliy, texnika, sport</span>
+                    <strong class="block text-slate-100 text-[11px]">{{ __('quiz.legend.realistic') }}</strong>
+                    <span class="text-slate-400">{{ __('quiz.legend.realistic_desc') }}</span>
                 </div>
             </div>
             <div class="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center gap-2 text-xs animate-fade-in" style="animation-delay:.1s">
                 <div class="w-2.5 h-2.5 bg-blue-500 rounded-full flex-shrink-0"></div>
                 <div>
-                    <strong class="block text-slate-100 text-[11px]">I — Investigative</strong>
-                    <span class="text-slate-400">Tadqiqot, fan, tahlil</span>
+                    <strong class="block text-slate-100 text-[11px]">{{ __('quiz.legend.investigative') }}</strong>
+                    <span class="text-slate-400">{{ __('quiz.legend.investigative_desc') }}</span>
                 </div>
             </div>
             <div class="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center gap-2 text-xs animate-fade-in" style="animation-delay:.15s">
                 <div class="w-2.5 h-2.5 bg-purple-400 rounded-full flex-shrink-0"></div>
                 <div>
-                    <strong class="block text-slate-100 text-[11px]">A — Artistic</strong>
-                    <span class="text-slate-400">San'at, ijod, dizayn</span>
+                    <strong class="block text-slate-100 text-[11px]">{{ __('quiz.legend.artistic') }}</strong>
+                    <span class="text-slate-400">{{ __('quiz.legend.artistic_desc') }}</span>
                 </div>
             </div>
             <div class="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center gap-2 text-xs animate-fade-in" style="animation-delay:.2s">
                 <div class="w-2.5 h-2.5 bg-emerald-400 rounded-full flex-shrink-0"></div>
                 <div>
-                    <strong class="block text-slate-100 text-[11px]">S — Social</strong>
-                    <span class="text-slate-400">Yordam berish, muloqot</span>
+                    <strong class="block text-slate-100 text-[11px]">{{ __('quiz.legend.social') }}</strong>
+                    <span class="text-slate-400">{{ __('quiz.legend.social_desc') }}</span>
                 </div>
             </div>
             <div class="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center gap-2 text-xs animate-fade-in" style="animation-delay:.25s">
                 <div class="w-2.5 h-2.5 bg-amber-400 rounded-full flex-shrink-0"></div>
                 <div>
-                    <strong class="block text-slate-100 text-[11px]">E — Enterprising</strong>
-                    <span class="text-slate-400">Biznes, liderlik</span>
+                    <strong class="block text-slate-100 text-[11px]">{{ __('quiz.legend.enterprising') }}</strong>
+                    <span class="text-slate-400">{{ __('quiz.legend.enterprising_desc') }}</span>
                 </div>
             </div>
             <div class="bg-slate-800 border border-slate-700 rounded-lg p-3 flex items-center gap-2 text-xs animate-fade-in" style="animation-delay:.3s">
                 <div class="w-2.5 h-2.5 bg-slate-400 rounded-full flex-shrink-0"></div>
                 <div>
-                    <strong class="block text-slate-100 text-[11px]">C — Conventional</strong>
-                    <span class="text-slate-400">Tartib, tizim, hujjat</span>
+                    <strong class="block text-slate-100 text-[11px]">{{ __('quiz.legend.conventional') }}</strong>
+                    <span class="text-slate-400">{{ __('quiz.legend.conventional_desc') }}</span>
                 </div>
             </div>
         </div>
@@ -199,8 +199,8 @@ toggleTheme = function() {
         <!-- Questions -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden animate-fade-in">
             <div class="p-5 flex items-center justify-between border-b border-slate-700 bg-slate-800/50">
-                <h2 class="text-sm font-bold text-slate-100">Savollar</h2>
-                <span class="text-xs text-slate-500 font-mono" id="progress-label">0 / 24</span>
+                <h2 class="text-sm font-bold text-slate-100">{{ __('quiz.questions.title') }}</h2>
+                <span class="text-xs text-slate-500 font-mono" id="progress-label">{{ __('quiz.questions.progress') }}</span>
             </div>
             <div class="h-1 bg-slate-700">
                 <div class="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-400" id="progress-fill" style="width: 0%"></div>
@@ -211,7 +211,7 @@ toggleTheme = function() {
             <div class="p-5 border-t border-slate-700">
                 <button class="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl text-white font-bold text-base cursor-pointer transition-all duration-250 shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none" onclick="submitTest()" id="submit-btn">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    Natijani ko'rish
+                    {{ __('quiz.submit') }}
                 </button>
             </div>
         </div>
@@ -219,8 +219,8 @@ toggleTheme = function() {
         <!-- Result -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden hidden animate-fade-in" id="result-card">
             <div class="p-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-b border-slate-700 text-center">
-                <h2 class="text-xl font-black text-slate-100 mb-1">🎯 Sizning natijangiz</h2>
-                <p class="text-sm text-slate-400">RIASEC profilingiz quyida ko'rsatilgan</p>
+                <h2 class="text-xl font-black text-slate-100 mb-1">{{ __('quiz.result.title') }}</h2>
+                <p class="text-sm text-slate-400">{{ __('quiz.result.subtitle') }}</p>
             </div>
 
             <!-- Score bars -->
@@ -235,7 +235,7 @@ toggleTheme = function() {
             <div class="p-6 border-t border-slate-700">
                 <div class="flex items-center gap-2 text-xs font-bold tracking-wide uppercase text-slate-500 mb-4">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-                    AI tavsiyasi
+                    {{ __('quiz.ai.title') }}
                 </div>
                 <div class="bg-slate-900 border border-slate-700 rounded-lg p-5 text-sm leading-relaxed text-slate-400 min-h-20 ai-response-box" id="ai-response">
                     <div class="flex gap-1 items-center p-1">
@@ -246,7 +246,7 @@ toggleTheme = function() {
                 </div>
             </div>
 
-            <button class="mx-6 mb-6 w-[calc(100%-3rem)] py-3 border border-slate-700 rounded-lg bg-transparent text-slate-400 font-sans text-sm cursor-pointer transition-all duration-200 hover:border-blue-500 hover:text-blue-500" onclick="resetTest()">↺ Testni qayta topshirish</button>
+            <button class="mx-6 mb-6 w-[calc(100%-3rem)] py-3 border border-slate-700 rounded-lg bg-transparent text-slate-400 font-sans text-sm cursor-pointer transition-all duration-200 hover:border-blue-500 hover:text-blue-500" onclick="resetTest()">↺ {{ __('quiz.reset') }}</button>
         </div>
 
         <!-- History table -->
@@ -254,15 +254,16 @@ toggleTheme = function() {
         <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden animate-fade-in overflow-x-auto">
             <div class="p-4 border-b border-slate-700 flex items-center gap-2 text-xs font-bold tracking-wide uppercase text-slate-500">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/><path d="M12 6v6l4 2"/></svg>
-                Oldingi natijalar ({{ $history->count() }} ta)
+                <!-- Oldingi natijalar ({{ $history->count() }} ta) -->
+                 {{__('quiz.history.title', ['count' => $history->count()])}}
             </div>
             <table class="w-full border-collapse text-sm">
                 <thead>
                     <tr>
                         <th class="p-3 text-left font-semibold text-slate-500 text-[10px] tracking-wide uppercase bg-slate-800/50 border-b border-slate-700">#</th>
-                        <th class="p-3 text-left font-semibold text-slate-500 text-[10px] tracking-wide uppercase bg-slate-800/50 border-b border-slate-700">Natijalar</th>
-                        <th class="p-3 text-left font-semibold text-slate-500 text-[10px] tracking-wide uppercase bg-slate-800/50 border-b border-slate-700">Eng yuqori</th>
-                        <th class="p-3 text-left font-semibold text-slate-500 text-[10px] tracking-wide uppercase bg-slate-800/50 border-b border-slate-700">Sana</th>
+                        <th class="p-3 text-left font-semibold text-slate-500 text-[10px] tracking-wide uppercase bg-slate-800/50 border-b border-slate-700">{{ __('quiz.history.headers.results') }}</th>
+                        <th class="p-3 text-left font-semibold text-slate-500 text-[10px] tracking-wide uppercase bg-slate-800/50 border-b border-slate-700">{{ __('quiz.history.headers.best_type') }}</th>
+                        <th class="p-3 text-left font-semibold text-slate-500 text-[10px] tracking-wide uppercase bg-slate-800/50 border-b border-slate-700">{{ __('quiz.history.headers.date') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -311,30 +312,30 @@ const SAVE_URL = '{{ route('riasec.save') }}';
 const CSRF     = '{{ csrf_token() }}';
 
 const questions = [
-    "Mashinalar yoki mexanik qurilmalarni ayirib-yig'ish menga yoqadi.",
-    "Uskunalar, asboblar bilan ishlashni xohlayman.",
-    "Ochiq havoda jismoniy ish qilish yoqadi.",
-    "Sport va jismoniy mashg'ulotlar menga qiziq.",
-    "Murakkab masalalarni yechishni yoqtiraman.",
-    "Ilmiy tajribalar haqida o'qishni yaxshi ko'raman.",
-    "Kompyuterda dastur tuzish menga yoqadi.",
-    "Narsalar qanday ishlashini o'rganishni yoqtiraman.",
-    "Chizish yoki dizayn qilishni yaxshi ko'raman.",
-    "Yangi g'oyalarni o'ylab topishni yoqtiraman.",
-    "Musiqa yoki ijodiy mashg'ulotlar menga yoqadi.",
-    "Ranglar va shakllar bilan ishlashni yoqtiraman.",
-    "Boshqalarga yordam berish menga yoqadi.",
-    "O'qituvchi bo'lishni tasavvur qila olaman.",
-    "Odamlar bilan gaplashish yoqadi.",
-    "Jamoada ishlash menga zavq beradi.",
-    "Guruhni boshqarish menga yoqadi.",
-    "Savdo qilish meni qiziqtiradi.",
-    "Pul topish yo'llari haqida o'ylashni yoqtiraman.",
-    "Loyihalarni boshqarishni yoqtiraman.",
-    "Hujjatlar bilan ishlash menga qiziq.",
-    "Tartib-intizom va qoidalarga rioya qilishni yoqtiraman.",
-    "Ma'lumotlarni tizimli ravishda saqlashni afzal ko'raman.",
-    "Hisobotlar tuzish va raqamlar bilan ishlash menga yoqadi."
+    "{{ __('quiz.question_list.0') }}",
+    "{{ __('quiz.question_list.1') }}",
+    "{{ __('quiz.question_list.2') }}",
+    "{{ __('quiz.question_list.3') }}",
+    "{{ __('quiz.question_list.4') }}",
+    "{{ __('quiz.question_list.5') }}",
+    "{{ __('quiz.question_list.6') }}",
+    "{{ __('quiz.question_list.7') }}",
+    "{{ __('quiz.question_list.8') }}",
+    "{{ __('quiz.question_list.9') }}",
+    "{{ __('quiz.question_list.10') }}",
+    "{{ __('quiz.question_list.11') }}",
+    "{{ __('quiz.question_list.12') }}",
+    "{{ __('quiz.question_list.13') }}",
+    "{{ __('quiz.question_list.14') }}",
+    "{{ __('quiz.question_list.15') }}",
+    "{{ __('quiz.question_list.16') }}",
+    "{{ __('quiz.question_list.17') }}",
+    "{{ __('quiz.question_list.18') }}",
+    "{{ __('quiz.question_list.19') }}",
+    "{{ __('quiz.question_list.20') }}",
+    "{{ __('quiz.question_list.21') }}",
+    "{{ __('quiz.question_list.22') }}",
+    "{{ __('quiz.question_list.23') }}",
 ];
 
 const groups  = { R:[0,1,2,3], I:[4,5,6,7], A:[8,9,10,11], S:[12,13,14,15], E:[16,17,18,19], C:[20,21,22,23] };
@@ -368,10 +369,10 @@ questions.forEach((q, i) => {
         <span class="question-text text-sm text-slate-400 leading-relaxed flex-1">${q}</span>
         <div class="radio-group flex gap-1 flex-shrink-0 md:flex-row flex-col">
             <label class="radio-pill flex items-center gap-1 px-3 py-1 rounded-full border border-slate-600 bg-slate-800 cursor-pointer text-xs text-slate-500 transition-all duration-180 hover:border-blue-500 hover:text-blue-500" id="pill-yes-${i}" onclick="pickAnswer(${i},1)">
-                <input type="radio" name="q${i}" value="1" class="hidden">✓ Ha
+                <input type="radio" name="q${i}" value="1" class="hidden">✓ {{ __('quiz.buttons.yes') }}
             </label>
             <label class="radio-pill flex items-center gap-1 px-3 py-1 rounded-full border border-slate-600 bg-slate-800 cursor-pointer text-xs text-slate-500 transition-all duration-180 hover:border-blue-500 hover:text-blue-500" id="pill-no-${i}" onclick="pickAnswer(${i},0)">
-                <input type="radio" name="q${i}" value="0" class="hidden">✗ Yo'q
+                <input type="radio" name="q${i}" value="0" class="hidden">✗ {{ __('quiz.buttons.no') }}
             </label>
         </div>`;
     list.appendChild(div);
@@ -502,34 +503,31 @@ function showResult(scores) {
 
 async function askAI(scores) {
     const aiBox = document.getElementById('ai-response');
-    aiBox.innerHTML = '<div class="flex gap-1 items-center p-1"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce"></span><span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.2s"></span><span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay:.4s"></span></div>';
+    aiBox.innerHTML = '<div class="flex gap-1 items-center p-1">{{ __('quiz.ai.typing.dots') }}</div>';
 
     const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
 
-    const prompt = `Siz kasbga yo'naltirish bo'yicha professional maslahatchi sifatida ishlayapsiz.
+    const prompt = `{{ __('quiz.ai.prompt.intro') }}
 
-RIASEC test natijalari:
-- Realistic (Amaliy): ${Math.round(scores.R)}%
-- Investigative (Tadqiqot): ${Math.round(scores.I)}%
-- Artistic (Ijod): ${Math.round(scores.A)}%
-- Social (Ijtimoiy): ${Math.round(scores.S)}%
-- Enterprising (Tadbirkorlik): ${Math.round(scores.E)}%
-- Conventional (Tartib): ${Math.round(scores.C)}%
+{{ __('quiz.ai.prompt.results_title') }}:
+- Realistic ({{ __('quiz.legend.realistic_desc') }}): ${Math.round(scores.R)}%
+- Investigative ({{ __('quiz.legend.investigative_desc') }}): ${Math.round(scores.I)}%
+- Artistic ({{ __('quiz.legend.artistic_desc') }}): ${Math.round(scores.A)}%
+- Social ({{ __('quiz.legend.social_desc') }}): ${Math.round(scores.S)}%
+- Enterprising ({{ __('quiz.legend.enterprising_desc') }}): ${Math.round(scores.E)}%
+- Conventional ({{ __('quiz.legend.conventional_desc') }}): ${Math.round(scores.C)}%
 
-Eng yuqori: ${sorted[0][0]} (${Math.round(sorted[0][1])}%), ${sorted[1][0]} (${Math.round(sorted[1][1])}%), ${sorted[2][0]} (${Math.round(sorted[2][1])}%)
+{{ __('quiz.ai.prompt.best_type') }}: ${sorted[0][0]} (${Math.round(sorted[0][1])}%), ${sorted[1][0]} (${Math.round(sorted[1][1])}%), ${sorted[2][0]} (${Math.round(sorted[2][1])}%)
 
-Quyidagi formatda javob bering (o'zbek tilida, aniq va qisqacha):
+{{ __('quiz.ai.prompt.format_title') }} ({{ __('quiz.ai.prompt.language') }}, {{ __('quiz.ai.prompt.clear') }}):
 
-## 📊 Natija tahlili
-[2-3 jumlada xulosa]
-
-## 💼 Tavsiya etilgan kasblar
+## 📊 {{ __('quiz.ai.prompt.analysis_title') }}
+[3-6 jumlada xulosa]
+## 💼 {{ __('quiz.ai.prompt.recommended_careers') }}
 [5-6 ta aniq kasb nomi va qisqacha izoh]
-
-## 🎓 O'qish yo'nalishlari
+## 🎓 {{ __('quiz.ai.prompt.development_directions') }}
 [3-4 ta yo'nalish]
-
-## ⭐ Kuchli tomonlar
+## ⭐ {{ __('quiz.ai.prompt.strengths') }}
 [3 ta]
 
 ## 📈 Rivojlantirish uchun

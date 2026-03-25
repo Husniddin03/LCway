@@ -10,7 +10,7 @@
         content="{{ $description ?? 'O\'zbekiston bo\'ylab eng yaxshi o\'quv markazlarini toping. Kurslar, ustozlar va baholash tizimi.' }}">
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('images/lcwayfavicon.png') }}">
+    <link rel="icon" href="{{ asset('images/2.png') }}">
 
     <!-- TailwindCSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

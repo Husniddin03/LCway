@@ -311,25 +311,29 @@
                     @if (isset($centers) && $centers->count() > 0)
                         @foreach ($centers->take(8) as $center)
                             <x-card hover
-                                class="group cursor-pointer bg-white dark:from-gray-800/50 dark:to-gray-900/50 backdrop-blur-sm border border-gray-100 dark:border-gray-700/50 shadow-md hover:shadow-lg transition-all duration-300">
+                                class="group cursor-pointer bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-xl transition-all duration-300">
                                 <div class="relative overflow-hidden rounded-t-2xl">
                                     @if ($center->logo)
-                                        <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}"
-                                            class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                                        @if(str_starts_with($center->logo, 'http://') || str_starts_with($center->logo, 'https://'))
+                                            <img src="{{ $center->logo }}" alt="{{ $center->name }}"
+                                                class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                                        @else
+                                            <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}"
+                                                class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                                        @endif
                                     @else
                                         <div
-                                            class="w-full h-48 bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center">
-                                            <svg class="w-16 h-16 text-white/50" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                            </svg>
+                                            class="w-full h-48 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-indigo-600 dark:to-purple-800 flex items-center justify-center">
+                                            <div class="text-white text-center px-4">
+                                                <div class="text-2xl font-bold mb-1">{{ $center->type }}</div>
+                                                <div class="text-sm opacity-90">{{ $center->name }}</div>
+                                            </div>
                                         </div>
                                     @endif
 
                                     <!-- Rating Badge -->
                                     <div
-                                        class="absolute top-4 right-4 bg-white dark:bg-gray-900/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md border border-gray-100 dark:border-gray-700/50">
+                                        class="absolute top-4 right-4 bg-white dark:bg-gray-800 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg border border-gray-200 dark:border-gray-600">
                                         @php
                                             $average = round($center->favorites()->avg('rating') ?? 0, 1);
                                         @endphp

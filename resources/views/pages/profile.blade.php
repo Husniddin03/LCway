@@ -81,39 +81,39 @@ use Illuminate\Support\Facades\Storage;
                         <!-- Personal Information -->
                         <div class="bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 mb-8">
                             <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">{{ __('profile.personal_info.title') }}</h2>
-                            @if ($userData)
+                            @if ($user->userData)
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('profile.personal_info.name') }}</label>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
-                                            {{ $userData->first_name }}</p>
+                                            {{ $user->userData->first_name }}</p>
                                     </div>
                                     <div>
                                         <label
                                             class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('profile.personal_info.family') }}</label>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
-                                            {{ $userData->last_name }}</p>
+                                            {{ $user->userData->last_name }}</p>
                                     </div>
                                     <div>
                                         <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('profile.personal_info.phone') }}
                                             raqami</label>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
-                                            {{ $userData->phone }}</p>
+                                            {{ $user->userData->phone }}</p>
                                     </div>
                                     <div>
                                         <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('profile.personal_info.gender') }}</label>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
-                                            {{ $userData->gender_uzbek }}</p>
+                                            {{ $user->userData->gender_uzbek }}</p>
                                     </div>
                                     <div>
                                         <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('profile.personal_info.birthday') }}</label>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
-                                            {{ $userData->formatted_birthday }}</p>
+                                            {{ $user->userData->formatted_birthday }}</p>
                                     </div>
                                     <div>
                                         <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('profile.personal_info.bio') }}</label>
                                         <p class="text-sm font-semibold text-gray-900 dark:text-white">
-                                            {{ $userData->bio }}</p>
+                                            {{ $user->userData->bio }}</p>
                                     </div>
                                 </div>
                             @else
@@ -137,7 +137,7 @@ use Illuminate\Support\Facades\Storage;
                             @endif
                         </div>
 
-                        @if ($userData->user->centers)
+                        @if ($user && $user->centers && $user->centers->count() > 0)
                             <!-- Stats Cards -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                                 <div onclick="toggleCoursesSection()"
@@ -150,7 +150,7 @@ use Illuminate\Support\Facades\Storage;
                                                     d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                             </svg>
                                         </div>
-                                        <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{$userData->user->centers->count()}}</span>
+                                        <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $user->centers->count() }}</span>
                                     </div>
                                     <h3 class="text-gray-700 dark:text-gray-300 font-medium">{{ __('profile.stats.courses') }}</h3>
                                 </div>
@@ -165,7 +165,7 @@ use Illuminate\Support\Facades\Storage;
                                                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                             </svg>
                                         </div>
-                                        <span class="text-2xl font-bold text-green-600 dark:text-green-400">{{$userData->user->centers->sum(function($center) { return $center->subjects->count(); })}}</span>
+                                        <span class="text-2xl font-bold text-green-600 dark:text-green-400">{{ $user->centers->sum(function($center) { return $center->subjects->count(); }) }}</span>
                                     </div>
                                     <h3 class="text-gray-700 dark:text-gray-300 font-medium">{{ __('profile.stats.subjects') }}</h3>
                                 </div>
@@ -180,7 +180,7 @@ use Illuminate\Support\Facades\Storage;
                                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                             </svg>
                                         </div>
-                                        <span class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{$userData->user->centers->sum(function($center) { return $center->teachers->count(); })}}</span>
+                                        <span class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{ $user->centers->sum(function($center) { return $center->teachers->count(); }) }}</span>
                                     </div>
                                     <h3 class="text-gray-700 dark:text-gray-300 font-medium">{{ __('profile.stats.teachers') }}</h3>
                                 </div>
@@ -189,7 +189,7 @@ use Illuminate\Support\Facades\Storage;
                             <!-- Kurslar -->
                             <div id="courses-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
                                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('profile.stats.courses') }}</h2>
-                                @forelse($userData->user->centers as $center)
+                                @forelse($user->centers as $center)
                                     <a href="{{ route('blog-single', $center->id) }}"
                                         class="flex items-center justify-between p-4 mb-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
                                         <div class="flex items-center space-x-4">
@@ -217,7 +217,7 @@ use Illuminate\Support\Facades\Storage;
                             <!-- Fanlar -->
                             <div id="subjects-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
                                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('profile.stats.subjects') }}</h2>
-                                @forelse($userData->user->centers as $center)
+                                @forelse($user->centers as $center)
                                     @if($center->subjects->count() > 0)
                                         <div class="mb-6">
                                             <div class="flex items-center space-x-3 mb-3">
@@ -259,7 +259,7 @@ use Illuminate\Support\Facades\Storage;
                             <!-- O'qituvchilar -->
                             <div id="teachers-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
                                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('profile.stats.teachers') }}</h2>
-                                @forelse($userData->user->centers as $center)
+                                @forelse($user->centers as $center)
                                     @if($center->teachers->count() > 0)
                                         <div class="mb-6">
                                             <div class="flex items-center space-x-3 mb-3">

@@ -32,6 +32,7 @@ return [
         'sort_distance' => 'Masofasi',
         'sort_rating' => 'Reytingi',
         'subjects' => 'Fanlar',
+        'type' => 'Turi',
         'teacher_announcements' => 'O\'qituvchi e\'lonlari',
         'all_announcements' => 'Barcha e\'lonlar',
         'results_count' => 'ta o\'quv markaz topildi',

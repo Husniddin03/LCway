@@ -12,8 +12,8 @@ class UserDataController extends Controller
 {
     public function index()
     {
-        $userData = UserData::where('user_id', Auth::id())->first();
-        return view('pages.profile', compact('userData'));
+        $user = Auth::user()->load(['userData', 'centers']);
+        return view('pages.profile', compact('user'));
     }
 
     public function edit()

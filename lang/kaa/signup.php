@@ -20,7 +20,7 @@ return [
 
     // Form Fields
     'form' => [
-        'name_label' => 'Tu'lıq atı',
+        'name_label' => 'Tu\'lıq atı',
         'name_placeholder' => 'John Doe',
         'email_label' => 'Email manzil',
         'email_placeholder' => 'example@gmail.com',

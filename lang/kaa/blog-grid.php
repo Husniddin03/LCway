@@ -32,6 +32,7 @@ return [
         'sort_distance' => 'Aralıq',
         'sort_rating' => 'Reytingi',
         'subjects' => 'Pánler',
+        'type' => 'Túri',
         'teacher_announcements' => 'O\'qıtıwshı járiyaları',
         'all_announcements' => 'Barlıq járiyalar',
         'results_count' => 'o\'qıw merkezi tabıldı',

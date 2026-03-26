@@ -126,6 +126,16 @@
                                     <option value="Akademiya" {{ old('type') == 'Akademiya' ? 'selected' : '' }}>{{ __('course-create.types.academy') }}</option>
                                     <option value="Kollej" {{ old('type') == 'Kollej' ? 'selected' : '' }}>{{ __('course-create.types.college') }}</option>
                                     <option value="Universitet" {{ old('type') == 'Universitet' ? 'selected' : '' }}>{{ __('course-create.types.university') }}</option>
+                                    <option value="Maktab" {{ old('type') == 'Maktab' ? 'selected' : '' }}>{{ __('course-create.types.school') }}</option>
+                                    <option value="Maktab/Kurs" {{ old('type') == 'Maktab/Kurs' ? 'selected' : '' }}>{{ __('course-create.types.school_course') }}</option>
+                                    <option value="Til kurslar" {{ old('type') == 'Til kurslar' ? 'selected' : '' }}>{{ __('course-create.types.language_course') }}</option>
+                                    <option value="Haydovchilik kursi" {{ old('type') == 'Haydovchilik kursi' ? 'selected' : '' }}>{{ __('course-create.types.driving_course') }}</option>
+                                    <option value="IT kurslar" {{ old('type') == 'IT kurslar' ? 'selected' : '' }}>{{ __('course-create.types.it_course') }}</option>
+                                    <option value="Dizayn kurslar" {{ old('type') == 'Dizayn kurslar' ? 'selected' : '' }}>{{ __('course-create.types.design_course') }}</option>
+                                    <option value="Musiqiy maktab" {{ old('type') == 'Musiqiy maktab' ? 'selected' : '' }}>{{ __('course-create.types.music_school') }}</option>
+                                    <option value="Sport maktab" {{ old('type') == 'Sport maktab' ? 'selected' : '' }}>{{ __('course-create.types.sports_school') }}</option>
+                                    <option value="Badiiy maktab" {{ old('type') == 'Badiiy maktab' ? 'selected' : '' }}>{{ __('course-create.types.art_school') }}</option>
+                                    <option value="Kasb-hunar maktab" {{ old('type') == 'Kasb-hunar maktab' ? 'selected' : '' }}>{{ __('course-create.types.vocational_school') }}</option>
                                 </select>
                                 @error('type')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>

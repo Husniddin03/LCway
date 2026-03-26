@@ -61,6 +61,16 @@ return [
         'academy' => 'Academy',
         'college' => 'College',
         'university' => 'University',
+        'school' => 'School',
+        'school_course' => 'School/Course',
+        'language_course' => 'Language Courses',
+        'driving_course' => 'Driving School',
+        'it_course' => 'IT Courses',
+        'design_course' => 'Design Courses',
+        'music_school' => 'Music School',
+        'sports_school' => 'Sports School',
+        'art_school' => 'Art School',
+        'vocational_school' => 'Vocational School',
     ],
 
     // Buttons

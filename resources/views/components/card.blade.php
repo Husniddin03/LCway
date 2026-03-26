@@ -5,7 +5,7 @@
 ])
 
 @php
-    $baseClasses = 'bg-white dark:bg-gray-800 rounded-2xl shadow-medium transition-all duration-300';
+    $baseClasses = 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-medium transition-all duration-300';
 
     $paddingClasses = match ($padding) {
         'none' => '',
@@ -15,7 +15,7 @@
         default => 'p-6',
     };
 
-    $hoverClasses = $hover ? 'hover:shadow-floating hover:scale-105 hover:-translate-y-1' : '';
+    $hoverClasses = $hover ? 'hover:shadow-floating hover:scale-105 hover:-translate-y-1 hover:border-primary-300 dark:hover:border-primary-600' : '';
 
     $classes = implode(' ', array_filter([$baseClasses, $paddingClasses, $hoverClasses, $class]));
 @endphp

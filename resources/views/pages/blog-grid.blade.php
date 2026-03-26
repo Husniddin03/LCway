@@ -48,7 +48,7 @@
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex flex-wrap gap-2">
                     <button type="button" onclick="clearAllFilters()"
-                        class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
+                        class="text-gray-900 dark:text-white pr-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
                         {{ __('blog-grid.search_filter.all') }}
                     </button>
 
@@ -300,6 +300,51 @@
                         </div>
                     </div>
 
+                    <!-- Filter by type -->
+                    <div class="text-gray-900 dark:text-white relative" x-data="{ type_filter: false }">
+                        <button @click="type_filter = !type_filter"
+                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
+                            {{ __('blog-grid.search_filter.type') }}
+                            <svg class="w-4 h-4" :class="{ 'rotate-180': type_filter }" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <div x-show="type_filter" @click.away="type_filter = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+                            <div class="py-2 max-h-70 overflow-y-auto">
+                                <button type="button" onclick="applyFilter('type', 'Haydovchilik kursi')"
+                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                    Haydovchilik kursi
+                                </button>
+                                <button type="button" onclick="applyFilter('type', 'Maktab/Kurs')"
+                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                    Maktab/Kurs
+                                </button>
+                                <button type="button" onclick="applyFilter('type', 'O\'quv markaz')"
+                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                    O'quv markaz
+                                </button>
+                                <button type="button" onclick="applyFilter('type', 'Til kurslari')"
+                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                    Til kurslari
+                                </button>
+                                <button type="button" onclick="applyFilter('type', 'Universitet')"
+                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                    Universitet
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Filter by subjects -->
                     <div class="text-gray-900 dark:text-white relative" x-data="{ subject_id: false }">
                         <button @click="subject_id = !subject_id"
@@ -390,9 +435,24 @@
                         class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
                         <!-- Image -->
                         <div class="relative h-48 overflow-hidden">
-                            <img src="{{ asset('storage/' . $LearningCenter->logo) }}"
-                                alt="{{ $LearningCenter->name }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                            @if($LearningCenter->logo)
+                                @if(str_starts_with($LearningCenter->logo, 'http://') || str_starts_with($LearningCenter->logo, 'https://'))
+                                    <img src="{{ $LearningCenter->logo }}"
+                                        alt="{{ $LearningCenter->name }}"
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                @else
+                                    <img src="{{ asset('storage/' . $LearningCenter->logo) }}"
+                                        alt="{{ $LearningCenter->name }}"
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                @endif
+                            @else
+                                <div class="w-full h-48 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-indigo-600 dark:to-purple-800 flex items-center justify-center">
+                                    <div class="text-white text-center px-4">
+                                        <div class="text-xl font-bold mb-1">{{ $LearningCenter->type }}</div>
+                                        <div class="text-sm opacity-90">{{ $LearningCenter->name }}</div>
+                                    </div>
+                                </div>
+                            @endif
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>

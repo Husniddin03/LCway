@@ -32,6 +32,7 @@ return [
         'sort_distance' => 'Distance',
         'sort_rating' => 'Rating',
         'subjects' => 'Subjects',
+        'type' => 'Type',
         'teacher_announcements' => 'Teacher Announcements',
         'all_announcements' => 'All Announcements',
         'results_count' => 'learning centers found',

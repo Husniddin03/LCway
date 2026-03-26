@@ -53,12 +53,30 @@
                     <!-- Main Image -->
                     <div class="mb-8">
                         <div class="relative rounded-2xl overflow-hidden shadow-xl">
-                            <a href="{{ asset('storage/' . $LearningCenter->logo) }}" data-lightbox>
-                                <img src="{{ asset('storage/' . $LearningCenter->logo) }}" 
-                                    alt="{{ $LearningCenter->name }}"
-                                    class="w-full h-96 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
-                                    onclick="openLightbox(-1)">
+                        @if($LearningCenter->logo)
+                            @if(str_starts_with($LearningCenter->logo, 'http://') || str_starts_with($LearningCenter->logo, 'https://'))
+                                <a href="{{ $LearningCenter->logo }}" data-lightbox>
+                                    <img src="{{ $LearningCenter->logo }}" 
+                                        alt="{{ $LearningCenter->name }}"
+                                        class="w-full h-96 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                                        onclick="openLightbox(-1)">
+                            @else
+                                <a href="{{ asset('storage/' . $LearningCenter->logo) }}" data-lightbox>
+                                    <img src="{{ asset('storage/' . $LearningCenter->logo) }}" 
+                                        alt="{{ $LearningCenter->name }}"
+                                        class="w-full h-96 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                                        onclick="openLightbox(-1)">
+                            @endif
                             </a>
+                        @else
+                            <div class="w-full h-96 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-indigo-600 dark:to-purple-800 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform duration-300"
+                                 onclick="openLightbox(-1)">
+                                <div class="text-white text-center px-4">
+                                    <div class="text-3xl font-bold mb-2">{{ $LearningCenter->type }}</div>
+                                    <div class="text-lg opacity-90">{{ $LearningCenter->name }}</div>
+                                </div>
+                            </div>
+                        @endif
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
                             </div>
@@ -256,10 +274,17 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 @foreach ($LearningCenter->images as $index => $image)
                                     <div class="relative group overflow-hidden rounded-xl">
+                                @if(str_starts_with($image->image, 'http://') || str_starts_with($image->image, 'https://'))
+                                        <img src="{{ $image->image }}" 
+                                            alt="{{ __('blog-single.images.title') }}"
+                                            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
+                                            onclick="openLightbox({{ $index }})">
+                                @else
                                         <img src="{{ asset('storage/' . $image->image) }}" 
                                             alt="{{ __('blog-single.images.title') }}"
                                             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
                                             onclick="openLightbox({{ $index }})">
+                                @endif
                                         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
                                     </div>
                                 @endforeach
@@ -389,9 +414,15 @@
                                         <div class="flex items-center space-x-3">
                                             <div class="w-8 h-8 flex items-center justify-center">
                                                 <!-- @if (isset($subject->subject->icon))
-                                                    <img src="{{ asset('storage/' . $subject->subject->icon) }}"
-                                                        alt="{{ $subject->subject->name }}"
-                                                        class="w-8 h-8 rounded-full object-cover">
+                                                    @if(str_starts_with($subject->subject->icon, 'http://') || str_starts_with($subject->subject->icon, 'https://'))
+                                                        <img src="{{ $subject->subject->icon }}"
+                                                            alt="{{ $subject->subject->name }}"
+                                                            class="w-8 h-8 rounded-full object-cover">
+                                                    @else
+                                                        <img src="{{ asset('storage/' . $subject->subject->icon) }}"
+                                                            alt="{{ $subject->subject->name }}"
+                                                            class="w-8 h-8 rounded-full object-cover">
+                                                    @endif
                                                     @else
                                                     <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
                                                         {{ strtoupper(substr($subject->subject->name, 0, 1)) }}
@@ -507,9 +538,15 @@
                                         <div class="flex-shrink-0">
                                             <div class="w-16 h-16 relative">
                                                 @if (isset($teacher->photo))
-                                                    <img src="{{ asset('storage/' . $teacher->photo) }}"
-                                                        alt="{{ $teacher->name }}"
-                                                        class="w-16 h-16 rounded-full object-cover ring-2 ring-white dark:ring-gray-700">
+                                                    @if(str_starts_with($teacher->photo, 'http://') || str_starts_with($teacher->photo, 'https://'))
+                                                        <img src="{{ $teacher->photo }}"
+                                                            alt="{{ $teacher->name }}"
+                                                            class="w-16 h-16 rounded-full object-cover ring-2 ring-white dark:ring-gray-700">
+                                                    @else
+                                                        <img src="{{ asset('storage/' . $teacher->photo) }}"
+                                                            alt="{{ $teacher->name }}"
+                                                            class="w-16 h-16 rounded-full object-cover ring-2 ring-white dark:ring-gray-700">
+                                                    @endif
                                                 @else
                                                     <img src="https://ui-avatars.com/api/?name={{ $teacher->name }}&background=random&size=64"
                                                         alt="{{ $teacher->name }}"
@@ -973,11 +1010,62 @@
     <!-- JavaScript for Lightbox -->
     <script>
         // Barcha rasmlar massivi (PHP dan)
-        const ALL_IMAGES = @json($LearningCenter->images->map(fn($img) => asset('storage/' . $img->image)));
-        const LOGO_URL = "{{ asset('storage/' . $LearningCenter->logo) }}";
+        const ALL_IMAGES = @json($LearningCenter->images->map(function($img) {
+            return str_starts_with($img->image, 'http://') || str_starts_with($img->image, 'https://') 
+                ? $img->image 
+                : asset('storage/' . $img->image);
+        }));
+        
+        // Logo URL ni tayyorlash - agar logo bo'lmasa placeholder qaytaramiz
+        let LOGO_URL;
+        @if($LearningCenter->logo)
+            LOGO_URL = "{{ str_starts_with($LearningCenter->logo, 'http://') || str_starts_with($LearningCenter->logo, 'https://') ? $LearningCenter->logo : asset('storage/' . $LearningCenter->logo) }}";
+        @else
+            // Placeholder rasmini yarating (base64 yoki data URL)
+            LOGO_URL = generatePlaceholderImage("{{ $LearningCenter->type }}", "{{ $LearningCenter->name }}");
+        @endif
 
         let currentImageIndex = 0;
         let currentImages = [];
+
+        // Placeholder rasm yaratish funktsiyasi
+        function generatePlaceholderImage(type, name) {
+            // Canvas yaratish
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 600;
+            const ctx = canvas.getContext('2d');
+            
+            // Gradient (day/night mode ga qarab)
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+                const gradient = ctx.createLinearGradient(0, 0, 800, 600);
+                gradient.addColorStop(0, '#4f46e5'); // indigo-600
+                gradient.addColorStop(1, '#6b21a8'); // purple-800
+                ctx.fillStyle = gradient;
+            } else {
+                const gradient = ctx.createLinearGradient(0, 0, 800, 600);
+                gradient.addColorStop(0, '#3b82f6'); // blue-500
+                gradient.addColorStop(1, '#9333ea'); // purple-600
+                ctx.fillStyle = gradient;
+            }
+            ctx.fillRect(0, 0, 800, 600);
+            
+            // Text yozish
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Type
+            ctx.font = 'bold 48px system-ui';
+            ctx.fillText(type, 400, 250);
+            
+            // Name
+            ctx.font = '24px system-ui';
+            ctx.fillText(name, 400, 320);
+            
+            return canvas.toDataURL();
+        }
 
         function openLightbox(index) {
             if (index === -1) {

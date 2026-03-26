@@ -29,6 +29,7 @@ class PageController extends Controller
             'radius' => 'nullable|numeric', // km
             'searchText' => 'nullable|string|max:255',
             'subject_id' => 'nullable|exists:subjects,id',
+            'type' => 'nullable|string|max:255',
             'name' => 'nullable|in:asc,desc',
             'distance' => 'nullable|in:asc,desc',
             'favorites' => 'nullable|in:asc,desc',
@@ -57,6 +58,11 @@ class PageController extends Controller
             $LearningCenters = $LearningCenters->whereHas('subjects', function ($query) use ($validated) {
                 $query->where('subject_id', $validated['subject_id']);
             });
+        }
+
+        // Apply type filter
+        if (!empty($validated['type'])) {
+            $LearningCenters = $LearningCenters->where('type', $validated['type']);
         }
 
         // Apply need teachers filter
@@ -144,10 +150,28 @@ class PageController extends Controller
                 
                 $html .= '
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="' . asset('storage/' . $LearningCenter->logo) . '"
+                    <div class="relative h-48 overflow-hidden">';
+                
+                if ($LearningCenter->logo) {
+                    $logoUrl = (str_starts_with($LearningCenter->logo, 'http://') || str_starts_with($LearningCenter->logo, 'https://')) 
+                        ? $LearningCenter->logo 
+                        : asset('storage/' . $LearningCenter->logo);
+                    
+                    $html .= '
+                        <img src="' . $logoUrl . '"
                             alt="' . $LearningCenter->name . '"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">';
+                } else {
+                    $html .= '
+                        <div class="w-full h-48 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-indigo-600 dark:to-purple-800 flex items-center justify-center">
+                            <div class="text-white text-center px-4">
+                                <div class="text-xl font-bold mb-1">' . htmlspecialchars($LearningCenter->type) . '</div>
+                                <div class="text-sm opacity-90">' . htmlspecialchars($LearningCenter->name) . '</div>
+                            </div>
+                        </div>';
+                }
+                
+                $html .= '
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <a href="' . route('blog-single', $LearningCenter->id) . '"
                             class="absolute bottom-4 left-4 bg-white dark:bg-gray-800 text-primary-600 dark:text-primary-400 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">

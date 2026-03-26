@@ -147,6 +147,16 @@
                                         <option value="Akademiya" {{ old('type', $center->type) == 'Akademiya' ? 'selected' : '' }}>{{ __('course-edit.types.academy') }}</option>
                                         <option value="Kollej" {{ old('type', $center->type) == 'Kollej' ? 'selected' : '' }}>{{ __('course-edit.types.college') }}</option>
                                         <option value="Universitet" {{ old('type', $center->type) == 'Universitet' ? 'selected' : '' }}>{{ __('course-edit.types.university') }}</option>
+                                        <option value="Maktab" {{ old('type', $center->type) == 'Maktab' ? 'selected' : '' }}>{{ __('course-edit.types.school') }}</option>
+                                        <option value="Maktab/Kurs" {{ old('type', $center->type) == 'Maktab/Kurs' ? 'selected' : '' }}>{{ __('course-edit.types.school_course') }}</option>
+                                        <option value="Til kurslar" {{ old('type', $center->type) == 'Til kurslar' ? 'selected' : '' }}>{{ __('course-edit.types.language_course') }}</option>
+                                        <option value="Haydovchilik kursi" {{ old('type', $center->type) == 'Haydovchilik kursi' ? 'selected' : '' }}>{{ __('course-edit.types.driving_course') }}</option>
+                                        <option value="IT kurslar" {{ old('type', $center->type) == 'IT kurslar' ? 'selected' : '' }}>{{ __('course-edit.types.it_course') }}</option>
+                                        <option value="Dizayn kurslar" {{ old('type', $center->type) == 'Dizayn kurslar' ? 'selected' : '' }}>{{ __('course-edit.types.design_course') }}</option>
+                                        <option value="Musiqiy maktab" {{ old('type', $center->type) == 'Musiqiy maktab' ? 'selected' : '' }}>{{ __('course-edit.types.music_school') }}</option>
+                                        <option value="Sport maktab" {{ old('type', $center->type) == 'Sport maktab' ? 'selected' : '' }}>{{ __('course-edit.types.sports_school') }}</option>
+                                        <option value="Badiiy maktab" {{ old('type', $center->type) == 'Badiiy maktab' ? 'selected' : '' }}>{{ __('course-edit.types.art_school') }}</option>
+                                        <option value="Kasb-hunar maktab" {{ old('type', $center->type) == 'Kasb-hunar maktab' ? 'selected' : '' }}>{{ __('course-edit.types.vocational_school') }}</option>
                                 </select>
                                 @error('type')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>

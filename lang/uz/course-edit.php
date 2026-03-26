@@ -61,6 +61,16 @@ return [
         'academy' => 'Akademiya',
         'college' => 'Kollej',
         'university' => 'Universitet',
+        'school' => 'Maktab',
+        'school_course' => 'Maktab/Kurs',
+        'language_course' => 'Til kurslar',
+        'driving_course' => 'Haydovchilik kursi',
+        'it_course' => 'IT kurslar',
+        'design_course' => 'Dizayn kurslar',
+        'music_school' => 'Musiqiy maktab',
+        'sports_school' => 'Sport maktab',
+        'art_school' => 'Badiiy maktab',
+        'vocational_school' => 'Kasb-hunar maktab',
     ],
 
     // Buttons

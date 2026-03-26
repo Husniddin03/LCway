@@ -32,6 +32,7 @@ return [
         'sort_distance' => 'Расстояние',
         'sort_rating' => 'Рейтинг',
         'subjects' => 'Предметы',
+        'type' => 'Тип',
         'teacher_announcements' => 'Объявления учителей',
         'all_announcements' => 'Все объявления',
         'results_count' => 'учебных центров найдено',

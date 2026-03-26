@@ -63,6 +63,16 @@ return [
         'academy' => 'Академия',
         'college' => 'Колледж',
         'university' => 'Университет',
+        'school' => 'Школа',
+        'school_course' => 'Школа/Курс',
+        'language_course' => 'Языковые курсы',
+        'driving_course' => 'Автошкола',
+        'it_course' => 'IT курсы',
+        'design_course' => 'Курсы дизайна',
+        'music_school' => 'Музыкальная школа',
+        'sports_school' => 'Спортивная школа',
+        'art_school' => 'Художественная школа',
+        'vocational_school' => 'Профессиональное училище',
     ],
 
     // Buttons

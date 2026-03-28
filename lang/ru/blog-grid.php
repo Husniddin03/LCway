@@ -37,6 +37,11 @@ return [
         'all_announcements' => 'Все объявления',
         'results_count' => 'учебных центров найдено',
         'searching' => 'Поиск...',
+        'price' => 'Цена',
+        'min_price' => 'Мин. цена',
+        'max_price' => 'Макс. цена',
+        'apply' => 'Применить',
+        'example_price' => 'Например: :price',
     ],
     
     // Learning Centers Grid

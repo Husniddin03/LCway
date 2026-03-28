@@ -45,10 +45,10 @@
             </div>
 
             <!-- Filter Navigation -->
-            <div class="flex flex-wrap items-center justify-between gap-4">
-                <div class="flex flex-wrap gap-2">
+            <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 relative z-20">
+                <div class="pointer-events-none flex overflow-x-auto pb-[400px] -mb-[400px] -mr-6 px-6 xl:pointer-events-auto xl:mx-0 xl:px-0 xl:pb-0 xl:mb-0 xl:overflow-visible xl:flex-wrap gap-2 w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     <button type="button" onclick="clearAllFilters()"
-                        class="text-gray-900 dark:text-white pr-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
+                        class="pointer-events-auto text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 whitespace-nowrap flex-shrink-0">
                         {{ __('blog-grid.search_filter.all') }}
                     </button>
 
@@ -56,10 +56,10 @@
 
 
                     {{-- ========== COMPONENT ========== --}}
-                    <div class="relative" x-data="mapFilterComp()" x-init="boot()">
+                    <div class="pointer-events-auto relative" x-data="mapFilterComp()" x-init="boot()">
 
                         {{-- Trigger --}}
-                        <button type="button" class="mf-btn" :class="open && 'is-open'" @click="toggle()">
+                        <button type="button" class="mf-btn whitespace-nowrap flex-shrink-0" :class="open && 'is-open'" @click="toggle()">
                             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -221,9 +221,9 @@
 
 
                     <!-- Sort Dropdown -->
-                    <div class="text-gray-900 dark:text-white relative" x-data="{ sortDropdown: false }">
+                    <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ sortDropdown: false }">
                         <button @click="sortDropdown = !sortDropdown"
-                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
+                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                             {{ __('blog-grid.search_filter.sort') }}
                             <svg class="w-4 h-4" :class="{ 'rotate-180': sortDropdown }" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
@@ -311,9 +311,9 @@
                     </div>
 
                     <!-- Filter by type -->
-                    <div class="text-gray-900 dark:text-white relative" x-data="{ type_filter: false }">
+                    <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ type_filter: false }">
                         <button @click="type_filter = !type_filter"
-                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
+                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                             {{ __('blog-grid.search_filter.type') }}
                             <svg class="w-4 h-4" :class="{ 'rotate-180': type_filter }" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
@@ -342,9 +342,9 @@
                     </div>
 
                     <!-- Filter by subjects -->
-                    <div class="text-gray-900 dark:text-white relative" x-data="{ subject_id: false }">
+                    <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ subject_id: false }">
                         <button @click="subject_id = !subject_id"
-                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
+                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                             {{ __('blog-grid.search_filter.subjects') }}
                             <svg class="w-4 h-4" :class="{ 'rotate-180': subject_id }" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
@@ -373,9 +373,9 @@
                     </div>
 
                     <!-- Teacher Announcements Dropdown -->
-                    <div class="text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
+                    <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
                         <button @click="teacherDropdown = !teacherDropdown"
-                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2">
+                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                             {{ __('blog-grid.search_filter.teacher_announcements') }}
                             <svg class="w-4 h-4" :class="{ 'rotate-180': teacherDropdown }" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
@@ -404,6 +404,44 @@
                                     </button>
                                 @endforeach
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Range Dropdown -->
+                    <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ priceDropdown: false }">
+                        <button @click="priceDropdown = !priceDropdown"
+                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+                            {{ __('blog-grid.search_filter.price') ?? 'Narx' }}
+                            <svg class="w-4 h-4" :class="{ 'rotate-180': priceDropdown }" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <div x-show="priceDropdown" @click.away="priceDropdown = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-20 p-4">
+                            
+                            <div class="flex flex-col gap-3 mb-4 text-gray-900 dark:text-white">
+                                <div>
+                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('blog-grid.search_filter.min_price') ?? 'Min. narx' }}</label>
+                                    <input type="number" id="minPriceInput" min="0" placeholder="{{ __('blog-grid.search_filter.example_price', ['price' => '0']) ?? 'Masalan: 0' }}" class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('blog-grid.search_filter.max_price') ?? 'Max. narx' }}</label>
+                                    <input type="number" id="maxPriceInput" min="0" placeholder="{{ __('blog-grid.search_filter.example_price', ['price' => '1000000']) ?? 'Masalan: 1000000' }}" class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors">
+                                </div>
+                            </div>
+                            <button type="button" onclick="applyPriceFilter(); priceDropdown = false"
+                                class="w-full bg-primary-600 hover:bg-primary-700 text-gray-900 dark:text-white text-sm font-medium py-2 rounded-md transition-colors border-2 border-primary-500 dark:border-primary-400 shadow-sm">
+                                {{ __('blog-grid.search_filter.apply') ?? "Qo'llash" }}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -652,6 +690,38 @@ function applyFilter(type, value) {
     }
     performSearch();
 }
+
+function applyPriceFilter() {
+    const minPrice = document.getElementById('minPriceInput').value;
+    const maxPrice = document.getElementById('maxPriceInput').value;
+    
+    if (minPrice) {
+        window.currentFilters.set('min_price', minPrice);
+    } else {
+        window.currentFilters.delete('min_price');
+    }
+    
+    if (maxPrice) {
+        window.currentFilters.set('max_price', maxPrice);
+    } else {
+        window.currentFilters.delete('max_price');
+    }
+    
+    performSearch();
+}
+
+// Preserve existing user search queries in price inputs
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('min_price')) {
+        let el = document.getElementById('minPriceInput');
+        if(el) el.value = params.get('min_price');
+    }
+    if (params.has('max_price')) {
+        let el = document.getElementById('maxPriceInput');
+        if(el) el.value = params.get('max_price');
+    }
+});
 
 function applySorting(sortType, direction) {
     // Clear all existing sort parameters

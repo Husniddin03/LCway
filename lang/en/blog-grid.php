@@ -37,6 +37,11 @@ return [
         'all_announcements' => 'All Announcements',
         'results_count' => 'learning centers found',
         'searching' => 'Searching...',
+        'price' => 'Price',
+        'min_price' => 'Min. price',
+        'max_price' => 'Max. price',
+        'apply' => 'Apply',
+        'example_price' => 'e.g. :price',
     ],
     
     // Learning Centers Grid

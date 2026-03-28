@@ -37,6 +37,11 @@ return [
         'all_announcements' => 'Barlıq járiyalar',
         'results_count' => 'o\'qıw merkezi tabıldı',
         'searching' => 'Izdep bar...',
+        'price' => 'Narx',
+        'min_price' => 'Min. narx',
+        'max_price' => 'Max. narx',
+        'apply' => 'Qo\'llash',
+        'example_price' => 'Mısalı: :price',
     ],
     
     // Learning Centers Grid

@@ -121,6 +121,8 @@ class PageController extends Controller
             'favorites' => 'nullable|in:asc,desc',
             'sort' => 'nullable|in:name,distance,favorites',
             'needTeachers' => 'nullable|exists:subjects,id',
+            'min_price' => 'nullable|numeric|min:0',
+            'max_price' => 'nullable|numeric|min:0',
             'dayMode' => 'nullable|in:true',
             'page' => 'nullable|integer|min:1',
             'per_page' => 'nullable|integer|min:1|max:50',
@@ -174,8 +176,20 @@ class PageController extends Controller
                 });
         }
 
-        if (!empty($validated['subject_id'])) {
-            $baseQuery->whereHas('subjects', fn($q) => $q->where('subject_id', $validated['subject_id']));
+        if (!empty($validated['subject_id']) || !empty($validated['min_price']) || !empty($validated['max_price'])) {
+            $baseQuery->whereHas('subjects', function ($q) use ($validated) {
+                if (!empty($validated['subject_id'])) {
+                    $q->where('subject_id', $validated['subject_id']);
+                }
+                
+                // Use REGEXP_REPLACE to extract numeric value from string prices (e.g. "150 000 UZS" -> 150000)
+                if (!empty($validated['min_price'])) {
+                    $q->whereRaw("CAST(REGEXP_REPLACE(price, '[^0-9]', '') AS UNSIGNED) >= ?", [$validated['min_price']]);
+                }
+                if (!empty($validated['max_price'])) {
+                    $q->whereRaw("CAST(REGEXP_REPLACE(price, '[^0-9]', '') AS UNSIGNED) <= ?", [$validated['max_price']]);
+                }
+            });
         }
         if (!empty($validated['type'])) {
             $baseQuery->where('type', $validated['type']);

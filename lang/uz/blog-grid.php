@@ -37,6 +37,11 @@ return [
         'all_announcements' => 'Barcha e\'lonlar',
         'results_count' => 'ta o\'quv markaz topildi',
         'searching' => 'Qidiryapman...',
+        'price' => 'Narx',
+        'min_price' => 'Min. narx',
+        'max_price' => 'Max. narx',
+        'apply' => 'Qo\'llash',
+        'example_price' => 'Masalan: :price',
     ],
     
     // Learning Centers Grid

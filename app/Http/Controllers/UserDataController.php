@@ -12,8 +12,20 @@ class UserDataController extends Controller
 {
     public function index()
     {
-        $user = Auth::user()->load(['userData', 'centers']);
-        return view('pages.profile', compact('user'));
+        $user = Auth::user();
+        $centers = $user->centers()->paginate(10);
+        $allCenters = $user->centers; // For stats
+        
+        // Get subjects and teachers with pagination using correct models
+        $subjects = \App\Models\SubjectsOfLearningCenter::whereHas('learningCenter', function($query) use ($user) {
+            $query->where('users_id', $user->id);
+        })->with('subject')->paginate(12);
+        
+        $teachers = \App\Models\Teacher::whereHas('learningCenter', function($query) use ($user) {
+            $query->where('users_id', $user->id);
+        })->with('subject')->paginate(12);
+        
+        return view('pages.profile', compact('user', 'centers', 'allCenters', 'subjects', 'teachers'));
     }
 
     public function edit()

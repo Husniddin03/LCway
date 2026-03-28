@@ -20,6 +20,9 @@ return [
     'quick_info' => [
         'title' => 'Быстрая информация',
         'type' => 'Тип',
+        'country' => 'Страна',
+        'province' => 'Область',
+        'region' => 'Район/Город',
         'address' => 'Адрес',
         'added_date' => 'Дата добавления',
         'student_count' => 'Количество студентов',

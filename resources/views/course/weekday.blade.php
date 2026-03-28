@@ -58,84 +58,60 @@
                                 </p>
                             </div>
                             
-                            <div class="border-t border-gray-200/50 dark:border-gray-700/50 pt-8">
-                                <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                                    <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
-                                    </svg>
-                                    {{ __('course-weekday.contact.title') }}
+                            <div class="border-t border-gray-200 dark:border-gray-700 pt-6 sm:pt-8 mt-6">
+                                <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-5 flex items-center group">
+                                    <span class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </span>
+                                    {{ __('course-edit-image.header.contact') }}
                                 </h4>
-                                <ul class="space-y-4">
-                                    @foreach ($LearningCenter->connections as $connection)
-                                        @if ($connection->connection->name == 'Phone')
-                                            <li>
-                                                <a href="tel:{{ $connection->url }}" 
-                                                   class="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/30 dark:hover:to-blue-800/30 transition-all duration-300 group/item">
-                                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300 shadow-lg">
-                                                        <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                            class="w-6 h-6 text-white">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                d="M3 5a2 2 0 012-2h3.28a2 2 0 011.94 1.515l.62 2.48a2 2 0 01-.45 1.885l-1.516 1.516a16 16 0 006.586 6.586l1.516-1.516a2 2 0 011.885-.45l2.48.62A2 2 0 0121 17.72V21a2 2 0 01-2 2h-1c-9.94 0-18-8.06-18-18V5z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="flex-1">
-                                                        <span class="text-gray-900 dark:text-white font-medium">{{ $connection->url }}</span>
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('course-weekday.contact.phone') }}</p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        @elseif($connection->connection->name == 'Email')
-                                            <li>
-                                                <a href="mailto:{{ $connection->url }}" 
-                                                   class="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-red-50 hover:to-red-100 dark:hover:from-red-900/30 dark:hover:to-red-800/30 transition-all duration-300 group/item">
-                                                    <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300 shadow-lg">
-                                                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg"
-                                                            width="20" height="20"
-                                                            alt="{{ $connection->connection->name }}" 
-                                                            class="filter brightness-0 invert" />
-                                                    </div>
-                                                    <div class="flex-1">
-                                                        <span class="text-gray-900 dark:text-white font-medium truncate">{{ $connection->url }}</span>
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('course-weekday.contact.email') }}</p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        @elseif($connection->connection->name == 'Website')
-                                            <li>
-                                                <a href="{{ $connection->url }}" target="_blank"
-                                                   class="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-green-50 hover:to-green-100 dark:hover:from-green-900/30 dark:hover:to-green-800/30 transition-all duration-300 group/item">
-                                                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300 shadow-lg">
-                                                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlechrome.svg"
-                                                            width="20" height="20"
-                                                            alt="{{ $connection->connection->name }}"
-                                                            class="filter brightness-0 invert" />
-                                                    </div>
-                                                    <div class="flex-1">
-                                                        <span class="text-gray-900 dark:text-white font-medium">Web sayt</span>
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('course-weekday.contact.website') }}</p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        @else
-                                            <li>
-                                                <a href="{{ $connection->url }}" target="_blank"
-                                                   class="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-purple-50 hover:to-purple-100 dark:hover:from-purple-900/30 dark:hover:to-purple-800/30 transition-all duration-300 group/item">
-                                                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300 shadow-lg">
-                                                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg"
-                                                            width="20" height="20"
-                                                            alt="{{ $connection->connection->name }}"
-                                                            class="filter brightness-0 invert" />
-                                                    </div>
-                                                    <div class="flex-1">
-                                                        <span class="text-gray-900 dark:text-white font-medium truncate">{{ $connection->connection->name }}</span>
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('course-weekday.contact.other') }}</p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        @endif
-                                    @endforeach
-                                </ul>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    @forelse ($LearningCenter->connections as $connection)
+                                        @php
+                                            // Birinchi harfni olish (UTF-8 qo'llab-quvvatlaydi)
+                                            $firstLetter = mb_substr($connection->connection->name, 0, 1);
+                                        @endphp
+                                        
+                                        <a href="{{ in_array($connection->connection->name, ['Phone', 'Email']) ? ($connection->connection->name == 'Phone' ? 'tel:' : 'mailto:') . $connection->url : $connection->url }}" 
+                                        target="_blank"
+                                        class="flex items-center p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-white dark:hover:bg-gray-800 hover:shadow-md transition-all duration-200 group">
+                                            
+                                            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white dark:bg-gray-700 rounded-lg shadow-sm group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors border border-gray-100 dark:border-gray-600">
+                                                @if ($connection->connection->icon)
+                                                    <i class="{{ $connection->connection->icon }} text-blue-500 group-hover:scale-110 transition-transform"></i>
+                                                @else
+                                                    <span class="text-blue-600 dark:text-blue-400 font-black text-lg uppercase group-hover:scale-110 transition-transform">
+                                                        {{ $firstLetter }}
+                                                    </span>
+                                                @endif
+                                            </div>
+
+                                            <div class="ml-3 min-w-0 flex-1">
+                                                <p class="text-sm font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-none mb-1">
+                                                    {{ $connection->connection->name }}
+                                                </p>
+                                                <p class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 truncate max-w-full italic">
+                                                    {{ $connection->url }}
+                                                </p>
+                                            </div>
+
+                                            <div class="ml-2 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all">
+                                                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                </svg>
+                                            </div>
+                                        </a>
+                                    @empty
+                                        <div class="col-span-full py-6 text-center bg-gray-50 dark:bg-gray-800/30 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                {{ __('connect-edit.current.no_connections') }}
+                                            </p>
+                                        </div>
+                                    @endforelse
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -163,8 +139,23 @@
                         </div>
                         
                         <div class="space-y-6">
-                            @foreach ($weedays as $day)
-                                <div class="group relative">
+                            <!-- Add New Weekday Button -->
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                    {{ __('course-weekday.form.title') }}
+                                </h3>
+                                <button type="button" 
+                                        onclick="showAddWeekdayModal()"
+                                        class="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                    </svg>
+                                    {{ __('course-weekday.form.add_weekday') }}
+                                </button>
+                            </div>
+
+                            @foreach ($weedays->filter(function($day) { return $day->schedule_id; }) as $day)
+                                <div class="group relative" data-schedule-id="{{ $day->schedule_id ?? '' }}">
                                     <!-- Day Card -->
                                     <div class="rounded-2xl p-6 border border-gray-200/50 dark:border-gray-600/50 hover:border-blue-300/50 dark:hover:border-blue-600/50 transition-all duration-300 hover:shadow-lg group/item">
                                         <!-- Day Header -->
@@ -181,6 +172,16 @@
                                                 </svg>
                                                 {{ __('course-weekday.form.opening_time') }}
                                             </div>
+                                            <!-- Delete Button -->
+                                            @if($day->schedule_id)
+                                                <button type="button" 
+                                                        onclick="deleteWeekday({{ $day->schedule_id }})"
+                                                        class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                    </svg>
+                                                </button>
+                                            @endif
                                         </div>
                                         
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -278,4 +279,175 @@
             </div>
         </div>
     </section>
+
+    <!-- Add Weekday Modal -->
+    <div id="addWeekdayModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full shadow-2xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    {{ __('course-weekday.form.add_weekday_title') }}
+                </h3>
+                <button type="button" onclick="hideAddWeekdayModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="addWeekdayForm" onsubmit="addWeekday(event)">
+                @csrf
+                <div class="space-y-4">
+                    <div>
+                        <label for="new_calendar_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('course-weekday.form.select_day') }}
+                        </label>
+                        <select id="new_calendar_id" name="calendar_id" required
+                                onchange="updateWeekdayForm()"
+                                class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white">
+                            @foreach ($weedays as $day)
+                                <option value="{{ $day->id }}" 
+                                        data-open-time="{{ $day->existing_open_time ?? '' }}" 
+                                        data-close-time="{{ $day->existing_close_time ?? '' }}"
+                                        data-schedule-id="{{ $day->schedule_id ?? '' }}">
+                                    {{ $day->weekdays }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="new_open_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('course-weekday.form.opening_time') }}
+                            </label>
+                            <input type="time" id="new_open_time" name="open_time" required
+                                   class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white">
+                        </div>
+                        
+                        <div>
+                            <label for="new_close_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('course-weekday.form.closing_time') }}
+                            </label>
+                            <input type="time" id="new_close_time" name="close_time" required
+                                   class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white">
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <button type="button" onclick="hideAddWeekdayModal()" 
+                                class="flex-1 px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl transition-colors">
+                            {{ __('course-weekday.buttons.cancel') }}
+                        </button>
+                        <button type="submit" id="submitBtn"
+                                class="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl transition-all">
+                            {{ __('course-weekday.buttons.add') }}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showAddWeekdayModal() {
+            document.getElementById('addWeekdayModal').classList.remove('hidden');
+            updateWeekdayForm(); // Modal ochilganda formani yangilash
+        }
+        
+        function hideAddWeekdayModal() {
+            document.getElementById('addWeekdayModal').classList.add('hidden');
+            // Formani tozalash
+            document.getElementById('addWeekdayForm').reset();
+            updateWeekdayForm();
+        }
+        
+        function updateWeekdayForm() {
+            const select = document.getElementById('new_calendar_id');
+            const selectedOption = select.options[select.selectedIndex];
+            const openTimeInput = document.getElementById('new_open_time');
+            const closeTimeInput = document.getElementById('new_close_time');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            const existingOpenTime = selectedOption.getAttribute('data-open-time');
+            const existingCloseTime = selectedOption.getAttribute('data-close-time');
+            const scheduleId = selectedOption.getAttribute('data-schedule-id');
+            
+            // Agar mavjud ma'lumot bo'lsa, ularni ko'rsatish
+            if (existingOpenTime) {
+                openTimeInput.value = existingOpenTime;
+            } else {
+                openTimeInput.value = '';
+            }
+            
+            if (existingCloseTime) {
+                closeTimeInput.value = existingCloseTime;
+            } else {
+                closeTimeInput.value = '';
+            }
+            
+            // Tugma matnini yangilash
+            if (scheduleId) {
+                submitBtn.textContent = '{{ __('course-weekday.buttons.update') }}';
+                submitBtn.classList.remove('from-blue-600', 'to-purple-600');
+                submitBtn.classList.add('from-orange-500', 'to-orange-600');
+            } else {
+                submitBtn.textContent = '{{ __('course-weekday.buttons.add') }}';
+                submitBtn.classList.remove('from-orange-500', 'to-orange-600');
+                submitBtn.classList.add('from-blue-600', 'to-purple-600');
+            }
+        }
+        
+        function addWeekday(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(document.getElementById('addWeekdayForm'));
+            const learningCenterId = '{{ $LearningCenter->id }}';
+            
+            fetch(`/course/weekdayAdd/${learningCenterId}`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    hideAddWeekdayModal();
+                    location.reload();
+                } else {
+                    alert('Xatolik yuz berdi');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi');
+            });
+        }
+        
+        function deleteWeekday(scheduleId) {
+            if (!confirm('Hafta kunini o\'chirishni tasdiqlaysizmi?')) {
+                return;
+            }
+            
+            fetch(`/course/weekdayDelete/${scheduleId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Xatolik yuz berdi');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi');
+            });
+        }
+    </script>
 </x-layout>

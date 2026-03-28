@@ -26,12 +26,16 @@ return [
         'opening_time' => 'Opening Time',
         'closing_time' => 'Closing Time',
         'closed' => 'Closed',
+        'add_weekday' => 'Add Weekday',
+        'add_weekday_title' => 'Add New Weekday',
     ],
 
     // Buttons
     'buttons' => [
         'back' => 'Back',
         'save' => 'Save',
+        'update' => 'Update',
+        'cancel' => 'Cancel',
     ],
 
     // Status

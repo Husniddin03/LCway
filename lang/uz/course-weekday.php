@@ -26,12 +26,16 @@ return [
         'opening_time' => 'Ochilishi',
         'closing_time' => 'Yopilishi',
         'closed' => 'Yopiq',
+        'add_weekday' => 'Kun qo\'shish',
+        'add_weekday_title' => 'Yangi kun qo\'shish',
     ],
 
     // Buttons
     'buttons' => [
         'back' => 'Orqaga',
         'save' => 'Saqlash',
+        'update' => 'Yangilash',
+        'cancel' => 'Bekor qilish',
     ],
 
     // Status

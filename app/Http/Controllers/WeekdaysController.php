@@ -28,6 +28,7 @@ class WeekdaysController extends Controller
             $schedule = $existingSchedules->get($day->id);
             $day->existing_open_time = $schedule->open_time ?? null;
             $day->existing_close_time = $schedule->close_time ?? null;
+            $day->schedule_id = $schedule->id ?? null;
             return $day;
         });
         
@@ -60,6 +61,57 @@ class WeekdaysController extends Controller
         return redirect()->route('blog-single', $id)->with('success', "Muvaffaqiyatli yangilandi");
     }
 
+    public function add(Request $request, string $id)
+    {
+        $validated = $request->validate([
+            'calendar_id' => 'required|exists:calendar,id',
+            'open_time'   => 'nullable',
+            'close_time'  => 'nullable',
+        ]);
 
-    public function delete(string $id) {}
+        // Avval bu kun uchun jadval borligini tekshirish
+        $existingSchedule = LearningCentersCalendar::where('learning_centers_id', $id)
+            ->where('calendar_id', $validated['calendar_id'])
+            ->first();
+
+        if ($existingSchedule) {
+            // Agar mavjud bo'lsa, yangilash
+            $existingSchedule->update([
+                'open_time'  => $validated['open_time'] ?? null,
+                'close_time' => $validated['close_time'] ?? null,
+            ]);
+
+            $message = 'Hafta kuni ma\'lumotlari muvaffaqiyatli yangilandi';
+        } else {
+            // Agar mavjud bo'lmasa, yangi yaratish
+            LearningCentersCalendar::create([
+                'learning_centers_id' => $id,
+                'calendar_id'         => $validated['calendar_id'],
+                'open_time'           => $validated['open_time'] ?? null,
+                'close_time'          => $validated['close_time'] ?? null,
+            ]);
+
+            $message = 'Hafta kuni muvaffaqiyatli qo\'shildi';
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message
+        ]);
+    }
+
+    public function delete(string $id)
+    {
+        $schedule = LearningCentersCalendar::findOrFail($id);
+        $learningCenterId = $schedule->learning_centers_id;
+        
+        Gate::authorize('isOun', $schedule->learningCenter);
+        
+        $schedule->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Hafta kuni muvaffaqiyatli o\'chirildi'
+        ]);
+    }
 }

@@ -548,16 +548,16 @@
                                 <div class="flex items-center">
                                     @for ($i = 1; $i <= 5; $i++)
                                         @php
-                                            $diff = $LearningCenter->rating - $i;
+                                            $diff = $LearningCenter->calculated_total_reyting - $i;
                                         @endphp
                                         <span
-                                            class="text-lg {{ $LearningCenter->rating >= $i ? 'text-yellow-400' : ($diff > -1 && $diff < 0 ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600') }}">
+                                            class="text-lg {{ $LearningCenter->calculated_total_reyting >= $i ? 'text-yellow-400' : ($diff > -1 && $diff < 0 ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600') }}">
                                             ★
                                         </span>
                                     @endfor
                                 </div>
                                 <span
-                                    class="text-lg font-semibold text-primary-600 dark:text-primary-400">{{ $LearningCenter->rating }}</span>
+                                    class="text-lg font-semibold text-primary-600 dark:text-primary-400">{{ $LearningCenter->calculated_total_reyting }}</span>
                             </div>
 
                             <!-- Title -->

@@ -165,6 +165,7 @@ Route::middleware('auth')->group(function () {
     // weekdays uchun route lar
     Route::get('course/weekday/{id}', [WeekdaysController::class, 'edit'])->name('course.weekday');
     Route::post('course/weekdayUpdate/{id}', [WeekdaysController::class, 'update'])->name('course.weekdayUpdate');
+    Route::post('course/weekdayAdd/{id}', [WeekdaysController::class, 'add'])->name('course.weekdayAdd');
     Route::post('course/weekdayDelete/{id}', [WeekdaysController::class, 'delete'])->name('course.weekdayDelete');
     // connect uchun route lar
     Route::get('connect/edit/{id}', [ConnectController::class, 'edit'])->name('connect.edit');

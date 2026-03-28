@@ -15,6 +15,11 @@ class LearningCenter extends Model
         'student_count', 'total_reyting', 'rating', 'ratings_total',
     ];
 
+    protected $casts = [
+        'total_reyting' => 'float',
+        'rating' => 'float',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'users_id');
@@ -48,6 +53,48 @@ class LearningCenter extends Model
     public function favorites()
     {
         return $this->hasMany(Favorite::class, 'learning_centers_id');
+    }
+
+    // Dynamic attribute for average user rating
+    public function getUserAverageRatingAttribute()
+    {
+        if ($this->relationLoaded('favorites') && $this->favorites) {
+            // If favorites are already loaded, use them
+            return $this->favorites->avg('rating') ?? 0;
+        } else {
+            // Otherwise query the database
+            return $this->favorites()->avg('rating') ?? 0;
+        }
+    }
+
+    // Dynamic attribute for total user ratings count
+    public function getUserRatingsTotalAttribute()
+    {
+        if ($this->relationLoaded('favorites') && $this->favorites) {
+            // If favorites are already loaded, use them
+            return $this->favorites->count();
+        } else {
+            // Otherwise query the database
+            return $this->favorites()->count();
+        }
+    }
+
+    // Dynamic attribute for calculated total_reyting
+    public function getCalculatedTotalReytingAttribute()
+    {
+        $userAverage = $this->user_average_rating;
+        $userCount = $this->user_ratings_total;
+        
+        if ($userCount == 0) {
+            return $this->rating; // Return original Google rating if no user ratings
+        }
+        
+        // Calculate weighted average: 50% Google rating, 50% user ratings
+        if ($this->rating > 0) {
+            return round(($this->rating + $userAverage) / 2, 2);
+        } else {
+            return round($userAverage, 2);
+        }
     }
 
     public function connections()

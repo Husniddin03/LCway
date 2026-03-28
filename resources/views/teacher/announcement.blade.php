@@ -81,29 +81,61 @@
                                 </div>
                                 
                                 <!-- Contact Info -->
-                                <div>
-                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
-                                        <svg class="w-5 h-5 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                                <div class="border-t border-gray-200 dark:border-gray-700 pt-6 sm:pt-8 mt-6">
+                                <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-5 flex items-center group">
+                                    <span class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
-                                        {{ __('teacher-announcement.contact.title') }}
-                                    </h4>
-                                    <div class="flex space-x-3">
-                                        @foreach ($LearningCenter->connections as $connection)
-                                            @if ($connection->connection->name == 'Phone')
-                                                <a href="tel:{{ $connection->url }}" class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors">
-                                                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-                                                    </svg>
-                                                </a>
-                                            @else
-                                                <a href="{{ $connection->url }}" target="_blank" class="p-2 bg-gray-100 dark:bg-gray-700/30 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700/50 transition-colors">
-                                                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg" width="20" height="20" alt="{{ $connection->connection->name }}" />
-                                                </a>
-                                            @endif
-                                        @endforeach
-                                    </div>
+                                    </span>
+                                    {{ __('course-edit-image.header.contact') }}
+                                </h4>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    @forelse ($LearningCenter->connections as $connection)
+                                        @php
+                                            // Birinchi harfni olish (UTF-8 qo'llab-quvvatlaydi)
+                                            $firstLetter = mb_substr($connection->connection->name, 0, 1);
+                                        @endphp
+                                        
+                                        <a href="{{ in_array($connection->connection->name, ['Phone', 'Email']) ? ($connection->connection->name == 'Phone' ? 'tel:' : 'mailto:') . $connection->url : $connection->url }}" 
+                                        target="_blank"
+                                        class="flex items-center p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-white dark:hover:bg-gray-800 hover:shadow-md transition-all duration-200 group">
+                                            
+                                            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white dark:bg-gray-700 rounded-lg shadow-sm group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors border border-gray-100 dark:border-gray-600">
+                                                @if ($connection->connection->icon)
+                                                    <i class="{{ $connection->connection->icon }} text-blue-500 group-hover:scale-110 transition-transform"></i>
+                                                @else
+                                                    <span class="text-blue-600 dark:text-blue-400 font-black text-lg uppercase group-hover:scale-110 transition-transform">
+                                                        {{ $firstLetter }}
+                                                    </span>
+                                                @endif
+                                            </div>
+
+                                            <div class="ml-3 min-w-0 flex-1">
+                                                <p class="text-sm font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-none mb-1">
+                                                    {{ $connection->connection->name }}
+                                                </p>
+                                                <p class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 truncate max-w-full italic">
+                                                    {{ $connection->url }}
+                                                </p>
+                                            </div>
+
+                                            <div class="ml-2 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all">
+                                                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                </svg>
+                                            </div>
+                                        </a>
+                                    @empty
+                                        <div class="col-span-full py-6 text-center bg-gray-50 dark:bg-gray-800/30 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                {{ __('connect-edit.current.no_connections') }}
+                                            </p>
+                                        </div>
+                                    @endforelse
                                 </div>
+                            </div>
                             </div>
                         </div>
                     </div>

@@ -120,27 +120,152 @@
                                 </label>
                                 <select name="type" id="type"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    required>
+                                    required onchange="toggleCustomType(this.value)">
                                     <option value="" disabled {{ !old('type') ? 'selected' : '' }}>{{ __('course-create.basic_info.type_placeholder') }}</option>
-                                    <option value="O'quv markaz" {{ old('type') == "O'quv markaz" ? 'selected' : '' }}>{{ __('course-create.types.center') }}</option>
-                                    <option value="Akademiya" {{ old('type') == 'Akademiya' ? 'selected' : '' }}>{{ __('course-create.types.academy') }}</option>
-                                    <option value="Kollej" {{ old('type') == 'Kollej' ? 'selected' : '' }}>{{ __('course-create.types.college') }}</option>
-                                    <option value="Universitet" {{ old('type') == 'Universitet' ? 'selected' : '' }}>{{ __('course-create.types.university') }}</option>
-                                    <option value="Maktab" {{ old('type') == 'Maktab' ? 'selected' : '' }}>{{ __('course-create.types.school') }}</option>
-                                    <option value="Maktab/Kurs" {{ old('type') == 'Maktab/Kurs' ? 'selected' : '' }}>{{ __('course-create.types.school_course') }}</option>
-                                    <option value="Til kurslar" {{ old('type') == 'Til kurslar' ? 'selected' : '' }}>{{ __('course-create.types.language_course') }}</option>
-                                    <option value="Haydovchilik kursi" {{ old('type') == 'Haydovchilik kursi' ? 'selected' : '' }}>{{ __('course-create.types.driving_course') }}</option>
-                                    <option value="IT kurslar" {{ old('type') == 'IT kurslar' ? 'selected' : '' }}>{{ __('course-create.types.it_course') }}</option>
-                                    <option value="Dizayn kurslar" {{ old('type') == 'Dizayn kurslar' ? 'selected' : '' }}>{{ __('course-create.types.design_course') }}</option>
-                                    <option value="Musiqiy maktab" {{ old('type') == 'Musiqiy maktab' ? 'selected' : '' }}>{{ __('course-create.types.music_school') }}</option>
-                                    <option value="Sport maktab" {{ old('type') == 'Sport maktab' ? 'selected' : '' }}>{{ __('course-create.types.sports_school') }}</option>
-                                    <option value="Badiiy maktab" {{ old('type') == 'Badiiy maktab' ? 'selected' : '' }}>{{ __('course-create.types.art_school') }}</option>
-                                    <option value="Kasb-hunar maktab" {{ old('type') == 'Kasb-hunar maktab' ? 'selected' : '' }}>{{ __('course-create.types.vocational_school') }}</option>
+                                    
+                                    @if($types->isNotEmpty())
+                                        <!-- Types from database -->
+                                        @foreach($types as $type)
+                                            <option value="{{ $type }}" {{ old('type') == $type ? 'selected' : '' }}>{{ $type }}</option>
+                                        @endforeach
+                                        
+                                        <!-- Separator -->
+                                        <option value="" disabled>──────────</option>
+                                    @endif
+                                    
+                                    <!-- Custom option -->
+                                    <option value="custom">📝 Boshqa (qo'lda yozing)</option>
                                 </select>
+                                
+                                <!-- Custom Type Input -->
+                                <div id="customTypeDiv" class="mt-3 hidden">
+                                    <input type="text" name="custom_type" id="custom_type" 
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="O'quv markaz turingizni kiriting..."
+                                        value="{{ old('custom_type') }}">
+                                </div>
+                                
                                 @error('type')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                                 @enderror
+                                @error('custom_type')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
                             </div>
+
+                            <script>
+                                function toggleCustomType(value) {
+                                    const customDiv = document.getElementById('customTypeDiv');
+                                    const customInput = document.getElementById('custom_type');
+                                    const typeSelect = document.getElementById('type');
+                                    
+                                    if (value === 'custom') {
+                                        customDiv.classList.remove('hidden');
+                                        customInput.required = true;
+                                        typeSelect.required = false;
+                                    } else {
+                                        customDiv.classList.add('hidden');
+                                        customInput.required = false;
+                                        customInput.value = '';
+                                        typeSelect.required = true;
+                                    }
+                                }
+                                
+                                function toggleCustomCountry(value) {
+                                    const customDiv = document.getElementById('customCountryDiv');
+                                    const customInput = document.getElementById('custom_country');
+                                    const countrySelect = document.getElementById('country');
+                                    
+                                    if (value === 'custom') {
+                                        customDiv.classList.remove('hidden');
+                                        customInput.required = true;
+                                        countrySelect.required = false;
+                                    } else {
+                                        customDiv.classList.add('hidden');
+                                        customInput.required = false;
+                                        customInput.value = '';
+                                        countrySelect.required = true;
+                                    }
+                                }
+                                
+                                function toggleCustomProvince(value) {
+                                    const customDiv = document.getElementById('customProvinceDiv');
+                                    const customInput = document.getElementById('custom_province');
+                                    const provinceSelect = document.getElementById('region');
+                                    const districtContainer = document.getElementById('district').parentElement;
+                                    const districtSelect = document.getElementById('district');
+                                    
+                                    if (value === 'custom') {
+                                        customDiv.classList.remove('hidden');
+                                        customInput.required = true;
+                                        provinceSelect.required = false;
+                                        
+                                        // Auto-select custom district when custom province is selected
+                                        districtContainer.style.display = 'block';
+                                        districtSelect.value = 'custom';
+                                        toggleCustomDistrict('custom');
+                                    } else if (value === '') {
+                                        // Hide district when no province is selected
+                                        districtContainer.style.display = 'none';
+                                        districtSelect.value = '';
+                                        toggleCustomDistrict('');
+                                    } else {
+                                        customDiv.classList.add('hidden');
+                                        customInput.required = false;
+                                        customInput.value = '';
+                                        provinceSelect.required = true;
+                                        
+                                        // Show district and reset to default when province is selected
+                                        districtContainer.style.display = 'block';
+                                        districtSelect.value = '';
+                                        toggleCustomDistrict('');
+                                    }
+                                }
+                                
+                                function toggleCustomDistrict(value) {
+                                    const customDiv = document.getElementById('customDistrictDiv');
+                                    const customInput = document.getElementById('custom_district');
+                                    const districtSelect = document.getElementById('district');
+                                    
+                                    if (value === 'custom') {
+                                        customDiv.classList.remove('hidden');
+                                        customInput.required = true;
+                                        districtSelect.required = false;
+                                    } else {
+                                        customDiv.classList.add('hidden');
+                                        customInput.required = false;
+                                        customInput.value = '';
+                                        districtSelect.required = true;
+                                    }
+                                }
+                                
+                                // Check on page load if custom was selected
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const typeSelect = document.getElementById('type');
+                                    if (typeSelect.value === 'custom') {
+                                        toggleCustomType('custom');
+                                    }
+                                    
+                                    const countrySelect = document.getElementById('country');
+                                    if (countrySelect.value === 'custom') {
+                                        toggleCustomCountry('custom');
+                                    }
+                                    
+                                    const provinceSelect = document.getElementById('region');
+                                    if (provinceSelect.value === 'custom') {
+                                        toggleCustomProvince('custom');
+                                    } else if (provinceSelect.value === '') {
+                                        // Hide district if no province is selected on page load
+                                        const districtContainer = document.getElementById('district').parentElement;
+                                        districtContainer.style.display = 'none';
+                                    }
+                                    
+                                    const districtSelect = document.getElementById('district');
+                                    if (districtSelect.value === 'custom') {
+                                        toggleCustomDistrict('custom');
+                                    }
+                                });
+                            </script>
 
                             <!-- About -->
                             <div class="lg:col-span-2">
@@ -231,6 +356,50 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Country -->
+                            <div>
+                                <label for="country" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Davlat {{ __('course-create.required') }}
+                                </label>
+                                <select name="country" id="country"
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    required onchange="toggleCustomCountry(this.value)">
+                                    <option value="" disabled {{ !old('country') ? 'selected' : '' }}>Davlatni tanlang</option>
+                                    
+                                    @php
+                                        $countries = \App\Models\LearningCenter::pluck('country')->filter()->unique()->sort()->values();
+                                    @endphp
+                                    
+                                    @if($countries->isNotEmpty())
+                                        <!-- Countries from database -->
+                                        @foreach($countries as $country)
+                                            <option value="{{ $country }}" {{ old('country') == $country ? 'selected' : '' }}>{{ $country }}</option>
+                                        @endforeach
+                                        
+                                        <!-- Separator -->
+                                        <option value="" disabled>──────────</option>
+                                    @endif
+                                    
+                                    <!-- Custom option -->
+                                    <option value="custom">📝 Boshqa davlat (qo'lda yozing)</option>
+                                </select>
+                                
+                                <!-- Custom Country Input -->
+                                <div id="customCountryDiv" class="mt-3 hidden">
+                                    <input type="text" name="custom_country" id="custom_country" 
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Davlat nomini kiriting..."
+                                        value="{{ old('custom_country') }}">
+                                </div>
+                                
+                                @error('country')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                                @error('custom_country')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                            </div>
+
                             <!-- Province -->
                             <div>
                                 <label for="region" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -238,13 +407,26 @@
                                 </label>
                                 <select name="province" id="region"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    required>
+                                    required onchange="toggleCustomProvince(this.value)">
                                     <option value="" disabled {{ !old('province') ? 'selected' : '' }}>{{ __('course-create.location.province_placeholder') }}</option>
                                     @foreach(["Toshkent","Sirdaryo","Jizzax","Samarqand","Buxoro","Navoiy","Qashqadaryo","Surxandaryo","Xorazm","Andijon","Namangan","Farg'ona","Qoraqalpog'iston"] as $p)
                                         <option value="{{ $p }}" {{ old('province') == $p ? 'selected' : '' }}>{{ $p }}</option>
                                     @endforeach
+                                    <option value="custom">📝 Boshqa viloyat (qo'lda yozing)</option>
                                 </select>
+                                
+                                <!-- Custom Province Input -->
+                                <div id="customProvinceDiv" class="mt-3 hidden">
+                                    <input type="text" name="custom_province" id="custom_province" 
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Viloyat nomini kiriting..."
+                                        value="{{ old('custom_province') }}">
+                                </div>
+                                
                                 @error('province')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                                @error('custom_province')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -256,13 +438,26 @@
                                 </label>
                                 <select name="region" id="district"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    required>
+                                    required onchange="toggleCustomDistrict(this.value)">
                                     <option value="" disabled selected>{{ __('course-create.location.district_placeholder') }}</option>
                                     @if(old('region'))
                                         <option value="{{ old('region') }}" selected>{{ old('region') }}</option>
                                     @endif
+                                    <option value="custom">📝 Boshqa tuman (qo'lda yozing)</option>
                                 </select>
+                                
+                                <!-- Custom District Input -->
+                                <div id="customDistrictDiv" class="mt-3 hidden">
+                                    <input type="text" name="custom_district" id="custom_district" 
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Tuman/Shahar nomini kiriting..."
+                                        value="{{ old('custom_district') }}">
+                                </div>
+                                
                                 @error('region')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                                @error('custom_district')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                                 @enderror
                             </div>

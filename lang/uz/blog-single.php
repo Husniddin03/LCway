@@ -20,6 +20,9 @@ return [
     'quick_info' => [
         'title' => 'Tezkor ma\'lumot',
         'type' => 'Turi',
+        'country' => 'Davlat',
+        'province' => 'Viloyat',
+        'region' => 'Tuman/Shahar',
         'address' => 'Manzil',
         'added_date' => 'Qo\'shilgan sana',
         'student_count' => 'O\'quvchilar soni',

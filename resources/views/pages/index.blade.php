@@ -331,11 +331,11 @@
                                         </div>
                                     @endif
 
-                                    <!-- Rating Badge -->
+                                    <!-- Rating Badge --> 
                                     <div
                                         class="absolute top-4 right-4 bg-white dark:bg-gray-800 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg border border-gray-200 dark:border-gray-600">
                                         @php
-                                            $average = round($center->favorites()->avg('rating') ?? 0, 1);
+                                            $average = $center->rating;
                                         @endphp
                                         <div class="flex items-center space-x-1">
                                             <span

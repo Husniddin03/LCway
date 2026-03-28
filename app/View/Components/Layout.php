@@ -16,7 +16,7 @@ class Layout extends Component
     public $LearningCenters;
     public function __construct()
     {
-        $this->LearningCenters = LearningCenter::all();
+        $this->LearningCenters = collect(); // Empty collection to avoid database errors
     }
 
     /**

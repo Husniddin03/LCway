@@ -26,12 +26,16 @@ return [
         'opening_time' => 'Время открытия',
         'closing_time' => 'Время закрытия',
         'closed' => 'Закрыто',
+        'add_weekday' => 'Добавить день',
+        'add_weekday_title' => 'Добавить новый день',
     ],
 
     // Buttons
     'buttons' => [
         'back' => 'Назад',
         'save' => 'Сохранить',
+        'update' => 'Обновить',
+        'cancel' => 'Отмена',
     ],
 
     // Status

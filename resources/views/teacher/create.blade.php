@@ -74,45 +74,59 @@
                                     <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ $LearningCenter->address }}</p>
                                 </div>
 
-                                <div>
-                                    <h4 class="text-sm font-bold text-gray-900 dark:text-white mb-4 flex items-center">
-                                        <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
-                                        </svg>
-                                        {{ __('teacher-create.info.contact') }}
+                                <div class="border-t border-gray-200 dark:border-gray-700 pt-6 sm:pt-8 mt-6">
+                                    <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-5 flex items-center group">
+                                        <span class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </span>
+                                        {{ __('course-edit-image.header.contact') }}
                                     </h4>
-                                    <div class="flex flex-wrap gap-3">
-                                        @foreach ($LearningCenter->connections as $connection)
-                                            @if ($connection->connection->name == 'Phone')
-                                                <a href="tel:{{ $connection->url }}" 
-                                                   class="flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/30 dark:hover:to-blue-800/30 transition-all duration-300 group/item">
-                                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300 shadow-md">
-                                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a2 2 0 011.94 1.515l.62 2.48a2 2 0 01-.45 1.885l-1.516 1.516a16 16 0 006.586 6.586l1.516-1.516a2 2 0 011.885-.45l2.48.62A2 2 0 0121 17.72V21a2 2 0 01-2 2h-1c-9.94 0-18-8.06-18-18V5z" />
-                                                        </svg>
-                                                    </div>
-                                                </a>
-                                            @elseif($connection->connection->name == 'Email')
-                                                <a href="mailto:{{ $connection->url }}" 
-                                                   class="flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-red-50 hover:to-red-100 dark:hover:from-red-900/30 dark:hover:to-red-800/30 transition-all duration-300 group/item">
-                                                    <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300 shadow-md">
-                                                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                                                        </svg>
-                                                    </div>
-                                                </a>
-                                            @else
-                                                <a href="{{ $connection->url }}" target="_blank"
-                                                   class="flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-purple-50 hover:to-purple-100 dark:hover:from-purple-900/30 dark:hover:to-purple-800/30 transition-all duration-300 group/item">
-                                                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300 shadow-md">
-                                                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg"
-                                                            width="20" height="20"
-                                                            alt="{{ $connection->connection->name }}"
-                                                            class="filter brightness-0 invert" />
-                                                    </div>
-                                                </a>
-                                            @endif
-                                        @endforeach
+
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        @forelse ($LearningCenter->connections as $connection)
+                                            @php
+                                                // Birinchi harfni olish (UTF-8 qo'llab-quvvatlaydi)
+                                                $firstLetter = mb_substr($connection->connection->name, 0, 1);
+                                            @endphp
+                                            
+                                            <a href="{{ in_array($connection->connection->name, ['Phone', 'Email']) ? ($connection->connection->name == 'Phone' ? 'tel:' : 'mailto:') . $connection->url : $connection->url }}" 
+                                            target="_blank"
+                                            class="flex items-center p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-white dark:hover:bg-gray-800 hover:shadow-md transition-all duration-200 group">
+                                                
+                                                <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white dark:bg-gray-700 rounded-lg shadow-sm group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors border border-gray-100 dark:border-gray-600">
+                                                    @if ($connection->connection->icon)
+                                                        <i class="{{ $connection->connection->icon }} text-blue-500 group-hover:scale-110 transition-transform"></i>
+                                                    @else
+                                                        <span class="text-blue-600 dark:text-blue-400 font-black text-lg uppercase group-hover:scale-110 transition-transform">
+                                                            {{ $firstLetter }}
+                                                        </span>
+                                                    @endif
+                                                </div>
+
+                                                <div class="ml-3 min-w-0 flex-1">
+                                                    <p class="text-sm font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-none mb-1">
+                                                        {{ $connection->connection->name }}
+                                                    </p>
+                                                    <p class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 truncate max-w-full italic">
+                                                        {{ $connection->url }}
+                                                    </p>
+                                                </div>
+
+                                                <div class="ml-2 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all">
+                                                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                    </svg>
+                                                </div>
+                                            </a>
+                                        @empty
+                                            <div class="col-span-full py-6 text-center bg-gray-50 dark:bg-gray-800/30 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
+                                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                    {{ __('connect-edit.current.no_connections') }}
+                                                </p>
+                                            </div>
+                                        @endforelse
                                     </div>
                                 </div>
                             </div>

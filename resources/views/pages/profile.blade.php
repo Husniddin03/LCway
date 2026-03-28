@@ -137,7 +137,7 @@ use Illuminate\Support\Facades\Storage;
                             @endif
                         </div>
 
-                        @if ($user && $user->centers && $user->centers->count() > 0)
+                        @if ($user && $allCenters && $allCenters->count() > 0)
                             <!-- Stats Cards -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                                 <div onclick="toggleCoursesSection()"
@@ -150,7 +150,7 @@ use Illuminate\Support\Facades\Storage;
                                                     d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                             </svg>
                                         </div>
-                                        <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $user->centers->count() }}</span>
+                                        <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $allCenters->count() }}</span>
                                     </div>
                                     <h3 class="text-gray-700 dark:text-gray-300 font-medium">{{ __('profile.stats.courses') }}</h3>
                                 </div>
@@ -165,7 +165,7 @@ use Illuminate\Support\Facades\Storage;
                                                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                             </svg>
                                         </div>
-                                        <span class="text-2xl font-bold text-green-600 dark:text-green-400">{{ $user->centers->sum(function($center) { return $center->subjects->count(); }) }}</span>
+                                        <span class="text-2xl font-bold text-green-600 dark:text-green-400">{{ $allCenters->sum(function($center) { return $center->subjects->count(); }) }}</span>
                                     </div>
                                     <h3 class="text-gray-700 dark:text-gray-300 font-medium">{{ __('profile.stats.subjects') }}</h3>
                                 </div>
@@ -180,7 +180,7 @@ use Illuminate\Support\Facades\Storage;
                                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                             </svg>
                                         </div>
-                                        <span class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{ $user->centers->sum(function($center) { return $center->teachers->count(); }) }}</span>
+                                        <span class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{ $allCenters->sum(function($center) { return $center->teachers->count(); }) }}</span>
                                     </div>
                                     <h3 class="text-gray-700 dark:text-gray-300 font-medium">{{ __('profile.stats.teachers') }}</h3>
                                 </div>
@@ -189,12 +189,16 @@ use Illuminate\Support\Facades\Storage;
                             <!-- Kurslar -->
                             <div id="courses-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
                                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('profile.stats.courses') }}</h2>
-                                @forelse($user->centers as $center)
+                                @forelse($centers as $center)
                                     <a href="{{ route('blog-single', $center->id) }}"
                                         class="flex items-center justify-between p-4 mb-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
                                         <div class="flex items-center space-x-4">
                                             @if($center->logo)
-                                                <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}" class="w-10 h-10 rounded-lg object-cover">
+                                                @if(filter_var($center->logo, FILTER_VALIDATE_URL))
+                                                    <img src="{{ $center->logo }}" alt="{{ $center->name }}" class="w-10 h-10 rounded-lg object-cover">
+                                                @else
+                                                    <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}" class="w-10 h-10 rounded-lg object-cover">
+                                                @endif
                                             @else
                                                 <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
                                                     <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -212,94 +216,79 @@ use Illuminate\Support\Facades\Storage;
                                 @empty
                                     <p class="text-gray-600 dark:text-gray-400">{{ __('profile.recent_activity.no_data_yet') }}</p>
                                 @endforelse
+                                
+                                <!-- Pagination -->
+                                @if($centers->hasPages())
+                                    <div class="flex justify-center mt-6">
+                                        {{ $centers->links('pagination::tailwind') }}
+                                    </div>
+                                @endif
                             </div>
 
                             <!-- Fanlar -->
                             <div id="subjects-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
                                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('profile.stats.subjects') }}</h2>
-                                @forelse($user->centers as $center)
-                                    @if($center->subjects->count() > 0)
-                                        <div class="mb-6">
-                                            <div class="flex items-center space-x-3 mb-3">
-                                                @if($center->logo)
-                                                    <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}" class="w-8 h-8 rounded-lg object-cover">
-                                                @else
-                                                    <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                                        </svg>
-                                                    </div>
-                                                @endif
-                                                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">{{ $center->name }}</h3>
+                                @forelse($subjects as $subject)
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <a href="{{ route('blog-single', $subject->learning_centers_id) }}" class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                                                    <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                    </svg>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <p class="font-medium text-gray-900 dark:text-white">{{ $subject->subject->name ?? 'Noma\'lum fan' }}</p>
+                                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $subject->price ?? 0 }} so'm</p>
+                                                </div>
                                             </div>
-                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                                @foreach($center->subjects as $subject)
-                                                    <a href="{{ route('blog-single', $center->id) }}" class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
-                                                        <div class="flex items-center space-x-3">
-                                                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                                                                <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                                                </svg>
-                                                            </div>
-                                                            <div class="flex-1">
-                                                                <p class="font-medium text-gray-900 dark:text-white">{{ $subject->subject->name ?? 'Noma\'lum fan' }}</p>
-                                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $subject->price ?? 0 }} so'm</p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    @endif
+                                        </a>
+                                    </div>
                                 @empty
                                     <p class="text-gray-600 dark:text-gray-400">{{ __('profile.recent_activity.no_data_yet') }}</p>
                                 @endforelse
-                            </div>
+                                
+                                <!-- Pagination -->
+                                @if($subjects->hasPages())
+                                    <div class="flex justify-center mt-6">
+                                        {{ $subjects->links('pagination::tailwind') }}
+                                    </div>
+                                @endif
+                            </div> 
 
                             <!-- O'qituvchilar -->
                             <div id="teachers-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
                                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('profile.stats.teachers') }}</h2>
-                                @forelse($user->centers as $center)
-                                    @if($center->teachers->count() > 0)
-                                        <div class="mb-6">
-                                            <div class="flex items-center space-x-3 mb-3">
-                                                @if($center->logo)
-                                                    <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}" class="w-8 h-8 rounded-lg object-cover">
+                                @forelse($teachers as $teacher)
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <a href="{{ route('blog-single', $teacher->learning_centers_id) }}" class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
+                                            <div class="flex items-center space-x-3">
+                                                @if($teacher->photo)
+                                                    <img src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}" class="w-10 h-10 rounded-lg object-cover">
                                                 @else
-                                                    <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                    <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                                                        <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                                         </svg>
                                                     </div>
                                                 @endif
-                                                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">{{ $center->name }}</h3>
+                                                <div class="flex-1">
+                                                    <p class="font-medium text-gray-900 dark:text-white">{{ $teacher->name ?? __('profile.labels.no_name') }}</p>
+                                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $teacher->subject->name ?? __('profile.labels.no_subject') }}</p>
+                                                </div>
                                             </div>
-                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                                @foreach($center->teachers as $teacher)
-                                                    <a href="{{ route('blog-single', $center->id) }}" class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
-                                                        <div class="flex items-center space-x-3">
-                                                            @if($teacher->photo)
-                                                                <img src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}" class="w-10 h-10 rounded-lg object-cover">
-                                                            @else
-                                                                <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                                                                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                                    </svg>
-                                                                </div>
-                                                            @endif
-                                                            <div class="flex-1">
-                                                                <p class="font-medium text-gray-900 dark:text-white">{{ $teacher->name ?? __('profile.labels.no_name') }}</p>
-                                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $teacher->subject->name ?? __('profile.labels.no_subject') }}</p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    @endif
+                                        </a>
+                                    </div>
                                 @empty
                                     <p class="text-gray-600 dark:text-gray-400">{{ __('profile.recent_activity.no_data_yet') }}</p>
                                 @endforelse
+                                
+                                <!-- Pagination -->
+                                @if($teachers->hasPages())
+                                    <div class="flex justify-center mt-6">
+                                        {{ $teachers->links('pagination::tailwind') }}
+                                    </div>
+                                @endif
                             </div>
                         @else
                             <div class="text-center py-8">

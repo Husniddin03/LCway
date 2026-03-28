@@ -23,7 +23,5 @@ Homestead.yaml
 Thumbs.db
 
 # Database scripts
-database/scripts/
 database/__pycache__/
-database/courses/
 database/venv/

@@ -20,6 +20,9 @@ return [
     'quick_info' => [
         'title' => 'Quick Info',
         'type' => 'Type',
+        'country' => 'Country',
+        'province' => 'Province',
+        'region' => 'District/City',
         'address' => 'Address',
         'added_date' => 'Added Date',
         'student_count' => 'Number of Students',

@@ -566,34 +566,14 @@
                             </h4>
                             <div class="space-y-3">
                                 @foreach ($LearningCenter->connections as $connection)
-                                    @if ($connection->connection->name == 'Phone')
-                                        <a href="tel:{{ $connection->url }}" class="contact-item">
-                                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a2 2 0 011.94 1.515l.62 2.48a2 2 0 01-.45 1.885l-1.516 1.516a16 16 0 006.586 6.586l1.516-1.516a2 2 0 011.885-.45l2.48.62A2 2 0 0121 17.72V21a2 2 0 01-2 2h-1c-9.94 0-18-8.06-18-18V5z"></path>
-                                            </svg>
-                                            <span>{{ __('course-edit-image.header.phone') }}</span>
-                                        </a>
-                                    @elseif($connection->connection->name == 'Email')
-                                        <a href="mailto:{{ $connection->url }}" class="contact-item">
-                                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                            </svg>
-                                            <span>{{ __('course-edit-image.header.email') }}</span>
-                                        </a>
-                                    @elseif($connection->connection->name == 'Website')
-                                        <a href="{{ $connection->url }}" class="contact-item">
-                                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
-                                            </svg>
-                                            <span>{{ __('course-edit-image.header.website') }}</span>
-                                        </a>
-                                    @else
-                                        <a href="{{ $connection->url }}" class="contact-item">
-                                            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg"
-                                                width="20" height="20" alt="{{ $connection->connection->name }}" />
-                                            <span>{{ $connection->connection->name }}</span>
-                                        </a>
-                                    @endif
+                                    <a href="{{ $connection->url }}" class="contact-item">
+                                        @if ($connection->connection->icon)
+                                            <i class="{{ $connection->connection->icon }} text-blue-500"></i>
+                                        @else
+                                            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg" class="w-5 h-5 opacity-80" alt="" />
+                                        @endif
+                                        <span>{{ $connection->connection->name }}</span>
+                                    </a>
                                 @endforeach
                             </div>
                         </div>
@@ -614,8 +594,8 @@
                             <div class="image-gallery">
                                 @foreach ($LearningCenter->images as $image)
                                     <div class="image-item">
-                                        <a href="{{ asset('storage/' . $image->image) }}" data-lightbox>
-                                            <img src="{{ asset('storage/' . $image->image) }}" alt="{{ __('course-edit-image.images.alt_text') }}" />
+                                        <a href="{{ str_starts_with($image->image, 'http://') || str_starts_with($image->image, 'https://') ? $image->image : asset('storage/' . $image->image) }}" data-lightbox>
+                                            <img src="{{ str_starts_with($image->image, 'http://') || str_starts_with($image->image, 'https://') ? $image->image : asset('storage/' . $image->image) }}" alt="{{ __('course-edit-image.images.alt_text') }}" />
                                         </a>
                                         <form action="{{ route('course.deleteImage', $image->id) }}" method="post" 
                                               onsubmit="return confirm('{{ __('course-edit-image.images.delete_confirm') }}');">
@@ -625,6 +605,11 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                                 </svg>
                                             </button>
+                                            
+                                            {{-- Storage file deletion only if it's a storage file --}}
+                                            @if(!str_starts_with($image->image, 'http://') && !str_starts_with($image->image, 'https://'))
+                                                <input type="hidden" name="delete_storage_file" value="true" />
+                                            @endif
                                         </form>
                                     </div>
                                 @endforeach

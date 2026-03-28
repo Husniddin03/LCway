@@ -26,12 +26,16 @@ return [
         'opening_time' => 'Ashılıw waqtı',
         'closing_time' => 'Jabıw waqtı',
         'closed' => 'Jabıq',
+        'add_weekday' => 'Kün qosıw',
+        'add_weekday_title' => 'Jańa kün qosıw',
     ],
 
     // Buttons
     'buttons' => [
         'back' => 'Artqa',
         'save' => 'Saqlaw',
+        'update' => 'Jańlaw',
+        'cancel' => 'Biykar etiw',
     ],
 
     // Status

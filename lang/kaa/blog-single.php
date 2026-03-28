@@ -20,6 +20,9 @@ return [
     'quick_info' => [
         'title' => 'Tez maǵlıwmat',
         'type' => 'Túri',
+        'country' => 'Mámleket',
+        'province' => 'Wálayat',
+        'region' => 'Rayon/Qala',
         'address' => 'Manzil',
         'added_date' => 'Qosılǵan sana',
         'student_count' => 'O\'qıwshılar sanı',

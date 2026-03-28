@@ -26,30 +26,35 @@
         <div class="max-w-7xl mx-auto px-1 lg:px-50">
             <div class="grid grid-cols-1 lg:grid-cols-1 gap-12">
                 <!-- Main Content Area -->
-                <div class="lg:col-span-2" x-data="{ activeTab: 1 }" x-init="$watch('activeTab', (value) => { 
-                        // Center the active button in the horizontal scroll container
-                        $nextTick(() => {
-                            const container = $el.querySelector('.scrollbar-hide');
-                            const buttons = container.querySelectorAll('button');
-                            const activeButton = buttons[value - 1];
-                            
-                            if (activeButton && container) {
-                                const containerRect = container.getBoundingClientRect();
-                                const buttonRect = activeButton.getBoundingClientRect();
+                <div class="lg:col-span-2" x-data="{ 
+                        activeTab: parseInt(localStorage.getItem('blogSingleActiveTab') || '1')
+                    }" x-init="
+                        $watch('activeTab', (value) => { 
+                            localStorage.setItem('blogSingleActiveTab', value.toString());
+                            // Center the active button in the horizontal scroll container
+                            $nextTick(() => {
+                                const container = $el.querySelector('.scrollbar-hide');
+                                const buttons = container.querySelectorAll('button');
+                                const activeButton = buttons[value - 1];
                                 
-                                // Calculate the scroll position to center the button
-                                const buttonCenter = buttonRect.left + buttonRect.width / 2;
-                                const containerCenter = containerRect.left + containerRect.width / 2;
-                                const scrollPosition = container.scrollLeft + (buttonCenter - containerCenter);
-                                
-                                // Smooth scroll to center position
-                                container.scrollTo({
-                                    left: scrollPosition,
-                                    behavior: 'smooth'
-                                });
-                            }
-                        });
-                    })">
+                                if (activeButton && container) {
+                                    const containerRect = container.getBoundingClientRect();
+                                    const buttonRect = activeButton.getBoundingClientRect();
+                                    
+                                    // Calculate the scroll position to center the button
+                                    const buttonCenter = buttonRect.left + buttonRect.width / 2;
+                                    const containerCenter = containerRect.left + containerRect.width / 2;
+                                    const scrollPosition = container.scrollLeft + (buttonCenter - containerCenter);
+                                    
+                                    // Smooth scroll to center position
+                                    container.scrollTo({
+                                        left: scrollPosition,
+                                        behavior: 'smooth'
+                                    });
+                                }
+                            });
+                        })
+">
                     <!-- Main Image -->
                     <div class="mb-8">
                         <div class="relative rounded-2xl overflow-hidden shadow-xl">
@@ -86,21 +91,23 @@
                     <!-- Rating and Meta Info -->
                     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
                         <div class="flex flex-wrap items-center justify-between gap-4">
-                            <div class="flex items-center space-x-4">
-                                <div class="flex items-center">
-                                    <div class="flex text-yellow-400">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            @php
-                                                $diff = $LearningCenter->rating - $i;
-                                            @endphp
-                                            <span
-                                                class="text-2xl {{ $LearningCenter->rating >= $i ? '' : ($diff > -1 && $diff < 0 ? 'opacity-50' : 'opacity-20') }}">
-                                                ★
-                                            </span>
-                                        @endfor
-                                    </div>
-                                    <span
-                                        class="ml-2 text-lg font-semibold text-gray-900 dark:text-white">{{ $LearningCenter->rating }}</span>
+                            <div class="flex items-center">
+                                <div class="flex text-yellow-400">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @php
+                                            $diff = $LearningCenter->calculated_total_reyting - $i;
+                                        @endphp
+                                        <span
+                                            class="text-2xl {{ $LearningCenter->calculated_total_reyting >= $i ? '' : ($diff > -1 && $diff < 0 ? 'opacity-50' : 'opacity-20') }}">
+                                            ★
+                                        </span>
+                                    @endfor
+                                </div>
+                                <div class="ml-2">
+                                    <span class="text-lg font-semibold text-gray-900 dark:text-white">{{ number_format($LearningCenter->calculated_total_reyting, 2) }}</span>
+                                    @if($LearningCenter->ratings_total > 0)
+                                        <span class="text-sm text-gray-500 dark:text-gray-400">({{ $LearningCenter->ratings_total }} baho)</span>
+                                    @endif
                                 </div>
                             </div>
 
@@ -179,6 +186,21 @@
                             <div>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('blog-single.quick_info.type') }}</p>
                                 <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->type }}</p>
+                            </div>
+
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('blog-single.quick_info.country') }}</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->country }}</p>
+                            </div>
+
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('blog-single.quick_info.province') }}</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->province }}</p>
+                            </div>
+
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('blog-single.quick_info.region') }}</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->region }}</p>
                             </div>
 
                             <div>
@@ -443,7 +465,7 @@
                                         @auth
                                             @can('isOun', $LearningCenter)
                                                 <div
-                                                    class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    class="flex items-center space-x-2 transition-opacity">
                                                     <x-button variant="outline" size="sm"
                                                         href="{{ route('subject.edit', $subject->id) }}" class="p-2">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -722,7 +744,7 @@
                                             <!-- Announcement actions for owner -->
                                             @auth
                                                 @can('isOun', $LearningCenter)
-                                                    <div class="flex items-center space-x-2 ml-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <div class="flex items-center space-x-2 ml-4 transition-opacity">
                                                         <form action="{{ route('teacher.delete_announcement', $announcement->id) }}" method="POST"
                                                             onsubmit="return confirm('{{ __('blog-single.announcements.delete_confirm') }}');">
                                                             @csrf
@@ -801,23 +823,10 @@
                                         class="group relative rounded-xl p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-600/50">
                                         <div class="text-center">
                                             <div class="w-12 h-12 text-white-100 bg-white-100 dark:bg-gray-50 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-sm group-hover:shadow-md transition-shadow duration-300">
-                                                @if ($connection->connection->name == 'Phone')
-                                                    <svg class="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 005.516 5.516l.774-1.548a1 1 0 011.059-.54l4.435-.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3a1 1 0 011-1h-2a1 1 0 00-1 1v3M4 7h10"/>
-                                                    </svg>
-                                                @elseif($connection->connection->name == 'Email')
-                                                    <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-                                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-                                                    </svg>
-                                                @elseif($connection->connection->name == 'Website')
-                                                    <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd" d="M4.083 9h1.946c.089.844.763 1.912.763s2.144-.919 2.144-1.912c0-.473-.175-.844-.527-1.23a.67.67 0 00-.477-.365c-.437.746-.959.746-1.419 0a1.613 1.613 0 00-1.922 1.746C4.691 12.48 2.295 13.879.066 15.42l1.358 3.615c.399.777 1.268.777 2.056 0 .788-.118 1.45-.355 2.008-.812C2.394 13.49 2 12.179 2 11.5v-1c0-1.716 1.114-3.9 2.5-3.9h1c1.7 0 3.9 1.184 3.9 2.9v1c0 .679-.118 1.268-.355 2.008-.812.084-.788.272-1.45.355-2.008.812-1.716-1.114-3.9-2.5-3.9h-1c-1.7 0-3.9 1.184-3.9 2.9v1z" clip-rule="evenodd"/>
-                                                    </svg>
+                                                @if ($connection->connection->icon)
+                                                    <i class="{{ $connection->connection->icon }} text-blue-500"></i>
                                                 @else
-                                                    <svg class="w-6 h-6 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M12.586 4.586a2 2 0 112.828 0a2 2 0 01-2.828 0L8 7.172l-4.586 4.586a2 2 0 010 2.828L8 10.172l4.586 4.586a2 2 0 002.828 0z"/>
-                                                    </svg>
+                                                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg" class="w-5 h-5 opacity-80" alt="" />
                                                 @endif
                                             </div>
                                             <p class="text-sm font-medium text-gray-900 dark:text-white mt-2">{{ $connection->connection->name }}</p>
@@ -863,14 +872,30 @@
                                 <div class="flex items-center space-x-4">
                                     <div class="flex text-2xl" id="rating1"
                                         data-center-id="{{ $LearningCenter->id }}">
+                                        @php
+                                            // Get current user's rating for this center
+                                            $userRating = null;
+                                            if (Auth::check()) {
+                                                $userRating = \App\Models\Favorite::where('users_id', Auth::id())
+                                                    ->where('learning_centers_id', $LearningCenter->id)
+                                                    ->value('rating');
+                                            }
+                                        @endphp
                                         @for ($i = 1; $i <= 5; $i++)
                                             <span
-                                                class="star cursor-pointer text-gray-300 hover:text-yellow-400 transition-colors"
+                                                class="star cursor-pointer {{ $userRating >= $i ? 'text-yellow-400' : 'text-gray-300' }} hover:text-yellow-400 transition-colors"
                                                 data-value="{{ $i }}">★</span>
                                         @endfor
                                     </div>
                                     <span id="result1"
-                                        class="text-lg font-medium text-gray-600 dark:text-gray-400"></span>
+                                        class="text-lg font-medium text-gray-600 dark:text-gray-400">
+                                        @if($userRating)
+                                            {{ $userRating }} ⭐ - @php
+                                                $ratings_text = ['Juda yomon', 'Yomon', "O'rtacha", 'Yaxshi', 'Ajoyib'];
+                                                echo $ratings_text[$userRating - 1];
+                                            @endphp
+                                        @endif
+                                    </span>
                                 </div>
                             </div>
 
@@ -891,6 +916,7 @@
                                     </button>
                                 </div>
                             </form>
+                            
                         @else
                             <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
                                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{ __('blog-single.comments.login_to_comment') }}</h2>
@@ -903,10 +929,10 @@
                                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ __('blog-single.comments.login_to_comment') }}</h3>
                                     <p class="text-gray-600 dark:text-gray-400 mb-6">{{ __('blog-single.comments.login_desc') }}</p>
                                     <div class="space-x-4">
-                                        <a href="{{ route('login') }}" class="inline-block bg-primary-600 hover:bg-primary-700 text-gray-900 dark:text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200">
+                                        <a href="{{ route('signin') }}" class="inline-block bg-primary-600 hover:bg-primary-700 text-gray-900 dark:text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200">
                                             {{ __('blog-single.comments.login') }}
                                         </a>
-                                        <a href="{{ route('register') }}" class="inline-block bg-gray-100 hover:bg-gray-200 dark:bg-gray-100 dark:hover:bg-gray-200 text-gray-900 dark:text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200">
+                                        <a href="{{ route('signup') }}" class="inline-block bg-gray-100 hover:bg-gray-200 dark:bg-gray-100 dark:hover:bg-gray-200 text-gray-900 dark:text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200">
                                             {{ __('blog-single.comments.register') }}
                                         </a>
                                     </div>
@@ -1291,15 +1317,58 @@
 </style>
 
 <script>
-    // Rating functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const ratings = {};
+    // Debug function
+    function debug(message) {
+        const debugEl = document.getElementById('debugInfo');
+        if (debugEl) {
+            debugEl.textContent = message;
+            debugEl.classList.remove('hidden');
+        }
+        console.log(message);
+    }
 
+    // Simple notification function
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300 ${
+            type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`;
+        notification.textContent = message;
+        notification.style.transform = 'translateX(400px)';
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        setTimeout(() => {
+            notification.style.transform = 'translateX(400px)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', function() {
+        debug('DOM loaded, initializing...');
+        
+        // Rating functionality
+        const ratings = {};
+        
         function initRating(ratingId, resultId) {
+            debug('Initializing rating: ' + ratingId);
             const starsContainer = document.getElementById(ratingId);
-            if (!starsContainer) return;
+            if (!starsContainer) {
+                debug('Rating container not found: ' + ratingId);
+                return;
+            }
 
             const stars = starsContainer.querySelectorAll('.star');
+            debug('Found ' + stars.length + ' stars');
 
             stars.forEach(star => {
                 star.addEventListener('mouseenter', () => {
@@ -1310,9 +1379,10 @@
                 star.addEventListener('click', () => {
                     const value = star.dataset.value;
                     const centerId = starsContainer.dataset.centerId;
+                    debug('Star clicked: ' + value + ' for center: ' + centerId);
+                    
                     ratings[ratingId] = value;
 
-                    // Update stars
                     stars.forEach(s => {
                         if (s.dataset.value <= value) {
                             s.classList.add('active');
@@ -1322,8 +1392,6 @@
                     });
 
                     updateResult(resultId, value);
-
-                    // Send rating to server
                     sendRating(centerId, value);
                 });
             });
@@ -1356,207 +1424,309 @@
             resultEl.textContent = `${value} ⭐ - ${ratings_text[value - 1]}`;
         }
 
-        // Send rating to server
         function sendRating(centerId, value) {
+            debug('Sending rating: ' + value + ' for center: ' + centerId);
+            
             fetch('/comment/favoriteStore', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        rating: value,
-                        learning_centers_id: centerId
-                    })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                    rating: parseInt(value),
+                    learning_centers_id: parseInt(centerId)
                 })
-                .then(async response => {
-                    const text = await response.text();
-                    console.log('Raw response text:', text);
-
-                    try {
-                        const data = JSON.parse(text);
-                        if (!response.ok) {
-                            console.error('Server returned error:', data);
-                        } else {
-                            console.log('Reyting yuborildi:', data);
-                            
-                            // Update total_reyting on the page if returned
-                            if (data.total_reyting !== undefined) {
-                                updateTotalReyting(centerId, data.total_reyting);
-                            }
-                            
-                            // Update rating count if returned
-                            if (data.ratings_total !== undefined) {
-                                updateRatingsTotal(centerId, data.ratings_total);
-                            }
-                        }
-                    } catch (err) {
-                        console.error('JSON.parse xatosi:', err);
-                        console.error('Server returned raw text:', text);
+            })
+            .then(async response => {
+                debug('Rating response status: ' + response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                debug('Rating response: ' + JSON.stringify(data));
+                
+                if (data.success) {
+                    showNotification(data.message || 'Reyting muvaffaqiyatli saqlandi!', 'success');
+                    
+                    // Update calculated_total_reyting on page if returned
+                    if (data.total_reyting !== undefined) {
+                        updateMainRatingDisplay(data.total_reyting);
                     }
-                })
-                .catch(error => {
-                    console.error('Fetch xatosi:', error);
-                });
+                    
+                    // Update rating count if returned
+                    if (data.ratings_total !== undefined) {
+                        updateRatingCount(data.ratings_total);
+                    }
+                    
+                    // Keep the current tab active (comments tab is tab 8)
+                    const currentTab = parseInt(localStorage.getItem('blogSingleActiveTab') || '1');
+                    if (currentTab === 8) {
+                        // Scroll to top of comments list
+                        commentsList.scrollTop = 0;
+                    }
+                } else {
+                    showNotification(data.message || 'Reyting saqlashda xatolik', 'error');
+                }
+            })
+            .catch(error => {
+                debug('Rating error: ' + error.message);
+                showNotification('Reyting yuborishda xatolik yuz berdi', 'error');
+            });
         }
         
-        function updateTotalReyting(centerId, newTotalReyting) {
-            // Find and update the total_reyting display elements
-            const reytingElements = document.querySelectorAll(`[data-center-id="${centerId}"] .total-reyting-display`);
-            reytingElements.forEach(element => {
-                element.textContent = newTotalReyting.toFixed(1);
+        function updateMainRatingDisplay(newRating) {
+            // Update the main rating number display
+            const ratingElements = document.querySelectorAll('.text-lg.font-semibold.text-gray-900.dark\\:text-white');
+            ratingElements.forEach(el => {
+                if (el.textContent.match(/^\d+\.?\d*$/)) {
+                    el.textContent = newRating.toFixed(1);
+                }
             });
             
-            // Also update any rating stars if they exist
-            updateRatingStars(centerId, newTotalReyting);
+            // Update the rating count display
+            const ratingCountElements = document.querySelectorAll('.text-sm.text-gray-500.dark\\:text-gray-400');
+            ratingCountElements.forEach(el => {
+                if (el.textContent.includes('baho')) {
+                    // Get current count from server response or increment
+                    const currentCount = parseInt(el.textContent.match(/\d+/)?.[0] || '0');
+                    el.textContent = `(${currentCount + 1} baho)`;
+                }
+            });
+            
+            // Update the star rating display
+            updateMainRatingStars(newRating);
         }
         
-        function updateRatingsTotal(centerId, newRatingsTotal) {
-            // Find and update the ratings count display
-            const countElements = document.querySelectorAll(`[data-center-id="${centerId}"] .ratings-count-display`);
-            countElements.forEach(element => {
-                element.textContent = `(${newRatingsTotal} baho)`;
+        function updateRatingCount(count) {
+            // Update the rating count display
+            const ratingCountElements = document.querySelectorAll('.text-sm.text-gray-500.dark\\:text-gray-400');
+            ratingCountElements.forEach(el => {
+                if (el.textContent.includes('baho')) {
+                    el.textContent = `(${count} baho)`;
+                }
             });
         }
         
-        function updateRatingStars(centerId, reyting) {
-            // Find star rating elements and update their visual state
-            const starContainers = document.querySelectorAll(`[data-center-id="${centerId}"] .rating-stars`);
-            starContainers.forEach(container => {
-                const stars = container.querySelectorAll('.star');
-                const fullStars = Math.floor(reyting);
-                const hasHalfStar = reyting % 1 >= 0.5;
+        function updateMainRatingStars(rating) {
+            // Find the main rating stars container
+            const mainRatingStars = document.querySelector('.flex.text-yellow-400');
+            if (mainRatingStars) {
+                const stars = mainRatingStars.querySelectorAll('span');
+                const fullStars = Math.floor(rating);
+                const hasHalfStar = rating % 1 >= 0.5;
                 
                 stars.forEach((star, index) => {
-                    star.classList.remove('filled', 'half-filled');
+                    // Remove all opacity classes first
+                    star.style.opacity = '';
+                    star.classList.remove('opacity-20', 'opacity-50');
+                    
                     if (index < fullStars) {
-                        star.classList.add('filled');
+                        star.style.opacity = '1';
                     } else if (index === fullStars && hasHalfStar) {
-                        star.classList.add('half-filled');
+                        star.style.opacity = '0.5';
+                    } else {
+                        star.style.opacity = '0.2';
                     }
                 });
-            });
+            }
         }
 
         // Initialize rating
         initRating('rating1', 'result1');
 
-        // Comment form submission with Ajax
-        document.getElementById('commentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitBtn = document.getElementById('submitComment');
-            const commentInput = document.getElementById('commentInput');
-            const commentsList = document.getElementById('commentsList');
-            
-            // Disable button and show loading
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `
-                <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                </svg>
-                Yuborilmoqda...
-            `;
-            
-            fetch('{{ route("comment.store") }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
+        // Set initial rating if user has already rated - AFTER initialization
+        @auth
+            @php
+                $userRating = \App\Models\Favorite::where('users_id', Auth::id())
+                    ->where('learning_centers_id', $LearningCenter->id)
+                    ->value('rating');
+            @endphp
+            @if($userRating)
+                // Set the initial rating value
+                ratings['rating1'] = {{ $userRating }};
+                
+                // Update the stars to show the current rating
+                const starsContainer = document.getElementById('rating1');
+                if (starsContainer) {
+                    const stars = starsContainer.querySelectorAll('.star');
+                    stars.forEach(star => {
+                        const value = parseInt(star.dataset.value);
+                        if (value <= {{ $userRating }}) {
+                            star.classList.add('active');
+                            star.classList.remove('hover');
+                        } else {
+                            star.classList.remove('active');
+                            star.classList.remove('hover');
+                        }
+                    });
                 }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Clear form
-                    commentInput.value = '';
-                    
-                    // Create new comment element
-                    const newComment = document.createElement('div');
-                    newComment.className = 'p-4 bg-gray-50 dark:bg-gray-700 rounded-xl';
-                    newComment.innerHTML = `
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <p class="font-semibold text-gray-900 dark:text-white">
-                                    ${data.comment.user.name}</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">
-                                    ${data.comment.user.email}</p>
-                            </div>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">Hozirgacha</span>
-                        </div>
-                        <p class="mt-2 text-gray-600 dark:text-gray-300">${data.comment.comment}</p>
-                    `;
-                    
-                    // Insert at the beginning (after count paragraph)
-                    const countParagraph = commentsList.querySelector('p');
-                    if (countParagraph.nextSibling) {
-                        commentsList.insertBefore(newComment, countParagraph.nextSibling);
-                    } else {
-                        commentsList.appendChild(newComment);
-                    }
-                    
-                    // Update count
-                    const commentsCount = document.getElementById('commentsCount');
-                    const currentCount = parseInt(commentsCount.textContent);
-                    commentsCount.textContent = currentCount + 1;
-                    
-                    // Scroll to top of comments list
-                    commentsList.scrollTop = 0;
-                    
-                    // Show success message
-                    showNotification('Izoh muvaffaqiyatli qo\'shildi!', 'success');
-                    
-                } else {
-                    showNotification(data.message || 'Xatolik yuz berdi', 'error');
+                
+                // Update the result text
+                const resultEl = document.getElementById('result1');
+                if (resultEl) {
+                    const ratings_text = ['Juda yomon', 'Yomon', "O'rtacha", 'Yaxshi', 'Ajoyib'];
+                    resultEl.textContent = `{{ $userRating }} ⭐ - ${ratings_text[{{ $userRating }} - 1]}`;
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showNotification('Izoh qo\'shishda xatolik yuz berdi', 'error');
-            })
-            .finally(() => {
-                // Re-enable button
-                submitBtn.disabled = false;
+                
+                debug('Initial rating set to: {{ $userRating }}');
+            @endif
+        @endauth
+
+        // Comment form submission - SIMPLE APPROACH
+        debug('Looking for comment form...');
+        const commentForm = document.getElementById('commentForm');
+        const submitBtn = document.getElementById('submitComment');
+        const commentInput = document.getElementById('commentInput');
+        const commentsList = document.getElementById('commentsList');
+        
+        debug('Form found: ' + !!commentForm);
+        debug('Button found: ' + !!submitBtn);
+        debug('Input found: ' + !!commentInput);
+        debug('Comments list found: ' + !!commentsList);
+        
+        if (commentForm && submitBtn && commentInput && commentsList) {
+            debug('All elements found, attaching event listener...');
+            
+            commentForm.addEventListener('submit', function(e) {
+                debug('Form submit triggered');
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const commentText = commentInput.value.trim();
+                debug('Comment text: "' + commentText + '"');
+                
+                if (!commentText) {
+                    debug('Empty comment, showing error');
+                    showNotification('Izoh maydoni bo\'sh bo\'lishi mumkin emas', 'error');
+                    return;
+                }
+                
+                // Disable button and show loading
+                submitBtn.disabled = true;
                 submitBtn.innerHTML = `
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                     </svg>
+                    Yuborilmoqda...
                 `;
+                
+                debug('Sending AJAX request...');
+                
+                // Create FormData
+                const formData = new FormData();
+                formData.append('comment', commentText);
+                formData.append('learning_centers_id', '{{ $LearningCenter->id }}');
+                formData.append('_token', '{{ csrf_token() }}');
+                
+                fetch('{{ route("comment.store") }}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    debug('Response status: ' + response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    debug('Response data: ' + JSON.stringify(data));
+                    
+                    if (data.success && data.comment) {
+                        
+                        // Clear form
+                        commentInput.value = '';
+                        
+                        // Create new comment element
+                        const newComment = document.createElement('div');
+                        newComment.className = 'p-4 bg-gray-50 dark:bg-gray-700 rounded-xl';
+                        newComment.innerHTML = `
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <p class="font-semibold text-gray-900 dark:text-white">
+                                        ${data.comment.user.name || 'Anonymous'}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                                        ${data.comment.user.email || ''}</p>
+                                </div>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">Hozirgacha</span>
+                            </div>
+                            <p class="mt-2 text-gray-600 dark:text-gray-300">${data.comment.comment}</p>
+                        `;
+                        
+                        // Add comment to list
+                        const countParagraph = commentsList.querySelector('p');
+                        if (countParagraph && countParagraph.nextSibling) {
+                            commentsList.insertBefore(newComment, countParagraph.nextSibling);
+                        } else {
+                            if (countParagraph) {
+                                countParagraph.parentNode.insertBefore(newComment, countParagraph.nextSibling);
+                            } else {
+                                commentsList.appendChild(newComment);
+                            }
+                        }
+                        
+                        // Update count
+                        const commentsCount = document.getElementById('commentsCount');
+                        if (commentsCount) {
+                            const currentCount = parseInt(commentsCount.textContent) || 0;
+                            commentsCount.textContent = currentCount + 1;
+                        }
+                        
+                        // Keep the current tab active and scroll to top if in comments tab
+                        const currentTab = parseInt(localStorage.getItem('blogSingleActiveTab') || '1');
+                        if (currentTab === 8) {
+                            commentsList.scrollTop = 0;
+                        }
+                        
+                        showNotification('Izoh muvaffaqiyatli qo\'shildi!', 'success');
+                        
+                    } else {
+                        debug('Server returned error: ' + (data.message || 'Unknown error'));
+                        showNotification(data.message || 'Xatolik yuz berdi', 'error');
+                    }
+                })
+                .catch(error => {
+                    debug('AJAX error: ' + error.message);
+                    showNotification('Izoh qo\'shishda xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.', 'error');
+                })
+                .finally(() => {
+                    // Re-enable button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                    `;
+                });
             });
-        });
-
-        // Notification function
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300 ${
-                type === 'success' 
-                    ? 'bg-green-500 text-white' 
-                    : 'bg-red-500 text-white'
-            }`;
-            notification.textContent = message;
-            notification.style.transform = 'translateX(400px)';
             
-            document.body.appendChild(notification);
-            
-            // Animate in
-            setTimeout(() => {
-                notification.style.transform = 'translateX(0)';
-            }, 100);
-            
-            // Remove after 3 seconds
-            setTimeout(() => {
-                notification.style.transform = 'translateX(400px)';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
+            debug('Event listener attached successfully');
+        } else {
+            debug('Missing elements, cannot initialize comment form');
         }
+        
+        // Hide debug info after 5 seconds
+        setTimeout(() => {
+            const debugEl = document.getElementById('debugInfo');
+            if (debugEl) {
+                debugEl.classList.add('hidden');
+            }
+        }, 5000);
     });
+</script>
 
+
+<script>
     // Lightbox functionality
     let currentImageIndex = 0;
     let currentImages = [];

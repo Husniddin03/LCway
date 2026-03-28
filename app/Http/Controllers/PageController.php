@@ -255,7 +255,7 @@ class PageController extends Controller
         // -------------------------------------------------------
         $listQuery = clone $baseQuery;
         $listQuery->addSelect('learning_centers.*'); // Ensure all main table columns exist
-        $listQuery->withAvg('favorites', 'rating')
+        $listQuery->withCount('favorites') // Load favorites count
             ->with('needTeachers.subject');
 
         // Sorting for List
@@ -266,7 +266,7 @@ class PageController extends Controller
             } elseif ($validated['sort'] === 'distance' && $userLocation) {
                 $listQuery->orderBy('distance', $dir);
             } elseif ($validated['sort'] === 'favorites') {
-                $listQuery->orderBy('favorites_avg_rating', $dir);
+                $listQuery->orderBy('total_reyting', $dir); // Use total_reyting for sorting
             }
         } else {
             if ($userLocation) {
@@ -290,9 +290,9 @@ class PageController extends Controller
             'has_more_pages' => $paginator->hasMorePages(),
         ];
 
-        // Computed values needed for template
+        // Computed values needed for template - use dynamic attributes
         foreach ($LearningCentersArray as $center) {
-            $center->favorite = round($center->favorites_avg_rating ?? 0, 1);
+            $center->display_rating = $center->calculated_total_reyting; // Use dynamic calculation
             $center->date = $center->created_at->diffForHumans();
             if (isset($center->distance)) {
                 $center->distance = round((float) $center->distance, 2);
@@ -307,8 +307,8 @@ class PageController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $html = '';
             foreach ($LearningCenters as $lc) {
-                // Use already-loaded aggregate — no extra query
-                $average = $lc->favorite;
+                // Use dynamic calculated total_reyting
+                $average = $lc->calculated_total_reyting;
 
                 $html .= '<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
                     <div class="relative h-48 overflow-hidden">';
@@ -457,6 +457,7 @@ class PageController extends Controller
     {
         $LearningCenter = LearningCenter::with(['needTeachers.subject', 'needTeachers.learningCenter', 'comments.user', 'favorites'])
             ->withCount('comments')
+            ->withCount('favorites') // Load favorites count for proper calculation
             ->find($id);
         return view('pages.blog-single')->with('LearningCenter', $LearningCenter);
     }

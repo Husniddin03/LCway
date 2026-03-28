@@ -28,7 +28,15 @@ class CourseController extends Controller
         $days = Calendar::pluck('weekdays')->toArray();
         $subjects = Subject::pluck('name', 'id')->toArray();
         $connections = Connection::pluck('name', 'id')->toArray();
-        return view('course.create')->with('days', $days)->with('subjects', $subjects)->with('connections', $connections);
+        
+        // Get types from LearningCenter database and group them
+        $types = LearningCenter::pluck('type')->filter()->unique()->sort()->values();
+        
+        return view('course.create')
+            ->with('days', $days)
+            ->with('subjects', $subjects)
+            ->with('connections', $connections)
+            ->with('types', $types);
     }
 
     public function store(Request $request)
@@ -36,19 +44,68 @@ class CourseController extends Controller
         // Combine latitude and longitude into location string
         $location = $request->latitude . ',' . $request->longitude;
         $request->merge(['location' => $location]);
-        $validated = $request->validate([
-            'logo'         => 'required|image|max:1024',
-            'name'         => 'required|string|max:255',
-            'type'         => 'required|string|max:255',
-            'about'        => 'required|string',
-            'province'     => 'required|string|max:255',
-            'region'       => 'required|string|max:255',
-            'address'      => 'required|string|max:255',
-            'location'     => 'required|string|max:255',
-            'student_count' => 'integer',
-        ]);
-
-
+        
+        // Handle type validation - either from select or custom input
+        $type = $request->type;
+        if ($type === 'custom') {
+            $validated = $request->validate([
+                'logo'         => 'required|image|max:1024',
+                'name'         => 'required|string|max:255',
+                'custom_type'  => 'required|string|max:255',
+                'about'        => 'required|string',
+                'country'      => 'required|string|max:255',
+                'province'     => 'required|string|max:255',
+                'region'       => 'required|string|max:255',
+                'address'      => 'required|string|max:255',
+                'location'     => 'required|string|max:255',
+                'student_count' => 'integer',
+            ]);
+            $validated['type'] = $validated['custom_type'];
+            unset($validated['custom_type']);
+        } else {
+            $validated = $request->validate([
+                'logo'         => 'required|image|max:1024',
+                'name'         => 'required|string|max:255',
+                'type'         => 'required|string|max:255',
+                'about'        => 'required|string',
+                'country'      => 'required|string|max:255',
+                'province'     => 'required|string|max:255',
+                'region'       => 'required|string|max:255',
+                'address'      => 'required|string|max:255',
+                'location'     => 'required|string|max:255',
+                'student_count' => 'integer',
+            ]);
+        }
+        
+        // Handle country validation - either from select or custom input
+        $country = $request->country;
+        if ($country === 'custom') {
+            $validated['country'] = $request->validate([
+                'custom_country' => 'required|string|max:255',
+            ])['custom_country'];
+        } else {
+            $validated['country'] = $country;
+        }
+        
+        // Handle province validation - either from select or custom input
+        $province = $request->province;
+        if ($province === 'custom') {
+            $validated['province'] = $request->validate([
+                'custom_province' => 'required|string|max:255',
+            ])['custom_province'];
+        } else {
+            $validated['province'] = $province;
+        }
+        
+        // Handle district validation - either from select or custom input
+        $region = $request->region;
+        if ($region === 'custom') {
+            $validated['region'] = $request->validate([
+                'custom_district' => 'required|string|max:255',
+            ])['custom_district'];
+        } else {
+            $validated['region'] = $region;
+        }
 
         $validated4 = $request->validate([
             'images' => 'nullable|array',
@@ -91,36 +148,117 @@ class CourseController extends Controller
     {
         $center = LearningCenter::findOrFail($id);
         Gate::authorize('isOun', $center);
-        return view('course.edit', compact('center'));
+        
+        // Get types from LearningCenter database
+        $types = LearningCenter::pluck('type')->filter()->unique()->sort()->values();
+        
+        return view('course.edit', compact('center', 'types'));
     }
 
 
     public function update(Request $request, $id)
     {
-
-        $validated = $request->validate([
-            'logo'         => 'nullable|image|max:1024',
-            'name'         => 'required|string|max:255',
-            'type'         => 'nullable|string|max:255',
-            'about'        => 'nullable|string',
-            'province'     => 'nullable|string|max:255',
-            'region'       => 'nullable|string|max:255',
-            'address'      => 'nullable|string|max:255',
-            'location'     => 'nullable|string|max:255',
-            'studentCount' => 'nullable|integer',
-        ]);
-
         $center = LearningCenter::findOrFail($id);
-
         Gate::authorize('isOun', $center);
+        
+        // Handle type validation - either from select or custom input
+        $type = $request->type;
+        if ($type === 'custom') {
+            $validated = $request->validate([
+                'logo'         => 'nullable|image|max:1024',
+                'name'         => 'required|string|max:255',
+                'custom_type'  => 'required|string|max:255',
+                'about'        => 'nullable|string',
+                'country'      => 'required|string|max:255',
+                'province'     => 'required|string|max:255',
+                'region'       => 'required|string|max:255',
+                'address'      => 'required|string|max:255',
+                'location'     => 'nullable|string|max:255',
+                'studentCount' => 'nullable|integer',
+                'images'       => 'nullable|array|max:10',
+                'images.*'     => 'image|mimes:jpeg,jpg,png,gif,webp|max:2048',
+            ]);
+            $validated['type'] = $validated['custom_type'];
+            unset($validated['custom_type']);
+        } else {
+            $validated = $request->validate([
+                'logo'         => 'nullable|image|max:1024',
+                'name'         => 'required|string|max:255',
+                'type'         => 'required|string|max:255',
+                'about'        => 'nullable|string',
+                'country'      => 'required|string|max:255',
+                'province'     => 'required|string|max:255',
+                'region'       => 'required|string|max:255',
+                'address'      => 'required|string|max:255',
+                'location'     => 'nullable|string|max:255',
+                'studentCount' => 'nullable|integer',
+                'images'       => 'nullable|array|max:10',
+                'images.*'     => 'image|mimes:jpeg,jpg,png,gif,webp|max:2048',
+            ]);
+        }
+        
+        // Handle country validation - either from select or custom input
+        $country = $request->country;
+        if ($country === 'custom') {
+            $validated['country'] = $request->validate([
+                'custom_country' => 'required|string|max:255',
+            ])['custom_country'];
+        } else {
+            $validated['country'] = $country;
+        }
+        
+        // Handle province validation - either from select or custom input
+        $province = $request->province;
+        if ($province === 'custom') {
+            $validated['province'] = $request->validate([
+                'custom_province' => 'required|string|max:255',
+            ])['custom_province'];
+        } else {
+            $validated['province'] = $province;
+        }
+        
+        // Handle district validation - either from select or custom input
+        $region = $request->region;
+        if ($region === 'custom') {
+            $validated['region'] = $request->validate([
+                'custom_district' => 'required|string|max:255',
+            ])['custom_district'];
+        } else {
+            $validated['region'] = $region;
+        }
 
+        // Handle logo update
         if ($request->hasFile('logo')) {
             $path = $request->file('logo')->store('uploads/logos', 'public');
             $validated['logo'] = $path;
+            // Delete old logo
             if ($center->logo && Storage::disk('public')->exists($center->logo)) {
                 Storage::disk('public')->delete($center->logo);
             }
         }
+
+        // Handle images update - delete old images if new ones are uploaded
+        if ($request->hasFile('images')) {
+            // Delete old images
+            foreach ($center->images as $oldImage) {
+                if ($oldImage->image && Storage::disk('public')->exists($oldImage->image)) {
+                    Storage::disk('public')->delete($oldImage->image);
+                }
+                $oldImage->delete();
+            }
+            
+            // Upload new images
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('uploads/learning-centers', 'public');
+                $center->images()->create([
+                    'image' => $path,
+                    'learning_centers_id' => $center->id
+                ]);
+            }
+        }
+
+        // Remove images from validated data to avoid database issues
+        unset($validated['images']);
 
         $center->update($validated);
 

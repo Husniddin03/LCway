@@ -11,7 +11,7 @@ class Connection extends Model
 
     protected $table = 'connection';
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'icon'];
 
     public function learningCenters()
     {

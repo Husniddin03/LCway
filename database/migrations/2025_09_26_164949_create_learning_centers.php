@@ -115,6 +115,13 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('connection', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('icon')->nullable();
+            $table->timestamps();
+        });
+
         // 11) learning_centers_connect
         Schema::create('learning_centers_connect', function (Blueprint $table) {
             $table->id();
@@ -144,6 +151,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('learning_centers_connect');
         Schema::dropIfExists('learning_centers_calendar');
+        Schema::dropIfExists('connection');
         Schema::dropIfExists('favorites');
         Schema::dropIfExists('teachers');
         Schema::dropIfExists('calendar');

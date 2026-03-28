@@ -111,15 +111,11 @@ class UzbekistanOSMEducationSeederNew extends Seeder
             'region' => $data['region'] ?? '',
             'address' => $data['address'] ?? '',
             'location' => $data['location'] ?? null,
-            'logo' => $data['logo'] ?? null,
+            'logo' => substr($data['logo'] ?? '', 0, 65535) ?: null, // Keep text logic if needed, but safe
             'rating' => $data['rating'] ?? null,
             'total_reyting' => (float) ($data['rating'] ?? 0), // Initial total_reyting equals Google rating
             'ratings_total' => $data['ratings_total'] ?? 0,
             'status' => $data['status'] ?? 'active',
-            
-            // OSM ma'lumotlari
-            'osm_id' => $data['osm_id'] ?? null,
-            'phone' => $data['phone'] ?? '',
         ]);
     }
     
@@ -133,8 +129,8 @@ class UzbekistanOSMEducationSeederNew extends Seeder
             foreach ($data['images'] as $image) {
                 DB::table('learning_centers_images')->insert([
                     'learning_centers_id' => $center->id,
-                    'image_path' => $image['image_path'] ?? '',
-                    'image_url' => $image['image_url'] ?? '',
+                    'image_path' => mb_substr($image['image_path'] ?? '', 0, 255),
+                    'image_url' => mb_substr($image['image_url'] ?? '', 0, 255),
                     'photo_reference' => $image['photo_reference'] ?? '',
                     'width' => (int) ($image['width'] ?? 0),
                     'height' => (int) ($image['height'] ?? 0),
@@ -182,7 +178,7 @@ class UzbekistanOSMEducationSeederNew extends Seeder
                     DB::table('learning_centers_connect')->insert([
                         'learning_centers_id' => $center->id,
                         'connection_id' => $connectionId,
-                        'url' => $connection['url'] ?? '',
+                        'url' => mb_substr($connection['url'] ?? '', 0, 255),
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);

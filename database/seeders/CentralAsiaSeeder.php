@@ -299,9 +299,9 @@ class CentralAsiaSeeder extends Seeder
             if (!$exists) {
                 DB::table('learning_centers_images')->insert([
                     'learning_centers_id' => $centerId,
-                    'image'               => $path,
-                    'image_path'          => $imagePath,
-                    'image_url'           => $imageUrl,
+                    'image'               => mb_substr((string)$path, 0, 255),
+                    'image_path'          => mb_substr((string)$imagePath, 0, 255),
+                    'image_url'           => mb_substr((string)$imageUrl, 0, 255),
                     'photo_reference'     => $photoReference,
                     'width'               => $width,
                     'height'              => $height,
@@ -375,7 +375,7 @@ class CentralAsiaSeeder extends Seeder
                 DB::table('learning_centers_connect')->insert([
                     'learning_centers_id' => $centerId,
                     'connection_id'       => $connId,
-                    'url'                 => $url,
+                    'url'                 => mb_substr((string)$url, 0, 255),
                     'created_at'          => now(),
                     'updated_at'          => now(),
                 ]);

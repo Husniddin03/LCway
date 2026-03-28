@@ -14,17 +14,26 @@ return new class extends Migration
         // 1) learning_centers
         Schema::create('learning_centers', function (Blueprint $table) {
             $table->id();
-            $table->string('logo')->nullable();
+            $table->text('logo')->nullable();
             $table->string('name');
             $table->string('type')->nullable();
             $table->text('about')->nullable();
+            $table->string('country')->nullable();
             $table->string('province')->nullable();
             $table->string('region')->nullable();
             $table->string('address')->nullable();
+            $table->decimal('rating', 3, 2)->nullable();
+            $table->integer('ratings_total')->default(0);
             $table->string('location')->nullable();
-            $table->foreignId('users_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('users_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->integer('student_count')->default(0);
+            $table->integer('total_reyting')->default(0);
+            $table->string('status')->default('active');
             $table->timestamps();
+            
+            // Indexlar
+            $table->index('province');
+            $table->index('type');
         });
 
         // 2) subjects
@@ -49,7 +58,13 @@ return new class extends Migration
         Schema::create('learning_centers_images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('learning_centers_id')->constrained('learning_centers')->onDelete('cascade');
-            $table->string('image');
+            $table->text('image')->nullable();
+            $table->string('image_path')->nullable()->after('image');
+            $table->string('image_url')->nullable()->after('image_path');
+            $table->text('photo_reference')->nullable()->after('image_url');
+            $table->integer('width')->default(0)->after('photo_reference');
+            $table->integer('height')->default(0)->after('width');
+            $table->boolean('is_primary')->default(false)->after('height');
             $table->timestamps();
         });
 
@@ -100,13 +115,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // 10) connection
-        Schema::create('connection', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
-        });
-
         // 11) learning_centers_connect
         Schema::create('learning_centers_connect', function (Blueprint $table) {
             $table->id();
@@ -135,7 +143,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('learning_centers_connect');
-        Schema::dropIfExists('connection');
         Schema::dropIfExists('learning_centers_calendar');
         Schema::dropIfExists('favorites');
         Schema::dropIfExists('teachers');

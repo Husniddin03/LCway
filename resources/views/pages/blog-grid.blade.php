@@ -109,7 +109,7 @@
                             </div>
 
                             {{-- Map area --}}
-                            <div class="mf-map-wrap">
+                            <div class="mf-map-wrap" id="mf-map-wrap">
                                 <div id="filterMapEl"></div>
 
                                 {{-- Loading placeholder --}}
@@ -132,6 +132,16 @@
                                     </svg>
                                     <span x-text="locating ? '{{ __('blog-grid.search_filter.locating') }}' : '{{ __('blog-grid.search_filter.my_location') }}'"></span>
                                 </button>
+
+                                {{-- Map size buttons --}}
+                                <div class="mf-map-size-btns">
+                                    <button type="button" class="mf-sizebtn" title="Kattalashtirish"
+                                        @click.stop="$el.closest('.mf-panel').classList.toggle('mf-expanded'); $nextTick(() => { if (_map) google.maps.event.trigger(_map, 'resize') })">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/>
+                                        </svg>
+                                    </button>
+                                </div>
 
                                 <div class="mf-map-hint">{{ __('blog-grid.search_filter.map_hint') }}</div>
                             </div>
@@ -321,26 +331,12 @@
                             x-transition:leave-end="transform opacity-0 scale-95"
                             class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2 max-h-70 overflow-y-auto">
-                                <button type="button" onclick="applyFilter('type', 'Haydovchilik kursi')"
-                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                    Haydovchilik kursi
-                                </button>
-                                <button type="button" onclick="applyFilter('type', 'Maktab/Kurs')"
-                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                    Maktab/Kurs
-                                </button>
-                                <button type="button" onclick="applyFilter('type', 'O\'quv markaz')"
-                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                    O'quv markaz
-                                </button>
-                                <button type="button" onclick="applyFilter('type', 'Til kurslari')"
-                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                    Til kurslari
-                                </button>
-                                <button type="button" onclick="applyFilter('type', 'Universitet')"
-                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                    Universitet
-                                </button>
+                                @foreach ($types as $type)
+                                    <button type="button" onclick='applyFilter("type", "{{ $type }}")'
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                        {{ $type }}
+                                    </button>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -413,7 +409,7 @@
                 </div>
 
                 <div class="text-gray-600 dark:text-gray-400">
-                    <span id="resultsCount">{{ $LearningCenters->count() }}</span> {{ __('blog-grid.search_filter.results_count') }}
+                    <span id="resultsCount">{{ $pagination['total'] ?? $LearningCenters->count() }}</span> {{ __('blog-grid.search_filter.results_count') }}
                 </div>
             </div>
         </div>
@@ -457,8 +453,24 @@
                                 class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
                             <a href="{{ route('blog-single', $LearningCenter->id) }}"
-                                class="absolute bottom-4 left-4 bg-white dark:bg-gray-800 text-primary-600 dark:text-primary-400 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                                {{ __('blog-grid.centers_grid.read_more') }}
+                                class="absolute bottom-4 right-4 
+                                    /* Ranglar va shakl: Oq fon, to'q matn */
+                                    bg-white text-primary-900 
+                                    px-4 py-2 rounded-xl shadow-lg
+                                    /* Tekislash */
+                                    flex items-center gap-2 font-bold text-sm
+                                    /* Mobil uchun: Doimiy ko'rinish */
+                                    opacity-100 translate-y-0
+                                    /* Desktop uchun: Hover effekti */
+                                    lg:opacity-0 lg:translate-y-2 lg:group-hover:opacity-100 lg:group-hover:translate-y-0
+                                    /* Effektlar */
+                                    transition-all duration-300 hover:bg-primary-50">
+                                
+                                <span class="font-bold">{{ __('blog-grid.centers_grid.read_more') }}</span>
+                                
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
                             </a>
                         </div>
 
@@ -466,17 +478,17 @@
                         <div class="p-6">
                             <!-- Meta Information -->
                             <div class="flex flex-wrap gap-2 mb-4 text-sm text-gray-600 dark:text-gray-400">
-                                <div class="flex items-center gap-1">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="flex items-center gap-1 truncate">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
-                                    <span>{{ $LearningCenter->region . ', ' . $LearningCenter->province }}</span>
+                                    <span class="truncate">{{ $LearningCenter->region . ', ' . $LearningCenter->province }}</span>
                                 </div>
                                 <div class="flex items-center gap-1">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
@@ -494,24 +506,20 @@
                                 @endif
                             </div>
 
-                            <!-- Rating -->
-                            @php
-                                $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
-                            @endphp
                             <div class="flex items-center gap-3 mb-4">
                                 <div class="flex items-center">
                                     @for ($i = 1; $i <= 5; $i++)
                                         @php
-                                            $diff = $average - $i;
+                                            $diff = $LearningCenter->rating - $i;
                                         @endphp
                                         <span
-                                            class="text-lg {{ $average >= $i ? 'text-yellow-400' : ($diff > -1 && $diff < 0 ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600') }}">
+                                            class="text-lg {{ $LearningCenter->rating >= $i ? 'text-yellow-400' : ($diff > -1 && $diff < 0 ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600') }}">
                                             ★
                                         </span>
                                     @endfor
                                 </div>
                                 <span
-                                    class="text-lg font-semibold text-primary-600 dark:text-primary-400">{{ $average }}</span>
+                                    class="text-lg font-semibold text-primary-600 dark:text-primary-400">{{ $LearningCenter->rating }}</span>
                             </div>
 
                             <!-- Title -->
@@ -571,6 +579,20 @@
                         </button>
                     </div>
                 @endforelse
+            </div>
+            
+            <!-- Infinite Scroll Loading Indicator -->
+            <div id="infiniteScrollLoading" class="hidden text-center py-8">
+                <svg class="w-8 h-8 animate-spin mx-auto text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <p class="mt-2 text-gray-600 dark:text-gray-400">Yana ma'lumotlar yuklanmoqda...</p>
+            </div>
+            
+            <!-- No More Results Message -->
+            <div id="noMoreResults" class="hidden text-center py-8">
+                <p class="text-gray-500 dark:text-gray-400">Barcha natijalar ko'rsatilgan</p>
             </div>
         </div>
     </section>
@@ -721,11 +743,21 @@ function performSearch() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Update results count
-            resultsCount.textContent = data.count;
+            // Update results count — use total, not the per-page count
+            resultsCount.textContent = data.pagination ? data.pagination.total : data.count;
             
             // Update centers grid
             centersGrid.innerHTML = data.html;
+            
+            // Update pagination state
+            if (data.pagination) {
+                currentPage = data.pagination.current_page;
+                hasMorePages = data.pagination.has_more_pages;
+            } else {
+                // Fallback for non-paginated responses
+                currentPage = 1;
+                hasMorePages = false;
+            }
             
             // Update sorting buttons based on current URL
             updateSortingButtons();
@@ -734,7 +766,22 @@ function performSearch() {
             if (typeof window.mapFilterComp === 'function') {
                 // Update centers data for map
                 if (data.centers) {
+                    console.log('Updating map with', data.centers.length, 'centers');
                     updateMapCenters(data.centers);
+                } else {
+                    console.warn('No centers data received for map');
+                }
+            } else {
+                console.warn('Map component not available');
+            }
+            
+            // Show/hide no more results message
+            const noMoreResults = document.getElementById('noMoreResults');
+            if (noMoreResults) {
+                if (hasMorePages) {
+                    noMoreResults.classList.add('hidden');
+                } else {
+                    noMoreResults.classList.remove('hidden');
                 }
             }
         } else {
@@ -767,19 +814,32 @@ function performSearch() {
 }
 
 function updateMapCenters(centers) {
-    // Update global centers data for map component
-    if (typeof _CENTERS !== 'undefined') {
-        _CENTERS = centers.map(function(center) {
-            const coords = (center.location || '').split(',');
-            return {
-                id: center.id,
-                name: center.name,
-                latitude: parseFloat(coords[0] || 0),
-                longitude: parseFloat(coords[1] || 0),
-                address: center.address || '',
-            };
-        });
+    // Update global centers data used by the map component
+    window._CENTERS = centers.map(function(center) {
+        const coords = (center.location || '').split(',');
+        return {
+            id: center.id,
+            name: center.name,
+            latitude: parseFloat(coords[0]) || 0,
+            longitude: parseFloat(coords[1]) || 0,
+            address: center.address || '',
+        };
+    });
+
+    // Reload markers on the open map if Alpine component is active
+    const mapBtn = document.querySelector('[x-data*="mapFilterComp"]');
+    if (mapBtn && window.Alpine) {
+        try {
+            const comp = window.Alpine.$data(mapBtn);
+            if (comp && typeof comp.reloadMarkers === 'function') {
+                comp.reloadMarkers();
+            }
+        } catch(e) {
+            console.warn('Could not reload map markers:', e);
+        }
     }
+
+    console.log('Map updated with', window._CENTERS.length, 'centers');
 }
 
 function closeAllDropdowns() {
@@ -818,6 +878,194 @@ window.addEventListener('popstate', function() {
     window.currentFilters = new URLSearchParams(window.location.search);
     performSearch();
 });
+
+// Infinite Scroll Pagination
+let currentPage = 1;
+let isLoading = false;
+let hasMorePages = true;
+
+// Initialize pagination from server-side data
+@if(isset($pagination))
+    currentPage = {{ $pagination['current_page'] }};
+    hasMorePages = {{ $pagination['has_more_pages'] ? 'true' : 'false' }};
+@endif
+
+function loadMorePages() {
+    if (isLoading || !hasMorePages) return;
+    
+    isLoading = true;
+    currentPage++;
+    
+    // Show loading indicator
+    const loadingIndicator = document.getElementById('infiniteScrollLoading');
+    const noMoreResults = document.getElementById('noMoreResults');
+    
+    if (loadingIndicator) {
+        loadingIndicator.classList.remove('hidden');
+    }
+    
+    // Build URL with page parameter
+    const filters = new URLSearchParams(window.currentFilters.toString());
+    filters.set('page', currentPage);
+    
+    const url = window.location.pathname + '?' + filters.toString();
+    
+    // Perform AJAX request for next page
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.html) {
+            // Append new items to the grid
+            const centersGrid = document.getElementById('centersGrid');
+            if (centersGrid) {
+                // Create a temporary div to parse the HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = data.html;
+                
+                // Extract and append only the center cards
+                const newCards = tempDiv.querySelectorAll('.bg-white.dark\\:bg-gray-800.rounded-xl');
+                newCards.forEach(card => {
+                    centersGrid.appendChild(card);
+                });
+            }
+            
+            // Update pagination state
+            if (data.pagination) {
+                hasMorePages = data.pagination.has_more_pages;
+                currentPage = data.pagination.current_page;
+            }
+            
+            // Update results count
+            const resultsCount = document.getElementById('resultsCount');
+            if (resultsCount && data.pagination) {
+                resultsCount.textContent = data.pagination.total;
+            }
+            
+            // Show/hide appropriate messages
+            if (!hasMorePages) {
+                if (noMoreResults) {
+                    noMoreResults.classList.remove('hidden');
+                }
+            }
+            
+            // Update map with new centers data
+            if (data.centers && typeof window.mapFilterComp === 'function') {
+                console.log('Updating map with new centers from pagination');
+                updateMapCenters(data.centers);
+            }
+        } else {
+            console.error('Failed to load more items');
+            hasMorePages = false;
+        }
+    })
+    .catch(error => {
+        console.error('Error loading more items:', error);
+        hasMorePages = false;
+    })
+    .finally(() => {
+        isLoading = false;
+        if (loadingIndicator) {
+            loadingIndicator.classList.add('hidden');
+        }
+    });
+}
+
+// Set up infinite scroll event listener
+function setupInfiniteScroll() {
+    const scrollThreshold = 200; // Load more when 200px from bottom
+    
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        // Check if user is near the bottom
+        if (scrollTop + windowHeight >= documentHeight - scrollThreshold) {
+            loadMorePages();
+        }
+    });
+}
+
+// Initialize infinite scroll when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    setupInfiniteScroll();
+    
+    // NOTE: Auto geolocation removed to avoid slow page reload on every visit.
+    // Users can click the map filter panel and use "Mening joylashuvim" button instead.
+});
+
+
+// Auto-detect user location
+function detectUserLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                
+                console.log('Location detected:', latitude, longitude);
+                
+                // Update URL with location parameters and refresh
+                const url = new URL(window.location);
+                url.searchParams.set('latitude', latitude);
+                url.searchParams.set('longitude', longitude);
+                
+                // Perform search with new location
+                window.location.href = url.toString();
+            },
+            function(error) {
+                console.warn('Geolocation failed:', error.message);
+                // Use default location (Tashkent)
+                const defaultLat = 41.2995;
+                const defaultLng = 69.2401;
+                
+                const url = new URL(window.location);
+                url.searchParams.set('latitude', defaultLat);
+                url.searchParams.set('longitude', defaultLng);
+                
+                window.location.href = url.toString();
+            },
+            {
+                timeout: 10000,
+                enableHighAccuracy: true
+            }
+        );
+    } else {
+        console.warn('Geolocation not supported');
+        // Use default location
+        const defaultLat = 41.2995;
+        const defaultLng = 69.2401;
+        
+        const url = new URL(window.location);
+        url.searchParams.set('latitude', defaultLat);
+        url.searchParams.set('longitude', defaultLng);
+        
+        window.location.href = url.toString();
+    }
+}
+
+// Reset pagination state when performing new search
+const originalPerformSearch = performSearch;
+performSearch = function() {
+    currentPage = 1;
+    hasMorePages = true;
+    isLoading = false;
+    
+    // Hide no more results message
+    const noMoreResults = document.getElementById('noMoreResults');
+    if (noMoreResults) {
+        noMoreResults.classList.add('hidden');
+    }
+    
+    // Call original performSearch function
+    originalPerformSearch.apply(this, arguments);
+};
 </script>
 
 <style>
@@ -1879,6 +2127,63 @@ window.addEventListener('popstate', function() {
             height: 220px;
         }
     }
+
+    /* ---- RESIZE HANDLE ---- */
+    .mf-map-wrap {
+        position: relative;
+        min-height: 180px;
+        max-height: 70vh;
+        resize: vertical;
+        overflow: hidden;
+    }
+
+    /* Height expand/collapse buttons inside panel */
+    .mf-map-size-btns {
+        position: absolute;
+        bottom: 34px;
+        right: 10px;
+        z-index: 12;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .mf-sizebtn {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        line-height: 1;
+        backdrop-filter: blur(6px);
+        background: rgba(255,255,255,0.88);
+        color: #374151;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.18);
+        transition: background .15s;
+    }
+
+    .dark .mf-sizebtn {
+        background: rgba(17,24,39,0.88);
+        color: #e5e7eb;
+    }
+
+    .mf-sizebtn:hover {
+        background: #4f46e5;
+        color: #fff;
+    }
+
+    /* bigger panel when expanded */
+    .mf-panel.mf-expanded {
+        width: min(800px, calc(100vw - 20px));
+    }
+
+    .mf-panel.mf-expanded .mf-map-wrap {
+        height: 450px;
+    }
 </style>
 
 
@@ -1894,20 +2199,24 @@ window.addEventListener('popstate', function() {
 <script>
     (function() {
         /* --------------------------------------------------
-           Centers data from Laravel
+           Centers data from Laravel — stored globally so
+           updateMapCenters() can update them after AJAX
         -------------------------------------------------- */
-        var _CENTERS = {!! json_encode(
-            $LearningCenters->map(function ($center) {
-                $coords = explode(',', $center->location ?? '');
+        window._CENTERS = {!! json_encode(
+            collect($allCentersForMap)->map(function ($center) {
+                $coords = explode(',', $center['location'] ?? '');
                 return [
-                    'id' => $center->id,
-                    'name' => $center->name,
-                    'latitude' => (float) ($coords[0] ?? 0),
-                    'longitude' => (float) ($coords[1] ?? 0),
-                    'address' => $center->address ?? '',
+                    'id' => $center['id'],
+                    'name' => $center['name'],
+                    'latitude' => (float) trim($coords[0] ?? 0),
+                    'longitude' => (float) trim($coords[1] ?? 0),
+                    'address' => $center['address'] ?? '',
                 ];
-            }),
+            })->values(),
         ) !!};
+
+        /* shorthand alias inside this closure */
+        var _CENTERS = window._CENTERS;
 
         var DEFAULT_LAT = 39.6542; // Samarqand
         var DEFAULT_LNG = 66.9597;
@@ -1960,6 +2269,13 @@ window.addEventListener('popstate', function() {
                     }).observe(document.documentElement, {
                         attributes: true,
                         attributeFilter: ['class']
+                    });
+
+                    /* Fix map rendering on mobile orientation changes */
+                    window.addEventListener('resize', () => {
+                        if (this.open && this._map) {
+                            google.maps.event.trigger(this._map, 'resize');
+                        }
                     });
                 },
 
@@ -2055,7 +2371,8 @@ window.addEventListener('popstate', function() {
                         gestureHandling: 'greedy',
                         mapTypeControl: false,
                         streetViewControl: false,
-                        fullscreenControl: false,
+                        fullscreenControl: true,
+                        fullscreenControlOptions: { position: google.maps.ControlPosition.RIGHT_TOP },
                         zoomControl: true,
                         styles: this.darkMode ? darkStyles : [],
                     });
@@ -2126,6 +2443,14 @@ window.addEventListener('popstate', function() {
                 /* ---------- add center markers ---------- */
                 _addCenters() {
                     var self = this;
+                    /* clear old markers */
+                    if (this._markers) {
+                        this._markers.forEach(function(m) { m.setMap(null); });
+                    }
+                    this._markers = [];
+                    this._iws.forEach(function(w) { w.close(); });
+                    this._iws = [];
+
                     var pin = function(color) {
                         return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
                             '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">' +
@@ -2137,15 +2462,13 @@ window.addEventListener('popstate', function() {
                         );
                     };
 
-                    _CENTERS.forEach(function(c) {
+                    /* use global _CENTERS so updates from AJAX reflect here */
+                    (window._CENTERS || []).forEach(function(c) {
                         if (!c.latitude || !c.longitude) return;
 
                         var marker = new google.maps.Marker({
                             map: self._map,
-                            position: {
-                                lat: c.latitude,
-                                lng: c.longitude
-                            },
+                            position: { lat: c.latitude, lng: c.longitude },
                             title: c.name,
                             icon: {
                                 url: pin('#e53e3e'),
@@ -2154,20 +2477,24 @@ window.addEventListener('popstate', function() {
                             },
                         });
 
-                        var iw = new google.maps.InfoWindow({
-                            maxWidth: 260,
-                        });
+                        var iw = new google.maps.InfoWindow({ maxWidth: 260 });
 
                         marker.addListener('click', function() {
-                            self._iws.forEach(function(w) {
-                                w.close();
-                            });
+                            self._iws.forEach(function(w) { w.close(); });
                             iw.setContent(self._buildIW(c));
                             iw.open(self._map, marker);
                         });
 
+                        self._markers.push(marker);
                         self._iws.push(iw);
                     });
+                },
+
+                /* ---------- reload markers after AJAX update ---------- */
+                reloadMarkers() {
+                    if (this._map) {
+                        this._addCenters();
+                    }
                 },
 
                 /* ---------- info window HTML ---------- */

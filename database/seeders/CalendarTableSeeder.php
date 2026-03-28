@@ -19,5 +19,7 @@ class CalendarTableSeeder extends Seeder
         ];
 
         DB::table('calendar')->insert($days);
+        
+        $this->command->info('✅ Calendar table seeded with 6 weekdays (Monday to Saturday)');
     }
 }

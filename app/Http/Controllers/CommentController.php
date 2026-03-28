@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Favorite;
+use App\Models\LearningCenter;
 use App\Models\LearningCentersComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,15 +66,64 @@ class CommentController extends Controller
             $favorite = $existing;
             $message = 'Reyting yangilandi.';
         } else {
-            // Agar mavjud bo‘lmasa yangi yozuv qo‘shamiz
+            // Agar mavjud bo'lmasa yangi yozuv qo'shamiz
             $favorite = Favorite::create($validated);
             $message = 'Reyting saqlandi.';
         }
 
+        // Calculate new total_reyting for the learning center
+        $this->updateTotalReyting($validated['learning_centers_id']);
+
+        // Get updated learning center data
+        $learningCenter = LearningCenter::find($validated['learning_centers_id']);
+
         return response()->json([
             'success' => true,
             'message' => $message,
-            'data' => $favorite
+            'data' => $favorite,
+            'total_reyting' => $learningCenter->total_reyting,
+            'ratings_total' => $learningCenter->ratings_total
+        ]);
+    }
+
+    /**
+     * Update total_reyting for a learning center based on all user ratings
+     */
+    private function updateTotalReyting($learningCenterId)
+    {
+        $learningCenter = LearningCenter::find($learningCenterId);
+        
+        if (!$learningCenter) {
+            return;
+        }
+
+        // Get all user ratings for this learning center
+        $ratings = Favorite::where('learning_centers_id', $learningCenterId)->get();
+        
+        if ($ratings->isEmpty()) {
+            // If no ratings, use the original Google rating
+            $learningCenter->update([
+                'total_reyting' => $learningCenter->rating,
+                'ratings_total' => 0
+            ]);
+            return;
+        }
+
+        // Calculate average of all user ratings
+        $userAverage = $ratings->avg('rating');
+        $userCount = $ratings->count();
+
+        // Calculate weighted average: 50% Google rating, 50% user ratings
+        // If no Google rating, use 100% user ratings
+        if ($learningCenter->rating > 0) {
+            $totalReyting = ($learningCenter->rating + $userAverage) / 2;
+        } else {
+            $totalReyting = $userAverage;
+        }
+
+        $learningCenter->update([
+            'total_reyting' => round($totalReyting, 2),
+            'ratings_total' => $userCount
         ]);
     }
 }

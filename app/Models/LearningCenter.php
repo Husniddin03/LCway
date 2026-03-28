@@ -10,8 +10,9 @@ class LearningCenter extends Model
     use HasFactory;
 
     protected $fillable = [
-        'logo', 'name', 'type', 'about', 'province', 'region',
-        'address', 'location', 'users_id', 'student_count'
+        'logo', 'name', 'type', 'about', 'country', 'province', 'region',
+        'address', 'location', 'status', 'users_id', 
+        'student_count', 'total_reyting', 'rating', 'ratings_total',
     ];
 
     public function user()

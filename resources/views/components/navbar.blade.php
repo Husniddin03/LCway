@@ -159,7 +159,7 @@
                                         $avatarUrl = Storage::url(Auth::user()->avatar);
                                     }
                                 @endphp
-                                <img src="{{ $avatarUrl }}" alt="{{ Auth::user()->name }}"
+                                <img src="{{ $avatarUrl }}" alt="{{ substr(Auth::user()->name, 0, 2) }}"
                                     class="w-8 h-8 rounded-full ring-2 ring-primary-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900">
                             @else
                                 <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random&size=32"

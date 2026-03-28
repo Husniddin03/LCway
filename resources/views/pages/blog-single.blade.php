@@ -87,23 +87,20 @@
                     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
                         <div class="flex flex-wrap items-center justify-between gap-4">
                             <div class="flex items-center space-x-4">
-                                @php
-                                    $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
-                                @endphp
                                 <div class="flex items-center">
                                     <div class="flex text-yellow-400">
                                         @for ($i = 1; $i <= 5; $i++)
                                             @php
-                                                $diff = $average - $i;
+                                                $diff = $LearningCenter->rating - $i;
                                             @endphp
                                             <span
-                                                class="text-2xl {{ $average >= $i ? '' : ($diff > -1 && $diff < 0 ? 'opacity-50' : 'opacity-20') }}">
+                                                class="text-2xl {{ $LearningCenter->rating >= $i ? '' : ($diff > -1 && $diff < 0 ? 'opacity-50' : 'opacity-20') }}">
                                                 ★
                                             </span>
                                         @endfor
                                     </div>
                                     <span
-                                        class="ml-2 text-lg font-semibold text-gray-900 dark:text-white">{{ $average }}</span>
+                                        class="ml-2 text-lg font-semibold text-gray-900 dark:text-white">{{ $LearningCenter->rating }}</span>
                                 </div>
                             </div>
 
@@ -268,7 +265,7 @@
 
                     <!-- button 2 -->
                     <!-- Image Gallery -->
-                    @if ($LearningCenter->images->count() > 0)
+                    @if ($LearningCenter->images && $LearningCenter->images->count() > 0)
                         <div x-show="activeTab === 2" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
                             <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{ __('blog-single.images.title') }}</h2>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -330,7 +327,7 @@
                     <!-- /button 2 -->
                     <!-- button 3 -->
                     <!-- Schedule Section -->
-                    @if ($LearningCenter->calendar->count() > 0)
+                    @if ($LearningCenter->calendar && $LearningCenter->calendar->count() > 0)
                         <div x-show="activeTab === 7" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
                             <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{ __('blog-single.schedule.title') }}</h2>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -388,7 +385,7 @@
                     <!-- /button 3 -->
                     <!-- button 4 -->
                     <!-- Subjects -->
-                    @if ($LearningCenter->subjects->count() > 0)
+                    @if ($LearningCenter->subjects && $LearningCenter->subjects->count() > 0)
                         <div x-show="activeTab === 3" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ __('blog-single.subjects.title') }}</h3>
@@ -512,7 +509,7 @@
                     <!-- /button 4 -->
                     <!-- button 5 -->
                     <!-- Teachers Section -->
-                    @if ($LearningCenter->teachers->count() > 0)
+                    @if ($LearningCenter->teachers && $LearningCenter->teachers->count() > 0)
                         <div x-show="activeTab === 4" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
                             <div class="flex items-center justify-between mb-6">
                                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white">{{ __('blog-single.teachers.title') }}</h2>
@@ -660,7 +657,7 @@
                     <!-- /button 5 -->
                     <!-- button 6 -->
                     <!-- Teacher Announcements Section -->
-                    @if ($LearningCenter->needTeachers->count() > 0)
+                    @if ($LearningCenter->needTeachers && $LearningCenter->needTeachers->count() > 0)
                         <div x-show="activeTab === 7" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
                             <div class="flex items-center justify-between mb-6">
                                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center">
@@ -775,7 +772,7 @@
                     <!-- button 8 -->
                   
                     <!-- Social Networks Section -->
-                    @if ($LearningCenter->connections->count() > 0)
+                    @if ($LearningCenter->connections && $LearningCenter->connections->count() > 0)
                         <div x-show="activeTab === 1" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
                             <div class="flex items-center justify-between mb-6">
                                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center">
@@ -920,7 +917,7 @@
                         <!-- Comments List -->
                         <div id="commentsList" class="space-y-4 max-h-96 overflow-y-auto">
                             <p class="text-gray-600 dark:text-gray-400 sticky top-0 bg-white dark:bg-gray-800 z-10 py-2">{{ __('blog-single.comments.total_comments') }}:
-                                <span id="commentsCount">{{ $LearningCenter->comments->count() }}</span></p>
+                                <span id="commentsCount">{{ $LearningCenter->comments ? $LearningCenter->comments->count() : 0 }}</span></p>
                             @foreach ($LearningCenter->comments->reverse() as $comment)
                                 <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
                                     <div class="flex items-start justify-between">
@@ -1383,6 +1380,16 @@
                             console.error('Server returned error:', data);
                         } else {
                             console.log('Reyting yuborildi:', data);
+                            
+                            // Update total_reyting on the page if returned
+                            if (data.total_reyting !== undefined) {
+                                updateTotalReyting(centerId, data.total_reyting);
+                            }
+                            
+                            // Update rating count if returned
+                            if (data.ratings_total !== undefined) {
+                                updateRatingsTotal(centerId, data.ratings_total);
+                            }
                         }
                     } catch (err) {
                         console.error('JSON.parse xatosi:', err);
@@ -1392,6 +1399,44 @@
                 .catch(error => {
                     console.error('Fetch xatosi:', error);
                 });
+        }
+        
+        function updateTotalReyting(centerId, newTotalReyting) {
+            // Find and update the total_reyting display elements
+            const reytingElements = document.querySelectorAll(`[data-center-id="${centerId}"] .total-reyting-display`);
+            reytingElements.forEach(element => {
+                element.textContent = newTotalReyting.toFixed(1);
+            });
+            
+            // Also update any rating stars if they exist
+            updateRatingStars(centerId, newTotalReyting);
+        }
+        
+        function updateRatingsTotal(centerId, newRatingsTotal) {
+            // Find and update the ratings count display
+            const countElements = document.querySelectorAll(`[data-center-id="${centerId}"] .ratings-count-display`);
+            countElements.forEach(element => {
+                element.textContent = `(${newRatingsTotal} baho)`;
+            });
+        }
+        
+        function updateRatingStars(centerId, reyting) {
+            // Find star rating elements and update their visual state
+            const starContainers = document.querySelectorAll(`[data-center-id="${centerId}"] .rating-stars`);
+            starContainers.forEach(container => {
+                const stars = container.querySelectorAll('.star');
+                const fullStars = Math.floor(reyting);
+                const hasHalfStar = reyting % 1 >= 0.5;
+                
+                stars.forEach((star, index) => {
+                    star.classList.remove('filled', 'half-filled');
+                    if (index < fullStars) {
+                        star.classList.add('filled');
+                    } else if (index === fullStars && hasHalfStar) {
+                        star.classList.add('half-filled');
+                    }
+                });
+            });
         }
 
         // Initialize rating

@@ -22,23 +22,69 @@ class PageController extends Controller
     private function transliterate($text)
     {
         $latinToCyrillic = [
-            'a' => 'а', 'b' => 'б', 'd' => 'д', 'e' => 'е', 'f' => 'ф',
-            'g' => 'г', 'h' => 'ҳ', 'i' => 'и', 'j' => 'ж', 'k' => 'к',
-            'l' => 'л', 'm' => 'м', 'n' => 'н', 'o' => 'о', 'p' => 'п',
-            'q' => 'қ', 'r' => 'р', 's' => 'с', 't' => 'т', 'u' => 'у',
-            'v' => 'в', 'x' => 'х', 'y' => 'й', 'z' => 'з',
-            'o\'' => 'ў', 'g\'' => 'ғ', 'sh' => 'ш', 'ch' => 'ч', 'ng' => 'нг'
+            'a' => 'а',
+            'b' => 'б',
+            'd' => 'д',
+            'e' => 'е',
+            'f' => 'ф',
+            'g' => 'г',
+            'h' => 'ҳ',
+            'i' => 'и',
+            'j' => 'ж',
+            'k' => 'к',
+            'l' => 'л',
+            'm' => 'м',
+            'n' => 'н',
+            'o' => 'о',
+            'p' => 'п',
+            'q' => 'қ',
+            'r' => 'р',
+            's' => 'с',
+            't' => 'т',
+            'u' => 'у',
+            'v' => 'в',
+            'x' => 'х',
+            'y' => 'й',
+            'z' => 'з',
+            'o\'' => 'ў',
+            'g\'' => 'ғ',
+            'sh' => 'ш',
+            'ch' => 'ч',
+            'ng' => 'нг'
         ];
-        
+
         $cyrillicToLatin = [
-            'а' => 'a', 'б' => 'b', 'д' => 'd', 'е' => 'e', 'ф' => 'f',
-            'г' => 'g', 'ҳ' => 'h', 'и' => 'i', 'ж' => 'j', 'к' => 'k',
-            'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o', 'п' => 'p',
-            'қ' => 'q', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u',
-            'в' => 'v', 'х' => 'x', 'й' => 'y', 'з' => 'z',
-            'ў' => 'o\'', 'ғ' => 'g\'', 'ш' => 'sh', 'ч' => 'ch', 'нг' => 'ng'
+            'а' => 'a',
+            'б' => 'b',
+            'д' => 'd',
+            'е' => 'e',
+            'ф' => 'f',
+            'г' => 'g',
+            'ҳ' => 'h',
+            'и' => 'i',
+            'ж' => 'j',
+            'к' => 'k',
+            'л' => 'l',
+            'м' => 'm',
+            'н' => 'n',
+            'о' => 'o',
+            'п' => 'p',
+            'қ' => 'q',
+            'р' => 'r',
+            'с' => 's',
+            'т' => 't',
+            'у' => 'u',
+            'в' => 'v',
+            'х' => 'x',
+            'й' => 'y',
+            'з' => 'z',
+            'ў' => 'o\'',
+            'ғ' => 'g\'',
+            'ш' => 'sh',
+            'ч' => 'ch',
+            'нг' => 'ng'
         ];
-        
+
         // Check if text contains Latin characters
         if (preg_match('/[a-zA-Z]/', $text)) {
             // Transliterate to Cyrillic
@@ -64,30 +110,30 @@ class PageController extends Controller
     public function blogGrid(Request $request)
     {
         $validated = $request->validate([
-            'latitude'     => 'nullable|numeric',
-            'longitude'    => 'nullable|numeric',
-            'radius'       => 'nullable|numeric',
-            'searchText'   => 'nullable|string|max:255',
-            'subject_id'   => 'nullable|exists:subjects,id',
-            'type'         => 'nullable|string|max:255',
-            'name'         => 'nullable|in:asc,desc',
-            'distance'     => 'nullable|in:asc,desc',
-            'favorites'    => 'nullable|in:asc,desc',
-            'sort'         => 'nullable|in:name,distance,favorites',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'radius' => 'nullable|numeric',
+            'searchText' => 'nullable|string|max:255',
+            'subject_id' => 'nullable|exists:subjects,id',
+            'type' => 'nullable|string|max:255',
+            'name' => 'nullable|in:asc,desc',
+            'distance' => 'nullable|in:asc,desc',
+            'favorites' => 'nullable|in:asc,desc',
+            'sort' => 'nullable|in:name,distance,favorites',
             'needTeachers' => 'nullable|exists:subjects,id',
-            'dayMode'      => 'nullable|in:true',
-            'page'         => 'nullable|integer|min:1',
-            'per_page'     => 'nullable|integer|min:1|max:50',
+            'dayMode' => 'nullable|in:true',
+            'page' => 'nullable|integer|min:1',
+            'per_page' => 'nullable|integer|min:1|max:50',
         ]);
 
-        $page    = $validated['page']     ?? 1;
+        $page = $validated['page'] ?? 1;
         $perPage = $validated['per_page'] ?? 12;
 
         // User location — only when explicitly provided
         $userLocation = null;
         if (!empty($validated['latitude']) && !empty($validated['longitude'])) {
             $userLocation = [
-                'latitude'  => (float) $validated['latitude'],
+                'latitude' => (float) $validated['latitude'],
                 'longitude' => (float) $validated['longitude'],
             ];
         }
@@ -99,9 +145,9 @@ class PageController extends Controller
 
         // Search filter
         if (!empty($validated['searchText'])) {
-            $searchText        = $validated['searchText'];
+            $searchText = $validated['searchText'];
             $transliteratedText = $this->transliterate($searchText);
-            $words             = explode(' ', $searchText);
+            $words = explode(' ', $searchText);
             $transliteratedWords = explode(' ', $transliteratedText);
 
             $baseQuery->selectRaw("
@@ -115,14 +161,14 @@ class PageController extends Controller
                 ", ["%{$searchText}%", "%{$transliteratedText}%", "%{$words[0]}%", "%{$transliteratedWords[0]}%"])
                 ->where(function ($q) use ($searchText, $transliteratedText, $words, $transliteratedWords) {
                     $q->where('name', 'LIKE', "%{$searchText}%")
-                      ->orWhere('name', 'LIKE', "%{$transliteratedText}%");
+                        ->orWhere('name', 'LIKE', "%{$transliteratedText}%");
                     foreach (array_merge($words, $transliteratedWords) as $word) {
                         $q->orWhere(function ($qq) use ($word) {
-                            $qq->where('name',     'LIKE', "%{$word}%")
-                               ->orWhere('province', 'LIKE', "%{$word}%")
-                               ->orWhere('region',   'LIKE', "%{$word}%")
-                               ->orWhere('address',  'LIKE', "%{$word}%")
-                               ->orWhere('type',     'LIKE', "%{$word}%");
+                            $qq->where('name', 'LIKE', "%{$word}%")
+                                ->orWhere('province', 'LIKE', "%{$word}%")
+                                ->orWhere('region', 'LIKE', "%{$word}%")
+                                ->orWhere('address', 'LIKE', "%{$word}%")
+                                ->orWhere('type', 'LIKE', "%{$word}%");
                         });
                     }
                 });
@@ -146,7 +192,7 @@ class PageController extends Controller
         if ($userLocation) {
             $lat = $userLocation['latitude'];
             $lng = $userLocation['longitude'];
-            
+
             // Haversine formula directly in SQL
             $haversine = "(
                 (CASE WHEN location LIKE '%,%' THEN
@@ -159,7 +205,7 @@ class PageController extends Controller
                     )
                 ELSE NULL END)
             )";
-            
+
             $baseQuery->selectRaw("{$haversine} AS distance", [$lat, $lng, $lat]);
 
             if (!empty($validated['radius'])) {
@@ -171,9 +217,9 @@ class PageController extends Controller
         // Map Query: Lightweight, limited to 200 centers
         // -------------------------------------------------------
         $mapQuery = clone $baseQuery;
-        
+
         $mapQuery->addSelect(['id', 'name', 'location', 'address']);
-        
+
         // Sorting for Map
         if (!empty($validated['sort'])) {
             $dir = $validated[$validated['sort']] ?? 'asc';
@@ -196,7 +242,7 @@ class PageController extends Controller
         $listQuery = clone $baseQuery;
         $listQuery->addSelect('learning_centers.*'); // Ensure all main table columns exist
         $listQuery->withAvg('favorites', 'rating')
-                  ->with('needTeachers.subject');
+            ->with('needTeachers.subject');
 
         // Sorting for List
         if (!empty($validated['sort'])) {
@@ -221,24 +267,24 @@ class PageController extends Controller
         // DB level Pagination
         $paginator = $listQuery->paginate($perPage, ['*'], 'page', $page);
         $LearningCentersArray = $paginator->items();
-        
+
         $pagination = [
-            'current_page'   => $paginator->currentPage(),
-            'per_page'       => $paginator->perPage(),
-            'total'          => $paginator->total(),
-            'last_page'      => $paginator->lastPage(),
+            'current_page' => $paginator->currentPage(),
+            'per_page' => $paginator->perPage(),
+            'total' => $paginator->total(),
+            'last_page' => $paginator->lastPage(),
             'has_more_pages' => $paginator->hasMorePages(),
         ];
 
         // Computed values needed for template
         foreach ($LearningCentersArray as $center) {
             $center->favorite = round($center->favorites_avg_rating ?? 0, 1);
-            $center->date     = $center->created_at->diffForHumans();
+            $center->date = $center->created_at->diffForHumans();
             if (isset($center->distance)) {
-                $center->distance = round((float)$center->distance, 2);
+                $center->distance = round((float) $center->distance, 2);
             }
         }
-        
+
         $LearningCenters = collect($LearningCentersArray);
 
         // -------------------------------------------------------
@@ -328,20 +374,25 @@ class PageController extends Controller
             }
 
             return response()->json([
-                'success'    => true,
-                'html'       => $html,
-                'count'      => $LearningCenters->count(),
-                'centers'    => $allCentersForMap,
+                'success' => true,
+                'html' => $html,
+                'count' => $LearningCenters->count(),
+                'centers' => $allCentersForMap,
                 'pagination' => $pagination,
             ]);
         }
 
         $subjects = Subject::all();
-        $types    = LearningCenter::distinct()->pluck('type')->filter()->sort()->values();
+        $types = LearningCenter::distinct()->pluck('type')->filter()->sort()->values();
 
         return view('pages.blog-grid', compact(
-            'LearningCenters', 'subjects', 'validated', 'pagination',
-            'types', 'userLocation', 'allCentersForMap'
+            'LearningCenters',
+            'subjects',
+            'validated',
+            'pagination',
+            'types',
+            'userLocation',
+            'allCentersForMap'
         ));
     }
 
@@ -353,13 +404,13 @@ class PageController extends Controller
     private function hasActiveFilters($validated)
     {
         $filterFields = ['searchText', 'subject_id', 'type', 'needTeachers', 'dayMode'];
-        
+
         foreach ($filterFields as $field) {
             if (!empty($validated[$field])) {
                 return true;
             }
         }
-        
+
         return false;
     }
 

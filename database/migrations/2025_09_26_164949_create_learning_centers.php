@@ -59,12 +59,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('learning_centers_id')->constrained('learning_centers')->onDelete('cascade');
             $table->text('image')->nullable();
-            $table->string('image_path')->nullable()->after('image');
-            $table->string('image_url')->nullable()->after('image_path');
-            $table->text('photo_reference')->nullable()->after('image_url');
-            $table->integer('width')->default(0)->after('photo_reference');
-            $table->integer('height')->default(0)->after('width');
-            $table->boolean('is_primary')->default(false)->after('height');
+            $table->string('image_path')->nullable();
+            $table->string('image_url')->nullable();
+            $table->text('photo_reference')->nullable();
+            $table->integer('width')->default(0);
+            $table->integer('height')->default(0);
+            $table->boolean('is_primary')->default(false);
             $table->timestamps();
         });
 

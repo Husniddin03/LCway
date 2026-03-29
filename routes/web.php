@@ -56,9 +56,10 @@ Route::fallback(function () {
     return response()->view('pages.404', [], 404);
 });
 
-// Route::get('setwebhook', function () {
-//     $response = Telegram::setWebhook(['url' => 'https://fbd5e36f17a6.ngrok-free.app/api/telegram/webhook']);
-// });
+Route::get('setwebhook', function () {
+    $response = Telegram::setWebhook(['url' => 'https://obesely-squirrellike-byron.ngrok-free.dev/api/telegram/webhook']);
+    return $response;
+});
 
 // google auth uchun route lar
 Route::get('/auth/google', function () {
@@ -174,3 +175,4 @@ Route::middleware('auth')->group(function () {
     // logout uchun route
     Route::post('logout', [LogController::class, 'logout'])->name('logout');
 });
+require __DIR__.'/test_bot.php';

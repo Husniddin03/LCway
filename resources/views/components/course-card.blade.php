@@ -5,8 +5,15 @@
     <!-- Course Image -->
     <div class="relative {{ $compact ? 'h-40' : 'h-48' }} overflow-hidden">
         @if ($course->image)
-            <img src="{{ asset($course->image) }}" alt="{{ $course->title }}"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <x-optimized-image 
+                src="{{ asset($course->image) }}" 
+                alt="{{ $course->title }}"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                width="400"
+                height="{{ $compact ? '160' : '192' }}"
+                eager="{{ true }}"
+                fetchpriority="high"
+            />
         @else
             <div class="w-full h-full bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center">
                 <svg class="w-16 h-16 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -471,13 +471,21 @@
                         <div class="relative h-48 overflow-hidden">
                             @if($LearningCenter->logo)
                                 @if(str_starts_with($LearningCenter->logo, 'http://') || str_starts_with($LearningCenter->logo, 'https://'))
-                                    <img src="{{ $LearningCenter->logo }}"
+                                    <x-optimized-image 
+                                        src="{{ $LearningCenter->logo }}"
                                         alt="{{ $LearningCenter->name }}"
-                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                        width="400"
+                                        height="192"
+                                    />
                                 @else
-                                    <img src="{{ asset('storage/' . $LearningCenter->logo) }}"
+                                    <x-optimized-image 
+                                        src="{{ asset('storage/' . $LearningCenter->logo) }}"
                                         alt="{{ $LearningCenter->name }}"
-                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                        width="400"
+                                        height="192"
+                                    />
                                 @endif
                             @else
                                 <div class="w-full h-48 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-indigo-600 dark:to-purple-800 flex items-center justify-center">

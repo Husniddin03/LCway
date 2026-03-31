@@ -10,6 +10,7 @@ use App\Models\NeedTeacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use function PHPUnit\Framework\isNull;
@@ -104,8 +105,28 @@ class PageController extends Controller
     }
     public function index()
     {
-        $centers = LearningCenter::all();
-        return view('pages.index', compact('centers'));
+        // Cache popular courses and categories for 60 minutes
+        $centers = Cache::remember('popular_courses', 60, function () {
+            return LearningCenter::with(['user', 'images'])
+                ->where('status', 'active')
+                ->orderBy('rating', 'desc')
+                ->limit(8)
+                ->get();
+        });
+
+        $subjects = Cache::remember('subject_categories', 60, function () {
+            return Subject::orderBy('name')->get();
+        });
+
+        $types = Cache::remember('course_types', 60, function () {
+            return LearningCenter::distinct()
+                ->pluck('type')
+                ->filter()
+                ->sort()
+                ->values();
+        });
+
+        return view('pages.index', compact('centers', 'subjects', 'types'));
     }
     public function blogGrid(Request $request)
     {

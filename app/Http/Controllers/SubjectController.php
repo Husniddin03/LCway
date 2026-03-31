@@ -57,7 +57,7 @@ class SubjectController extends Controller
      */
     public function edit(string $id)
     {
-        $subjectOfCenter = SubjectsOfLearningCenter::findOrFail($id);
+        $subjectOfCenter = SubjectsOfLearningCenter::with('subject')->findOrFail($id);
         $subjects = Subject::all();
         $LearningCenter = LearningCenter::find($subjectOfCenter->learning_centers_id);
         return view('subject.edit', compact('subjectOfCenter', 'subjects', 'LearningCenter'));

@@ -10,16 +10,29 @@ use App\Models\LearningCentersConnect;
 use App\Models\LearningCentersImage;
 use App\Models\Subject;
 use App\Models\SubjectsOfLearningCenter;
+use App\Services\ImageOptimizationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 
 class CourseController extends Controller
 {
+    protected ImageOptimizationService $imageService;
+
+    public function __construct(ImageOptimizationService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
     public function index()
     {
-        $centers = LearningCenter::with(['user'])->latest()->paginate(6);
+        $centers = LearningCenter::with([
+            'user', 
+            'images', 
+            'subjects.subject', 
+            'teachers'
+        ])->latest()->paginate(6);
         return view('pages.blog-grid', compact('centers'));
     }
 
@@ -115,7 +128,7 @@ class CourseController extends Controller
         $validated['users_id'] = Auth::id();
 
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('uploads/logos', 'public');
+            $path = $this->imageService->optimizeImage($request->file('logo'), 'uploads/logos');
             $validated['logo'] = $path;
         }
 
@@ -124,7 +137,7 @@ class CourseController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('uploads/centers', 'public');
+                $path = $this->imageService->optimizeImage($image, 'uploads/centers');
                 LearningCentersImage::create([
                     'learning_centers_id' =>  $center->id,
                     'image' => $path,
@@ -132,13 +145,25 @@ class CourseController extends Controller
             }
         }
 
+        // Clear relevant caches
+        Cache::forget('popular_courses');
+        Cache::forget('course_types');
+        Cache::forget('subject_categories');
+
         return redirect()->route('blog-single', $center->id)
             ->with('success', 'O‘quv markaz muvaffaqiyatli qo‘shildi.');
     }
 
     public function show($id)
     {
-        $LearningCenter = LearningCenter::findOrFail($id);
+        $LearningCenter = LearningCenter::with([
+            'user', 
+            'images', 
+            'subjects.subject', 
+            'teachers', 
+            'comments.user',
+            'favorites.user'
+        ])->findOrFail($id);
 
         return view('pages.blog-single', compact('LearningCenter'));
     }
@@ -146,7 +171,11 @@ class CourseController extends Controller
 
     public function edit($id)
     {
-        $center = LearningCenter::findOrFail($id);
+        $center = LearningCenter::with([
+            'images', 
+            'subjects.subject', 
+            'teachers'
+        ])->findOrFail($id);
         Gate::authorize('isOun', $center);
         
         // Get types from LearningCenter database
@@ -229,7 +258,7 @@ class CourseController extends Controller
 
         // Handle logo update
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('uploads/logos', 'public');
+            $path = $this->imageService->optimizeImage($request->file('logo'), 'uploads/logos');
             $validated['logo'] = $path;
             // Delete old logo
             if ($center->logo && Storage::disk('public')->exists($center->logo)) {
@@ -249,7 +278,7 @@ class CourseController extends Controller
             
             // Upload new images
             foreach ($request->file('images') as $image) {
-                $path = $image->store('uploads/learning-centers', 'public');
+                $path = $this->imageService->optimizeImage($image, 'uploads/centers');
                 $center->images()->create([
                     'image' => $path,
                     'learning_centers_id' => $center->id

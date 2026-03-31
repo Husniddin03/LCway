@@ -20,7 +20,7 @@ class TeacherController extends Controller
 
     public function edit(string $id)
     {
-        $teacher = Teacher::findOrFail($id);
+        $teacher = Teacher::with('subject')->findOrFail($id);
         $subjects = Subject::all();
         $LearningCenter = LearningCenter::find($teacher->learning_centers_id);
         Gate::authorize('isOun', $LearningCenter);

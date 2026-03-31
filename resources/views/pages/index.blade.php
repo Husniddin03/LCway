@@ -124,15 +124,37 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div class="relative">
                         <div class="relative z-0">
-                            <img src="{{ asset('images/we1.png') }}" alt="About" class="rounded-2xl shadow-xl">
+                            <x-optimized-image 
+                                src="{{ asset('images/we1.png') }}" 
+                                alt="About" 
+                                class="rounded-2xl shadow-xl"
+                                width="600"
+                                height="400"
+                                eager="{{ true }}"
+                                fetchpriority="high"
+                            />
                         </div>
                         <div class="absolute -bottom-4 -right-4 z-10">
-                            <img src="{{ asset('images/we2.png') }}" alt="About"
-                                class="rounded-2xl shadow-xl opacity-80 w-32 h-32 object-cover">
+                            <x-optimized-image 
+                                src="{{ asset('images/we2.png') }}" 
+                                alt="About"
+                                class="rounded-2xl shadow-xl opacity-80 w-32 h-32 object-cover"
+                                width="128"
+                                height="128"
+                                eager="{{ true }}"
+                                fetchpriority="high"
+                            />
                         </div>
                         <div class="absolute -top-4 -left-4 z-10">
-                            <img src="{{ asset('images/we3.png') }}" alt="About"
-                                class="rounded-2xl shadow-xl opacity-60 w-32 h-32 object-cover">
+                            <x-optimized-image 
+                                src="{{ asset('images/we3.png') }}" 
+                                alt="About"
+                                class="rounded-2xl shadow-xl opacity-60 w-32 h-32 object-cover"
+                                width="128"
+                                height="128"
+                                eager="{{ true }}"
+                                fetchpriority="high"
+                            />
                         </div>
                     </div>
 
@@ -315,11 +337,25 @@
                                 <div class="relative overflow-hidden rounded-t-2xl">
                                     @if ($center->logo)
                                         @if(str_starts_with($center->logo, 'http://') || str_starts_with($center->logo, 'https://'))
-                                            <img src="{{ $center->logo }}" alt="{{ $center->name }}"
-                                                class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                                            <x-optimized-image 
+                                                src="{{ $center->logo }}" 
+                                                alt="{{ $center->name }}"
+                                                class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                                width="400"
+                                                height="192"
+                                                eager="{{ true }}"
+                                                fetchpriority="high"
+                                            />
                                         @else
-                                            <img src="{{ asset('storage/' . $center->logo) }}" alt="{{ $center->name }}"
-                                                class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                                            <x-optimized-image 
+                                                src="{{ asset('storage/' . $center->logo) }}" 
+                                                alt="{{ $center->name }}"
+                                                class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                                width="400"
+                                                height="192"
+                                                eager="{{ true }}"
+                                                fetchpriority="high"
+                                            />
                                         @endif
                                     @else
                                         <div
@@ -476,8 +512,13 @@
                     <!-- Testimonial 1 -->
                     <x-card hover class="text-center">
                         <div class="mb-6">
-                            <img src="https://ui-avatars.com/api/?name=Ali+Valiyev&background=random&size=100"
-                                alt="Ali Valiyev" class="w-20 h-20 rounded-full mx-auto mb-4">
+                            <x-optimized-image 
+                                src="https://ui-avatars.com/api/?name=Ali+Valiyev&background=random&size=100"
+                                alt="Ali Valiyev" 
+                                class="w-20 h-20 rounded-full mx-auto mb-4"
+                                width="80"
+                                height="80"
+                            />
                             <div class="flex justify-center mb-2">
                                 @for ($i = 1; $i <= 5; $i++)
                                     <span class="text-yellow-400 text-lg">★</span>
@@ -494,8 +535,13 @@
                     <!-- Testimonial 2 -->
                     <x-card hover class="text-center">
                         <div class="mb-6">
-                            <img src="https://ui-avatars.com/api/?name=Malika+Karimova&background=random&size=100"
-                                alt="Malika Karimova" class="w-20 h-20 rounded-full mx-auto mb-4">
+                            <x-optimized-image 
+                                src="https://ui-avatars.com/api/?name=Malika+Karimova&background=random&size=100"
+                                alt="Malika Karimova" 
+                                class="w-20 h-20 rounded-full mx-auto mb-4"
+                                width="80"
+                                height="80"
+                            />
                             <div class="flex justify-center mb-2">
                                 @for ($i = 1; $i <= 5; $i++)
                                     <span class="text-yellow-400 text-lg">★</span>
@@ -512,8 +558,13 @@
                     <!-- Testimonial 3 -->
                     <x-card hover class="text-center">
                         <div class="mb-6">
-                            <img src="https://ui-avatars.com/api/?name=Javohir+Toshmatov&background=random&size=100"
-                                alt="Javohir Toshmatov" class="w-20 h-20 rounded-full mx-auto mb-4">
+                            <x-optimized-image 
+                                src="https://ui-avatars.com/api/?name=Javohir+Toshmatov&background=random&size=100"
+                                alt="Javohir Toshmatov" 
+                                class="w-20 h-20 rounded-full mx-auto mb-4"
+                                width="80"
+                                height="80"
+                            />
                             <div class="flex justify-center mb-2">
                                 @for ($i = 1; $i <= 4; $i++)
                                     <span class="text-yellow-400 text-lg">★</span>

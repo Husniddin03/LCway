@@ -4,7 +4,13 @@
             <!-- Company Info -->
             <div class="space-y-4">
                 <div class="flex items-center space-x-3">
-                    <img src="{{ asset('images/2.png') }}" alt="FindCourse" class="w-10 h-10 rounded-full">
+                    <x-optimized-image 
+                        src="{{ asset('images/2.png') }}" 
+                        alt="FindCourse" 
+                        class="w-10 h-10 rounded-full"
+                        width="40"
+                        height="40"
+                    />
                     <span class="text-xl font-bold gradient-text">FindCourse</span>
                 </div>
                 <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">

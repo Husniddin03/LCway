@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\LearningCenter;
 use App\Models\LearningCentersImage;
+use App\Services\ImageOptimizationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
+    protected ImageOptimizationService $imageService;
+
+    public function __construct(ImageOptimizationService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
     public function edit(string $id)
     {
         $LearningCenter = LearningCenter::find($id);
@@ -35,7 +42,8 @@ class ImageController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('uploads/centers', 'public');
+                // Use the optimization service to convert to WebP and resize
+                $path = $this->imageService->optimizeImage($image, 'uploads/centers');
                 LearningCentersImage::create([
                     'learning_centers_id' =>  $centerId,
                     'image' => $path,

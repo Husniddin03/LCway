@@ -125,7 +125,7 @@
                     <div class="relative">
                         <div class="relative z-0">
                             <x-optimized-image 
-                                src="{{ asset('images/we1.png') }}" 
+                                src="{{ asset('images/we1.webp') }}" 
                                 alt="About" 
                                 class="rounded-2xl shadow-xl"
                                 width="600"
@@ -136,7 +136,7 @@
                         </div>
                         <div class="absolute -bottom-4 -right-4 z-10">
                             <x-optimized-image 
-                                src="{{ asset('images/we2.png') }}" 
+                                src="{{ asset('images/we2.webp') }}" 
                                 alt="About"
                                 class="rounded-2xl shadow-xl opacity-80 w-32 h-32 object-cover"
                                 width="128"
@@ -147,7 +147,7 @@
                         </div>
                         <div class="absolute -top-4 -left-4 z-10">
                             <x-optimized-image 
-                                src="{{ asset('images/we3.png') }}" 
+                                src="{{ asset('images/we3.webp') }}" 
                                 alt="About"
                                 class="rounded-2xl shadow-xl opacity-60 w-32 h-32 object-cover"
                                 width="128"
@@ -175,7 +175,7 @@
                                         src="{{ asset('videos/aboutme.mp4') }}" 
                                         class="w-full h-85 object-cover rounded-lg shadow-md group-hover:shadow-lg transition-shadow"
                                         muted
-                                        preload="metadata"
+                                        preload="none"
                                         id="videoThumbnail">
                                     </video>
                                     <div class="absolute inset-0 bg-black/30 rounded-lg flex items-center justify-center group-hover:bg-black/20 transition-colors">
@@ -205,7 +205,7 @@
                                 </button>
                                 
                                 <!-- Video Player -->
-                                <video id="videoPlayer" class="w-full rounded-lg shadow-2xl" controls>
+                                <video id="videoPlayer" class="w-full rounded-lg shadow-2xl" controls preload="none">
                                     <source src="{{ asset('videos/aboutme.mp4') }}" type="video/mp4">
                                     {{ __('index.about.video_not_supported') }}.
                                 </video>

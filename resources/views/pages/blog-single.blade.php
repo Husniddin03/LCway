@@ -904,6 +904,7 @@
                                 @csrf
                                 <input type="hidden" name="learning_centers_id" value="{{ $LearningCenter->id }}">
                                 <div class="flex space-x-4 relative">
+                                    <label for="commentInput" class="sr-only">{{ __('blog-single.comments.comment_placeholder') }}</label>
                                     <input name="comment" type="text" id="commentInput"
                                         placeholder="{{ __('blog-single.comments.comment_placeholder') }}"
                                         class="text-gray-900 bg-white dark:text-white flex-1 px-2 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white">

@@ -253,7 +253,7 @@ class PageController extends Controller
         // -------------------------------------------------------
         $mapQuery = clone $baseQuery;
 
-        $mapQuery->addSelect(['id', 'name', 'location', 'address']);
+        $mapQuery->addSelect(['id', 'name', 'location', 'address', 'logo']);
 
         // Sorting for Map
         if (!empty($validated['sort'])) {
@@ -269,7 +269,32 @@ class PageController extends Controller
             $mapQuery->latest('id');
         }
 
-        $allCentersForMap = $mapQuery->limit(200)->get()->toArray();
+        $centersForMap = $mapQuery->limit(200)->get()->map(function ($center) {
+            $coords = [];
+            if (!empty($center->location) && is_string($center->location)) {
+                $coords = array_map('trim', explode(',', $center->location));
+            }
+
+            $lat = (float) ($coords[0] ?? 0);
+            $lng = (float) ($coords[1] ?? 0);
+
+            $image = null;
+            if (!empty($center->logo)) {
+                $image = (str_starts_with($center->logo, 'http://') || str_starts_with($center->logo, 'https://'))
+                    ? $center->logo
+                    : asset('storage/' . $center->logo);
+            }
+
+            return [
+                'id' => $center->id,
+                'name' => $center->name,
+                'lat' => $lat,
+                'lng' => $lng,
+                'address' => $center->address ?? '',
+                'image' => $image,
+                'detail_url' => route('blog-single', $center->id),
+            ];
+        })->values()->all();
 
         // -------------------------------------------------------
         // List Query: Paginated, with Eager Loaded Relations
@@ -412,7 +437,7 @@ class PageController extends Controller
                 'success' => true,
                 'html' => $html,
                 'count' => $LearningCenters->count(),
-                'centers' => $allCentersForMap,
+                'centers' => $centersForMap,
                 'pagination' => $pagination,
             ]);
         }
@@ -427,7 +452,7 @@ class PageController extends Controller
             'pagination',
             'types',
             'userLocation',
-            'allCentersForMap'
+            'centersForMap'
         ));
     }
 

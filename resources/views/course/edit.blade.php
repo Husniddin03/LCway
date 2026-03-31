@@ -717,65 +717,119 @@
         }
 
         // ===== MAP =====
-        let map, marker, geocoder;
+        let map, marker;
         
         const DEFAULT_LAT = {{ $existingLat }};
         const DEFAULT_LNG = {{ $existingLng }};
 
         function initMap() {
-            const center = { lat: DEFAULT_LAT, lng: DEFAULT_LNG };
+            const center = [DEFAULT_LAT, DEFAULT_LNG];
 
-            map = new google.maps.Map(document.getElementById('map'), {
-                center,
-                zoom: 12,
-                mapTypeControl: true,
-                streetViewControl: false,
-                fullscreenControl: true,
-                styles: [{ featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] }]
+            // Initialize Leaflet map
+            map = L.map('map').setView(center, 13);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Create custom icon
+            const customIcon = L.divIcon({
+                html: '<div style="background-color: #4f46e5; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8]
             });
 
-            geocoder = new google.maps.Geocoder();
-
-            marker = new google.maps.Marker({
-                map,
-                position: center,
+            // Add marker
+            marker = L.marker(center, {
+                icon: customIcon,
                 draggable: true,
-                animation: google.maps.Animation.DROP,
                 title: "{{ __('course-create.map.marker_title') }}"
-            });
+            }).addTo(map);
 
             // Auto-detect current location on load
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     pos => {
-                        const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-                        map.setCenter(loc);
-                        map.setZoom(15);
-                        marker.setPosition(loc);
-                        reverseGeocode(loc.lat, loc.lng);
+                        const loc = [pos.coords.latitude, pos.coords.longitude];
+                        map.setView(loc, 15);
+                        marker.setLatLng(loc);
+                        updateCoordinates(loc[0], loc[1]);
                         showNotification('{{ __('course-create.error.location_found') }}', 'success');
                     },
                     () => {
-                        // Silently fallback to Samarqand
-                        reverseGeocode(DEFAULT_LAT, DEFAULT_LNG);
+                        // Fallback to default location
+                        updateCoordinates(DEFAULT_LAT, DEFAULT_LNG);
                     },
                     { timeout: 8000 }
                 );
             } else {
-                reverseGeocode(DEFAULT_LAT, DEFAULT_LNG);
+                updateCoordinates(DEFAULT_LAT, DEFAULT_LNG);
             }
 
             // Map click
-            map.addListener('click', function(e) {
-                marker.setPosition(e.latLng);
-                marker.setAnimation(google.maps.Animation.DROP);
-                reverseGeocode(e.latLng.lat(), e.latLng.lng());
+            map.on('click', function(e) {
+                marker.setLatLng(e.latlng);
+                updateCoordinates(e.latlng.lat, e.latlng.lng);
             });
 
             // Marker drag
-            marker.addListener('dragend', function(e) {
-                reverseGeocode(e.latLng.lat(), e.latLng.lng());
+            marker.on('dragend', function(e) {
+                const position = e.target.getLatLng();
+                updateCoordinates(position.lat, position.lng);
             });
+        }
+
+        // Update coordinate fields and address
+        function updateCoordinates(lat, lng) {
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+            
+            // Update address using Nominatim (free reverse geocoding)
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.display_name) {
+                        document.getElementById('address').value = data.display_name;
+                        
+                        // Try to update region and district based on address
+                        const address = data.address;
+                        if (address) {
+                            const regionSel = document.getElementById('region');
+                            const districtSel = document.getElementById('district');
+                            
+                            // Update region
+                            if (address.state && regionSel) {
+                                for (const opt of regionSel.options) {
+                                    if (opt.value && address.state.toLowerCase().includes(opt.value.toLowerCase())) {
+                                        opt.selected = true;
+                                        regionSel.dispatchEvent(new Event('change'));
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            // Update district
+                            if (address.city || address.town || address.village) {
+                                const district = address.city || address.town || address.village;
+                                setTimeout(() => {
+                                    if (districtSel) {
+                                        for (const opt of districtSel.options) {
+                                            if (opt.value && district.toLowerCase().includes(opt.value.toLowerCase())) {
+                                                opt.selected = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }, 150);
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Reverse geocoding failed:', error);
+                });
         }
 
         // Manual "Joriy joylashuv" button
@@ -787,12 +841,10 @@
             showNotification('{{ __('course-create.error.location_detecting') }}', 'info');
             navigator.geolocation.getCurrentPosition(
                 pos => {
-                    const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-                    map.setCenter(loc);
-                    map.setZoom(15);
-                    marker.setPosition(loc);
-                    marker.setAnimation(google.maps.Animation.DROP);
-                    reverseGeocode(loc.lat, loc.lng);
+                    const loc = [pos.coords.latitude, pos.coords.longitude];
+                    map.setView(loc, 15);
+                    marker.setLatLng(loc);
+                    updateCoordinates(loc[0], loc[1]);
                     showNotification('{{ __('course-create.error.location_found') }}', 'success');
                 },
                 () => showNotification('{{ __('course-create.error.location_failed') }}', 'error'),
@@ -800,48 +852,8 @@
             );
         }
 
-        // Reverse geocode + fill form fields
-        // Controller `store()` ichida: $location = $request->latitude . ',' . $request->longitude;
-        // Shuning uchun bu yerda faqat latitude va longitude hidden fieldlarini to'ldiramiz
-        function reverseGeocode(lat, lng) {
-            document.getElementById('latitude').value = lat;
-            document.getElementById('longitude').value = lng;
-
-            geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-                if (status !== 'OK' || !results[0]) return;
-
-                document.getElementById('address').value = results[0].formatted_address;
-
-                const comps = results[0].address_components;
-                const regionComp   = comps.find(c => c.types.includes('administrative_area_level_1'));
-                const districtComp = comps.find(c => c.types.includes('administrative_area_level_2'));
-
-                const regionSel = document.getElementById('region');
-                if (regionComp) {
-                    for (const opt of regionSel.options) {
-                        if (opt.value && regionComp.long_name.includes(opt.value)) {
-                            opt.selected = true;
-                            regionSel.dispatchEvent(new Event('change'));
-                            break;
-                        }
-                    }
-                }
-
-                if (districtComp) {
-                    setTimeout(() => {
-                        for (const opt of document.getElementById('district').options) {
-                            if (opt.value && districtComp.long_name.includes(opt.value)) {
-                                opt.selected = true;
-                                break;
-                            }
-                        }
-                    }, 150);
-                }
-            });
-        }
 
         window.initMap = initMap;
     </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=initMap" async defer></script>
 </x-layout>

@@ -49,7 +49,7 @@
                                                 @if ($connection->connection->icon)
                                                     <i class="{{ $connection->connection->icon }} text-blue-500"></i>
                                                 @else
-                                                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg" class="w-5 h-5 opacity-80" alt="" />
+                                                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg" class="w-5 h-5 opacity-80" width="20" height="20" alt="{{ $connection->connection->name }}" />
                                                 @endif
                                             </div>
                                             <div class="min-w-0">

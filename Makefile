@@ -35,6 +35,9 @@ status:
 
 # Default deployment command
 deploy:
+	@echo "🔄 Pulling latest changes..."
+	git pull origin main
+
 	@echo "🚀 Starting deployment..."
 	
 	# 1. Install dependencies

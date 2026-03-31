@@ -53,13 +53,11 @@
                     </button>
 
                     <!-- Filter by maps -->
-
-
                     {{-- ========== COMPONENT ========== --}}
                     <div class="pointer-events-auto relative" x-data="mapFilterComp()" x-init="boot()">
 
                         {{-- Trigger --}}
-                        <button type="button" class="mf-btn whitespace-nowrap flex-shrink-0" :class="open && 'is-open'" @click="toggle()">
+                        <button type="button" class="mf-btn whitespace-nowrap flex-shrink-0" :class="isPanelOpen && 'is-open'" @click="toggle()">
                             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -75,12 +73,12 @@
                         </button>
 
                         {{-- Panel --}}
-                        <div class="mf-panel" x-show="open" x-transition:enter="transition ease-out duration-200"
+                        <div class="mf-panel" x-show="isPanelOpen" x-transition:enter="transition ease-out duration-200"
                             x-transition:enter-start="opacity-0 -translate-y-2 scale-95"
                             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
                             x-transition:leave="transition ease-in duration-150"
                             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-                            x-transition:leave-end="opacity-0 -translate-y-2 scale-95" @click.outside="open = false"
+                            x-transition:leave-end="opacity-0 -translate-y-2 scale-95" @click.outside="isPanelOpen = false"
                             style="display:none;">
 
                             {{-- Header --}}
@@ -100,7 +98,7 @@
                                         <div class="mf-hsub">{{ __('blog-grid.search_filter.map_subtitle') }}</div>
                                     </div>
                                 </div>
-                                <button type="button" class="mf-close-btn" @click="open = false">
+                                <button type="button" class="mf-close-btn" @click="isPanelOpen = false">
                                     <svg width="18" height="18" fill="none" stroke="currentColor"
                                         stroke-width="2" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -136,7 +134,7 @@
                                 {{-- Map size buttons --}}
                                 <div class="mf-map-size-btns">
                                     <button type="button" class="mf-sizebtn" title="Kattalashtirish"
-                                        @click.stop="$el.closest('.mf-panel').classList.toggle('mf-expanded'); $nextTick(() => { if (_map) google.maps.event.trigger(_map, 'resize') })">
+                                        @click.stop="toggleFullscreen()">
                                         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/>
                                         </svg>
@@ -201,11 +199,11 @@
                                 <div class="mf-actions">
                                     <button type="button" class="mf-reset-btn"
                                         @click="resetFilter()">{{ __('blog-grid.search_filter.clear') }}</button>
-                                    <button type="button" class="mf-apply-btn" @click="applyFilter()">
+                                    <button type="button" class="mf-apply-btn" @click="applyMapFilter()">
                                         <svg width="14" height="14" fill="none" stroke="currentColor"
                                             stroke-width="2.5" viewBox="0 0 24 24">
                                             <circle cx="11" cy="11" r="8" />
-                                            <path stroke-linecap="round" d="m21 21-4.35-4.35" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
                                         </svg>
                                         {{ __('blog-grid.search_filter.search') }}
                                     </button>
@@ -431,11 +429,11 @@
                             <div class="flex flex-col gap-3 mb-4 text-gray-900 dark:text-white">
                                 <div>
                                     <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('blog-grid.search_filter.min_price') ?? 'Min. narx' }}</label>
-                                    <input type="number" id="minPriceInput" min="0" placeholder="{{ __('blog-grid.search_filter.example_price', ['price' => '0']) ?? 'Masalan: 0' }}" class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors">
+                                    <input type="number" id="minPriceInput" min="0" placeholder="Masalan: 0" class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors">
                                 </div>
                                 <div>
                                     <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('blog-grid.search_filter.max_price') ?? 'Max. narx' }}</label>
-                                    <input type="number" id="maxPriceInput" min="0" placeholder="{{ __('blog-grid.search_filter.example_price', ['price' => '1000000']) ?? 'Masalan: 1000000' }}" class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors">
+                                    <input type="number" id="maxPriceInput" min="0" placeholder="Masalan: 1000000" class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors">
                                 </div>
                             </div>
                             <button type="button" onclick="applyPriceFilter(); priceDropdown = false"
@@ -644,509 +642,213 @@
     </section>
 </x-layout>
 
+<!-- Include Leaflet.js for map functionality -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+<!-- Include Leaflet MarkerCluster for clustering -->
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+<!-- Include Blog Grid JavaScript BEFORE Alpine.js -->
+<script src="{{ asset('js/blog-grid.js') }}"></script>
+
+<!-- Initialize centers data for map component -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize sorting buttons based on current URL
-    updateSortingButtons();
-});
+    // Set centers data from Laravel
+    window._CENTERS = @json($centersForMap ?? []);
+    
+    // Initialize pagination variables
+    window.currentPage = @json($pagination['current_page'] ?? 1);
+    window.hasMorePages = @json(($pagination['has_more_pages'] ?? false) ? 'true' : 'false');
 </script>
 
-<!-- AJAX JavaScript -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Search form handler
-    const searchForm = document.getElementById('searchForm');
-    if (searchForm) {
-        searchForm.addEventListener('submit', handleSearch);
-    }
-
-    // Initialize current filters
-    window.currentFilters = new URLSearchParams(window.location.search);
-});
-
-function handleSearch(event) {
-    event.preventDefault();
-    
-    const form = event.target;
-    const formData = new FormData(form);
-    const searchBtn = document.getElementById('searchBtn');
-    const searchIcon = document.getElementById('searchIcon');
-    const loadingIcon = document.getElementById('loadingIcon');
-    
-    // Update URL parameters
-    window.currentFilters.set('searchText', formData.get('searchText'));
-    
-    // Show loading state
-    searchBtn.disabled = true;
-    searchIcon.classList.add('hidden');
-    loadingIcon.classList.remove('hidden');
-    
-    // Perform AJAX search
-    performSearch();
-}
-
-function clearAllFilters() {
-    window.currentFilters = new URLSearchParams();
-    performSearch();
-}
-
-function applyFilter(type, value) {
-    if (value && value !== 'all') {
-        window.currentFilters.set(type, value);
-    } else {
-        window.currentFilters.delete(type);
-    }
-    performSearch();
-}
-
-function applyPriceFilter() {
-    const minPrice = document.getElementById('minPriceInput').value;
-    const maxPrice = document.getElementById('maxPriceInput').value;
-    
-    if (minPrice) {
-        window.currentFilters.set('min_price', minPrice);
-    } else {
-        window.currentFilters.delete('min_price');
-    }
-    
-    if (maxPrice) {
-        window.currentFilters.set('max_price', maxPrice);
-    } else {
-        window.currentFilters.delete('max_price');
-    }
-    
-    performSearch();
-}
-
-// Preserve existing user search queries in price inputs
-document.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.has('min_price')) {
-        let el = document.getElementById('minPriceInput');
-        if(el) el.value = params.get('min_price');
-    }
-    if (params.has('max_price')) {
-        let el = document.getElementById('maxPriceInput');
-        if(el) el.value = params.get('max_price');
-    }
-});
-
-function applySorting(sortType, direction) {
-    // Clear all existing sort parameters
-    window.currentFilters.delete('name');
-    window.currentFilters.delete('distance');
-    window.currentFilters.delete('favorites');
-    window.currentFilters.delete('sort');
-    
-    // Set the new sort type and direction
-    window.currentFilters.set(sortType, direction);
-    window.currentFilters.set('sort', sortType);
-    performSearch();
-}
-
-function updateSortingButtons() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sortType = urlParams.get('sort');
-    const sortDirection = urlParams.get(sortType);
-    
-    // Update name sorting button
-    const nameButton = document.querySelector('[onclick*="applySorting(\'name\'"]');
-    if (nameButton) {
-        if (sortType === 'name' && sortDirection === 'asc') {
-            nameButton.setAttribute('onclick', "applySorting('name', 'desc')");
-            nameButton.innerHTML = 'Nomi ↑';
-        } else if (sortType === 'name' && sortDirection === 'desc') {
-            nameButton.setAttribute('onclick', "applySorting('name', 'asc')");
-            nameButton.innerHTML = 'Nomi ↓';
-        } else {
-            nameButton.setAttribute('onclick', "applySorting('name', 'asc')");
-            nameButton.innerHTML = 'Nomi ↑↓';
-        }
-    }
-    
-    // Update distance sorting button
-    const distanceButton = document.querySelector('[onclick*="applySorting(\'distance\'"]');
-    if (distanceButton) {
-        if (sortType === 'distance' && sortDirection === 'asc') {
-            distanceButton.setAttribute('onclick', "applySorting('distance', 'desc')");
-            distanceButton.innerHTML = 'Masofasi ↑';
-        } else if (sortType === 'distance' && sortDirection === 'desc') {
-            distanceButton.setAttribute('onclick', "applySorting('distance', 'asc')");
-            distanceButton.innerHTML = 'Masofasi ↓';
-        } else {
-            distanceButton.setAttribute('onclick', "applySorting('distance', 'asc')");
-            distanceButton.innerHTML = 'Masofasi ↑↓';
-        }
-    }
-    
-    // Update favorites sorting button
-    const favoritesButton = document.querySelector('[onclick*="applySorting(\'favorites\'"]');
-    if (favoritesButton) {
-        if (sortType === 'favorites' && sortDirection === 'asc') {
-            favoritesButton.setAttribute('onclick', "applySorting('favorites', 'desc')");
-            favoritesButton.innerHTML = 'Reytingi ↑';
-        } else if (sortType === 'favorites' && sortDirection === 'desc') {
-            favoritesButton.setAttribute('onclick', "applySorting('favorites', 'asc')");
-            favoritesButton.innerHTML = 'Reytingi ↓';
-        } else {
-            favoritesButton.setAttribute('onclick', "applySorting('favorites', 'asc')");
-            favoritesButton.innerHTML = 'Reytingi ↑↓';
-        }
-    }
-}
-
-function performSearch() {
-    const loadingIndicator = document.getElementById('loadingIndicator');
-    const centersGrid = document.getElementById('centersGrid');
-    const resultsCount = document.getElementById('resultsCount');
-    
-    // Show loading
-    loadingIndicator.classList.remove('hidden');
-    centersGrid.classList.add('hidden');
-    
-    // Build URL
-    const url = window.location.pathname + '?' + window.currentFilters.toString();
-    
-    // Update browser URL without reload
-    history.pushState(null, '', url);
-    
-    // Perform AJAX request
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Update results count — use total, not the per-page count
-            resultsCount.textContent = data.pagination ? data.pagination.total : data.count;
-            
-            // Update centers grid
-            centersGrid.innerHTML = data.html;
-            
-            // Update pagination state
-            if (data.pagination) {
-                currentPage = data.pagination.current_page;
-                hasMorePages = data.pagination.has_more_pages;
-            } else {
-                // Fallback for non-paginated responses
-                currentPage = 1;
-                hasMorePages = false;
-            }
-            
-            // Update sorting buttons based on current URL
-            updateSortingButtons();
-            
-            // Reinitialize map component if needed
-            if (typeof window.mapFilterComp === 'function') {
-                // Update centers data for map
-                if (data.centers) {
-                    console.log('Updating map with', data.centers.length, 'centers');
-                    updateMapCenters(data.centers);
-                } else {
-                    console.warn('No centers data received for map');
-                }
-            } else {
-                console.warn('Map component not available');
-            }
-            
-            // Show/hide no more results message
-            const noMoreResults = document.getElementById('noMoreResults');
-            if (noMoreResults) {
-                if (hasMorePages) {
-                    noMoreResults.classList.add('hidden');
-                } else {
-                    noMoreResults.classList.remove('hidden');
-                }
-            }
-        } else {
-            // Show error
-            centersGrid.innerHTML = '<div class="col-span-full text-center py-8 text-red-600">Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.</div>';
-        }
-    })
-    .catch(error => {
-        console.error('Search error:', error);
-        centersGrid.innerHTML = '<div class="col-span-full text-center py-8 text-red-600">Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.</div>';
-    })
-    .finally(() => {
-        // Hide loading and reset button
-        loadingIndicator.classList.add('hidden');
-        centersGrid.classList.remove('hidden');
-        
-        const searchBtn = document.getElementById('searchBtn');
-        const searchIcon = document.getElementById('searchIcon');
-        const loadingIcon = document.getElementById('loadingIcon');
-        
-        if (searchBtn) {
-            searchBtn.disabled = false;
-            searchIcon.classList.remove('hidden');
-            loadingIcon.classList.add('hidden');
-        }
-        
-        // Close all dropdowns after AJAX request
-        closeAllDropdowns();
-    });
-}
-
-function updateMapCenters(centers) {
-    // Update global centers data used by the map component
-    window._CENTERS = centers.map(function(center) {
-        const coords = (center.location || '').split(',');
-        return {
-            id: center.id,
-            name: center.name,
-            latitude: parseFloat(coords[0]) || 0,
-            longitude: parseFloat(coords[1]) || 0,
-            address: center.address || '',
-        };
-    });
-
-    // Reload markers on the open map if Alpine component is active
-    const mapBtn = document.querySelector('[x-data*="mapFilterComp"]');
-    if (mapBtn && window.Alpine) {
-        try {
-            const comp = window.Alpine.$data(mapBtn);
-            if (comp && typeof comp.reloadMarkers === 'function') {
-                comp.reloadMarkers();
-            }
-        } catch(e) {
-            console.warn('Could not reload map markers:', e);
-        }
-    }
-
-    console.log('Map updated with', window._CENTERS.length, 'centers');
-}
-
-function closeAllDropdowns() {
-    // Close all dropdown panels by clicking outside or setting their display to none
-    const dropdownPanels = document.querySelectorAll('[x-show]');
-    dropdownPanels.forEach(function(panel) {
-        // Check if this panel is currently shown
-        const xShowAttr = panel.getAttribute('x-show');
-        if (xShowAttr) {
-            // Try to evaluate the expression to see if it's true
-            try {
-                const context = panel.closest('[x-data]');
-                if (context && window.Alpine) {
-                    // Force the expression to be false by updating the underlying data
-                    if (xShowAttr === 'sortDropdown') {
-                        window.Alpine.evaluate(context, 'sortDropdown = false');
-                    } else if (xShowAttr === 'teacherDropdown') {
-                        window.Alpine.evaluate(context, 'teacherDropdown = false');
-                    } else if (xShowAttr === 'open') {
-                        window.Alpine.evaluate(context, 'open = false');
-                    }
-                }
-            } catch (e) {
-                // Fallback: hide the panel directly
-                panel.style.display = 'none';
-            }
-        }
-    });
-    
-    // Alternative approach: click outside to trigger @click.away
-    document.body.click();
-}
-
-// Handle browser back/forward buttons
-window.addEventListener('popstate', function() {
-    window.currentFilters = new URLSearchParams(window.location.search);
-    performSearch();
-});
-
-// Infinite Scroll Pagination
-let currentPage = 1;
-let isLoading = false;
-let hasMorePages = true;
-
-// Initialize pagination from server-side data
-@if(isset($pagination))
-    currentPage = {{ $pagination['current_page'] }};
-    hasMorePages = {{ $pagination['has_more_pages'] ? 'true' : 'false' }};
-@endif
-
-function loadMorePages() {
-    if (isLoading || !hasMorePages) return;
-    
-    isLoading = true;
-    currentPage++;
-    
-    // Show loading indicator
-    const loadingIndicator = document.getElementById('infiniteScrollLoading');
-    const noMoreResults = document.getElementById('noMoreResults');
-    
-    if (loadingIndicator) {
-        loadingIndicator.classList.remove('hidden');
-    }
-    
-    // Build URL with page parameter
-    const filters = new URLSearchParams(window.currentFilters.toString());
-    filters.set('page', currentPage);
-    
-    const url = window.location.pathname + '?' + filters.toString();
-    
-    // Perform AJAX request for next page
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success && data.html) {
-            // Append new items to the grid
-            const centersGrid = document.getElementById('centersGrid');
-            if (centersGrid) {
-                // Create a temporary div to parse the HTML
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = data.html;
-                
-                // Extract and append only the center cards
-                const newCards = tempDiv.querySelectorAll('.bg-white.dark\\:bg-gray-800.rounded-xl');
-                newCards.forEach(card => {
-                    centersGrid.appendChild(card);
-                });
-            }
-            
-            // Update pagination state
-            if (data.pagination) {
-                hasMorePages = data.pagination.has_more_pages;
-                currentPage = data.pagination.current_page;
-            }
-            
-            // Update results count
-            const resultsCount = document.getElementById('resultsCount');
-            if (resultsCount && data.pagination) {
-                resultsCount.textContent = data.pagination.total;
-            }
-            
-            // Show/hide appropriate messages
-            if (!hasMorePages) {
-                if (noMoreResults) {
-                    noMoreResults.classList.remove('hidden');
-                }
-            }
-            
-            // Update map with new centers data
-            if (data.centers && typeof window.mapFilterComp === 'function') {
-                console.log('Updating map with new centers from pagination');
-                updateMapCenters(data.centers);
-            }
-        } else {
-            console.error('Failed to load more items');
-            hasMorePages = false;
-        }
-    })
-    .catch(error => {
-        console.error('Error loading more items:', error);
-        hasMorePages = false;
-    })
-    .finally(() => {
-        isLoading = false;
-        if (loadingIndicator) {
-            loadingIndicator.classList.add('hidden');
-        }
-    });
-}
-
-// Set up infinite scroll event listener
-function setupInfiniteScroll() {
-    const scrollThreshold = 200; // Load more when 200px from bottom
-    
-    window.addEventListener('scroll', function() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-        
-        // Check if user is near the bottom
-        if (scrollTop + windowHeight >= documentHeight - scrollThreshold) {
-            loadMorePages();
-        }
-    });
-}
-
-// Initialize infinite scroll when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    setupInfiniteScroll();
-    
-    // NOTE: Auto geolocation removed to avoid slow page reload on every visit.
-    // Users can click the map filter panel and use "Mening joylashuvim" button instead.
-});
-
-
-// Auto-detect user location
-function detectUserLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-                
-                console.log('Location detected:', latitude, longitude);
-                
-                // Update URL with location parameters and refresh
-                const url = new URL(window.location);
-                url.searchParams.set('latitude', latitude);
-                url.searchParams.set('longitude', longitude);
-                
-                // Perform search with new location
-                window.location.href = url.toString();
-            },
-            function(error) {
-                console.warn('Geolocation failed:', error.message);
-                // Use default location (Tashkent)
-                const defaultLat = 41.2995;
-                const defaultLng = 69.2401;
-                
-                const url = new URL(window.location);
-                url.searchParams.set('latitude', defaultLat);
-                url.searchParams.set('longitude', defaultLng);
-                
-                window.location.href = url.toString();
-            },
-            {
-                timeout: 10000,
-                enableHighAccuracy: true
-            }
-        );
-    } else {
-        console.warn('Geolocation not supported');
-        // Use default location
-        const defaultLat = 41.2995;
-        const defaultLng = 69.2401;
-        
-        const url = new URL(window.location);
-        url.searchParams.set('latitude', defaultLat);
-        url.searchParams.set('longitude', defaultLng);
-        
-        window.location.href = url.toString();
-    }
-}
-
-// Reset pagination state when performing new search
-const originalPerformSearch = performSearch;
-performSearch = function() {
-    currentPage = 1;
-    hasMorePages = true;
-    isLoading = false;
-    
-    // Hide no more results message
-    const noMoreResults = document.getElementById('noMoreResults');
-    if (noMoreResults) {
-        noMoreResults.classList.add('hidden');
-    }
-    
-    // Call original performSearch function
-    originalPerformSearch.apply(this, arguments);
-};
-</script>
 
 <style>
+    body.mf-fullscreen-open {
+        overflow: hidden;
+    }
+
+    .mf-panel.mf-fullscreen {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        z-index: 9999 !important;
+        max-height: none !important;
+    }
+
+    .mf-panel.mf-fullscreen .mf-map-wrap {
+        height: calc(100vh - 210px) !important;
+        min-height: 320px;
+    }
+
+    @media (max-width: 640px) {
+        .mf-panel.mf-fullscreen .mf-map-wrap {
+            height: calc(100vh - 250px) !important;
+        }
+    }
+
+    /* Leaflet popup card */
+    .mf-popup .leaflet-popup-content-wrapper {
+        border-radius: 14px;
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 18px 60px rgba(0,0,0,.22);
+    }
+
+    .mf-popup .leaflet-popup-content {
+        margin: 0;
+        width: 320px;
+    }
+
+    @media (max-width: 480px) {
+        .mf-popup .leaflet-popup-content {
+            width: 280px;
+        }
+    }
+
+    .mf-card {
+        background: #fff;
+        color: #111827;
+    }
+
+    .dark .mf-card {
+        background: #111827;
+        color: #f3f4f6;
+    }
+
+    .mf-card-top {
+        display: flex;
+        gap: 12px;
+        padding: 12px;
+        align-items: center;
+    }
+
+    .mf-card-img {
+        width: 54px;
+        height: 54px;
+        border-radius: 12px;
+        object-fit: cover;
+        flex: 0 0 auto;
+        background: #f3f4f6;
+    }
+
+    .dark .mf-card-img {
+        background: rgba(255,255,255,.06);
+    }
+
+    .mf-card-img--placeholder {
+        display: block;
+        background: linear-gradient(135deg, rgba(99,102,241,.25), rgba(16,185,129,.18));
+    }
+
+    .mf-card-main {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .mf-card-title {
+        font-weight: 800;
+        font-size: 14px;
+        line-height: 1.2;
+        margin-bottom: 4px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .mf-card-sub {
+        font-size: 12px;
+        line-height: 1.35;
+        color: #6b7280;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .dark .mf-card-sub {
+        color: #9ca3af;
+    }
+
+    .mf-card-actions {
+        padding: 0 12px 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .mf-card-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 13px;
+        text-decoration: none;
+        border: 1px solid rgba(17,24,39,.12);
+        background: #fff;
+        color: #111827;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .dark .mf-card-btn {
+        background: rgba(255,255,255,.06);
+        color: #f3f4f6;
+        border-color: rgba(255,255,255,.12);
+    }
+
+    .mf-card-btn--primary {
+        background: #4f46e5;
+        border-color: #4f46e5;
+        color: #fff;
+    }
+
+    .mf-user-popup {
+        padding: 10px 12px;
+        font-weight: 700;
+        font-size: 13px;
+    }
+
+    /* Custom pins */
+    .mf-pin {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        border-radius: 999px;
+        background: rgba(79,70,229,.12);
+        border: 1px solid rgba(79,70,229,.22);
+        box-shadow: 0 10px 22px rgba(0,0,0,.18);
+        transform: translateY(-2px);
+    }
+
+    .mf-pin-dot {
+        position: absolute;
+        inset: 7px;
+        border-radius: 999px;
+        background: #4f46e5;
+        border: 2px solid #fff;
+        box-shadow: 0 8px 18px rgba(79,70,229,.35);
+    }
+
+    .mf-pin-user {
+        background: rgba(16,185,129,.12);
+        border-color: rgba(16,185,129,.22);
+        width: 34px;
+        height: 34px;
+    }
+
+    .mf-pin-user .mf-pin-dot {
+        background: #10b981;
+        box-shadow: 0 10px 22px rgba(16,185,129,.35);
+        inset: 8px;
+    }
+
     /* Rating Stars */
     .star {
         transition: color 0.2s ease;
@@ -1186,7 +888,6 @@ performSearch = function() {
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 15px;
     }
 
     .favorite .stars {
@@ -2273,480 +1974,3 @@ performSearch = function() {
     }
 </style>
 
-{{-- ========== ALPINE JS COMPONENT ========== --}}
-<script>
-    (function() {
-        /* --------------------------------------------------
-           Centers data from Laravel — stored globally so
-           updateMapCenters() can update them after AJAX
-        -------------------------------------------------- */
-        window._CENTERS = {!! json_encode(
-            collect($allCentersForMap)->map(function ($center) {
-                $coords = explode(',', $center['location'] ?? '');
-                return [
-                    'id' => $center['id'],
-                    'name' => $center['name'],
-                    'latitude' => (float) trim($coords[0] ?? 0),
-                    'longitude' => (float) trim($coords[1] ?? 0),
-                    'address' => $center['address'] ?? '',
-                ];
-            })->values(),
-        ) !!};
-
-        /* shorthand alias inside this closure */
-        var _CENTERS = window._CENTERS;
-
-        var DEFAULT_LAT = 39.6542; // Samarqand
-        var DEFAULT_LNG = 66.9597;
-
-        window.mapFilterComp = function() {
-            return {
-                /* public state */
-                open: false,
-                mapReady: false,
-                locating: false,
-                resultShown: false,
-                resultCount: 0,
-                lat: null,
-                lng: null,
-                radius: 5,
-                darkMode: false,
-                addressText: '{{ __('blog-grid.search_filter.map_hint') }}',
-
-                /* private */
-                _map: null,
-                _uMark: null,
-                _circle: null,
-                _iws: [],
-                _geo: null,
-
-                /* ---------- boot ---------- */
-                boot() {
-                    /* detect dark mode */
-                    this.darkMode = document.documentElement.classList.contains('dark');
-
-                    /* read URL params */
-                    var p = new URLSearchParams(window.location.search);
-                    if (p.get('latitude')) this.lat = parseFloat(p.get('latitude'));
-                    if (p.get('longitude')) this.lng = parseFloat(p.get('longitude'));
-                    if (p.get('radius')) this.radius = parseFloat(p.get('radius'));
-
-                    /* register GLOBAL callback that Google Maps SDK calls */
-                    window.__mfInitMap = () => {
-                        if (this.open) this._initMap();
-                    };
-
-                    /* if SDK already present, bind immediately */
-                    if (window.google && window.google.maps) {
-                        // no-op; _initMap() called when panel opens
-                    }
-
-                    /* observe dark-mode toggle */
-                    new MutationObserver(() => {
-                        this.darkMode = document.documentElement.classList.contains('dark');
-                    }).observe(document.documentElement, {
-                        attributes: true,
-                        attributeFilter: ['class']
-                    });
-
-                    /* Fix map rendering on mobile orientation changes */
-                    window.addEventListener('resize', () => {
-                        if (this.open && this._map) {
-                            google.maps.event.trigger(this._map, 'resize');
-                        }
-                    });
-                },
-
-                /* ---------- toggle panel ---------- */
-                toggle() {
-                    this.open = !this.open;
-                    if (this.open) {
-                        this.$nextTick(() => setTimeout(() => this._initMap(), 150));
-                    }
-                },
-
-                /* ---------- init map ---------- */
-                _initMap() {
-                    if (this._map) {
-                        google.maps.event.trigger(this._map, 'resize');
-                        return;
-                    }
-                    if (!window.google || !window.google.maps) return;
-
-                    var el = document.getElementById('filterMapEl');
-                    if (!el) return;
-
-                    var center = {
-                        lat: this.lat || DEFAULT_LAT,
-                        lng: this.lng || DEFAULT_LNG,
-                    };
-
-                    var darkStyles = [{
-                            elementType: 'geometry',
-                            stylers: [{
-                                color: '#1a1d2e'
-                            }]
-                        },
-                        {
-                            elementType: 'labels.text.fill',
-                            stylers: [{
-                                color: '#8ec3b9'
-                            }]
-                        },
-                        {
-                            elementType: 'labels.text.stroke',
-                            stylers: [{
-                                color: '#1a1d2e'
-                            }]
-                        },
-                        {
-                            featureType: 'road',
-                            elementType: 'geometry',
-                            stylers: [{
-                                color: '#2c2f45'
-                            }]
-                        },
-                        {
-                            featureType: 'road.highway',
-                            elementType: 'geometry',
-                            stylers: [{
-                                color: '#3c3f5e'
-                            }]
-                        },
-                        {
-                            featureType: 'water',
-                            elementType: 'geometry',
-                            stylers: [{
-                                color: '#17263c'
-                            }]
-                        },
-                        {
-                            featureType: 'poi',
-                            elementType: 'geometry',
-                            stylers: [{
-                                color: '#2c2d3a'
-                            }]
-                        },
-                        {
-                            featureType: 'poi.park',
-                            elementType: 'geometry',
-                            stylers: [{
-                                color: '#263c3f'
-                            }]
-                        },
-                        {
-                            featureType: 'administrative',
-                            elementType: 'geometry',
-                            stylers: [{
-                                color: '#4a4e6a'
-                            }]
-                        },
-                    ];
-
-                    this._map = new google.maps.Map(el, {
-                        center: center,
-                        zoom: 13,
-                        gestureHandling: 'greedy',
-                        mapTypeControl: false,
-                        streetViewControl: false,
-                        fullscreenControl: true,
-                        fullscreenControlOptions: { position: google.maps.ControlPosition.RIGHT_TOP },
-                        zoomControl: true,
-                        styles: this.darkMode ? darkStyles : [],
-                    });
-
-                    this._geo = new google.maps.Geocoder();
-
-                    /* User marker (blue circle) */
-                    this._uMark = new google.maps.Marker({
-                        map: this._map,
-                        position: center,
-                        draggable: true,
-                        zIndex: 999,
-                        title: 'Sizning joylashuvingiz',
-                        icon: {
-                            path: google.maps.SymbolPath.CIRCLE,
-                            scale: 10,
-                            fillColor: '#4f46e5',
-                            fillOpacity: 1,
-                            strokeColor: '#ffffff',
-                            strokeWeight: 2.5,
-                        },
-                    });
-
-                    /* Radius circle */
-                    this._circle = new google.maps.Circle({
-                        map: this._map,
-                        center: center,
-                        radius: this.radius * 1000,
-                        fillColor: '#6366f1',
-                        fillOpacity: 0.07,
-                        strokeColor: '#6366f1',
-                        strokeOpacity: 0.45,
-                        strokeWeight: 1.5,
-                    });
-
-                    /* Click on map */
-                    this._map.addListener('click', (e) => {
-                        this._moveUser(e.latLng.lat(), e.latLng.lng());
-                    });
-
-                    /* Drag user marker */
-                    this._uMark.addListener('dragend', (e) => {
-                        this._moveUser(e.latLng.lat(), e.latLng.lng());
-                    });
-
-                    /* Add center markers */
-                    this._addCenters();
-
-                    this.mapReady = true;
-
-                    /* Restore from URL */
-                    if (this.lat && this.lng) {
-                        this._uMark.setPosition({
-                            lat: this.lat,
-                            lng: this.lng
-                        });
-                        this._circle.setCenter({
-                            lat: this.lat,
-                            lng: this.lng
-                        });
-                        this._map.setCenter({
-                            lat: this.lat,
-                            lng: this.lng
-                        });
-                    }
-                },
-
-                /* ---------- add center markers ---------- */
-                _addCenters() {
-                    var self = this;
-                    /* clear old markers */
-                    if (this._markers) {
-                        this._markers.forEach(function(m) { m.setMap(null); });
-                    }
-                    this._markers = [];
-                    this._iws.forEach(function(w) { w.close(); });
-                    this._iws = [];
-
-                    var pin = function(color) {
-                        return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
-                            '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">' +
-                            '<path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22S28 23.333 28 14C28 6.268 21.732 0 14 0z" fill="' +
-                            color + '"/>' +
-                            '<circle cx="14" cy="14" r="6" fill="white"/>' +
-                            '<circle cx="14" cy="14" r="3.5" fill="' + color + '"/>' +
-                            '</svg>'
-                        );
-                    };
-
-                    /* use global _CENTERS so updates from AJAX reflect here */
-                    (window._CENTERS || []).forEach(function(c) {
-                        if (!c.latitude || !c.longitude) return;
-
-                        var marker = new google.maps.Marker({
-                            map: self._map,
-                            position: { lat: c.latitude, lng: c.longitude },
-                            title: c.name,
-                            icon: {
-                                url: pin('#e53e3e'),
-                                scaledSize: new google.maps.Size(26, 33),
-                                anchor: new google.maps.Point(13, 33),
-                            },
-                        });
-
-                        var iw = new google.maps.InfoWindow({ maxWidth: 260 });
-
-                        marker.addListener('click', function() {
-                            self._iws.forEach(function(w) { w.close(); });
-                            iw.setContent(self._buildIW(c));
-                            iw.open(self._map, marker);
-                        });
-
-                        self._markers.push(marker);
-                        self._iws.push(iw);
-                    });
-                },
-
-                /* ---------- reload markers after AJAX update ---------- */
-                reloadMarkers() {
-                    if (this._map) {
-                        this._addCenters();
-                    }
-                },
-
-                /* ---------- info window HTML ---------- */
-                _buildIW(c) {
-                    var dist = (this.lat && this.lng) ?
-                        this._haversine(this.lat, this.lng, c.latitude, c.longitude).toFixed(1) + ' km' :
-                        '—';
-                    var dark = this.darkMode;
-                    var bg = dark ? '#1e2231' : '#ffffff';
-                    var clr = dark ? '#f3f4f6' : '#111827';
-                    var sub = dark ? '#9ca3af' : '#6b7280';
-                    var btn2bg = dark ? 'rgba(255,255,255,.1)' : '#f3f4f6';
-                    var btn2bd = dark ? 'rgba(255,255,255,.12)' : '#e5e7eb';
-                    return '<div style="background:' + bg +
-                        ';border-radius:12px;padding:14px;min-width:210px;font-family:sans-serif;">' +
-                        '<div style="font-size:14px;font-weight:700;color:' + clr + ';margin-bottom:6px;">' + c
-                        .name + '</div>' +
-                        '<div style="font-size:12px;color:#6366f1;margin-bottom:4px;">📍 Masofa: ' + dist +
-                        '</div>' +
-                        '<div style="font-size:11px;color:' + sub + ';margin-bottom:10px;line-height:1.4;">' + (
-                            c.address || "Manzil ko'rsatilmagan") + '</div>' +
-                        '<div style="display:flex;gap:7px;">' +
-                        '<a href="/blog-single/' + c.id +
-                        '" style="flex:1;padding:6px 8px;border-radius:8px;font-size:12px;font-weight:600;text-align:center;text-decoration:none;background:#4f46e5;color:#fff;">Batafsil</a>' +
-                        '<a href="https://www.google.com/maps/dir/?api=1&destination=' + c.latitude + ',' + c
-                        .longitude +
-                        '" target="_blank" style="flex:1;padding:6px 8px;border-radius:8px;font-size:12px;font-weight:600;text-align:center;text-decoration:none;background:' +
-                        btn2bg + ';color:' + clr + ';border:1px solid ' + btn2bd + ';">Yo\'nalish</a>' +
-                        '</div></div>';
-                },
-
-                /* ---------- move user marker ---------- */
-                _moveUser(lat, lng, doGeocode) {
-                    this.lat = lat;
-                    this.lng = lng;
-                    if (doGeocode === undefined) doGeocode = true;
-
-                    var pos = {
-                        lat: lat,
-                        lng: lng
-                    };
-                    if (this._uMark) this._uMark.setPosition(pos);
-                    if (this._circle) this._circle.setCenter(pos);
-
-                    if (doGeocode && this._geo) {
-                        var self = this;
-                        this._geo.geocode({
-                            location: pos
-                        }, function(res, status) {
-                            if (status === 'OK' && res[0]) {
-                                self.addressText = res[0].formatted_address;
-                            } else {
-                                self.addressText = lat.toFixed(5) + ', ' + lng.toFixed(5);
-                            }
-                        });
-                    }
-                },
-
-                /* ---------- locate me ---------- */
-                locateMe() {
-                    if (!navigator.geolocation) return;
-                    this.locating = true;
-                    var self = this;
-                    navigator.geolocation.getCurrentPosition(
-                        function(pos) {
-                            self.locating = false;
-                            var lat = pos.coords.latitude;
-                            var lng = pos.coords.longitude;
-                            if (!self._map) {
-                                self.lat = lat;
-                                self.lng = lng;
-                                self._initMap();
-                                return;
-                            }
-                            self._map.setCenter({
-                                lat: lat,
-                                lng: lng
-                            });
-                            self._map.setZoom(14);
-                            self._moveUser(lat, lng);
-                        },
-                        function() {
-                            self.locating = false;
-                            /* Fallback to Samarqand */
-                            if (self._map) {
-                                self._map.setCenter({
-                                    lat: DEFAULT_LAT,
-                                    lng: DEFAULT_LNG
-                                });
-                                self._moveUser(DEFAULT_LAT, DEFAULT_LNG);
-                            }
-                        }, {
-                            timeout: 8000
-                        }
-                    );
-                },
-
-                /* ---------- radius change ---------- */
-                onRadiusChange() {
-                    if (this._circle) this._circle.setRadius(this.radius * 1000);
-                },
-
-                /* ---------- apply ---------- */
-                applyFilter() {
-                    var finalLat = this.lat || DEFAULT_LAT;
-                    var finalLng = this.lng || DEFAULT_LNG;
-
-                    this.resultCount = _CENTERS.filter(function(c) {
-                        if (!c.latitude || !c.longitude) return false;
-                        return _haversine(finalLat, finalLng, c.latitude, c.longitude) <= this.radius;
-                    }.bind(this)).length;
-                    this.resultShown = true;
-
-                    // Update URL parameters and perform AJAX search
-                    window.currentFilters.set('latitude', finalLat);
-                    window.currentFilters.set('longitude', finalLng);
-                    window.currentFilters.set('radius', this.radius);
-                    window.currentFilters.delete('searchText');
-                    
-                    // Use global performSearch function
-                    if (typeof performSearch === 'function') {
-                        performSearch();
-                    }
-                },
-
-                /* ---------- reset ---------- */
-                resetFilter() {
-                    this.lat = null;
-                    this.lng = null;
-                    this.resultShown = false;
-                    this.addressText = '{{ __('blog-grid.search_filter.map_hint') }}';
-                    if (this._uMark) this._uMark.setPosition({
-                        lat: DEFAULT_LAT,
-                        lng: DEFAULT_LNG
-                    });
-                    if (this._circle) this._circle.setCenter({
-                        lat: DEFAULT_LAT,
-                        lng: DEFAULT_LNG
-                    });
-                    
-                    // Update URL parameters and perform AJAX search
-                    window.currentFilters.delete('latitude');
-                    window.currentFilters.delete('longitude');
-                    window.currentFilters.delete('radius');
-                    
-                    // Use global performSearch function
-                    if (typeof performSearch === 'function') {
-                        performSearch();
-                    }
-                },
-
-                /* ---------- haversine ---------- */
-                _haversine(lat1, lon1, lat2, lon2) {
-                    var R = 6371;
-                    var dLat = (lat2 - lat1) * Math.PI / 180;
-                    var dLon = (lon2 - lon1) * Math.PI / 180;
-                    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-                    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                },
-            };
-        };
-
-        /* module-level haversine for filter closure */
-        function _haversine(lat1, lon1, lat2, lon2) {
-            var R = 6371,
-                dLat = (lat2 - lat1) * Math.PI / 180,
-                dLon = (lon2 - lon1) * Math.PI / 180;
-            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math
-                .PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        }
-    })();
-</script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=__mfInitMap">
-</script>

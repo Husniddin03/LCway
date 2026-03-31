@@ -12,6 +12,17 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('images/2.png') }}">
 
+    <!-- Preload Google Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"></noscript>
+
+    <!-- Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Leaflet MarkerCluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    
     <!-- TailwindCSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -23,7 +34,30 @@
         [x-cloak] {
             display: none !important;
         }
-
+        
+        /* Leaflet map responsive styles */
+        #map, #filterMapEl {
+            height: 400px;
+            width: 100%;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            #map, #filterMapEl {
+                height: 300px;
+            }
+        }
+        
+        .leaflet-popup-content-wrapper {
+            border-radius: 0.5rem;
+        }
+        
+        .center-popup .leaflet-popup-content {
+            margin: 0;
+            line-height: 1.4;
+        }
+        
         .line-clamp-2 {
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -396,6 +430,11 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
     </script>
+
+    <!-- Leaflet.js -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
 
     <!-- Scripts Stack -->
     @stack('scripts')

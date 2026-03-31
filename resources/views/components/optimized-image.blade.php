@@ -49,5 +49,6 @@
         loading="{{ $loading }}"
         decoding="{{ $decoding }}"
         @if($fetchpriority) fetchpriority="{{ $fetchpriority }}" @endif
+        onerror="this.onerror=null; this.src='{{ asset('images/placeholder.jpg') }}'; this.alt='Image not available';"
     >
 </picture>

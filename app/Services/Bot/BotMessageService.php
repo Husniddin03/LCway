@@ -232,25 +232,45 @@ Kerakli boʻlimni tanlang:',
 
             // Logo yuborish
             if ($center->logo) {
-                $logoUrl = null;
-                
-                if (filter_var($center->logo, FILTER_VALIDATE_URL)) {
-                    $logoUrl = $center->logo;
-                } else {
-                    $logoPath = public_path('storage/' . $center->logo);
-                    if (file_exists($logoPath)) {
-                        $logoUrl = \Telegram\Bot\FileUpload\InputFile::create($logoPath);
+                try {
+                    $logoUrl = null;
+                    
+                    // 1. Agar to'g'ridan-to'g'ri URL bo'lsa
+                    if (filter_var($center->logo, FILTER_VALIDATE_URL)) {
+                        $logoUrl = $center->logo;
+                    } 
+                    // 2. Agar storage path bo'lsa
+                    else {
+                        $logoPath = public_path('storage/' . $center->logo);
+                        if (file_exists($logoPath)) {
+                            $logoUrl = \Telegram\Bot\FileUpload\InputFile::create($logoPath);
+                        }
                     }
-                }
-                
-                if ($logoUrl) {
-                    Telegram::sendPhoto([
-                        'chat_id' => $chatId,
-                        'photo' => $logoUrl,
-                        'caption' => $messageText,
-                        'parse_mode' => 'Markdown'
+                    
+                    // Logo yuborish
+                    if ($logoUrl) {
+                        Telegram::sendPhoto([
+                            'chat_id' => $chatId,
+                            'photo' => $logoUrl,
+                            'caption' => $messageText,
+                            'parse_mode' => 'Markdown'
+                        ]);
+                    } else {
+                        // Logo topilmasa, faqat matn yuboramiz
+                        Telegram::sendMessage([
+                            'chat_id' => $chatId,
+                            'text' => $messageText,
+                            'parse_mode' => 'Markdown',
+                            'disable_web_page_preview' => false
+                        ]);
+                    }
+                } catch (\Exception $logoError) {
+                    // Logo yuborishda xatolik bo'lsa, faqat matn yuboramiz
+                    \Log::error('Logo sending error: ' . $logoError->getMessage(), [
+                        'center_id' => $centerId,
+                        'logo_path' => $center->logo
                     ]);
-                } else {
+                    
                     Telegram::sendMessage([
                         'chat_id' => $chatId,
                         'text' => $messageText,
@@ -269,15 +289,22 @@ Kerakli boʻlimni tanlang:',
 
             // Send location if available
             if ($center->location) {
-                [$latitude, $longitude] = explode(',', trim($center->location));
-                
-                Telegram::sendLocation([
-                    'chat_id' => $chatId,
-                    'latitude' => trim($latitude),
-                    'longitude' => trim($longitude),
-                    'title' => $center->name,
-                    'address' => $center->address
-                ]);
+                try {
+                    [$latitude, $longitude] = explode(',', trim($center->location));
+                    
+                    Telegram::sendLocation([
+                        'chat_id' => $chatId,
+                        'latitude' => trim($latitude),
+                        'longitude' => trim($longitude),
+                        'title' => $center->name,
+                        'address' => $center->address
+                    ]);
+                } catch (\Exception $locationError) {
+                    \Log::error('Location sending error: ' . $locationError->getMessage(), [
+                        'center_id' => $centerId,
+                        'location' => $center->location
+                    ]);
+                }
             }
         } catch (\Exception $e) {
             \Log::error('Bot sendCenterDetails error: ' . $e->getMessage(), [

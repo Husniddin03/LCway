@@ -14,17 +14,10 @@ class BotSearchService
         try {
             // Sodda qidiruv
             $centers = LearningCenter::where('name', 'like', "%{$query}%")
-                ->orWhere('about', 'like', "%{$query}%")
                 ->take(10)
                 ->get(['id', 'name']);
 
             \Log::info('Search results for "' . $query . '": ' . $centers->count() . ' centers found');
-
-            Telegram::sendMessage([
-                'chat_id' => $chatId,
-                'text' => "🔍 *Qidiruv natijalari (\"{$query}\") - {$centers->count()} ta:*",
-                'parse_mode' => 'Markdown'
-            ]);
 
             if ($centers->isEmpty()) {
                 Telegram::sendMessage([
@@ -48,7 +41,7 @@ class BotSearchService
                 ]);
             }
 
-            // Qo'shimcha ma'lumot tugmalari
+            // Veb-sayt tugmasi
             $appUrl = env('APP_URL', 'https://your-domain.com');
             $keyboard->row([
                 Keyboard::inlineButton([
@@ -57,16 +50,9 @@ class BotSearchService
                 ])
             ]);
 
-            $keyboard->row([
-                Keyboard::inlineButton([
-                    'text' => '📢 Bizning kanal',
-                    'url' => 'https://t.me/' . env('TELEGRAM_CHANNEL', 'lcway_channel')
-                ])
-            ]);
-
             Telegram::sendMessage([
                 'chat_id' => $chatId,
-                'text' => "📋 *Natijalar roʻyxati:*",
+                'text' => "🔍 *Qidiruv natijalari (\"{$query}\") - {$centers->count()} ta:*\n\n📋 *Natijalar roʻyxati:*",
                 'parse_mode' => 'Markdown',
                 'reply_markup' => $keyboard
             ]);
@@ -282,30 +268,44 @@ class BotSearchService
         }
 
             if ($center->logo) {
-                // Logo URL ni tekshiramiz
-                $logoUrl = null;
-                $logoPath = null;
-                
-                // Agar logo http:// yoki https:// bilan bolsa, to'g'ridan-to'g'ri URL
-                if (filter_var($center->logo, FILTER_VALIDATE_URL)) {
-                    $logoUrl = $center->logo;
-                } else {
-                    // Aks holda storage dan olamiz
-                    $logoPath = public_path('storage/' . $center->logo);
-                    if (file_exists($logoPath)) {
-                        $logoUrl = \Telegram\Bot\FileUpload\InputFile::create($logoPath);
+                try {
+                    $logoUrl = null;
+                    
+                    // 1. Agar to'g'ridan-to'g'ri URL bo'lsa
+                    if (filter_var($center->logo, FILTER_VALIDATE_URL)) {
+                        $logoUrl = $center->logo;
+                    } 
+                    // 2. Agar storage path bo'lsa
+                    else {
+                        $logoPath = public_path('storage/' . $center->logo);
+                        if (file_exists($logoPath)) {
+                            $logoUrl = \Telegram\Bot\FileUpload\InputFile::create($logoPath);
+                        }
                     }
-                }
-                
-                if ($logoUrl) {
-                    Telegram::sendPhoto([
-                        'chat_id' => $chatId,
-                        'photo' => $logoUrl,
-                        'caption' => $messageText,
-                        'parse_mode' => 'Markdown'
+                    
+                    if ($logoUrl) {
+                        Telegram::sendPhoto([
+                            'chat_id' => $chatId,
+                            'photo' => $logoUrl,
+                            'caption' => $messageText,
+                            'parse_mode' => 'Markdown'
+                        ]);
+                    } else {
+                        // Logo topilmasa, faqat matn yuboramiz
+                        Telegram::sendMessage([
+                            'chat_id' => $chatId,
+                            'text' => $messageText,
+                            'parse_mode' => 'Markdown',
+                            'disable_web_page_preview' => false
+                        ]);
+                    }
+                } catch (\Exception $logoError) {
+                    // Logo yuborishda xatolik bo'lsa, faqat matn yuboramiz
+                    \Log::error('Logo sending error in search: ' . $logoError->getMessage(), [
+                        'center_id' => $centerId,
+                        'logo_path' => $center->logo
                     ]);
-                } else {
-                    // Agar logo topilmasa, faqat matn yuboramiz
+                    
                     Telegram::sendMessage([
                         'chat_id' => $chatId,
                         'text' => $messageText,
@@ -324,15 +324,22 @@ class BotSearchService
 
             // Send location if available
             if ($center->location) {
-                [$latitude, $longitude] = explode(',', trim($center->location));
-                
-                Telegram::sendLocation([
-                    'chat_id' => $chatId,
-                    'latitude' => trim($latitude),
-                    'longitude' => trim($longitude),
-                    'title' => $center->name,
-                    'address' => $center->address
-                ]);
+                try {
+                    [$latitude, $longitude] = explode(',', trim($center->location));
+                    
+                    Telegram::sendLocation([
+                        'chat_id' => $chatId,
+                        'latitude' => trim($latitude),
+                        'longitude' => trim($longitude),
+                        'title' => $center->name,
+                        'address' => $center->address
+                    ]);
+                } catch (\Exception $locationError) {
+                    \Log::error('Location sending error in search: ' . $locationError->getMessage(), [
+                        'center_id' => $centerId,
+                        'location' => $center->location
+                    ]);
+                }
             }
         } catch (\Exception $e) {
             \Log::error('Bot sendSearchCenterDetails error: ' . $e->getMessage(), [

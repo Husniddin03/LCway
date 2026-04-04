@@ -1,171 +1,362 @@
 #!/usr/bin/env python3
 """
-database/data/ papkasidagi JSON fayllarida saqlangan
-Google Places photo URL larini haqiqiy rasm URL lariga aylantiradi.
+O'quv markazlari uchun rasmlarni bepul manbalardan yig'uvchi script.
+
+Usul:
+  1. DuckDuckGo Image Search — markaz nomi bo'yicha rasm qidiradi
+  2. Wikimedia Commons     — topilmasa Wikimedia dan oladi
+
+Kerakli kutubxonalar:
+    pip install requests beautifulsoup4
 
 Ishlatish:
-    pip install requests
-    python3 resolve_photos.py
+    python3 fetch_images.py
 
-Natija:
-    data/uzbekistan.json → yangilangan (haqiqiy URL lar bilan)
-    data/kazakhstan.json → yangilangan
-    ...
+Input:  data/samarkand_centers.json
+Output: data/samarkand_centers.json (yangilangan)
+        storage/app/public/learning_centers/ (yuklab olingan rasmlar)
 """
 
 import os
+import re
 import json
 import time
+import random
+import hashlib
 import requests
 from datetime import datetime
+from urllib.parse import quote, urlencode
+from bs4 import BeautifulSoup
 
-# ── Sozlamalar ────────────────────────────────────────────
-DATA_DIR    = "data"          # JSON fayllar papkasi
-BACKUP      = True            # Asl faylni .bak sifatida saqlashmi?
-DELAY       = 0.1             # So'rovlar orasidagi kutish (sekund)
-TIMEOUT     = 10              # Har bir so'rov uchun timeout
-# ──────────────────────────────────────────────────────────
+INPUT_FILE   = "data/samarkand_centers.json"
+OUTPUT_FILE  = "data/samarkand_centers.json"
+BACKUP_FILE  = "data/samarkand_centers.bak.json"
+IMAGES_DIR   = "storage/app/public/learning_centers"
 
-GOOGLE_PHOTO_HOST = "maps.googleapis.com"
+# Rasmlarni diskka yuklab olishmi?
+# True  → faylga saqlaydi, JSON ga lokal yo'lni yozadi
+# False → faqat URL ni JSON ga yozadi
+DOWNLOAD     = True
 
+# Har bir markaz uchun max nechta rasm
+MAX_IMAGES   = 5
 
-def is_google_photo_url(url: str) -> bool:
-    """Google Places photo URL ekanligini tekshiradi"""
-    return url and GOOGLE_PHOTO_HOST in url and "photo_reference" in url
+# So'rovlar orasidagi kutish (bot himoyasidan o'tish uchun)
+MIN_DELAY    = 1.5
+MAX_DELAY    = 3.5
 
+# ══════════════════════════════════════════════════════
+#  HEADERS — oddiy brauzer kabi ko'rinish uchun
+# ══════════════════════════════════════════════════════
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (X11; Linux x86_64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/120.0.0.0 Safari/537.36"
+    ),
+    "Accept-Language": "uz,ru;q=0.9,en;q=0.8",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+}
 
-def resolve_url(url: str) -> str:
+# ══════════════════════════════════════════════════════
+#  1. DuckDuckGo IMAGE SEARCH
+# ══════════════════════════════════════════════════════
+
+def duckduckgo_images(query: str, max_results: int = 5) -> list:
     """
-    Google Places photo URL → haqiqiy rasm URL.
-    Google 302 redirect beradi, Location headerda haqiqiy URL bo'ladi.
-    Haqiqiy URL: https://lh3.googleusercontent.com/... (kalit talamaydi)
+    DuckDuckGo orqali rasm URL larini qaytaradi.
+    Avval token oladi, keyin rasm qidiradi.
     """
+    urls = []
+
     try:
-        r = requests.get(url, allow_redirects=False, timeout=TIMEOUT)
-        location = r.headers.get("Location")
-        if location:
-            return location
+        # 1. Token olish
+        session = requests.Session()
+        session.headers.update(HEADERS)
+
+        r = session.get(
+            "https://duckduckgo.com/",
+            params={"q": query, "iar": "images", "iax": "images", "ia": "images"},
+            timeout=15
+        )
+        token_match = re.search(r'vqd=([\d-]+)', r.text)
+        if not token_match:
+            return []
+        token = token_match.group(1)
+
+        time.sleep(random.uniform(0.5, 1.0))
+
+        # 2. Rasm qidirish
+        params = {
+            "l":   "uz-uz",
+            "o":   "json",
+            "q":   query,
+            "vqd": token,
+            "f":   ",,,,,",
+            "p":   "1",
+        }
+        r2 = session.get(
+            "https://duckduckgo.com/i.js",
+            params=params,
+            timeout=15
+        )
+        data = r2.json()
+
+        for result in data.get("results", [])[:max_results]:
+            img_url = result.get("image")
+            if img_url and img_url.startswith("http"):
+                urls.append(img_url)
+
     except Exception as e:
-        print(f"    ⚠ Xato ({url[:60]}...): {e}")
-    return url  # resolve bo'lmasa asl URL ni qaytaradi
+        print(f"      DuckDuckGo xato: {e}")
+
+    return urls
 
 
-def process_file(filepath: str) -> dict:
-    """Bitta JSON faylni qayta ishlaydi"""
-    stats = {"total": 0, "resolved": 0, "failed": 0, "skipped": 0}
+# ══════════════════════════════════════════════════════
+#  2. WIKIMEDIA COMMONS SEARCH
+# ══════════════════════════════════════════════════════
 
-    with open(filepath, "r", encoding="utf-8") as f:
-        payload = json.load(f)
+def wikimedia_images(query: str, max_results: int = 3) -> list:
+    """
+    Wikimedia Commons dan rasm URL larini qaytaradi.
+    """
+    urls = []
 
-    centers = payload.get("centers", [])
+    try:
+        params = {
+            "action":      "query",
+            "generator":   "search",
+            "gsrnamespace": "6",       # File namespace
+            "gsrsearch":   f"filetype:bitmap {query}",
+            "gsrlimit":    max_results,
+            "prop":        "imageinfo",
+            "iiprop":      "url|size",
+            "iiurlwidth":  800,
+            "format":      "json",
+            "origin":      "*",
+        }
+        r = requests.get(
+            "https://commons.wikimedia.org/w/api.php",
+            params=params,
+            headers=HEADERS,
+            timeout=15
+        )
+        data = r.json()
+        pages = data.get("query", {}).get("pages", {})
 
-    for ci, center in enumerate(centers):
-        name = center.get("name", "?")
+        for page in pages.values():
+            info = page.get("imageinfo", [{}])[0]
+            url  = info.get("thumburl") or info.get("url")
+            if url:
+                urls.append(url)
 
-        # ── Photos ────────────────────────────────────
-        photos = center.get("photos", [])
-        for ii, photo in enumerate(photos):
-            url = photo.get("url", "")
-            if not is_google_photo_url(url):
-                stats["skipped"] += 1
+    except Exception as e:
+        print(f"      Wikimedia xato: {e}")
+
+    return urls
+
+
+# ══════════════════════════════════════════════════════
+#  RASM YUKLASH
+# ══════════════════════════════════════════════════════
+
+def download_image(url: str, folder: str, filename: str) -> str | None:
+    """Rasmni yuklab oladi, yo'lni qaytaradi"""
+    os.makedirs(folder, exist_ok=True)
+    filepath = os.path.join(folder, filename)
+
+    if os.path.exists(filepath):
+        return filepath
+
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=20, stream=True)
+        r.raise_for_status()
+
+        content_type = r.headers.get("content-type", "")
+        if "image" not in content_type and "jpeg" not in content_type:
+            return None
+
+        with open(filepath, "wb") as f:
+            for chunk in r.iter_content(8192):
+                f.write(chunk)
+
+        size = os.path.getsize(filepath)
+        if size < 5000:   # 5KB dan kichik → yaroqsiz rasm
+            os.remove(filepath)
+            return None
+
+        return filepath
+
+    except Exception as e:
+        print(f"        Yuklash xato: {e}")
+        return None
+
+
+def make_filename(center_id: int, index: int, url: str) -> str:
+    """Fayl nomini yasaydi"""
+    ext  = url.split("?")[0].rsplit(".", 1)[-1].lower()
+    ext  = ext if ext in ("jpg", "jpeg", "png", "webp") else "jpg"
+    return f"lc_{center_id}_{index}.{ext}"
+
+
+# ══════════════════════════════════════════════════════
+#  ASOSIY FUNKSIYA — bitta markaz uchun rasm qidirish
+# ══════════════════════════════════════════════════════
+
+def fetch_images_for_center(center: dict, center_id: int) -> tuple[str | None, list]:
+    """
+    Markaz uchun rasmlar qidiradi.
+    Qaytaradi: (logo_url, [images_list])
+    """
+    name    = center.get("name", "")
+    region  = center.get("region", "Samarqand")
+    address = center.get("address", "")
+
+    # Qidiruv so'rovlari — aniqdan umumga
+    queries = [
+        f"{name} {region}",
+        f"{name} Samarqand",
+        f"{name} o'quv markaz",
+        f"{name}",
+    ]
+
+    all_urls = []
+
+    for query in queries:
+        if len(all_urls) >= MAX_IMAGES:
+            break
+
+        print(f"      🔍 DuckDuckGo: '{query}'")
+        ddg_urls = duckduckgo_images(query, MAX_IMAGES)
+        all_urls.extend(ddg_urls)
+        time.sleep(random.uniform(MIN_DELAY, MAX_DELAY))
+
+        if not all_urls:
+            print(f"      🔍 Wikimedia: '{query}'")
+            wiki_urls = wikimedia_images(query, 3)
+            all_urls.extend(wiki_urls)
+            time.sleep(random.uniform(0.5, 1.5))
+
+        if all_urls:
+            break
+
+    # Takrorlanmasin
+    all_urls = list(dict.fromkeys(all_urls))[:MAX_IMAGES]
+
+    if not all_urls:
+        return None, []
+
+    logo   = None
+    images = []
+
+    for i, url in enumerate(all_urls):
+        if DOWNLOAD:
+            filename = make_filename(center_id, i, url)
+            local    = download_image(url, IMAGES_DIR, filename)
+            if not local:
                 continue
-
-            stats["total"] += 1
-            print(f"  📷 Photo [{ci+1}.{ii+1}] {name[:40]}")
-            new_url = resolve_url(url)
-            if new_url != url:
-                photo["url"] = new_url
-                stats["resolved"] += 1
-                print(f"       ✅ {new_url[:70]}")
+            # Laravel storage yo'li
+            storage_path = f"learning_centers/{filename}"
+            if i == 0:
+                logo = storage_path
             else:
-                stats["failed"] += 1
-                print(f"       ❌ Resolve bo'lmadi")
-            time.sleep(DELAY)
+                images.append({"url": storage_path})
+        else:
+            if i == 0:
+                logo = url
+            else:
+                images.append({"url": url})
 
-    payload["resolved_at"] = datetime.now().isoformat()
+        print(f"        {'🖼  logo' if i == 0 else f'📷 [{i}]'} ✅")
+        time.sleep(0.3)
 
-    # Backup
-    if BACKUP and stats["resolved"] > 0:
-        bak = filepath + ".bak"
-        if not os.path.exists(bak):
-            with open(filepath, "r", encoding="utf-8") as f:
-                orig = f.read()
-            with open(bak, "w", encoding="utf-8") as f:
-                f.write(orig)
-            print(f"  💾 Backup: {bak}")
+    return logo, images
 
-    # Yangilangan faylni yozish
-    if stats["resolved"] > 0:
-        with open(filepath, "w", encoding="utf-8") as f:
-            json.dump(payload, f, ensure_ascii=False, indent=2)
-        print(f"  ✅ Fayl yangilandi: {filepath}")
 
-    return stats
-
+# ══════════════════════════════════════════════════════
+#  ASOSIY
+# ══════════════════════════════════════════════════════
 
 def main():
-    print("=" * 60)
-    print("  Google Places Photo URL → Haqiqiy URL Konvertor")
-    print("=" * 60)
+    print("═" * 58)
+    print("  O'quv Markazlari — Bepul Rasm Yig'uvchi")
+    print("  DuckDuckGo + Wikimedia Commons")
+    print("═" * 58)
 
-    # JSON fayllarni topish
-    if not os.path.isdir(DATA_DIR):
-        print(f"❌ Papka topilmadi: {DATA_DIR}")
-        print(f"   Scriptni JSON fayllar yonida ishga tushiring.")
+    # Faylni o'qish
+    if not os.path.exists(INPUT_FILE):
+        print(f"❌ Fayl topilmadi: {INPUT_FILE}")
         return
 
-    json_files = [
-        os.path.join(DATA_DIR, "samarkand_centers.json"),
-    ]
-    
-    # Faqat mavjud fayllarni qo'shish
-    json_files = [f for f in json_files if os.path.exists(f)]
+    with open(INPUT_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
 
-    if not json_files:
-        print(f"❌ {DATA_DIR}/ papkasida JSON fayl topilmadi.")
-        return
+    centers = data.get("centers", [])
+    total   = len(centers)
+    print(f"\n📄 {INPUT_FILE}")
+    print(f"📊 Jami markazlar: {total}")
+    print(f"🖼  Max rasm/markaz: {MAX_IMAGES}")
+    print(f"💾 Yuklash: {'Ha' if DOWNLOAD else 'Yoq (faqat URL)'}\n")
 
-    print(f"\n📂 Papka: {DATA_DIR}/")
-    print(f"📄 Fayllar: {len(json_files)} ta")
-    for f in json_files:
-        size = os.path.getsize(f) // 1024
-        print(f"   • {os.path.basename(f)}  ({size} KB)")
+    # Backup
+    with open(BACKUP_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    print(f"💾 Backup: {BACKUP_FILE}\n")
 
-    print()
+    stats = {"found": 0, "not_found": 0, "skipped": 0}
 
-    grand = {"total": 0, "resolved": 0, "failed": 0, "skipped": 0}
+    for i, center in enumerate(centers):
+        name = center.get("name", "Noma'lum")
+        print(f"\n[{i+1:4}/{total}] {name[:50]}")
 
-    for filepath in json_files:
-        fname = os.path.basename(filepath)
-        print(f"\n{'─'*60}")
-        print(f"📄 {fname}")
-        print(f"{'─'*60}")
+        # Allaqachon rasmi bor bo'lsa o'tkazib yuborish
+        existing_logo   = center.get("logo")
+        existing_images = center.get("images", [])
 
-        try:
-            stats = process_file(filepath)
-            for k in grand:
-                grand[k] += stats[k]
+        if existing_logo and existing_images:
+            print(f"      ⏭  Allaqachon rasmi bor, o'tkazildi")
+            stats["skipped"] += 1
+            continue
 
-            print(f"\n  Jami: {stats['total']} | ✅ {stats['resolved']} | ❌ {stats['failed']}")
-        except Exception as e:
-            print(f"  ❌ Fayl xatosi: {e}")
+        # Rasm qidirish
+        logo, images = fetch_images_for_center(center, i + 1)
 
-    print(f"\n{'═'*60}")
-    print(f"  YAKUNIY NATIJA")
-    print(f"{'═'*60}")
-    print(f"  📊 Jami URL lar:       {grand['total']}")
-    print(f"  ✅ Muvaffaqiyatli:     {grand['resolved']}")
-    print(f"  ❌ Resolve bo'lmadi:   {grand['failed']}")
-    print(f"  ⏭  Allaqachon to'g'ri: {grand['skipped']}")
-    print(f"{'═'*60}")
+        if logo or images:
+            if not existing_logo and logo:
+                center["logo"] = logo
+            if not existing_images and images:
+                center["images"] = images
+            stats["found"] += 1
+            print(f"      ✅ Logo: {'bor' if logo else 'yoq'} | Rasmlar: {len(images)}")
+        else:
+            stats["not_found"] += 1
+            print(f"      ❌ Rasm topilmadi")
 
-    if grand["resolved"] > 0:
-        print(f"""
-  Keyingi qadam — seeder bilan DB ga yangilash:
-    php artisan db:seed --class=CentralAsiaSeeder
+        # Har 10 ta markaz dan keyin faylni saqlash (xavfsizlik)
+        if (i + 1) % 10 == 0:
+            data["updated_at"] = datetime.now().isoformat()
+            with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            print(f"\n  💾 Oraliq saqlash: {i+1} ta")
+
+    # Yakuniy saqlash
+    data["images_fetched_at"] = datetime.now().isoformat()
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+    print(f"\n{'═'*58}")
+    print(f"  NATIJA")
+    print(f"{'═'*58}")
+    print(f"  ✅ Rasm topildi:      {stats['found']}")
+    print(f"  ❌ Rasm topilmadi:    {stats['not_found']}")
+    print(f"  ⏭  O'tkazildi:       {stats['skipped']}")
+    print(f"{'═'*58}")
+    print(f"\n  💾 Saqlandi: {OUTPUT_FILE}")
+    print(f"""
+  Keyingi qadam:
+    php artisan db:seed --class=LearningCenterSeeder
 """)
-    else:
-        print("\n  ℹ Hech narsa o'zgarmadi (allaqachon to'g'ri yoki resolve bo'lmadi).")
 
 
 if __name__ == "__main__":

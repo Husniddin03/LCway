@@ -16,4 +16,5 @@ return [
     'next' => 'Keyingi',
     'showing' => ':first dan :last gacha, jami :total ta',
     'goto_page' => ':page sahifaga o\'tish',
+    'pagination_navigation' => 'Sahifalash navigatsiyasi',
 ];

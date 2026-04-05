@@ -4,7 +4,8 @@ namespace App\Services;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Drivers\Imagick\Driver;
+// use Intervention\Image\Drivers\Gd\Driver; // Uncomment if GD is available
 use Intervention\Image\ImageManager;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 
@@ -33,8 +34,8 @@ class ImageOptimizationService
             $this->optimizerChain->optimize($fullPath);
         }
 
-        // Create image instance using decode
-        $image = $this->manager->decode($fullPath);
+        // Create image instance using read (Intervention Image v3)
+        $image = $this->manager->read($fullPath);
 
         // Resize if width is greater than 1200px while maintaining aspect ratio
         if ($image->width() > 1200) {

@@ -2,12 +2,12 @@
 
 return [
     // Meta title
-    'title' => 'FindCourse - Best Learning Centers',
+    'title' => 'Findora - Best Learning Centers',
     
     // Hero Section
     'hero' => [
         'greeting' => 'Welcome to',
-        'welcome' => 'FindCourse!',
+        'welcome' => 'Findora!',
         'description' => 'Here you can find the learning centers that suit you best. We provide you with the best service.',
         'browse_courses' => 'Browse Courses Now',
         'contact_info' => 'Contact us for any questions or suggestions',
@@ -144,7 +144,7 @@ return [
         'testimonial1' => [
             'name' => 'Ali Valiyev',
             'role' => 'Web Developer',
-            'content' => 'Through FindCourse, I found the best IT course for myself. Now I work in a large company. This platform is useful for any youth!',
+            'content' => 'Through Findora, I found the best IT course for myself. Now I work in a large company. This platform is useful for any youth!',
         ],
         'testimonial2' => [
             'name' => 'Malika Karimova',

@@ -1,13 +1,16 @@
 <?php
 
 return [
-    'main' => 'Main',
+    'main' => 'Home',
+    'home' => 'Home',
+    'about' => 'About Us',
     'centers' => 'Learning Centers',
     'add_center' => 'Add Center',
     'pages' => 'Pages',
-    'features' => 'Our Features',
+    'features' => 'Features',
     'support' => 'Support',
     'languages' => 'Languages',
+    'toggle_theme' => 'Toggle Theme',
     'profile' => 'Profile',
     'logout' => 'Logout',
     'login' => 'Login',

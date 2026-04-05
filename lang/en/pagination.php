@@ -17,5 +17,6 @@ return [
     'next' => 'Next &raquo;',
     'showing' => 'Showing :first to :last of :total',
     'goto_page' => 'Go to page :page',
+    'pagination_navigation' => 'Pagination Navigation',
 
 ];

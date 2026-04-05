@@ -6,12 +6,12 @@
                 <div class="flex items-center space-x-3">
                     <x-optimized-image 
                         src="{{ asset('images/2.png') }}" 
-                        alt="FindCourse" 
+                        alt="Findora" 
                         class="w-10 h-10 rounded-full"
                         width="40"
                         height="40"
                     />
-                    <span class="text-xl font-bold gradient-text">FindCourse</span>
+                    <span class="text-xl font-bold gradient-text">Findora</span>
                 </div>
                 <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                     {{ __('footer.description') }}

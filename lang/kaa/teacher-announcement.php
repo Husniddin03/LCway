@@ -31,6 +31,9 @@ return [
         'teacher_placeholder' => 'Fan saylań...',
         'description_label' => 'Qısqasha tavsif beriw',
         'description_placeholder' => 'Qısqasha tavsif beriw...',
+        'subject_name_label' => 'Fan atı',
+        'subject_required' => '*',
+        'subject_type_label' => 'Fan túri',
     ],
 
     // Error Messages

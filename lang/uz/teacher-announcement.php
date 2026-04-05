@@ -31,6 +31,9 @@ return [
         'teacher_placeholder' => 'Fanni tanlang...',
         'description_label' => 'Qisqacha tavsif bering',
         'description_placeholder' => 'Qisqacha tavsif bering...',
+        'subject_name_label' => 'Fan nomi',
+        'subject_required' => '*',
+        'subject_type_label' => 'Fan turi',
     ],
 
     // Error Messages

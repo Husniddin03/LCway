@@ -15,7 +15,7 @@ class SetLocale
             App::setLocale(Session::get('locale'));
         } else {
             // Default language can be set here
-            App::setLocale('uz');
+            App::setLocale('uz_Latn');
         }
         
         return $next($request);

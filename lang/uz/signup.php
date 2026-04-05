@@ -7,7 +7,7 @@ return [
     // Header
     'header' => [
         'title' => 'Ro\'yxatdan o\'tish',
-        'subtitle' => 'FindCourse platformasiga qo\'shiling',
+        'subtitle' => 'Findora platformasiga qo\'shiling',
     ],
 
     // Social Login

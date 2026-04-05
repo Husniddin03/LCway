@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title ?? 'FindCourse - Eng yaxshi o\'quv markazlari' }}</title>
+    <title>{{ $title ?? 'Findora - Eng yaxshi o\'quv markazlari' }}</title>
     <meta name="description"
         content="{{ $description ?? 'O\'zbekiston bo\'ylab eng yaxshi o\'quv markazlarini toping. Kurslar, ustozlar va baholash tizimi.' }}">
 

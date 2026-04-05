@@ -29,6 +29,7 @@ return new class extends Migration
             $table->integer('student_count')->default(0);
             $table->integer('total_reyting')->default(0);
             $table->string('status')->default('active');
+            $table->boolean('checked')->default(false);
             $table->timestamps();
             
             // Indexlar
@@ -36,21 +37,12 @@ return new class extends Migration
             $table->index('type');
         });
 
-        // 2) subjects
-        Schema::create('subjects', function (Blueprint $table) {
-            $table->id();
-            $table->string('type')->nullable();
-            $table->string('name');
-            $table->string('icon')->nullable();
-            $table->timestamps();
-        });
 
         // 3) subjects_of_learning_centers
         Schema::create('subjects_of_learning_centers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('learning_centers_id')->constrained('learning_centers')->onDelete('cascade');
-            $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
-            $table->string('price')->nullable();
+            $table->string('subject_name');
             $table->timestamps();
         });
 
@@ -74,13 +66,7 @@ return new class extends Migration
             $table->foreignId('learning_centers_id')->constrained('learning_centers')->onDelete('cascade');
             $table->foreignId('users_id')->constrained('users')->onDelete('cascade');
             $table->text('comment');
-            $table->timestamps();
-        });
-
-        // 6) calendar
-        Schema::create('calendar', function (Blueprint $table) {
-            $table->id();
-            $table->string('weekdays');
+            $table->boolean('checked')->default(false);
             $table->timestamps();
         });
 
@@ -89,10 +75,23 @@ return new class extends Migration
             $table->id();
             $table->foreignId('learning_centers_id')->constrained('learning_centers')->onDelete('cascade');
             $table->string('name');
-            $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
             $table->string('photo')->nullable();
             $table->string('phone')->nullable();
             $table->text('about')->nullable();
+            $table->timestamps();
+        });
+
+        // 6) teacher_subjects (junction table)
+        Schema::create('teacher_subjects', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade');
+            $table->foreignId('subject_id')->constrained('subjects_of_learning_centers')->onDelete('cascade');
+            $table->string('subject_type')->nullable();
+            $table->string('subject_icon')->nullable();
+            $table->text('description')->nullable();
+            $table->integer('price')->nullable();
+            $table->string('currency')->nullable();
+            $table->string('period')->nullable();
             $table->timestamps();
         });
 
@@ -109,24 +108,19 @@ return new class extends Migration
         Schema::create('learning_centers_calendar', function (Blueprint $table) {
             $table->id();
             $table->foreignId('learning_centers_id')->constrained('learning_centers')->onDelete('cascade');
-            $table->foreignId('calendar_id')->constrained('calendar')->onDelete('cascade');
+            $table->string('weekdays');
             $table->time('open_time')->nullable();
             $table->time('close_time')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('connection', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('icon')->nullable();
-            $table->timestamps();
-        });
 
         // 11) learning_centers_connect
         Schema::create('learning_centers_connect', function (Blueprint $table) {
             $table->id();
             $table->foreignId('learning_centers_id')->constrained('learning_centers')->onDelete('cascade');
-            $table->foreignId('connection_id')->constrained('connection')->onDelete('cascade');
+            $table->string('connection_name');
+            $table->string('connection_icon')->nullable();
             $table->string('url')->nullable();
             $table->timestamps();
         });
@@ -135,12 +129,12 @@ return new class extends Migration
         Schema::create('need_teacher', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('learning_center_id');
-            $table->unsignedBigInteger('subject_id');
+            $table->string('subject_name');
+            $table->string('subject_type')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
 
             $table->foreign('learning_center_id')->references('id')->on('learning_centers')->onDelete('cascade');
-            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
         });
     }
 
@@ -149,16 +143,14 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('teacher_subjects');
         Schema::dropIfExists('learning_centers_connect');
         Schema::dropIfExists('learning_centers_calendar');
-        Schema::dropIfExists('connection');
         Schema::dropIfExists('favorites');
         Schema::dropIfExists('teachers');
-        Schema::dropIfExists('calendar');
         Schema::dropIfExists('learning_centers_comments');
         Schema::dropIfExists('learning_centers_images');
         Schema::dropIfExists('subjects_of_learning_centers');
-        Schema::dropIfExists('subjects');
         Schema::dropIfExists('learning_centers');
         Schema::dropIfExists('need_teacher');
     }

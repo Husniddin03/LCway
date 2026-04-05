@@ -67,7 +67,7 @@ return [
     // Theme Toggle
     'theme' => [
         'toggle' => 'Dark/Light Mode',
-        'toggle_title' => 'Dark/Light Mode',
+        'toggle_title' => 'Toggle Dark/Light Mode',
     ],
 
     // Questions Array

@@ -26,10 +26,18 @@ return [
     'form' => [
         'title' => 'Jáńa fan qosıw',
         'subtitle' => 'Fan atın hám narxın kiriń',
+        'subject_name_label' => 'Fan atı',
+        'subject_name_placeholder' => 'Fan atın kiriń...',
+        'subject_type_label' => 'Fan túri',
+        'subject_type_placeholder' => 'Fan túrin saylań...',
         'subject_label' => 'Fanni saylań',
         'subject_placeholder' => 'Fan saylań...',
-        'price_label' => 'Narxi (so\'m)',
-        'price_placeholder' => '500 000',
+        'price_label' => 'Bahası',
+        'price_placeholder' => '500000',
+        'currency_label' => 'Walýuta',
+        'currency_placeholder' => 'Walýutany saylań...',
+        'period_label' => 'Kezneǵi',
+        'period_placeholder' => 'Keznekti saylań...',
     ],
 
     // Buttons

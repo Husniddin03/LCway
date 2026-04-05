@@ -28,6 +28,7 @@ return [
         'closed' => 'Закрыто',
         'add_weekday' => 'Добавить день',
         'add_weekday_title' => 'Добавить новый день',
+        'weekdays_label' => 'День недели',
     ],
 
     // Buttons
@@ -36,6 +37,7 @@ return [
         'save' => 'Сохранить',
         'update' => 'Обновить',
         'cancel' => 'Отмена',
+        'add' => 'Добавить',
     ],
 
     // Status

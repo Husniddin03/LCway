@@ -28,6 +28,7 @@ return [
         'closed' => 'Closed',
         'add_weekday' => 'Add Weekday',
         'add_weekday_title' => 'Add New Weekday',
+        'weekdays_label' => 'Weekday',
     ],
 
     // Buttons
@@ -36,6 +37,7 @@ return [
         'save' => 'Save',
         'update' => 'Update',
         'cancel' => 'Cancel',
+        'add' => 'Add',
     ],
 
     // Status

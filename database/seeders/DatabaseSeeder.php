@@ -18,14 +18,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'Husniddin G\'afforov',
             'email' => 'husniddin13124041@gmail.com',
             'password' => bcrypt('330440311'),
+            'role' => 'admin',
             'google_id' => '112106458759192214990',
             'avatar' => 'https://lh3.googleusercontent.com/a/ACg8ocL4WlERMSuEiR4fes2os85yVHweFOF7TOTsvYdTw2mzaTpp21s=s96-c'
         ]);
 
         $this->call([
-            SubjectsTableSeeder::class,
-            ConnectionTableSeeder::class,
-            CalendarTableSeeder::class,
             SamarkandCentersSeeder::class,
             UzbekistanOSMEducationSeederNew::class,
             UzbekistanLearningCentersSeeder::class,

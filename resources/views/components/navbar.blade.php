@@ -20,7 +20,7 @@
                         class="w-10 h-10 rounded-full bg-gradient-to-r from-primary-600 to-accent-600 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
                         <x-optimized-image 
                             src="{{ asset('images/2.png') }}" 
-                            alt="FindCourse" 
+                            alt="Findora" 
                             class="w-8 h-8 rounded-full"
                             width="32"
                             height="32"
@@ -28,7 +28,7 @@
                             fetchpriority="high"
                         />
                     </div>
-                    <span class="text-xl font-bold gradient-text sm:block">FindCourse</span>
+                    <span class="text-xl font-bold gradient-text sm:block">Findora</span>
                 </a>
             </div>
 

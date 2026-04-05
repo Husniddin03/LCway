@@ -360,10 +360,10 @@
                             x-transition:leave-end="transform opacity-0 scale-95"
                             class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                             <div class="py-2 max-h-70 overflow-y-auto">
-                                @foreach ($subjects as $subject)
-                                    <button type="button" onclick="applyFilter('subject_id', '{{ $subject->id }}')"
+                                @foreach ($subjects as $subjectName)
+                                    <button type="button" onclick="applyFilter('subject_name', '{{ $subjectName }}')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                        {{ $subject->name }}
+                                        {{ $subjectName }}
                                     </button>
                                 @endforeach
                             </div>
@@ -395,10 +395,10 @@
                                     class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
                                     {{ __('blog-grid.search_filter.all_announcements') }}
                                 </button>
-                                @foreach ($subjects as $subject)
-                                    <button type="button" onclick="applyFilter('needTeachers', '{{ $subject->id }}')"
+                                @foreach ($subjects as $subjectName)
+                                    <button type="button" onclick="applyFilter('needTeachers', '{{ $subjectName }}')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                        {{ $subject->name }}
+                                        {{ $subjectName }}
                                     </button>
                                 @endforeach
                             </div>
@@ -595,7 +595,7 @@
                                         @foreach ($LearningCenter->needTeachers->take(-1) as $teacher)
                                             <div class="flex items-center justify-between text-sm">
                                                 <span class="text-gray-700 dark:text-gray-300">🟢
-                                                    {{ $teacher->subject->name }}</span>
+                                                    {{ $teacher->subject_name }}</span>
                                                 <span
                                                     class="text-xs text-gray-500 dark:text-gray-400">{{ $teacher->created_at->diffForHumans() }}</span>
                                             </div>

@@ -11,15 +11,10 @@ class LearningCentersConnect extends Model
 
     protected $table = 'learning_centers_connect';
 
-    protected $fillable = ['learning_centers_id', 'connection_id', 'url'];
+    protected $fillable = ['learning_centers_id', 'connection_name', 'connection_icon', 'url'];
 
     public function learningCenter()
     {
         return $this->belongsTo(LearningCenter::class, 'learning_centers_id');
-    }
-
-    public function connection()
-    {
-        return $this->belongsTo(Connection::class, 'connection_id');
     }
 }

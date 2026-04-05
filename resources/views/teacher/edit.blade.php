@@ -83,7 +83,7 @@
                                     </h4>
                                     <div class="flex flex-wrap gap-3">
                                         @foreach ($LearningCenter->connections as $connection)
-                                            @if ($connection->connection->name == 'Phone')
+                                            @if ($connection->connection_name == 'Phone')
                                                 <a href="tel:{{ $connection->url }}" 
                                                    class="flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/30 dark:hover:to-blue-800/30 transition-all duration-300 group/item">
                                                     <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300 shadow-md">
@@ -92,7 +92,7 @@
                                                         </svg>
                                                     </div>
                                                 </a>
-                                            @elseif($connection->connection->name == 'Email')
+                                            @elseif($connection->connection_name == 'Email')
                                                 <a href="mailto:{{ $connection->url }}" 
                                                    class="flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-red-50 hover:to-red-100 dark:hover:from-red-900/30 dark:hover:to-red-800/30 transition-all duration-300 group/item">
                                                     <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300 shadow-md">
@@ -105,9 +105,9 @@
                                                 <a href="{{ $connection->url }}" target="_blank"
                                                    class="flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-purple-50 hover:to-purple-100 dark:hover:from-purple-900/30 dark:hover:to-purple-800/30 transition-all duration-300 group/item">
                                                     <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300 shadow-md">
-                                                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg"
+                                                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection_name) }}.svg"
                                                             width="20" height="20"
-                                                            alt="{{ $connection->connection->name }}"
+                                                            alt="{{ $connection->connection_name }}"
                                                             class="filter brightness-0 invert" />
                                                     </div>
                                                 </a>
@@ -248,19 +248,18 @@
                                 </div>
                             </div>
 
-                            <!-- Subject -->
+                            <!-- Subject Selection -->
                             <div>
-                                <label for="subject" class="block text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                                <label for="subject_id" class="block text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                                     <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                     </svg>
-                                    {{ __('teacher-edit.form.subject_label') }} <span class="text-red-500">{{ __('teacher-edit.required') }}</span>
+                                    Fanni tanlang <span class="text-gray-400 font-normal">(ixtiyoriy)</span>
                                 </label>
-                                <select name="subject_id" id="subject" required
-                                    class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm">
-                                    <option value="" disabled>{{ __('teacher-edit.form.subject_placeholder') }}</option>
-                                    @foreach ($LearningCenter->subjects as $subject)
-                                        <option value="{{ $subject->subject->id }}" {{ $subject->subject->id == $teacher->subject_id ? 'selected' : '' }}>{{ $subject->subject->name }}</option>
+                                <select name="subject_id" id="subject_id" class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm">
+                                    <option value="">Fan tanlanmagan</option>
+                                    @foreach($subjects as $subject)
+                                        <option value="{{ $subject->id }}" {{ $teacherSubject && $teacherSubject->subject_id == $subject->id ? 'selected' : '' }}>{{ $subject->subject_name }}</option>
                                     @endforeach
                                 </select>
                                 @error('subject_id')
@@ -273,17 +272,138 @@
                                 @enderror
                             </div>
 
-                            <!-- About -->
+                            <!-- Subject Type (now in teacher_subjects) -->
                             <div>
-                                <label for="message" class="block text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                                <label for="subject_type" class="block text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                    </svg>
+                                    {{ __('teacher-edit.form.subject_type_label') }} <span class="text-gray-400 font-normal">(ixtiyoriy)</span>
+                                </label>
+                                <input type="text" name="subject_type" id="subject_type" value="{{ $teacherSubject->subject_type ?? '' }}" placeholder="Asosiy, Qo'shimcha..."
+                                    class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm">
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">* Fan turini fanga biriktirganda saqlanadi</p>
+                                @error('subject_type')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <!-- Price (now in teacher_subjects) -->
+                            <div>
+                                <label for="price" class="block text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Narx <span class="text-gray-400 font-normal">(ixtiyoriy)</span>
+                                </label>
+                                <input type="number" name="price" id="price" value="{{ $teacherSubject->price ?? '' }}" placeholder="500000"
+                                    class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm">
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">* Narx fanga biriktirganda saqlanadi</p>
+                                @error('price')
+                                    <p class="mt-2 text-sm textred-600 dark:text-red-400 flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <!-- Currency (now in teacher_subjects) -->
+                            <div>
+                                <label for="currency" class="block text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Valyuta <span class="text-gray-400 font-normal">(ixtiyoriy)</span>
+                                </label>
+                                <input type="text" name="currency" id="currency" list="existing-currencies" value="{{ $teacherSubject->currency ?? '' }}" placeholder="so'm, USD..."
+                                    class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm">
+                                <datalist id="existing-currencies">
+                                    <option value="so'm">so'm</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="RUB">RUB</option>
+                                    <option value="KZT">KZT</option>
+                                </datalist>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">* Valyuta fanga biriktirganda saqlanadi</p>
+                                @error('currency')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <!-- Period (now in teacher_subjects) -->
+                            <div>
+                                <label for="period" class="block text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Davomiylik <span class="text-gray-400 font-normal">(ixtiyoriy)</span>
+                                </label>
+                                <input type="text" name="period" id="period" list="existing-periods" value="{{ $teacherSubject->period ?? '' }}" placeholder="oy, hafta, dars..."
+                                    class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm">
+                                <datalist id="existing-periods">
+                                    <option value="oy">oy</option>
+                                    <option value="hafta">hafta</option>
+                                    <option value="dars">dars</option>
+                                    <option value="yil">yil</option>
+                                    <option value="kurs">kurs</option>
+                                </datalist>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">* Davomiylik fanga biriktirganda saqlanadi</p>
+                                @error('period')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <!-- Subject Icon (now in teacher_subjects) -->
+                            <div>
+                                <label for="subject_icon" class="block text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Fan ikoni <span class="text-gray-400 font-normal">(ixtiyoriy)</span>
+                                </label>
+                                <input type="text" name="subject_icon" id="subject_icon" value="{{ $teacherSubject->subject_icon ?? '' }}" placeholder="Icon class..."
+                                    class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm">
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">* Icon fanga biriktirganda saqlanadi</p>
+                                @error('subject_icon')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <!-- Description (now in teacher_subjects) -->
+                            <div>
+                                <label for="description" class="block text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                                     <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
-                                    {{ __('teacher-edit.form.about_label') }}
+                                    Tavsif <span class="text-gray-400 font-normal">(ixtiyoriy)</span>
                                 </label>
-                                <textarea name="about" id="message" rows="4" placeholder="{{ __('teacher-edit.form.about_placeholder') }}"
-                                    class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm resize-none">{{ $teacher->about ?? '' }}</textarea>
-                                @error('about')
+                                <textarea name="description" id="description" rows="4" placeholder="Fan tavsifi..."
+                                    class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 text-gray-900 dark:text-white transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm resize-none">{{ $teacherSubject->description ?? '' }}</textarea>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">* Tavsif fanga biriktirganda saqlanadi</p>
+                                @error('description')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />

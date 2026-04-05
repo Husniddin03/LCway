@@ -17,9 +17,24 @@ return [
         'not_filled' => 'Personal information not yet filled',
     ],
 
+    // About Section
+    'about' => [
+        'title' => 'About Me',
+    ],
+
+    // Additional Information
+    'additional' => [
+        'account' => 'Account Information',
+        'user_id' => 'User ID',
+        'status' => 'Status',
+        'active' => 'Active',
+        'last_login' => 'Last Login',
+        'contact' => 'Contact Information',
+    ],
+
     // Stats
     'stats' => [
-        'courses' => 'Completed Courses',
+        'courses' => 'My Centers',
         'subjects' => 'Subjects',
         'teachers' => 'Teachers',
     ],
@@ -28,7 +43,7 @@ return [
     'recent_activity' => [
         'title' => 'Recent Activity',
         'new_course' => 'Create New Course',
-        'no_data_yet' => 'No courses created yet',
+        'no_data_yet' => 'No data yet',
     ],
 
     // Labels

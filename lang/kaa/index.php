@@ -2,12 +2,12 @@
 
 return [
     // Meta title
-    'title' => 'FindCourse - Eń jaqsı o\'qıw merkezleri',
+    'title' => 'Findora - Eń jaqsı o\'qıw merkezleri',
     
     // Hero Section
     'hero' => [
         'greeting' => 'Xosh keldin\'iz',
-        'welcome' => 'FindCourse!',
+        'welcome' => 'Findora!',
         'description' => 'Mında siz ózizge ma\'s bolǵan o\'qıw merkezlerin tabıwıńız múmkin. Biz sizge eń jaqsı xızmetni keltiriwimiz.',
         'browse_courses' => 'Dárejelerdi saylan',
         'contact_info' => 'Qanday da soraw yaki usnıs ushın biz menen baylanısıńız',
@@ -106,7 +106,7 @@ return [
         'testimonial1' => [
             'name' => 'Ali Valiyev',
             'role' => 'Web Dasturshı',
-            'content' => 'FindCourse arqalı ózim ushın eń jaqsı IT kursın taptım. Endi iri kompaniyada isleymen. Bul platforma hár qanday jas ushın paydalı!',
+            'content' => 'Findora arqalı ózim ushın eń jaqsı IT kursın taptım. Endi iri kompaniyada isleymen. Bul platforma hár qanday jas ushın paydalı!',
         ],
         'testimonial2' => [
             'name' => 'Malika Karimova',

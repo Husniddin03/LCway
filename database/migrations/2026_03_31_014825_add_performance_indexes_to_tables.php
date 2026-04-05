@@ -23,19 +23,12 @@ return new class extends Migration
         // Teachers table indexes
         Schema::table('teachers', function (Blueprint $table) {
             $table->index('learning_centers_id'); // Foreign key lookup
-            $table->index('subject_id'); // For filtering by subject
         });
 
-        // Subjects table indexes
-        Schema::table('subjects', function (Blueprint $table) {
-            $table->index('name'); // For subject searches
-            $table->index('type'); // For filtering by type
-        });
 
         // Subjects of learning centers table indexes
         Schema::table('subjects_of_learning_centers', function (Blueprint $table) {
-            $table->index(['learning_centers_id', 'subject_id']); // Composite index for lookups
-            $table->index('price'); // For price filtering
+            $table->index(['learning_centers_id', 'subject_name'], 'solc_lc_id_subject_idx'); // Composite index for lookups
         });
 
         // Learning centers images table indexes
@@ -58,7 +51,7 @@ return new class extends Migration
 
         // Chat sessions table indexes
         Schema::table('chat_sessions', function (Blueprint $table) {
-            $table->index('users_id'); // For user session lookups
+            $table->index('user_id'); // For user session lookups
             $table->index('created_at'); // For session ordering
         });
     }
@@ -78,17 +71,11 @@ return new class extends Migration
 
         Schema::table('teachers', function (Blueprint $table) {
             $table->dropIndex('learning_centers_id');
-            $table->dropIndex('subject_id');
         });
 
-        Schema::table('subjects', function (Blueprint $table) {
-            $table->dropIndex('name');
-            $table->dropIndex('type');
-        });
 
         Schema::table('subjects_of_learning_centers', function (Blueprint $table) {
-            $table->dropIndex(['learning_centers_id', 'subject_id']);
-            $table->dropIndex('price');
+            $table->dropIndex('solc_lc_id_subject_idx');
         });
 
         Schema::table('learning_centers_images', function (Blueprint $table) {
@@ -107,7 +94,7 @@ return new class extends Migration
         });
 
         Schema::table('chat_sessions', function (Blueprint $table) {
-            $table->dropIndex('users_id');
+            $table->dropIndex('user_id');
             $table->dropIndex('created_at');
         });
     }

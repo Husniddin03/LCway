@@ -11,15 +11,20 @@ class SubjectsOfLearningCenter extends Model
 
     protected $table = 'subjects_of_learning_centers';
 
-    protected $fillable = ['learning_centers_id', 'subject_id', 'price'];
+    protected $fillable = ['learning_centers_id', 'subject_name'];
 
     public function learningCenter()
     {
         return $this->belongsTo(LearningCenter::class, 'learning_centers_id');
     }
 
-    public function subject()
+    public function teacherSubjects()
     {
-        return $this->belongsTo(Subject::class, 'subject_id');
+        return $this->hasMany(TeacherSubject::class, 'subject_id');
+    }
+
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class, 'teacher_subjects', 'subject_id', 'teacher_id');
     }
 }

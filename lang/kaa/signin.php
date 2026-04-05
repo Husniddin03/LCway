@@ -7,7 +7,7 @@ return [
     // Header
     'header' => [
         'title' => 'Hisabıńızǵa kiriń',
-        'subtitle' => 'FindCourse platformasına xush kelipsiz',
+        'subtitle' => 'Findora platformasına xush kelipsiz',
     ],
 
     // Social Login

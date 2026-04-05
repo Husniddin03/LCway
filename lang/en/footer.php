@@ -21,12 +21,12 @@ return [
     
     // Contact
     'contact' => 'Contact',
-    'phone' => '(+998) 77 025 026 77',
-    'email' => 'info@findcourse.uz',
+    'phone' => '+998 77 025 026 77',
+    'email' => 'support@findora.uz',
     'location' => 'Uzbekistan',
     
     // Bottom Section
-    'copyright' => '&copy; :year FindCourse. All rights reserved.',
+    'copyright' => '© :year Findora. All rights reserved.',
     'privacy_policy' => 'Privacy Policy',
     'terms_of_service' => 'Terms of Service',
 ];

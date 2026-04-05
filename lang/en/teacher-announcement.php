@@ -31,6 +31,9 @@ return [
         'teacher_placeholder' => 'Select subject...',
         'description_label' => 'Brief description',
         'description_placeholder' => 'Brief description...',
+        'subject_name_label' => 'Subject Name',
+        'subject_required' => '*',
+        'subject_type_label' => 'Subject Type',
     ],
 
     // Error Messages

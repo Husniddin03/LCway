@@ -7,7 +7,7 @@ return [
     // Header
     'header' => [
         'title' => 'Hisobingizga kirish',
-        'subtitle' => 'FindCourse platformasiga xush kelibsiz',
+        'subtitle' => 'Findora platformasiga xush kelibsiz',
     ],
 
     // Social Login

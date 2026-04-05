@@ -9,7 +9,7 @@ class LearningCentersComment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['learning_centers_id', 'users_id', 'comment'];
+    protected $fillable = ['learning_centers_id', 'users_id', 'comment', 'checked'];
 
     public function learningCenter()
     {

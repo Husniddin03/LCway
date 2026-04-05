@@ -12,7 +12,6 @@ class Teacher extends Model
         'about',
         'photo',
         'phone',
-        'subject_id',
         'learning_centers_id',
     ];
 
@@ -21,8 +20,13 @@ class Teacher extends Model
         return $this->belongsTo(LearningCenter::class, 'learning_centers_id');
     }
 
-    public function subject()
+    public function teacherSubjects()
     {
-        return $this->belongsTo(Subject::class);
+        return $this->hasMany(TeacherSubject::class, 'teacher_id');
+    }
+
+    public function subjects()
+    {
+        return $this->belongsToMany(SubjectsOfLearningCenter::class, 'teacher_subjects', 'teacher_id', 'subject_id');
     }
 }

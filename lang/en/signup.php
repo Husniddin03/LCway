@@ -7,7 +7,7 @@ return [
     // Header
     'header' => [
         'title' => 'Sign Up',
-        'subtitle' => 'Join FindCourse platform',
+        'subtitle' => 'Join Findora platform',
     ],
 
     // Social Login

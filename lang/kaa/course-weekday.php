@@ -28,6 +28,7 @@ return [
         'closed' => 'Jabıq',
         'add_weekday' => 'Kün qosıw',
         'add_weekday_title' => 'Jańa kün qosıw',
+        'weekdays_label' => 'Hápte kúni',
     ],
 
     // Buttons
@@ -36,6 +37,7 @@ return [
         'save' => 'Saqlaw',
         'update' => 'Jańlaw',
         'cancel' => 'Biykar etiw',
+        'add' => 'Qosıw',
     ],
 
     // Status

@@ -145,20 +145,11 @@ class UzbekistanOSMEducationSeederNew extends Seeder
         if (!empty($data['working_hours']) && is_array($data['working_hours'])) {
             foreach ($data['working_hours'] as $hour) {
                 $weekday = $hour['weekday'] ?? '';
-                $calendarId = null;
                 
-                // Calendar jadvalidan weekday ID sini topish
                 if ($weekday) {
-                    $calendarRow = DB::table('calendar')->where('weekdays', $weekday)->first();
-                    if ($calendarRow) {
-                        $calendarId = $calendarRow->id;
-                    }
-                }
-                
-                if ($calendarId) {
                     DB::table('learning_centers_calendar')->insert([
                         'learning_centers_id' => $center->id,
-                        'calendar_id' => $calendarId,
+                        'weekdays' => $weekday,
                         'open_time' => $hour['open_time'] ?? '',
                         'close_time' => $hour['close_time'] ?? '',
                         'created_at' => now(),
@@ -171,14 +162,15 @@ class UzbekistanOSMEducationSeederNew extends Seeder
         // Kontaktlar
         if (!empty($data['connections']) && is_array($data['connections'])) {
             foreach ($data['connections'] as $connection) {
-                $connectionRow = DB::table('connection')->where('name', $connection['type'] ?? '')->first();
-                $connectionId = $connectionRow ? $connectionRow->id : null;
+                $type = $connection['type'] ?? '';
+                $url = $connection['url'] ?? '';
                 
-                if ($connectionId) {
+                if ($type && $url) {
                     DB::table('learning_centers_connect')->insert([
                         'learning_centers_id' => $center->id,
-                        'connection_id' => $connectionId,
-                        'url' => mb_substr($connection['url'] ?? '', 0, 255),
+                        'connection_name' => $type,
+                        'connection_icon' => $type,
+                        'url' => mb_substr($url, 0, 255),
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);

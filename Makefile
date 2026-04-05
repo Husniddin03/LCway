@@ -73,3 +73,27 @@ clear-cache:
 	php artisan view:clear
 	php artisan cache:clear
 	@echo "🧼 Cache cleared!"
+
+# Database migrations
+migrate:
+	@echo "🗄️ Running migrations..."
+	php artisan migrate
+	@echo "✅ Migrations completed!"
+
+# Fresh database with migrations
+fresh:
+	@echo "🗄️ Refreshing database..."
+	php artisan migrate:fresh
+	@echo "✅ Database refreshed!"
+
+# Seed database
+seed:
+	@echo "🌱 Seeding database..."
+	php artisan db:seed
+	@echo "✅ Database seeded!"
+
+# Fresh database with seeders
+fresh-seed:
+	@echo "🗄️🌱 Fresh database with seeders..."
+	php artisan migrate:fresh --seed
+	@echo "✅ Database refreshed and seeded!"

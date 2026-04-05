@@ -26,10 +26,18 @@ return [
     'form' => [
         'title' => 'Yangi fan qo\'shish',
         'subtitle' => 'Fan nomini va narxini kiriting',
+        'subject_name_label' => 'Fan nomi',
+        'subject_name_placeholder' => 'Fan nomini kiriting...',
+        'subject_type_label' => 'Fan turi',
+        'subject_type_placeholder' => 'Fan turini tanlang...',
         'subject_label' => 'Fanni tanlang',
         'subject_placeholder' => 'Fan tanlang...',
-        'price_label' => 'Narxi (so\'m)',
-        'price_placeholder' => '500 000',
+        'price_label' => 'Narx',
+        'price_placeholder' => '500000',
+        'currency_label' => 'Valyuta',
+        'currency_placeholder' => 'Valyutani tanlang...',
+        'period_label' => 'Davr',
+        'period_placeholder' => 'Davtni tanlang...',
     ],
 
     // Buttons

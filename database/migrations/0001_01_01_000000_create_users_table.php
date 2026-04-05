@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string('password');
             $table->string('password_status')->default('user');
             $table->rememberToken();
+            $table->boolean('checked')->default(false);
+            $table->string('role')->default('user');
+            $table->string('status')->default('active');
+            $table->dateTime('last_login_at')->nullable();
             $table->timestamps();
         });
 

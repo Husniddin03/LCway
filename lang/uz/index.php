@@ -2,12 +2,12 @@
 
 return [
     // Meta title
-    'title' => 'FindCourse - Eng yaxshi o\'quv markazlari',
+    'title' => 'Findora - Eng yaxshi o\'quv markazlari',
     
     // Hero Section
     'hero' => [
         'greeting' => 'Assalomu alaykum,',
-        'welcome' => 'FindCourse ga xush kelibsiz!',
+        'welcome' => 'Findora ga xush kelibsiz!',
         'description' => 'Bu yerda siz o\'zingizga mos bo\'lgan o\'quv markazlarni topishingiz mumkin. Biz sizga eng yaxshi xizmatni taqdim etamiz.',
         'browse_courses' => 'Hoziroq kurslarni tanlash',
         'contact_info' => 'Har qanday savol yoki taklif uchun biz bilan bog\'laning',
@@ -106,7 +106,7 @@ return [
         'testimonial1' => [
             'name' => 'Ali Valiyev',
             'role' => 'Web Dasturchi',
-            'content' => 'FindCourse orqali o\'zim uchun eng yaxshi IT kursini topdim. Endi yirik kompaniyada ishlayman. Ushbu platforma har qanday yosh uchun foydalidir!',
+            'content' => 'Findora orqali o\'zim uchun eng yaxshi IT kursini topdim. Endi yirik kompaniyada ishlayman. Ushbu platforma har qanday yosh uchun foydalidir!',
         ],
         'testimonial2' => [
             'name' => 'Malika Karimova',

@@ -1,6 +1,22 @@
 // Blog Grid JavaScript - Extracted from blog-grid.blade.php
 // This file contains all JavaScript functionality for the blog grid page
 
+// Check if page was restored from cache (back button) and reload if needed
+window.addEventListener('pageshow', function(event) {
+    // If persisted is true, the page was loaded from cache (bfcache)
+    if (event.persisted) {
+        window.location.reload();
+        return;
+    }
+    
+    // Also check if the centers grid contains JSON instead of HTML
+    const centersGrid = document.getElementById('centersGrid');
+    if (centersGrid && centersGrid.innerHTML.trim().startsWith('{')) {
+        window.location.reload();
+        return;
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize sorting buttons based on current URL
     updateSortingButtons();
@@ -199,7 +215,6 @@ function performSearch() {
             if (typeof window.mapFilterComp === 'function') {
                 // Update centers data for map
                 if (data.centers) {
-                    console.log('Updating map with', data.centers.length, 'centers');
                     updateMapCenters(data.centers);
                 } else {
                     console.warn('No centers data received for map');
@@ -370,7 +385,6 @@ function loadMorePages() {
             
             // Update map with new centers data
             if (data.centers && typeof window.mapFilterComp === 'function') {
-                console.log('Updating map with new centers from pagination');
                 updateMapCenters(data.centers);
             }
         } else {

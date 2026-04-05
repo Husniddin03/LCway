@@ -74,7 +74,7 @@
                                         @foreach ($LearningCenter->subjects as $subject)
                                             <div class="flex items-center p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                                                 <div class="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
-                                                <span class="text-gray-700 dark:text-gray-300">{{ $subject->subject->name }}</span>
+                                                <span class="text-gray-700 dark:text-gray-300">{{ $subject->subject_name }}</span>
                                             </div>
                                         @endforeach
                                     </div>
@@ -93,47 +93,47 @@
 
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         @forelse ($LearningCenter->connections as $connection)
-                                            @php
-                                                // Birinchi harfni olish (UTF-8 qo'llab-quvvatlaydi)
-                                                $firstLetter = mb_substr($connection->connection->name, 0, 1);
-                                            @endphp
+                                        @php
+                                            // Birinchi harfni olish (UTF-8 qo'llab-quvvatlaydi)
+                                            $firstLetter = mb_substr($connection->connection_name, 0, 1);
+                                        @endphp
+                                        
+                                        <a href="{{ in_array($connection->connection_name, ['Phone', 'Email']) ? ($connection->connection_name == 'Phone' ? 'tel:' : 'mailto:') . $connection->url : $connection->url }}" 
+                                        target="_blank"
+                                        class="flex items-center p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-white dark:hover:bg-gray-800 hover:shadow-md transition-all duration-200 group">
                                             
-                                            <a href="{{ in_array($connection->connection->name, ['Phone', 'Email']) ? ($connection->connection->name == 'Phone' ? 'tel:' : 'mailto:') . $connection->url : $connection->url }}" 
-                                            target="_blank"
-                                            class="flex items-center p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-white dark:hover:bg-gray-800 hover:shadow-md transition-all duration-200 group">
-                                                
-                                                <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white dark:bg-gray-700 rounded-lg shadow-sm group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors border border-gray-100 dark:border-gray-600">
-                                                    @if ($connection->connection->icon)
-                                                        <i class="{{ $connection->connection->icon }} text-blue-500 group-hover:scale-110 transition-transform"></i>
-                                                    @else
-                                                        <span class="text-blue-600 dark:text-blue-400 font-black text-lg uppercase group-hover:scale-110 transition-transform">
-                                                            {{ $firstLetter }}
-                                                        </span>
-                                                    @endif
-                                                </div>
+                                            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white dark:bg-gray-700 rounded-lg shadow-sm group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors border border-gray-100 dark:border-gray-600">
+                                                @if ($connection->connection_icon)
+                                                    <i class="{{ $connection->connection_icon }} text-blue-500 group-hover:scale-110 transition-transform"></i>
+                                                @else
+                                                    <span class="text-blue-600 dark:text-blue-400 font-black text-lg uppercase group-hover:scale-110 transition-transform">
+                                                        {{ $firstLetter }}
+                                                    </span>
+                                                @endif
+                                            </div>
 
-                                                <div class="ml-3 min-w-0 flex-1">
-                                                    <p class="text-sm font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-none mb-1">
-                                                        {{ $connection->connection->name }}
-                                                    </p>
-                                                    <p class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 truncate max-w-full italic">
-                                                        {{ $connection->url }}
-                                                    </p>
-                                                </div>
+                                            <div class="ml-3 min-w-0 flex-1">
+                                                <p class="text-sm font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-none mb-1">
+                                                    {{ $connection->connection_name }}
+                                                </p>
+                                                <p class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 truncate max-w-full italic">
+                                                    {{ $connection->url }}
+                                                </p>
+                                            </div>
 
-                                                <div class="ml-2 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all">
-                                                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                                    </svg>
-                                                </div>
-                                            </a>
-                                        @empty
+                                            <div class="ml-2 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all">
+                                                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                </svg>
+                                            </div>
+                                        </a>
+                                    @empty
                                             <div class="col-span-full py-6 text-center bg-gray-50 dark:bg-gray-800/30 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
                                                 <p class="text-sm text-gray-500 dark:text-gray-400">
                                                     {{ __('connect-edit.current.no_connections') }}
                                                 </p>
                                             </div>
-                                        @endforelse
+                                    @endforelse
                                     </div>
                                 </div>
                             </div>
@@ -160,21 +160,21 @@
 
                             <!-- Form Fields -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Subject Select -->
+                                <!-- Subject Name Input -->
                                 <div class="space-y-2">
-                                    <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <label for="subject_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
                                         </svg>
-                                        {{ __('subject-create.form.subject_label') }}
+                                        {{ __('subject-create.form.subject_name_label') }}
                                     </label>
-                                    <select id="subject" name="subject_id" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                                        <option value="">{{ __('subject-create.form.subject_placeholder') }}</option>
-                                        @foreach ($subjects as $subject)
-                                            <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                    <input type="text" id="subject_name" name="subject_name" list="existing-subjects" placeholder="{{ __('subject-create.form.subject_name_placeholder') }}" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                    <datalist id="existing-subjects">
+                                        @foreach($existingSubjects as $subject)
+                                            <option value="{{ $subject }}">{{ $subject }}</option>
                                         @endforeach
-                                    </select>
-                                    @error('subject_id')
+                                    </datalist>
+                                    @error('subject_name')
                                         <p class="text-red-500 text-sm mt-1 flex items-center">
                                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
@@ -184,7 +184,63 @@
                                     @enderror
                                 </div>
 
-                                <!-- Price Input -->
+                                <!-- Subject Type Input (now in teacher_subjects) -->
+                                <div class="space-y-2">
+                                    <label for="subject_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+                                        </svg>
+                                        {{ __('subject-create.form.subject_type_label') }}
+                                    </label>
+                                    <input type="text" id="subject_type" name="subject_type" placeholder="Asosiy, Qo'shimcha..." class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">* Fan turini o'qituvchiga biriktirganda saqlanadi</p>
+                                    @error('subject_type')
+                                        <p class="text-red-500 text-sm mt-1 flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                            </svg>
+                                            {{ $message }}
+                                        </p>
+                                    @enderror
+                                </div>
+
+                                <!-- Teacher Selection -->
+                                <div class="space-y-2">
+                                    <label for="teacher_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                                        </svg>
+                                        O'qituvchini tanlang
+                                    </label>
+                                    <select id="teacher_id" name="teacher_id" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                        <option value="">O'qituvchi tanlanmagan</option>
+                                        @foreach($teachers as $teacher)
+                                            <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('teacher_id')
+                                        <p class="text-red-500 text-sm mt-1 flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                            </svg>
+                                            {{ $message }}
+                                        </p>
+                                    @enderror
+                                </div>
+
+                                <!-- Description Input (now in teacher_subjects) -->
+                                <div class="space-y-2 md:col-span-2">
+                                    <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                        </svg>
+                                        Tavsif
+                                    </label>
+                                    <textarea name="description" id="message" rows="4" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 resize-none" placeholder="Fan tavsifi..."></textarea>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">* Tavsif o'qituvchiga biriktirganda saqlanadi</p>
+                                </div>
+
+                                <!-- Price Input (now in teacher_subjects) -->
                                 <div class="space-y-2">
                                     <label for="price" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -193,7 +249,8 @@
                                         </svg>
                                         {{ __('subject-create.form.price_label') }}
                                     </label>
-                                    <input type="text" name="price" id="price" placeholder="500 000" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                    <input type="number" name="price" id="price" placeholder="500000" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">* Narx o'qituvchiga biriktirganda saqlanadi</p>
                                     @error('price')
                                         <p class="text-red-500 text-sm mt-1 flex items-center">
                                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -203,7 +260,26 @@
                                         </p>
                                     @enderror
                                 </div>
-                            </div>
+
+                                <!-- Subject Icon Input (now in teacher_subjects) -->
+                                <div class="space-y-2">
+                                    <label for="subject_icon" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Fan ikoni
+                                    </label>
+                                    <input type="text" name="subject_icon" id="subject_icon" placeholder="Icon class..." class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">* Icon o'qituvchiga biriktirganda saqlanadi</p>
+                                    @error('subject_icon')
+                                        <p class="text-red-500 text-sm mt-1 flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                            </svg>
+                                            {{ $message }}
+                                        </p>
+                                    @enderror
+                                </div>
 
                             <!-- Action Buttons -->
                             <div class="flex flex-col sm:flex-row gap-4 mt-10 pt-8 border-t border-gray-200/50 dark:border-gray-700/50">

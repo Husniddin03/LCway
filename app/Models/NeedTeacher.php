@@ -10,15 +10,10 @@ class NeedTeacher extends Model
     use HasFactory;
     protected $table = 'need_teacher';
 
-    protected $fillable = ['learning_center_id', 'subject_id', 'description'];
+    protected $fillable = ['learning_center_id', 'subject_name', 'subject_type', 'description'];
 
     public function learningCenter()
     {
         return $this->belongsTo(LearningCenter::class, 'learning_center_id');
-    }
-
-    public function subject()
-    {
-        return $this->belongsTo(Subject::class, 'subject_id');
     }
 }

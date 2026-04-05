@@ -5,15 +5,12 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\{
     LearningCenter,
-    Subject,
     SubjectsOfLearningCenter,
     LearningCentersImage,
     LearningCentersComment,
-    Calendar,
     Teacher,
     Favorite,
     LearningCentersCalendar,
-    Connection,
     LearningCentersConnect,
     NeedTeacher
 };

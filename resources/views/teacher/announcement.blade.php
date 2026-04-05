@@ -74,7 +74,7 @@
                                         @foreach ($LearningCenter->subjects as $subject)
                                             <div class="flex items-center p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                                                 <div class="w-2 h-2 bg-amber-500 rounded-full mr-3"></div>
-                                                <span class="text-gray-700 dark:text-gray-300">{{ $subject->subject->name }}</span>
+                                                <span class="text-gray-700 dark:text-gray-300">{{ $subject->subject_name }}</span>
                                             </div>
                                         @endforeach
                                     </div>
@@ -95,16 +95,16 @@
                                     @forelse ($LearningCenter->connections as $connection)
                                         @php
                                             // Birinchi harfni olish (UTF-8 qo'llab-quvvatlaydi)
-                                            $firstLetter = mb_substr($connection->connection->name, 0, 1);
+                                            $firstLetter = mb_substr($connection->connection_name, 0, 1);
                                         @endphp
                                         
-                                        <a href="{{ in_array($connection->connection->name, ['Phone', 'Email']) ? ($connection->connection->name == 'Phone' ? 'tel:' : 'mailto:') . $connection->url : $connection->url }}" 
+                                        <a href="{{ in_array($connection->connection_name, ['Phone', 'Email']) ? ($connection->connection_name == 'Phone' ? 'tel:' : 'mailto:') . $connection->url : $connection->url }}" 
                                         target="_blank"
                                         class="flex items-center p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-white dark:hover:bg-gray-800 hover:shadow-md transition-all duration-200 group">
                                             
                                             <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white dark:bg-gray-700 rounded-lg shadow-sm group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors border border-gray-100 dark:border-gray-600">
-                                                @if ($connection->connection->icon)
-                                                    <i class="{{ $connection->connection->icon }} text-blue-500 group-hover:scale-110 transition-transform"></i>
+                                                @if ($connection->connection_icon)
+                                                    <i class="{{ $connection->connection_icon }} text-blue-500 group-hover:scale-110 transition-transform"></i>
                                                 @else
                                                     <span class="text-blue-600 dark:text-blue-400 font-black text-lg uppercase group-hover:scale-110 transition-transform">
                                                         {{ $firstLetter }}
@@ -114,7 +114,7 @@
 
                                             <div class="ml-3 min-w-0 flex-1">
                                                 <p class="text-sm font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-none mb-1">
-                                                    {{ $connection->connection->name }}
+                                                    {{ $connection->connection_name }}
                                                 </p>
                                                 <p class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 truncate max-w-full italic">
                                                     {{ $connection->url }}
@@ -179,21 +179,35 @@
 
                             <!-- Form Fields -->
                             <div class="space-y-6">
-                                <!-- Subject Select -->
+                                <!-- Subject Name Input -->
                                 <div class="space-y-2">
                                     <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                                         </svg>
-                                        {{ __('teacher-announcement.form.teacher_label') }} <span class="text-red-500">{{ __('teacher-announcement.form.teacher_required') }}</span>
+                                        {{ __('teacher-announcement.form.subject_name_label') }} <span class="text-red-500">{{ __('teacher-announcement.form.subject_required') }}</span>
                                     </label>
-                                    <select name="subject_id" id="subject" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200" required>
-                                        <option value="" disabled>{{ __('teacher-announcement.form.teacher_placeholder') }}</option>
-                                        @foreach ($subjects as $subject)
-                                            <option value="{{ $subject->id }}">{{ $subject->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('subject_id')
+                                    <input type="text" name="subject_name" id="subject" placeholder="Matematika, Ingliz tili..." class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200" required>
+                                    @error('subject_name')
+                                        <p class="text-red-500 text-sm mt-1 flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                            </svg>
+                                            {{ $message }}
+                                        </p>
+                                    @enderror
+                                </div>
+
+                                <!-- Subject Type Input -->
+                                <div class="space-y-2">
+                                    <label for="subject_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                                        </svg>
+                                        {{ __('teacher-announcement.form.subject_type_label') }}
+                                    </label>
+                                    <input type="text" name="subject_type" id="subject_type" placeholder="Asosiy, Qo'shimcha..." class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200">
+                                    @error('subject_type')
                                         <p class="text-red-500 text-sm mt-1 flex items-center">
                                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>

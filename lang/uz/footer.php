@@ -22,11 +22,11 @@ return [
     // Contact
     'contact' => 'Aloqa',
     'phone' => '(+998) 77 025 026 77',
-    'email' => 'info@findcourse.uz',
+    'email' => 'info@findora.uz',
     'location' => 'Uzbekistan',
     
     // Bottom Section
-    'copyright' => '&copy; :year FindCourse. Barcha huquqlar himoyalangan.',
+    'copyright' => '&copy; :year Findora. Barcha huquqlar himoyalangan.',
     'privacy_policy' => 'Maxfiylik siyosati',
     'terms_of_service' => 'Foydalanish shartlari',
 ];

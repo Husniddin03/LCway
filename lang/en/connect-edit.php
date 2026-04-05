@@ -25,6 +25,9 @@ return [
         'url' => 'URL',
         'url_placeholder' => 'https://t.me/username or +998901234567',
         'url_hint' => 'Enter Telegram, Instagram, Facebook, phone number or email address',
+        'connection_name' => 'Connection Name',
+        'connection_icon' => 'Icon',
+        'icon_hint' => 'Social network icon (e.g., fab fa-telegram)',
     ],
 
     // Error Messages

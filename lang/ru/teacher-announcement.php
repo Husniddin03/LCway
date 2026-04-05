@@ -31,6 +31,9 @@ return [
         'teacher_placeholder' => 'Выберите предмет...',
         'description_label' => 'Краткое описание',
         'description_placeholder' => 'Краткое описание...',
+        'subject_name_label' => 'Название предмета',
+        'subject_required' => '*',
+        'subject_type_label' => 'Тип предмета',
     ],
 
     // Error Messages

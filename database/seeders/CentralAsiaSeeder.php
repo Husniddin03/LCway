@@ -61,8 +61,7 @@ class CentralAsiaSeeder extends Seeder
             }
         }
 
-        $calendarIds = $this->ensureCalendar();
-        $this->command->info('✅ Calendar: ' . implode(', ', array_keys($calendarIds)));
+        $this->command->info('✅ Calendar days ready');
         $this->command->newLine();
 
         if ($this->downloadImages) {
@@ -120,7 +119,7 @@ class CentralAsiaSeeder extends Seeder
                     $stats['images'] += $imgCount;
 
                     // Ish vaqtlari
-                    $hrCount   = $this->seedWorkingHours($centerId, $center['working_hours'] ?? [], $calendarIds);
+                    $hrCount   = $this->seedWorkingHours($centerId, $center['working_hours'] ?? []);
                     $stats['hours'] += $hrCount;
 
                     // Kontaktlar
@@ -167,21 +166,6 @@ class CentralAsiaSeeder extends Seeder
     // ─────────────────────────────────────────────────────────────
     // YORDAMCHI METODLAR
     // ─────────────────────────────────────────────────────────────
-
-    private function ensureCalendar(): array
-    {
-        $days = ['Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
-        $ids  = [];
-        foreach ($days as $day) {
-            $row = DB::table('calendar')->where('weekdays', $day)->first();
-            $ids[$day] = $row
-                ? $row->id
-                : DB::table('calendar')->insertGetId([
-                    'weekdays' => $day, 'created_at' => now(), 'updated_at' => now(),
-                ]);
-        }
-        return $ids;
-    }
 
 
     /**
@@ -316,30 +300,29 @@ class CentralAsiaSeeder extends Seeder
     }
 
 
-    private function seedWorkingHours(int $centerId, array $hours, array $calendarIds): int
+    private function seedWorkingHours(int $centerId, array $hours): int
     {
         $count = 0;
         foreach ($hours as $hour) {
             $weekday = $hour['weekday'] ?? null;
-            if (!$weekday || !isset($calendarIds[$weekday])) continue;
+            if (!$weekday) continue;
 
-            $calId     = $calendarIds[$weekday];
             $openTime  = $hour['open_time']  ?? '09:00:00';
             $closeTime = $hour['close_time'] ?? '18:00:00';
 
             $exists = DB::table('learning_centers_calendar')
                 ->where('learning_centers_id', $centerId)
-                ->where('calendar_id', $calId)->exists();
+                ->where('weekdays', $weekday)->exists();
 
             if ($exists) {
                 DB::table('learning_centers_calendar')
                     ->where('learning_centers_id', $centerId)
-                    ->where('calendar_id', $calId)
+                    ->where('weekdays', $weekday)
                     ->update(['open_time' => $openTime, 'close_time' => $closeTime, 'updated_at' => now()]);
             } else {
                 DB::table('learning_centers_calendar')->insert([
                     'learning_centers_id' => $centerId,
-                    'calendar_id'         => $calId,
+                    'weekdays'            => $weekday,
                     'open_time'           => $openTime,
                     'close_time'          => $closeTime,
                     'created_at'          => now(),
@@ -360,24 +343,18 @@ class CentralAsiaSeeder extends Seeder
             $url  = $conn['url']  ?? null;
             if (!$type || !$url) continue;
 
-            $row = DB::table('connection')->where('name', $type)->first();
-            $connId = $row
-                ? $row->id
-                : DB::table('connection')->insertGetId([
-                    'name' => $type, 'created_at' => now(), 'updated_at' => now(),
-                ]);
-
             $exists = DB::table('learning_centers_connect')
                 ->where('learning_centers_id', $centerId)
-                ->where('connection_id', $connId)->exists();
+                ->where('connection_name', $type)->exists();
 
             if (!$exists) {
                 DB::table('learning_centers_connect')->insert([
                     'learning_centers_id' => $centerId,
-                    'connection_id'       => $connId,
-                    'url'                 => mb_substr((string)$url, 0, 255),
-                    'created_at'          => now(),
-                    'updated_at'          => now(),
+                    'connection_name'   => $type,
+                    'connection_icon'   => $type,
+                    'url'               => mb_substr((string)$url, 0, 255),
+                    'created_at'        => now(),
+                    'updated_at'        => now(),
                 ]);
                 $count++;
             }

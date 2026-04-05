@@ -22,11 +22,11 @@ return [
     // Contact
     'contact' => 'Baylanıs',
     'phone' => '(+998) 77 025 026 77',
-    'email' => 'info@findcourse.uz',
+    'email' => 'info@findora.uz',
     'location' => 'Ózbekstan',
     
     // Bottom Section
-    'copyright' => '&copy; :year FindCourse. Barlıq huqıqlar qorǵalǵan.',
+    'copyright' => '&copy; :year Findora. Barlıq huqıqlar qorǵalǵan.',
     'privacy_policy' => 'Maxfiylik siyasatı',
     'terms_of_service' => 'Paydalanıs shartları',
 ];

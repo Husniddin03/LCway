@@ -13,6 +13,7 @@ class LearningCenter extends Model
         'logo', 'name', 'type', 'about', 'country', 'province', 'region',
         'address', 'location', 'status', 'users_id', 
         'student_count', 'total_reyting', 'rating', 'ratings_total',
+        'checked', 'status',
     ];
 
     protected $casts = [
@@ -124,12 +125,12 @@ class LearningCenter extends Model
     public function toSearchableArray(): array
     {
         // Relationlarni eager load qilish
-        $this->loadMissing(['subjects.subject', 'teachers']);
+        $this->loadMissing(['subjects', 'teachers']);
 
         // Fanlar ro'yxati (qidiruvda ishlashi uchun)
         $subjects = $this->subjects->map(function ($s) {
             return [
-                'name'  => $s->subject?->name ?? '',
+                'name'  => $s->subject_name ?? '',
                 'price' => (int) ($s->price ?? 0),
             ];
         })->toArray();
@@ -138,13 +139,13 @@ class LearningCenter extends Model
         $teachers = $this->teachers->map(function ($t) {
             return [
                 'name'    => $t->name ?? '',
-                'subject' => $t->subject?->name ?? '',
+                'subject' => $t->subject_name ?? '',
             ];
         })->toArray();
 
         // Qidiruv uchun birlashtirilgan matnlar
         $subjectsText = $this->subjects->map(function ($s) {
-            return $s->subject?->name;
+            return $s->subject_name;
         })->filter()->join(', ');
         
         $teachersText = $this->teachers->map(function ($t) {

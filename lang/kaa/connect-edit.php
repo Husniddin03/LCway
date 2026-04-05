@@ -25,6 +25,9 @@ return [
         'url' => 'URL',
         'url_placeholder' => 'https://t.me/username yamasa +998901234567',
         'url_hint' => 'Telegram, Instagram, Facebook, telefon nomeri yamasa email manzilin kiriń',
+        'connection_name' => 'Baylanıs atı',
+        'connection_icon' => 'Ikona',
+        'icon_hint' => 'Ijtimaiy tarmoq ikonası (mısalı: fab fa-telegram)',
     ],
 
     // Error Messages

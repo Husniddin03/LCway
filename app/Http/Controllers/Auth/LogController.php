@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+
+class LogController extends Controller
+{
+    /**
+     * Register new user
+     */
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6', // password_confirmation bilan ishlaydi
+        ]);
+
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        Auth::login($user);
+
+        return redirect()->intended(back()->getTargetUrl());
+    }
+
+    /**
+     * Login user1
+     */
+    public function login(Request $request)
+    {
+
+        $credentials = $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            return redirect()->intended(back()->getTargetUrl());
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+
+    /**
+     * Logout user
+     */
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('index')->with('success', 'Logged out successfully');
+    }
+}

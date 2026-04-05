@@ -25,6 +25,9 @@ return [
         'url' => 'Manzil',
         'url_placeholder' => 'https://t.me/username yoki +998901234567',
         'url_hint' => 'Telegram, Instagram, Facebook, telefon raqam yoki email manzilini kiriting',
+        'connection_name' => 'Bog\'lanish nomi',
+        'connection_icon' => 'Ikonka',
+        'icon_hint' => 'Ijtimoiy tarmoq ikonkasi (masalan: fab fa-telegram)',
     ],
 
     // Error Messages

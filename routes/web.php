@@ -1,17 +1,27 @@
 <?php
 
-use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\ConnectController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\UserDataController;
-use App\Http\Controllers\ImageController;
-use App\Http\Controllers\LogController;
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\TeacherController;
-use App\Http\Controllers\WeekdaysController;
+use App\Http\Controllers\Web\LanguageController;
+use App\Http\Controllers\Web\ChatController;
+use App\Http\Controllers\Web\CommentController;
+use App\Http\Controllers\Web\ConnectController;
+use App\Http\Controllers\Web\CourseController;
+use App\Http\Controllers\Web\UserDataController;
+use App\Http\Controllers\Web\ImageController;
+use App\Http\Controllers\Auth\LogController;
+use App\Http\Controllers\Web\PageController;
+use App\Http\Controllers\Web\SubjectController;
+use App\Http\Controllers\Web\TeacherController;
+use App\Http\Controllers\Web\WeekdaysController;
+use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Users;
+use App\Livewire\Admin\Centers;
+use App\Livewire\Admin\Center\Index as CenterIndex;
+use App\Livewire\Admin\Center\Create as CenterCreate;
+use App\Livewire\Admin\Center\Edit as CenterEdit;
+use App\Livewire\Admin\Center\Show as CenterShow;
+use App\Livewire\Admin\Teachers;
+use App\Livewire\Admin\Subjects;
+use App\Livewire\Admin\Comments;
 use Illuminate\Support\Facades\Route;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Illuminate\Support\Str;
@@ -22,85 +32,6 @@ use Illuminate\Support\Facades\Http;
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
-
-Route::post('/send-message', function (Request $request) {
-    try {
-        Mail::raw(
-            "Ism: ".$request->fullname."\n".
-            "Email: ".$request->email."\n\n".
-            "Xabar:\n".$request->message,
-            function ($mail) use ($request) {
-                $mail->to('husniddin13124041@gmail.com')
-                     ->from($request->email)
-                     ->subject('Yangi xabar');
-            }
-        );
-
-        // Return JSON response for AJAX requests
-        if ($request->ajax() || $request->wantsJson()) {
-            return response()->json(['success' => true, 'message' => 'Xabar muvaffaqiyatli yuborildi!']);
-        }
-
-        return back()->with('success', 'Xabar muvaffaqiyatli yuborildi!');
-    } catch (\Exception $e) {
-        // Return JSON response for AJAX requests
-        if ($request->ajax() || $request->wantsJson()) {
-            return response()->json(['success' => false, 'message' => 'Xabarni yuborishda xatolik yuz berdi.'], 500);
-        }
-
-        return back()->with('error', 'Xabarni yuborishda xatolik yuz berdi.');
-    }
-});
-
-Route::fallback(function () {
-    return response()->view('pages.404', [], 404);
-});
-
-Route::get('setwebhook', function () {
-    $response = Telegram::setWebhook(['url' => 'https://obesely-squirrellike-byron.ngrok-free.dev/api/telegram/webhook']);
-    return $response;
-});
-
-// google auth uchun route lar
-Route::get('/auth/google', function () {
-    return Socialite::driver('google')
-        ->scopes(['openid', 'profile', 'email'])
-        ->redirect();
-})->name('google.redirect');
-
-Route::get('/auth/google/callback', function () {
-    $googleUser = Socialite::driver('google')->stateless()->user();
-    $user = User::where('google_id', $googleUser->id)->first();
-    if(!$user){
-        $user = User::updateOrCreate(
-            ['email' => $googleUser->getEmail()],
-            [
-                'name' => $googleUser->getName(),
-                'google_id' => $googleUser->getId(),       // endi null bo‘lmaydi ✅
-                'avatar' => $googleUser->getAvatar(),      // endi null bo‘lmaydi ✅
-                'password' => bcrypt(Str::random(16)),
-                'password_status' => 'google',
-            ]
-        );
-    }
-    Auth::login($user);
-    return redirect('/');
-});
-
-// AI test route
-Route::get('/ai', function () {
-
-    $response = Http::withHeaders([
-        'Authorization' => 'Bearer ' . env('DEEPSEEK_API_KEY'),
-        'Content-Type' => 'application/json',
-    ])->post(env('DEEPSEEK_BASE_URL') . '/chat/completions', [
-        "model" => "deepseek-chat", // asosiy model
-        "messages" => [
-            ["role" => "user", "content" => "Salom! Qandaysan?"],
-        ],
-    ]);
-    return $response->json();
-});
 
 // Asosiy sahifalar uchun route lar
 Route::get('/', [PageController::class, 'index'])->name('index');
@@ -160,14 +91,14 @@ Route::middleware('auth')->group(function () {
     Route::post('comment/delete/{id}', [CommentController::class, 'delete'])->name('comment.delete');
     Route::post('comment/favoriteStore', [CommentController::class, 'favoriteStore'])->name('comment.favoriteStore');
     // image uchun route lar
-    Route::get('course/editImage/{id}', [ImageController::class, 'edit'])->name('course.editImage');
-    Route::post('course/deleteImage/{id}', [ImageController::class, 'delete'])->name('course.deleteImage');
-    Route::post('course/storeImages/{id}', [ImageController::class, 'store'])->name('course.storeImages');
+    Route::get('center/editImage/{id}', [ImageController::class, 'edit'])->name('course.editImage');
+    Route::post('center/deleteImage/{id}', [ImageController::class, 'delete'])->name('course.deleteImage');
+    Route::post('center/storeImages/{id}', [ImageController::class, 'store'])->name('course.storeImages');
     // weekdays uchun route lar
-    Route::get('course/weekday/{id}', [WeekdaysController::class, 'edit'])->name('course.weekday');
-    Route::post('course/weekdayUpdate/{id}', [WeekdaysController::class, 'update'])->name('course.weekdayUpdate');
-    Route::post('course/weekdayAdd/{id}', [WeekdaysController::class, 'add'])->name('course.weekdayAdd');
-    Route::post('course/weekdayDelete/{id}', [WeekdaysController::class, 'delete'])->name('course.weekdayDelete');
+    Route::get('center/weekday/{id}', [WeekdaysController::class, 'edit'])->name('course.weekday');
+    Route::post('center/weekdayUpdate/{id}', [WeekdaysController::class, 'update'])->name('course.weekdayUpdate');
+    Route::post('center/weekdayAdd/{id}', [WeekdaysController::class, 'add'])->name('course.weekdayAdd');
+    Route::post('center/weekdayDelete/{id}', [WeekdaysController::class, 'delete'])->name('course.weekdayDelete');
     // connect uchun route lar
     Route::get('connect/edit/{id}', [ConnectController::class, 'edit'])->name('connect.edit');
     Route::post('connect/delete/{id}', [ConnectController::class, 'delete'])->name('connect.delete');
@@ -175,4 +106,105 @@ Route::middleware('auth')->group(function () {
     // logout uchun route
     Route::post('logout', [LogController::class, 'logout'])->name('logout');
 });
+
+Route::post('/send-message', function (Request $request) {
+    try {
+        Mail::raw(
+            "Ism: ".$request->fullname."\n".
+            "Email: ".$request->email."\n\n".
+            "Xabar:\n".$request->message,
+            function ($mail) use ($request) {
+                $mail->to('husniddin13124041@gmail.com')
+                     ->from($request->email)
+                     ->subject('Yangi xabar');
+            }
+        );
+
+        // Return JSON response for AJAX requests
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Xabar muvaffaqiyatli yuborildi!']);
+        }
+
+        return back()->with('success', 'Xabar muvaffaqiyatli yuborildi!');
+    } catch (\Exception $e) {
+        // Return JSON response for AJAX requests
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => false, 'message' => 'Xabarni yuborishda xatolik yuz berdi.'], 500);
+        }
+
+        return back()->with('error', 'Xabarni yuborishda xatolik yuz berdi.');
+    }
+});
+
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});
+
+Route::get('setwebhook', function () {
+    $response = Telegram::setWebhook(['url' => 'https://obesely-squirrellike-byron.ngrok-free.dev/api/telegram/webhook']);
+    return $response;
+});
+
+// google auth uchun route lar
+Route::get('/auth/google', function () {
+    return Socialite::driver('google')
+        ->scopes(['openid', 'profile', 'email'])
+        ->redirect();
+})->name('google.redirect');
+
+Route::get('/auth/google/callback', function () {
+    $googleUser = Socialite::driver('google')->stateless()->user();
+    $user = User::where('google_id', $googleUser->id)->first();
+    if(!$user){
+        $user = User::updateOrCreate(
+            ['email' => $googleUser->getEmail()],
+            [
+                'name' => $googleUser->getName(),
+                'google_id' => $googleUser->getId(),       // endi null bo‘lmaydi ✅
+                'avatar' => $googleUser->getAvatar(),      // endi null bo‘lmaydi ✅
+                'password' => bcrypt(Str::random(16)),
+                'password_status' => 'google',
+            ]
+        );
+    }
+    Auth::login($user);
+    return redirect('/');
+});
+
+// AI test route
+Route::get('/ai', function () {
+
+    $response = Http::withHeaders([
+        'Authorization' => 'Bearer ' . env('DEEPSEEK_API_KEY'),
+        'Content-Type' => 'application/json',
+    ])->post(env('DEEPSEEK_BASE_URL') . '/chat/completions', [
+        "model" => "deepseek-chat", // asosiy model
+        "messages" => [
+            ["role" => "user", "content" => "Salom! Qandaysan?"],
+        ],
+    ]);
+    return $response->json();
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin Panel Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/users', Users::class)->name('users');
+    
+    // Centers CRUD
+    Route::get('/centers', CenterIndex::class)->name('centers');
+    Route::get('/centers/create', CenterCreate::class)->name('centers.create');
+    Route::get('/centers/{center}/edit', CenterEdit::class)->name('centers.edit');
+    Route::get('/centers/{center}', CenterShow::class)->name('centers.show');
+    
+    Route::get('/teachers', Teachers::class)->name('teachers');
+    Route::get('/subjects', Subjects::class)->name('subjects');
+    Route::get('/comments', Comments::class)->name('comments');
+});
+
 require __DIR__.'/test_bot.php';

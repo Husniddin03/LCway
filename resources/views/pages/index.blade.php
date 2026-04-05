@@ -22,7 +22,7 @@
                         class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-gray-900 dark:text-white">
                         {{ __('index.hero.greeting') }},<br>
                         <span class="text-yellow-600 dark:text-yellow-300">
-                            FindCourse
+                            Findora
                         </span>
                         {{ __('index.hero.welcome') }}
                     </h1>
@@ -409,7 +409,7 @@
                                             @foreach ($center->subjects->take(2) as $subject)
                                                 <span
                                                     class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-xs rounded-full">
-                                                    {{ $subject->subject->name }}
+                                                    {{ $subject->subject_name }}
                                                 </span>
                                             @endforeach
                                             @if ($center->subjects->count() > 2)

@@ -28,6 +28,7 @@ return [
         'closed' => 'Yopiq',
         'add_weekday' => 'Kun qo\'shish',
         'add_weekday_title' => 'Yangi kun qo\'shish',
+        'weekdays_label' => 'Hafta kuni',
     ],
 
     // Buttons
@@ -36,6 +37,7 @@ return [
         'save' => 'Saqlash',
         'update' => 'Yangilash',
         'cancel' => 'Bekor qilish',
+        'add' => 'Qo\'shish',
     ],
 
     // Status

@@ -46,25 +46,44 @@
                                     <div class="flex items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700/30 rounded-xl border border-transparent hover:border-blue-300 transition-all">
                                         <div class="flex items-center space-x-3 min-w-0">
                                             <div class="flex-shrink-0 w-10 h-10 bg-white dark:bg-gray-600 rounded-lg flex items-center justify-center shadow-sm">
-                                                @if ($connection->connection->icon)
-                                                    <i class="{{ $connection->connection->icon }} text-blue-500"></i>
-                                                @else
-                                                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/{{ strtolower($connection->connection->name) }}.svg" class="w-5 h-5 opacity-80" width="20" height="20" alt="{{ $connection->connection->name }}" />
-                                                @endif
+                                                <x-social-icon :icon="$connection->connection_icon" size="w-5 h-5" />
                                             </div>
                                             <div class="min-w-0">
-                                                <p class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">{{ $connection->connection->name }}</p>
+                                                <p class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">{{ $connection->connection_name }}</p>
                                                 <p class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[150px] sm:max-w-xs">{{ $connection->url }}</p>
                                             </div>
                                         </div>
                                         
                                         <div class="flex items-center space-x-1 sm:space-x-2">
-                                            <a href="{{ in_array($connection->connection->name, ['Phone', 'Email']) ? ($connection->connection->name == 'Phone' ? 'tel:' : 'mailto:') . $connection->url : $connection->url }}" 
-                                               target="_blank"
+                                            @php
+                                                $url = $connection->url;
+                                                $name = strtolower($connection->connection_name);
+                                                
+                                                // Phone redirect
+                                                if ($name === 'phone' || str_contains($url, 'tel:')) {
+                                                    $url = str_replace('tel:', '', $url);
+                                                    $href = 'tel:' . $url;
+                                                }
+                                                // Email redirect  
+                                                elseif ($name === 'email' || str_contains($url, 'mailto:')) {
+                                                    $url = str_replace('mailto:', '', $url);
+                                                    $href = 'mailto:' . $url;
+                                                }
+                                                // Regular URL
+                                                else {
+                                                    $href = $url;
+                                                }
+                                            @endphp
+                                            <a href="{{ $href }}" 
+                                               @if(!str_starts_with($href, 'tel:') && !str_starts_with($href, 'mailto:')) target="_blank" @endif
                                                class="p-2 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                                @if($connection->connection_icon === 'fab fa-telegram')
+                                                    <svg viewBox="0 0 496 512" class="w-5 h-5" fill="currentColor"><path d="M248 8C111 8 0 119 0 256S111 504 248 504 496 393 496 256 385 8 248 8zM363 176c-5 0-103 0-103 0-24 0-38 20-32 42 8 34 58 129 65 144 7 15 20 15 28 9 22-19 86-77 86-77s1 9-2 15c-4 9-26 80-26 80s-2 18 16 0c25-25 49-49 49-49l85 61s19 12 19-6V214s-2-38-38-38z"/></svg>
+                                                @else
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                                @endif
                                             </a>
-                                            <form action="{{ route('connect.delete', $connection->id) }}" method="POST" onsubmit="return confirm('O'chirishni xohlaysizmi?');">
+                                            <form action="{{ route('connect.delete', $connection->id) }}" method="POST" onsubmit="return confirm('O\'chirishni xohlaysizmi?');">
                                                 @csrf
                                                 <button type="submit" class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -96,20 +115,72 @@
 
                             <div class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('connect-edit.form.connection_type') }}</label>
-                                    <select name="connection_id" class="w-full px-4 py-3 rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-blue-500" required>
-                                        <option value="" disabled selected>{{ __('connect-edit.form.select_type') }}</option>
-                                        @foreach ($connections as $connection)
-                                            <option value="{{ $connection->id }}">{{ $connection->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('connect-edit.form.connection_name') }}</label>
+                                    <input type="text" name="connection_name" placeholder="Telegram, Instagram, Phone..." class="w-full px-4 py-3 rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-blue-500" required>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('connect-edit.form.connection_icon') }}</label>
+                                    <input type="hidden" name="connection_icon" id="connection_icon" value="fab fa-telegram">
+                                    
+                                    <!-- Icon Picker Grid -->
+                                    <div class="grid grid-cols-6 sm:grid-cols-8 gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
+                                        <x-social-icon mode="picker" />
+                                    </div>
+                                    
+                                    <script>
+                                        function selectIcon(iconClass, iconName) {
+                                            document.getElementById('connection_icon').value = iconClass;
+                                            document.querySelectorAll('.icon-btn').forEach(btn => {
+                                                btn.classList.remove('ring-2', 'ring-blue-500', 'bg-white', 'dark:bg-gray-700');
+                                                btn.style.backgroundColor = '';
+                                            });
+                                            const clickedBtn = event.currentTarget;
+                                            clickedBtn.classList.add('ring-2', 'ring-blue-500', 'bg-white', 'dark:bg-gray-700');
+                                        }
+                                    </script>
                                 </div>
 
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('connect-edit.form.url') }}</label>
-                                    <input type="text" name="url" placeholder="https://..." class="w-full px-4 py-3 rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-blue-500" required>
-                                    <p class="text-[10px] sm:text-xs text-gray-500 mt-1.5 px-1">{{ __('connect-edit.form.url_hint') }}</p>
+                                    <input type="text" name="url" id="url_input" placeholder="https://..." class="w-full px-4 py-3 rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-blue-500" required>
+                                    <p class="text-[10px] sm:text-xs text-gray-500 mt-1.5 px-1" id="url_hint">{{ __('connect-edit.form.url_hint') }}</p>
                                 </div>
+                                
+                                <script>
+                                    // Update URL input type and placeholder based on icon selection
+                                    function updateUrlInput(iconClass, iconName) {
+                                        const urlInput = document.getElementById('url_input');
+                                        const urlHint = document.getElementById('url_hint');
+                                        const connectionName = document.querySelector('input[name="connection_name"]');
+                                        
+                                        // Set connection name based on icon
+                                        if (connectionName && iconName) {
+                                            connectionName.value = iconName;
+                                        }
+                                        
+                                        if (iconClass === 'fas fa-phone') {
+                                            urlInput.type = 'tel';
+                                            urlInput.placeholder = '+998 90 123 45 67';
+                                            urlHint.textContent = 'Telefon raqamini +998 formatida kiriting';
+                                        } else if (iconClass === 'fas fa-envelope') {
+                                            urlInput.type = 'email';
+                                            urlInput.placeholder = 'example@mail.com';
+                                            urlHint.textContent = 'Email manzilini to\'liq kiriting';
+                                        } else {
+                                            urlInput.type = 'url';
+                                            urlInput.placeholder = 'https://...';
+                                            urlHint.textContent = '{{ __('connect-edit.form.url_hint') }}';
+                                        }
+                                    }
+                                    
+                                    // Override selectIcon to also update URL input
+                                    const originalSelectIcon = window.selectIcon;
+                                    window.selectIcon = function(iconClass, iconName) {
+                                        if (originalSelectIcon) originalSelectIcon(iconClass, iconName);
+                                        updateUrlInput(iconClass, iconName);
+                                    };
+                                </script>
                             </div>
 
                             <div class="flex flex-col sm:flex-row gap-3 pt-4">

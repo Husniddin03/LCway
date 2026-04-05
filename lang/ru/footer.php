@@ -22,11 +22,11 @@ return [
     // Contact
     'contact' => 'Контакты',
     'phone' => '(+998) 77 025 026 77',
-    'email' => 'info@findcourse.uz',
+    'email' => 'info@findora.uz',
     'location' => 'Узбекистан',
     
     // Bottom Section
-    'copyright' => '&copy; :year FindCourse. Все права защищены.',
+    'copyright' => '&copy; :year Findora. Все права защищены.',
     'privacy_policy' => 'Политика конфиденциальности',
     'terms_of_service' => 'Условия использования',
 ];

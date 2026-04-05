@@ -17,6 +17,21 @@ return [
         'not_filled' => 'Shaxsiy ma\'lumotlar hali to\'ldirilmagan',
     ],
 
+    // About Section
+    'about' => [
+        'title' => 'Men haqimda',
+    ],
+
+    // Additional Information
+    'additional' => [
+        'account' => 'Akkaunt ma\'lumotlari',
+        'user_id' => 'Foydalanuvchi ID',
+        'status' => 'Status',
+        'active' => 'Faol',
+        'last_login' => 'Oxirgi kirish',
+        'contact' => 'Aloqa ma\'lumotlari',
+    ],
+
     // Stats
     'stats' => [
         'courses' => 'Qo\'shilgan markazlar',
@@ -28,7 +43,7 @@ return [
     'recent_activity' => [
         'title' => 'Yangi qo\'shish',
         'new_course' => 'Yangi markaz qo\'shish',
-        'no_data_yet' => 'Sizda hali markazlar mavjud emas',
+        'no_data_yet' => 'Ma\'lumot yo\'q',
     ],
 
     // Labels

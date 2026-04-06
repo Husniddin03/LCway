@@ -4,7 +4,12 @@ namespace App\Providers;
 
 use App\Models\LearningCenter;
 use App\Models\LearningCentersComment;
+use App\Models\Teacher;
 use App\Models\User;
+use App\Observers\LearningCenterObserver;
+use App\Observers\LearningCentersCommentObserver;
+use App\Observers\TeacherObserver;
+use App\Observers\UserObserver;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
@@ -26,6 +31,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register model observers
+        User::observe(UserObserver::class);
+        LearningCenter::observe(LearningCenterObserver::class);
+        Teacher::observe(TeacherObserver::class);
+        LearningCentersComment::observe(LearningCentersCommentObserver::class);
+        
         Carbon::setLocale('uz_Latn');
         
         View::composer('components.layout', function ($view) {

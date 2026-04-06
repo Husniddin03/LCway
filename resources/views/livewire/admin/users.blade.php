@@ -85,13 +85,46 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse($users as $user)
+                @php
+                    $isOnline = $user->isOnline();
+                    $wasRecentlyOnline = $user->wasRecentlyOnline(30); // 30 daqiqa ichida online bo'lsa
+                    $isLongInactive = $user->isLongInactive(30); // 30 kun davomida kirmagan bo'lsa
+                    
+                    $borderClass = '';
+                    if ($isOnline) {
+                        $borderClass = 'ring-2 ring-green-500 ring-offset-2';
+                    } elseif ($wasRecentlyOnline) {
+                        $borderClass = 'ring-2 ring-yellow-400 ring-offset-2';
+                    } elseif ($isLongInactive) {
+                        $borderClass = 'ring-2 ring-red-500 ring-offset-2';
+                    }
+                @endphp
                 <tr class="hover:bg-gray-50">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
-                            <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                                <span class="text-indigo-600 font-medium text-sm">{{ substr($user->name, 0, 1) }}</span>
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden {{ $borderClass }} transition-all duration-300">
+                                @if($user->avatar)
+                                    @if(str_starts_with($user->avatar, 'http'))
+                                        <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
+                                    @else
+                                        <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
+                                    @endif
+                                @else
+                                    <div class="w-full h-full bg-indigo-100 flex items-center justify-center">
+                                        <span class="text-indigo-600 font-medium text-sm">{{ substr($user->name, 0, 1) }}</span>
+                                    </div>
+                                @endif
                             </div>
-                            <span class="ml-3 text-sm font-medium text-gray-900">{{ $user->name }}</span>
+                            <div class="ml-3">
+                                <span class="text-sm font-medium text-gray-900">{{ $user->name }}</span>
+                                @if($isOnline)
+                                    <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1"></span> online
+                                    </span>
+                                @elseif(isset($user->last_login_at) && $user->last_login_at)
+                                    <p class="text-xs text-gray-500">{{ $user->last_login_at->diffForHumans() }}</p>
+                                @endif
+                            </div>
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->email }}</td>
@@ -138,12 +171,11 @@
 
     <!-- Create Modal -->
     @if($showCreateModal)
-    <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" wire:click="$set('showCreateModal', false)"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+    <div class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75" wire:click="$set('showCreateModal', false)"></div>
+            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full relative z-10">
+                <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Yangi foydalanuvchi</h3>
                     <div class="space-y-4">
                         <div>
@@ -179,13 +211,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button wire:click="store" type="button" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 sm:ml-3 sm:w-auto">
-                        Yaratish
-                    </button>
-                    <button wire:click="$set('showCreateModal', false)" type="button" class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto">
-                        Bekor qilish
-                    </button>
+                <div class="bg-gray-50 px-6 py-3 flex justify-end gap-2 rounded-b-lg">
+                    <button wire:click="$set('showCreateModal', false)" class="px-4 py-2 border rounded-lg">Bekor qilish</button>
+                    <button wire:click="store" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Yaratish</button>
                 </div>
             </div>
         </div>
@@ -194,12 +222,11 @@
 
     <!-- Edit Modal -->
     @if($showEditModal)
-    <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" wire:click="$set('showEditModal', false)"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+    <div class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75" wire:click="$set('showEditModal', false)"></div>
+            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full relative z-10">
+                <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Foydalanuvchini tahrirlash</h3>
                     <div class="space-y-4">
                         <div>
@@ -235,13 +262,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button wire:click="update" type="button" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 sm:ml-3 sm:w-auto">
-                        Yangilash
-                    </button>
-                    <button wire:click="$set('showEditModal', false)" type="button" class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto">
-                        Bekor qilish
-                    </button>
+                <div class="bg-gray-50 px-6 py-3 flex justify-end gap-2 rounded-b-lg">
+                    <button wire:click="$set('showEditModal', false)" class="px-4 py-2 border rounded-lg">Bekor qilish</button>
+                    <button wire:click="update" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Yangilash</button>
                 </div>
             </div>
         </div>

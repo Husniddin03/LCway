@@ -2,7 +2,7 @@
 
 return [
     // Company Info
-    'description' => 'LCway - Learning-Center way, платформа, находящая наиболее удобный путь к образованию',
+    'description' => 'Findora — найдите всё необходимое в одном месте.',
     'telegram' => 'Telegram',
     
     // Quick Links

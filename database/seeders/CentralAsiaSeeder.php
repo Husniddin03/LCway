@@ -36,10 +36,6 @@ class CentralAsiaSeeder extends Seeder
     /** Har bir davlat JSON fayllari */
     protected array $countryFiles = [
         'uzbekistan'   => 'uzbekistan.json',
-        'kazakhstan'   => 'kazakhstan.json',
-        'kyrgyzstan'   => 'kyrgyzstan.json',
-        'tajikistan'   => 'tajikistan.json',
-        'turkmenistan' => 'turkmenistan.json',
     ];
 
     public function __construct()

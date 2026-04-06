@@ -9,6 +9,12 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Bot\TelegramBotController;
 use Illuminate\Support\Facades\Route;
 
+// User Online Status Heartbeat
+Route::middleware(['auth'])->post('/user/heartbeat', function () {
+    auth()->user()->updateLastLogin();
+    return response()->json(['success' => true]);
+})->name('user.heartbeat');
+
 Route::post('telegram/webhook', [TelegramBotController::class, 'handle']);
 
 /*

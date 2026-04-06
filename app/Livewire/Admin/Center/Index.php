@@ -11,6 +11,8 @@ class Index extends Component
 {
     use WithPagination;
 
+    protected string $paginationTheme = 'tailwind';
+
     public string $search = '';
     public string $status = '';
     public string $sortField = 'created_at';
@@ -25,6 +27,16 @@ class Index extends Component
     ];
 
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingStatus()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPerPage()
     {
         $this->resetPage();
     }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Teacher extends Model
 {
     use \Illuminate\Database\Eloquent\Factories\HasFactory;
+    protected $table = 'teachers';
     protected $fillable = [
         'name',
         'about',
@@ -28,5 +29,9 @@ class Teacher extends Model
     public function subjects()
     {
         return $this->belongsToMany(SubjectsOfLearningCenter::class, 'teacher_subjects', 'teacher_id', 'subject_id');
+    }
+
+    public function getCenterSubjects() {
+        return $this->learningCenter->subjects();
     }
 }

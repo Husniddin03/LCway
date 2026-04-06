@@ -17,6 +17,9 @@
     <!-- Livewire Styles -->
     @livewireStyles
     
+    <!-- PhotoSwipe CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/photoswipe@5.4.4/dist/photoswipe.css">
+    
     <style>
         body { font-family: 'Inter', sans-serif; }
         [x-cloak] { display: none !important; }
@@ -29,7 +32,7 @@
         @include('layouts.admin.sidebar')
         
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col lg:ml-64 transition-all duration-300">
+        <div class="flex-1 flex flex-col transition-all duration-300">
             
             <!-- Top Navbar -->
             @include('layouts.admin.navbar')
@@ -50,5 +53,48 @@
     
     <!-- Livewire Scripts -->
     @livewireScripts
+    
+    <!-- User Online Status Tracking -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update user online status every 2 minutes
+            const updateOnlineStatus = () => {
+                fetch('/api/user/heartbeat', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                }).catch(() => {});
+            };
+            
+            // Update immediately on page load
+            updateOnlineStatus();
+            
+            // Update every 2 minutes
+            setInterval(updateOnlineStatus, 2 * 60 * 1000);
+            
+            // Update on user activity
+            let activityTimeout;
+            const handleActivity = () => {
+                clearTimeout(activityTimeout);
+                activityTimeout = setTimeout(updateOnlineStatus, 5000);
+            };
+            
+            ['click', 'scroll', 'keypress', 'mousemove'].forEach(event => {
+                document.addEventListener(event, handleActivity, { passive: true });
+            });
+        });
+    </script>
+    
+    <!-- PhotoSwipe Scripts -->
+    <script type="module">
+        import PhotoSwipeLightbox from 'https://unpkg.com/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js';
+        import PhotoSwipe from 'https://unpkg.com/photoswipe@5.4.4/dist/photoswipe.esm.js';
+        
+        window.PhotoSwipe = PhotoSwipe;
+        window.PhotoSwipeLightbox = PhotoSwipeLightbox;
+    </script>
 </body>
 </html>

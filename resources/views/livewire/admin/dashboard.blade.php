@@ -67,6 +67,193 @@
         @endforeach
     </div>
 
+    <!-- Contribution Graph -->
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Yillik aktivlik</h3>
+                @php
+                    $totalContributions = 0;
+                    foreach ($contributionData as $day) {
+                        if ($day['date']) {
+                            $totalContributions += $day['count'];
+                        }
+                    }
+                @endphp
+                <p class="text-sm text-gray-500 mt-1">{{ $totalContributions }} ta aktivlik {{ $selectedYear }} yilda</p>
+            </div>
+            
+            <!-- Year Selector -->
+            <div>
+                <select wire:model.live="selectedYear" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+                    @for($year = now()->year; $year >= now()->year - 5; $year--)
+                        <option value="{{ $year }}">{{ $year }}</option>
+                    @endfor
+                </select>
+            </div>
+        </div>
+        
+        @php
+            // Build proper calendar grid
+            $yearStart = \Carbon\Carbon::create($selectedYear, 1, 1);
+            $yearEnd = \Carbon\Carbon::create($selectedYear, 12, 31);
+            
+            // Get day of week for Jan 1 (0=Sun, 1=Mon, ..., 6=Sat)
+            // We want Monday as first day, so 0=Mon, ..., 6=Sun
+            $jan1DayOfWeek = $yearStart->dayOfWeek;
+            $mondayBased = ($jan1DayOfWeek === 0) ? 6 : $jan1DayOfWeek - 1;
+            
+            // Build data lookup by date string
+            $dataByDate = [];
+            foreach ($contributionData as $day) {
+                if ($day['date']) {
+                    $dataByDate[$day['date']] = $day['count'];
+                }
+            }
+            
+            // Calculate max for color scale
+            $values = array_values($dataByDate);
+            $maxCount = !empty($values) ? max($values) : 0;
+            if ($maxCount === 0) $maxCount = 1;
+            
+            // Build grid: 7 rows (days) x N columns (weeks)
+            // Each cell is [date, count, dayIndex, weekIndex]
+            $grid = [];
+            $currentDate = $yearStart->copy();
+            $weekIndex = 0;
+            $dayIndex = $mondayBased;
+            
+            // Create full year grid
+            while ($currentDate <= $yearEnd) {
+                $dateStr = $currentDate->format('Y-m-d');
+                $count = $dataByDate[$dateStr] ?? 0;
+                
+                if (!isset($grid[$dayIndex])) {
+                    $grid[$dayIndex] = [];
+                }
+                $grid[$dayIndex][$weekIndex] = [
+                    'date' => $dateStr,
+                    'count' => $count,
+                ];
+                
+                $dayIndex++;
+                if ($dayIndex > 6) {
+                    $dayIndex = 0;
+                    $weekIndex++;
+                }
+                $currentDate->addDay();
+            }
+            
+            $totalWeeks = $weekIndex + ($dayIndex > 0 ? 1 : 0);
+            
+            // Calculate month positions based on first day of each month
+            $monthPositions = [];
+            for ($month = 1; $month <= 12; $month++) {
+                $firstDayOfMonth = \Carbon\Carbon::create($selectedYear, $month, 1);
+                
+                // Calculate week index for this date
+                $dayOfYear = $firstDayOfMonth->dayOfYear;
+                $dayOfWeek = $firstDayOfMonth->dayOfWeek;
+                $mondayBasedDay = ($dayOfWeek === 0) ? 6 : $dayOfWeek - 1;
+                
+                // Week index = (days since start + offset) / 7
+                $weekIdx = floor(($dayOfYear - 1 + $mondayBased) / 7);
+                
+                $monthName = $firstDayOfMonth->format('M');
+                $monthPositions[] = [
+                    'name' => $monthName,
+                    'weekIndex' => $weekIdx,
+                ];
+            }
+        @endphp
+        
+        <div class="relative">
+            <!-- Month Labels - positioned absolutely above grid -->
+            <div class="grid mb-2 pl-5 ml-[42px]" style="grid-template-columns: repeat({{ $totalWeeks }}, 1fr);">
+                @foreach($monthPositions as $month)
+                    <div class="text-xs text-gray-600 font-medium" style="grid-column: {{ $month['weekIndex'] + 1 }};" >
+                        {{ $month['name'] }}
+                    </div>
+                @endforeach
+            </div>
+            
+            <div class="flex">
+                <!-- Day Labels -->
+                <div class="flex flex-col mr-3 text-xs text-gray-500 gap-y-2" style="min-width: 50px;">
+                    <div class="h-[16px] mb-[4px] flex items-center">Mon</div>
+                    <div class="h-[16px] mb-[4px] flex items-center">Tue</div>
+                    <div class="h-[16px] mb-[4px] flex items-center">Wed</div>
+                    <div class="h-[16px] mb-[4px] flex items-center">Thu</div>
+                    <div class="h-[16px] mb-[4px] flex items-center">Fri</div>
+                    <div class="h-[16px] mb-[4px] flex items-center">Sat</div>
+                    <div class="h-[16px] mb-[4px] flex items-center">Sun</div>
+                </div>
+                
+                <!-- Contribution Grid - Full Width -->
+                <div class="flex-1">
+                    <div class="grid gap-[4px] w-full"
+                        style="grid-template-columns: repeat({{ $totalWeeks }}, minmax(12px, 1fr));">   
+                         @for($w = 0; $w < $totalWeeks; $w++)
+                            <div class="flex flex-col gap-[3px]">
+                                @for($d = 0; $d < 7; $d++)
+                                    @php
+                                        $cell = $grid[$d][$w] ?? null;
+                                        if ($cell) {
+                                            $count = $cell['count'];
+                                            
+                                            // GitHub-like color scale
+                                            if ($count === 0) {
+                                                $bgColor = '#ebedf0';
+                                                $tooltip = 'No activities';
+                                            } elseif ($count <= ceil($maxCount * 0.25)) {
+                                                $bgColor = '#9be9a8';
+                                                $tooltip = $count . ' activities';
+                                            } elseif ($count <= ceil($maxCount * 0.5)) {
+                                                $bgColor = '#40c463';
+                                                $tooltip = $count . ' activities';
+                                            } elseif ($count <= ceil($maxCount * 0.75)) {
+                                                $bgColor = '#30a14e';
+                                                $tooltip = $count . ' activities';
+                                            } else {
+                                                $bgColor = '#216e39';
+                                                $tooltip = $count . ' activities';
+                                            }
+                                            $formattedDate = \Carbon\Carbon::parse($cell['date'])->format('F j, Y');
+                                        } else {
+                                            $bgColor = 'transparent';
+                                        }
+                                    @endphp
+                                    @if($cell)
+                                        <div 
+                                            class="aspect-square rounded-[3px] hover:ring-2 hover:ring-gray-400 transition-all cursor-pointer"
+                                            style="background-color: {{ $bgColor }}; min-height: 14px;"
+                                            title="{{ $tooltip }} on {{ $formattedDate }}"
+                                        ></div>
+                                    @else
+                                        <div class="aspect-square rounded-[3px]" style="background-color: transparent; min-height: 14px;"></div>
+                                    @endif
+                                @endfor
+                            </div>
+                        @endfor
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Legend -->
+            <div class="flex items-center justify-end mt-4 text-xs text-gray-500">
+                <span class="mr-2">Less</span>
+                <div class="flex gap-[3px]">
+                    <div class="w-[14px] h-[14px] rounded-[3px]" style="background-color: #ebedf0;" title="No activities"></div>
+                    <div class="w-[14px] h-[14px] rounded-[3px]" style="background-color: #9be9a8;" title="Low"></div>
+                    <div class="w-[14px] h-[14px] rounded-[3px]" style="background-color: #40c463;" title="Medium"></div>
+                    <div class="w-[14px] h-[14px] rounded-[3px]" style="background-color: #30a14e;" title="High"></div>
+                    <div class="w-[14px] h-[14px] rounded-[3px]" style="background-color: #216e39;" title="Very High"></div>
+                </div>
+                <span class="ml-2">More</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Recent Activity -->
     <div class="bg-white rounded-xl border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200">

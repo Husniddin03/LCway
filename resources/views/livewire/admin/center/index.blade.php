@@ -32,6 +32,15 @@
                     <option value="50">50 / sahifa</option>
                 </select>
             </div>
+            <div class="flex items-center">
+                <span wire:loading wire:target="search,status,perPage,gotoPage" class="text-sm text-indigo-600">
+                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-indigo-600 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Yangilanmoqda...
+                </span>
+            </div>
         </div>
     </div>
 
@@ -42,8 +51,24 @@
         </div>
     @endif
 
+    <!-- Debug Info -->
+    <div class="bg-gray-100 p-2 rounded text-xs text-gray-600">
+        Status: '{{ $status }}' | Search: '{{ $search }}' | PerPage: {{ $perPage }}
+    </div>
+
     <!-- Table -->
-    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden relative">
+        <!-- Loading Overlay -->
+        <div wire:loading wire:target="search,status,perPage,sortBy,gotoPage,previousPage,nextPage,toggleVerification,togglePremium,delete" class="absolute inset-0 bg-white/70 z-10 flex items-center justify-center">
+            <div class="flex items-center text-indigo-600">
+                <svg class="animate-spin -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="font-medium">Yuklanmoqda...</span>
+            </div>
+        </div>
+        
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>

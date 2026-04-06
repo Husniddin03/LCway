@@ -120,7 +120,7 @@ class CourseController extends Controller
         $validated['users_id'] = Auth::id();
 
         if ($request->hasFile('logo')) {
-            $path = $this->imageService->optimizeImage($request->file('logo'), 'uploads/logos');
+            $path = $this->imageService->optimizeImage($request->file('logo'), 'uploads/2');
             $validated['logo'] = $path;
         }
 

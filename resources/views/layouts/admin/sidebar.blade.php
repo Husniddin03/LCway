@@ -1,13 +1,13 @@
 <aside 
     x-cloak
     :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
-    class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 lg:static lg:inset-0">
+    class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden">
     
     <!-- Logo -->
-    <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+    <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200 flex-shrink-0">
         <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-2">
             <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                <span class="text-white font-bold text-sm">FC</span>
+                <span class="text-white font-bold text-sm">FD</span>
             </div>
             <span class="text-lg font-semibold text-gray-900">Admin</span>
         </a>
@@ -73,6 +73,15 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
             </svg>
             Izohlar
+        </a>
+
+        <!-- Images -->
+        <a href="{{ route('admin.images') }}" 
+           class="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('admin.images*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100' }}">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            Rasmlar
         </a>
 
         <hr class="my-4 border-gray-200">

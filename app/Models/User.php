@@ -52,6 +52,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_login_at' => 'datetime',
         ];
     }
 
@@ -72,5 +73,54 @@ class User extends Authenticatable
 
     public function centers() : HasMany {
         return $this->hasMany(LearningCenter::class, 'users_id');
+    }
+
+    public function comments() : HasMany {
+        return $this->hasMany(LearningCentersComment::class, 'user_id');
+    }
+
+    public function favorites() : HasMany {
+        return $this->hasMany(Favorite::class, 'user_id');
+    }
+
+    /**
+     * Check if user is currently online (active within last 5 minutes)
+     */
+    public function isOnline(int $minutes = 5): bool
+    {
+        if (!$this->last_login_at) {
+            return false;
+        }
+        return $this->last_login_at->diffInMinutes(now()) < $minutes;
+    }
+
+    /**
+     * Check if user was recently online (within specified minutes)
+     */
+    public function wasRecentlyOnline(int $minutes = 30): bool
+    {
+        if (!$this->last_login_at) {
+            return false;
+        }
+        return $this->last_login_at->diffInMinutes(now()) < $minutes;
+    }
+
+    /**
+     * Check if user has been inactive for a long time (more than specified days)
+     */
+    public function isLongInactive(int $days = 30): bool
+    {
+        if (!$this->last_login_at) {
+            return true;
+        }
+        return $this->last_login_at->diffInDays(now()) > $days;
+    }
+
+    /**
+     * Update last login timestamp
+     */
+    public function updateLastLogin(): void
+    {
+        $this->update(['last_login_at' => now()]);
     }
 }

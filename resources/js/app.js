@@ -1,8 +1,3 @@
 import './bootstrap';
 
-// Alpine.js for reactive components
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-Alpine.start();
+// Alpine.js is automatically loaded by Livewire 3

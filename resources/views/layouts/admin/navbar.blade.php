@@ -1,4 +1,4 @@
-<header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 lg:px-8">
+<header class="h-16 bg-white border-b border-gray-200 flex items-center sticky top-0 z-11 justify-between px-4 sm:px-6 lg:px-8">
     <div class="flex items-center">
         <button @click="sidebarOpen = true" class="lg:hidden text-gray-500 hover:text-gray-700 mr-4">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -35,7 +35,15 @@
         <div class="relative" x-data="{ open: false }">
             <button @click="open = !open" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100">
                 <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center">
-                    <span class="text-white text-sm font-medium">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                    @if(auth()->user()->avatar)
+                        @if(str_starts_with(auth()->user()->avatar, 'http'))
+                            <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}" class="w-full h-full rounded-full">
+                        @else
+                            <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-full h-full rounded-full">
+                        @endif
+                    @else
+                        <span class="text-white text-sm font-medium">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                    @endif
                 </div>
                 <span class="hidden sm:block text-sm font-medium text-gray-700">{{ auth()->user()->name }}</span>
                 <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

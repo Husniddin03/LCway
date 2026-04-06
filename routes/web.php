@@ -22,6 +22,7 @@ use App\Livewire\Admin\Center\Show as CenterShow;
 use App\Livewire\Admin\Teachers;
 use App\Livewire\Admin\Subjects;
 use App\Livewire\Admin\Comments;
+use App\Livewire\Admin\Images;
 use Illuminate\Support\Facades\Route;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Illuminate\Support\Str;
@@ -193,6 +194,7 @@ Route::get('/ai', function () {
 */
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', Dashboard::class);
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/users', Users::class)->name('users');
     
@@ -205,6 +207,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/teachers', Teachers::class)->name('teachers');
     Route::get('/subjects', Subjects::class)->name('subjects');
     Route::get('/comments', Comments::class)->name('comments');
+    Route::get('/images', Images::class)->name('images');
 });
 
 require __DIR__.'/test_bot.php';

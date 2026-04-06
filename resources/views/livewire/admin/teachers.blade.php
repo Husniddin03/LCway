@@ -11,13 +11,13 @@
 
     <div class="bg-white p-4 rounded-xl border border-gray-200">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <input wire:model.live="search" type="text" placeholder="Qidirish..." class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            <select wire:model.live="centerFilter" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                <option value="">Barcha markazlar</option>
-                @foreach($centers as $id => $name)
-                    <option value="{{ $id }}">{{ $name }}</option>
-                @endforeach
+            <select wire:model.live="searchBy" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                <option value="">Barchasi</option>
+                <option value="name">Ism</option>
+                <option value="center">Markaz</option>
+                <option value="phone">Telefon</option>
             </select>
+            <input wire:model.live="search" type="text" placeholder="Qidirish..." class="w-full px-4 py-2 border border-gray-300 rounded-lg">
             <select wire:model.live="perPage" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
                 <option value="10">10 / sahifa</option>
                 <option value="20">20 / sahifa</option>
@@ -65,59 +65,219 @@
     <div class="mt-4">{{ $teachers->links() }}</div>
 
     @if($showCreateModal)
-    <div class="fixed inset-0 z-50 overflow-y-auto" x-data="{ open: true }">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75" wire:click="$set('showCreateModal', false)"></div>
-            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full relative z-10">
-                <div class="p-6">
-                    <h3 class="text-lg font-medium mb-4">Yangi o'qituvchi</h3>
-                    <div class="space-y-4">
-                        <input wire:model="form.name" type="text" placeholder="Ism" class="w-full border rounded-lg px-3 py-2">
-                        <input wire:model="form.phone" type="text" placeholder="Telefon" class="w-full border rounded-lg px-3 py-2">
-                        <input wire:model="form.email" type="email" placeholder="Email" class="w-full border rounded-lg px-3 py-2">
-                        <textarea wire:model="form.bio" placeholder="Bio" rows="3" class="w-full border rounded-lg px-3 py-2"></textarea>
-                        <select wire:model="form.learning_center_id" class="w-full border rounded-lg px-3 py-2">
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Yangi o'qituvchi</h3>
+            <form wire:submit.prevent="store">
+                <div class="space-y-4">
+                    <!-- Photo Upload -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Rasm</label>
+                        <input type="file" wire:model="teacherPhoto" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                        @error('teacherPhoto') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        
+                        @if($teacherPhotoPreview)
+                        <div class="mt-2">
+                            <img src="{{ $teacherPhotoPreview }}" class="w-20 h-20 object-cover rounded-lg border border-gray-200">
+                        </div>
+                        @endif
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Ism</label>
+                        <input type="text" wire:model="form.name" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        @error('form.name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Telefon</label>
+                        <input type="text" wire:model="form.phone" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        @error('form.phone') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" wire:model="form.email" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Bio</label>
+                        <textarea wire:model="form.bio" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Markaz</label>
+                        <select wire:model="form.learning_centers_id" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             <option value="">Markaz tanlang</option>
                             @foreach($centers as $id => $name)
                                 <option value="{{ $id }}">{{ $name }}</option>
                             @endforeach
                         </select>
+                        @error('form.learning_centers_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                    
+                    <!-- Subject Assignment -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Fan</label>
+                        <select wire:model="form.subject_id" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <option value="">Fan tanlang</option>
+                            @foreach($this->getCenterSubjects() as $subject)
+                                <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Fan turi</label>
+                        <input type="text" wire:model="form.subject_type" placeholder="Guruh, individual..." class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Fan ikoni</label>
+                        <input type="text" wire:model="form.subject_icon" placeholder="math, science..." class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Narx</label>
+                            <input type="number" wire:model="form.price" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Valyuta</label>
+                            <input type="text" wire:model="form.currency" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Davr</label>
+                        <input type="text" wire:model="form.period" placeholder="oy, hafta..." class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Tavsif</label>
+                        <textarea wire:model="form.description" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-6 py-3 flex justify-end gap-2 rounded-b-lg">
-                    <button wire:click="$set('showCreateModal', false)" class="px-4 py-2 border rounded-lg">Bekor</button>
-                    <button wire:click="store" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Saqlash</button>
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" wire:click="$set('showCreateModal', false)" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Bekor qilish</button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700" wire:loading.attr="disabled" wire:target="store">Saqlash</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     @endif
 
     @if($showEditModal)
-    <div class="fixed inset-0 z-50 overflow-y-auto">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75" wire:click="$set('showEditModal', false)"></div>
-            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full relative z-10">
-                <div class="p-6">
-                    <h3 class="text-lg font-medium mb-4">O'qituvchini tahrirlash</h3>
-                    <div class="space-y-4">
-                        <input wire:model="form.name" type="text" placeholder="Ism" class="w-full border rounded-lg px-3 py-2">
-                        <input wire:model="form.phone" type="text" placeholder="Telefon" class="w-full border rounded-lg px-3 py-2">
-                        <input wire:model="form.email" type="email" placeholder="Email" class="w-full border rounded-lg px-3 py-2">
-                        <textarea wire:model="form.bio" placeholder="Bio" rows="3" class="w-full border rounded-lg px-3 py-2"></textarea>
-                        <select wire:model="form.learning_center_id" class="w-full border rounded-lg px-3 py-2">
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">O'qituvchini tahrirlash</h3>
+            <form wire:submit.prevent="update">
+                <div class="space-y-4">
+                    <!-- Photo Upload -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Rasm</label>
+                        <input type="file" wire:model="teacherPhoto" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                        @error('teacherPhoto') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        
+                        @if($teacherPhotoPreview)
+                        <div class="mt-2">
+                            <img src="{{ $teacherPhotoPreview }}" class="w-20 h-20 object-cover rounded-lg border border-gray-200">
+                        </div>
+                        @elseif($editingTeacher && $editingTeacher->photo)
+                        <div class="mt-2">
+                            <img src="{{ asset('storage/' . $editingTeacher->photo) }}" class="w-20 h-20 object-cover rounded-lg border border-gray-200">
+                        </div>
+                        @endif
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Ism</label>
+                        <input type="text" wire:model="form.name" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        @error('form.name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Telefon</label>
+                        <input type="text" wire:model="form.phone" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        @error('form.phone') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" wire:model="form.email" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Bio</label>
+                        <textarea wire:model="form.bio" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Markaz</label>
+                        <select wire:model="form.learning_centers_id" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             <option value="">Markaz tanlang</option>
                             @foreach($centers as $id => $name)
                                 <option value="{{ $id }}">{{ $name }}</option>
                             @endforeach
                         </select>
+                        @error('form.learning_centers_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                    
+                    <!-- Subject Assignment -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Fan</label>
+                        <select wire:model="form.subject_id" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <option value="">Fan tanlang</option>
+                            @foreach($this->getCenterSubjects() as $subject)
+                                <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
+                            @endforeach
+                        </select>
+                        
+                        @if($editingTeacher && $editingTeacher->teacherSubjects->count() > 0)
+                        <div class="mt-2 p-2 bg-gray-50 rounded-lg">
+                            <p class="text-xs font-medium text-gray-600 mb-1">Biriktirilgan fanlar:</p>
+                            <div class="space-y-1">
+                                @foreach($editingTeacher->teacherSubjects as $ts)
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-gray-700">{{ $ts->subject->subject_name ?? 'Noma\'lum' }} {{ $ts->subject_type ? '(' . $ts->subject_type . ')' : '' }}</span>
+                                    @if($ts->price)
+                                    <span class="text-gray-500">{{ $ts->price }} {{ $ts->currency }}</span>
+                                    @endif
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Fan turi</label>
+                        <input type="text" wire:model="form.subject_type" placeholder="Guruh, individual..." class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Fan ikoni</label>
+                        <input type="text" wire:model="form.subject_icon" placeholder="math, science..." class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Narx</label>
+                            <input type="number" wire:model="form.price" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Valyuta</label>
+                            <input type="text" wire:model="form.currency" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Davr</label>
+                        <input type="text" wire:model="form.period" placeholder="oy, hafta..." class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Tavsif</label>
+                        <textarea wire:model="form.description" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-6 py-3 flex justify-end gap-2 rounded-b-lg">
-                    <button wire:click="$set('showEditModal', false)" class="px-4 py-2 border rounded-lg">Bekor</button>
-                    <button wire:click="update" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Yangilash</button>
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" wire:click="$set('showEditModal', false)" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Bekor qilish</button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700" wire:loading.attr="disabled" wire:target="update">Yangilash</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     @endif

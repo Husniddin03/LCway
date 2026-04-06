@@ -388,7 +388,7 @@
             const formData = new FormData(document.getElementById('addWeekdayForm'));
             const learningCenterId = '{{ $LearningCenter->id }}';
             
-            fetch(`/course/weekdayAdd/${learningCenterId}`, {
+            fetch(`/center/weekdayAdd/${learningCenterId}`, {
                 method: 'POST',
                 body: formData,
                 headers: {

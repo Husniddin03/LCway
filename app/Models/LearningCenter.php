@@ -13,12 +13,14 @@ class LearningCenter extends Model
         'logo', 'name', 'type', 'about', 'country', 'province', 'region',
         'address', 'location', 'status', 'users_id', 
         'student_count', 'total_reyting', 'rating', 'ratings_total',
-        'checked', 'status',
+        'checked', 'status', 'premium', 'premium_until',
     ];
 
     protected $casts = [
         'total_reyting' => 'float',
         'rating' => 'float',
+        'premium' => 'boolean',
+        'premium_until' => 'datetime',
     ];
 
     public function user()
@@ -42,6 +44,11 @@ class LearningCenter extends Model
     }
 
     public function calendar()
+    {
+        return $this->hasMany(LearningCentersCalendar::class, 'learning_centers_id');
+    }
+
+    public function weekdays()
     {
         return $this->hasMany(LearningCentersCalendar::class, 'learning_centers_id');
     }

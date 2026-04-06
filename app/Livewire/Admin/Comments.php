@@ -12,6 +12,7 @@ class Comments extends Component
     use WithPagination;
 
     public string $search = '';
+    public string $searchBy = '';
     public string $status = '';
     public string $sortField = 'created_at';
     public string $sortDirection = 'desc';
@@ -28,6 +29,7 @@ class Comments extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
+        'searchBy' => ['except' => ''],
         'status' => ['except' => ''],
     ];
 
@@ -99,7 +101,19 @@ class Comments extends Component
         $query = LearningCentersComment::with(['user:id,name', 'learningCenter:id,name']);
 
         if ($this->search) {
-            $query->where('comment', 'like', '%' . $this->search . '%');
+            $query->when($this->searchBy === '' || $this->searchBy === 'comment', function ($q) {
+                $q->where('comment', 'like', '%' . $this->search . '%');
+            })
+            ->when($this->searchBy === 'user', function ($q) {
+                $q->whereHas('user', function ($uq) {
+                    $uq->where('name', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->when($this->searchBy === 'center', function ($q) {
+                $q->whereHas('learningCenter', function ($lq) {
+                    $lq->where('name', 'like', '%' . $this->search . '%');
+                });
+            });
         }
 
         if ($this->status === 'approved') {
@@ -111,8 +125,16 @@ class Comments extends Component
         $comments = $query->orderBy($this->sortField, $this->sortDirection)
                          ->paginate($this->perPage);
 
+        // Get favorites count for each learning center
+        $centerIds = $comments->pluck('learning_centers_id')->unique()->toArray();
+        $favoritesCount = \App\Models\Favorite::whereIn('learning_centers_id', $centerIds)
+            ->selectRaw('learning_centers_id, COUNT(*) as count')
+            ->groupBy('learning_centers_id')
+            ->pluck('count', 'learning_centers_id');
+
         return view('livewire.admin.comments', [
             'comments' => $comments,
+            'favoritesCount' => $favoritesCount,
         ])->layout('layouts.admin.app', ['title' => 'Izohlar']);
     }
 }

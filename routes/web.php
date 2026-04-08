@@ -19,6 +19,7 @@ use App\Livewire\Admin\Center\Index as CenterIndex;
 use App\Livewire\Admin\Center\Create as CenterCreate;
 use App\Livewire\Admin\Center\Edit as CenterEdit;
 use App\Livewire\Admin\Center\Show as CenterShow;
+use App\Livewire\Admin\Center\Map as CenterMap;
 use App\Livewire\Admin\Teachers;
 use App\Livewire\Admin\Subjects;
 use App\Livewire\Admin\Comments;
@@ -203,6 +204,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/centers/create', CenterCreate::class)->name('centers.create');
     Route::get('/centers/{center}/edit', CenterEdit::class)->name('centers.edit');
     Route::get('/centers/{center}', CenterShow::class)->name('centers.show');
+    Route::get('/centers-map', CenterMap::class)->name('centers.map');
     
     Route::get('/teachers', Teachers::class)->name('teachers');
     Route::get('/subjects', Subjects::class)->name('subjects');

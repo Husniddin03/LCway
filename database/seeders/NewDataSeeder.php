@@ -49,9 +49,16 @@ class NewDataSeeder extends Seeder
                     $status = 'inactive';
                 }
 
+                // Check for duplicate TIN
+                $tin = $centerData['TIN'] ?? null;
+                if ($tin && LearningCenter::where('tin', $tin)->exists()) {
+                    $this->command->warn("Skipping center {$index}: TIN {$tin} already exists");
+                    continue;
+                }
+
                 // Create learning center
                 $learningCenter = LearningCenter::create([
-                    'tin' => $centerData['TIN'] ?? null,
+                    'tin' => $tin,
                     'name' => $this->cleanString($centerData['Nameoftheeducationalinstitution'] ?? ''),
                     'type' => $this->mapType($centerData['Typeofeducationalactivity'] ?? 'MT'),
                     'about' => $this->cleanString($centerData['Listofeducationaldirections'] ?? ''),

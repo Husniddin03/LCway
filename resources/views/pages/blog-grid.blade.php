@@ -1410,8 +1410,6 @@
     }
 </style>
 
-
-
 {{--
     ============================================================
     Xarita bo'yicha filter — Map Filter Component

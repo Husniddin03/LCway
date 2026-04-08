@@ -14,6 +14,9 @@ class LearningCenter extends Model
         'address', 'location', 'status', 'users_id', 
         'student_count', 'total_reyting', 'rating', 'ratings_total',
         'checked', 'status', 'premium', 'premium_until',
+        'tin', 'legal_address', 'territory', 'license_number',
+        'license_registration_date', 'license_validity_period',
+        'manager_name', 'phone_number', 'email', 'ifut_code',
     ];
 
     protected $casts = [

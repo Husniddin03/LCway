@@ -23,7 +23,7 @@ class LearningCentersCommentObserver
         // Only log if content changed
         if ($comment->wasChanged('comment')) {
             ActivityService::log(
-                user: $comment->user,
+                userId: $comment->user_id,
                 type: 'comment_updated',
                 title: "Izoh yangilandi",
                 description: "Foydalanuvchi izohni yangiladi",
@@ -41,7 +41,7 @@ class LearningCentersCommentObserver
     public function deleted(LearningCentersComment $comment): void
     {
         ActivityService::log(
-            user: auth()->user(),
+            userId: auth()->id(),
             type: 'comment_deleted',
             title: "Izoh o'chirildi",
             description: "Izoh o'chirildi",

@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             UzbekistanOSMEducationSeederNew::class,
             UzbekistanLearningCentersSeeder::class,
             CentralAsiaSeeder::class,
+            NewDataSeeder::class,
             CleanDuplicatesSimpleSeeder::class,
         ]);
     }

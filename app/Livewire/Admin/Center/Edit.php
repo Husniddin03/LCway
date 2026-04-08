@@ -34,6 +34,16 @@ class Edit extends Component
         'checked' => false,
         'premium' => false,
         'premium_until' => null,
+        'tin' => '',
+        'legal_address' => '',
+        'territory' => '',
+        'license_number' => '',
+        'license_registration_date' => '',
+        'license_validity_period' => '',
+        'manager_name' => '',
+        'phone_number' => '',
+        'email' => '',
+        'ifut_code' => '',
     ];
 
     public function mount(LearningCenter $center)
@@ -56,6 +66,16 @@ class Edit extends Component
             'checked' => $center->checked,
             'premium' => $center->premium,
             'premium_until' => $center->premium_until?->format('Y-m-d'),
+            'tin' => $center->tin ?? '',
+            'legal_address' => $center->legal_address ?? '',
+            'territory' => $center->territory ?? '',
+            'license_number' => $center->license_number ?? '',
+            'license_registration_date' => $center->license_registration_date ? \Carbon\Carbon::parse($center->license_registration_date)->format('Y-m-d') : '',
+            'license_validity_period' => $center->license_validity_period ? \Carbon\Carbon::parse($center->license_validity_period)->format('Y-m-d') : '',
+            'manager_name' => $center->manager_name ?? '',
+            'phone_number' => $center->phone_number ?? '',
+            'email' => $center->email ?? '',
+            'ifut_code' => $center->ifut_code ?? '',
         ];
     }
 
@@ -78,6 +98,16 @@ class Edit extends Component
             'form.checked' => 'boolean',
             'form.premium' => 'boolean',
             'form.premium_until' => 'nullable|date',
+            'form.tin' => 'nullable|string|max:20',
+            'form.legal_address' => 'nullable|string',
+            'form.territory' => 'nullable|string|max:255',
+            'form.license_number' => 'nullable|string|max:255',
+            'form.license_registration_date' => 'nullable|date',
+            'form.license_validity_period' => 'nullable|date',
+            'form.manager_name' => 'nullable|string|max:255',
+            'form.phone_number' => 'nullable|string|max:50',
+            'form.email' => 'nullable|email|max:255',
+            'form.ifut_code' => 'nullable|string|max:255',
         ]);
 
         // Handle logo upload with optimization

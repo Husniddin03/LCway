@@ -455,6 +455,8 @@ document.addEventListener('alpine:init', () => {
             radius: 5,
             darkMode: false,
             addressText: 'Xaritada joylashuvni tanlang',
+            resultShown: false,
+            resultCount: 0,
 
             /* private */
             _map: null,

@@ -22,12 +22,12 @@ class UserObserver
     {
         // Log when user profile is updated
         if ($user->wasChanged('name') || $user->wasChanged('email')) {
-            Activity::log(
-                user: auth()->user(),
+            ActivityService::log(
                 type: 'user_updated',
                 title: "Foydalanuvchi yangilandi: {$user->name}",
                 description: "Foydalanuvchi ma'lumotlari yangilandi",
                 subject: $user,
+                userId: auth()->id(),
                 metadata: [
                     'changes' => $user->getChanges(),
                 ]
@@ -40,12 +40,12 @@ class UserObserver
      */
     public function deleted(User $user): void
     {
-        Activity::log(
-            user: auth()->user(),
+        ActivityService::log(
             type: 'user_deleted',
             title: "Foydalanuvchi o'chirildi: {$user->name}",
             description: "Foydalanuvchi o'chirildi",
             subject: $user,
+            userId: auth()->id(),
         );
     }
 }

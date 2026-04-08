@@ -439,6 +439,85 @@
                         @endauth
                     </div>
                     
+                    <!-- Legal Information -->
+                    @if($LearningCenter->tin || $LearningCenter->license_number || $LearningCenter->manager_name || $LearningCenter->legal_address)
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Huquqiy ma'lumotlar</h3>
+                            
+                            <div class="space-y-3">
+                                @if($LearningCenter->tin)
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">STIR raqami</p>
+                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->tin }}</p>
+                                    </div>
+                                @endif
+                                
+                                @if($LearningCenter->license_number)
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Litsenziya raqami</p>
+                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->license_number }}</p>
+                                    </div>
+                                @endif
+                                
+                                @if($LearningCenter->license_registration_date)
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Litsenziya berilgan sana</p>
+                                        <p class="font-medium text-gray-900 dark:text-white">{{ is_string($LearningCenter->license_registration_date) ? $LearningCenter->license_registration_date : $LearningCenter->license_registration_date->format('d.m.Y') }}</p>
+                                    </div>
+                                @endif
+                                
+                                @if($LearningCenter->license_validity_period)
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Litsenziya amal qilish muddati</p>
+                                        <p class="font-medium text-gray-900 dark:text-white">{{ is_string($LearningCenter->license_validity_period) ? $LearningCenter->license_validity_period : $LearningCenter->license_validity_period->format('d.m.Y') }}</p>
+                                    </div>
+                                @endif
+                                
+                                @if($LearningCenter->manager_name)
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Rahbar</p>
+                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->manager_name }}</p>
+                                    </div>
+                                @endif
+                                
+                                @if($LearningCenter->phone_number)
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Telefon</p>
+                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->phone_number }}</p>
+                                    </div>
+                                @endif
+                                
+                                @if($LearningCenter->email)
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
+                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->email }}</p>
+                                    </div>
+                                @endif
+                                
+                                @if($LearningCenter->ifut_code)
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">IFUT kodi</p>
+                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->ifut_code }}</p>
+                                    </div>
+                                @endif
+                                
+                                @if($LearningCenter->territory)
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Nazorat bo'limi</p>
+                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->territory }}</p>
+                                    </div>
+                                @endif
+                                
+                                @if($LearningCenter->legal_address)
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Yuridik manzil</p>
+                                        <p class="font-medium text-gray-900 dark:text-white text-sm">{{ $LearningCenter->legal_address }}</p>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+                    
                     <!-- Subjects -->
                     @if($LearningCenter->subjects->count() > 0)
                         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">

@@ -21,7 +21,7 @@ class TeacherObserver
     public function updated(Teacher $teacher): void
     {
         ActivityService::log(
-            user: auth()->user(),
+            userId: auth()->id(),
             type: 'teacher_updated',
             title: "O'qituvchi yangilandi: {$teacher->name}",
             description: "O'qituvchi ma'lumotlari yangilandi",
@@ -38,7 +38,7 @@ class TeacherObserver
     public function deleted(Teacher $teacher): void
     {
         ActivityService::log(
-            user: auth()->user(),
+            userId: auth()->id(),
             type: 'teacher_deleted',
             title: "O'qituvchi o'chirildi: {$teacher->name}",
             description: "O'qituvchi o'chirildi",

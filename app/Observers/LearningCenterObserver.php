@@ -21,7 +21,7 @@ class LearningCenterObserver
     public function updated(LearningCenter $learningCenter): void
     {
         ActivityService::log(
-            user: auth()->user(),
+            userId: auth()->id(),
             type: 'center_updated',
             title: "Markaz yangilandi: {$learningCenter->name}",
             description: "O'quv markazi ma'lumotlari yangilandi",
@@ -38,7 +38,7 @@ class LearningCenterObserver
     public function deleted(LearningCenter $learningCenter): void
     {
         ActivityService::log(
-            user: auth()->user(),
+            userId: auth()->id(),
             type: 'center_deleted',
             title: "Markaz o'chirildi: {$learningCenter->name}",
             description: "O'quv markazi o'chirildi",

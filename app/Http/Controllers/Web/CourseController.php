@@ -64,6 +64,16 @@ class CourseController extends Controller
                 'address'      => 'required|string|max:255',
                 'location'     => 'required|string|max:255',
                 'student_count' => 'integer',
+                'tin' => 'nullable|string|max:20',
+                'legal_address' => 'nullable|string',
+                'territory' => 'nullable|string|max:255',
+                'license_number' => 'nullable|string|max:255',
+                'license_registration_date' => 'nullable|date',
+                'license_validity_period' => 'nullable|date',
+                'manager_name' => 'nullable|string|max:255',
+                'phone_number' => 'nullable|string|max:50',
+                'email' => 'nullable|email|max:255',
+                'ifut_code' => 'nullable|string|max:255',
             ]);
             $validated['type'] = $validated['custom_type'];
             unset($validated['custom_type']);
@@ -79,6 +89,16 @@ class CourseController extends Controller
                 'address'      => 'required|string|max:255',
                 'location'     => 'required|string|max:255',
                 'student_count' => 'integer',
+                'tin' => 'nullable|string|max:20',
+                'legal_address' => 'nullable|string',
+                'territory' => 'nullable|string|max:255',
+                'license_number' => 'nullable|string|max:255',
+                'license_registration_date' => 'nullable|date',
+                'license_validity_period' => 'nullable|date',
+                'manager_name' => 'nullable|string|max:255',
+                'phone_number' => 'nullable|string|max:50',
+                'email' => 'nullable|email|max:255',
+                'ifut_code' => 'nullable|string|max:255',
             ]);
         }
         
@@ -197,6 +217,16 @@ class CourseController extends Controller
                 'studentCount' => 'nullable|integer',
                 'images'       => 'nullable|array|max:10',
                 'images.*'     => 'image|mimes:jpeg,jpg,png,gif,webp|max:2048',
+                'tin' => 'nullable|string|max:20',
+                'legal_address' => 'nullable|string',
+                'territory' => 'nullable|string|max:255',
+                'license_number' => 'nullable|string|max:255',
+                'license_registration_date' => 'nullable|date',
+                'license_validity_period' => 'nullable|date',
+                'manager_name' => 'nullable|string|max:255',
+                'phone_number' => 'nullable|string|max:50',
+                'email' => 'nullable|email|max:255',
+                'ifut_code' => 'nullable|string|max:255',
             ]);
             $validated['type'] = $validated['custom_type'];
             unset($validated['custom_type']);
@@ -214,6 +244,16 @@ class CourseController extends Controller
                 'studentCount' => 'nullable|integer',
                 'images'       => 'nullable|array|max:10',
                 'images.*'     => 'image|mimes:jpeg,jpg,png,gif,webp|max:2048',
+                'tin' => 'nullable|string|max:20',
+                'legal_address' => 'nullable|string',
+                'territory' => 'nullable|string|max:255',
+                'license_number' => 'nullable|string|max:255',
+                'license_registration_date' => 'nullable|date',
+                'license_validity_period' => 'nullable|date',
+                'manager_name' => 'nullable|string|max:255',
+                'phone_number' => 'nullable|string|max:50',
+                'email' => 'nullable|email|max:255',
+                'ifut_code' => 'nullable|string|max:255',
             ]);
         }
         

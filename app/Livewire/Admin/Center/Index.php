@@ -18,15 +18,36 @@ class Index extends Component
     public string $sortField = 'created_at';
     public string $sortDirection = 'desc';
     public int $perPage = 20;
+    public string $searchTin = '';
+    public string $searchLicense = '';
+    public string $searchManager = '';
 
     protected $queryString = [
         'search' => ['except' => ''],
         'status' => ['except' => ''],
+        'searchTin' => ['except' => ''],
+        'searchLicense' => ['except' => ''],
+        'searchManager' => ['except' => ''],
         'sortField' => ['except' => 'created_at'],
         'sortDirection' => ['except' => 'desc'],
     ];
 
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSearchTin()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSearchLicense()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSearchManager()
     {
         $this->resetPage();
     }
@@ -85,6 +106,18 @@ class Index extends Component
                 $q->where('name', 'like', '%' . $this->search . '%')
                   ->orWhere('address', 'like', '%' . $this->search . '%');
             });
+        }
+
+        if ($this->searchTin) {
+            $query->where('tin', 'like', '%' . $this->searchTin . '%');
+        }
+
+        if ($this->searchLicense) {
+            $query->where('license_number', 'like', '%' . $this->searchLicense . '%');
+        }
+
+        if ($this->searchManager) {
+            $query->where('manager_name', 'like', '%' . $this->searchManager . '%');
         }
 
         if ($this->status === 'verified') {

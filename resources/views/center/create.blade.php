@@ -514,6 +514,139 @@
                         <input type="hidden" id="longitude" name="longitude" value="{{ old('longitude') }}">
                     </div>
 
+                    <!-- ===== QO'SHIMCHA MA'LUMOTLAR (LEGAL) ===== -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 mt-6">
+                        <div class="flex items-center mb-6">
+                            <div class="bg-indigo-100 dark:bg-indigo-900/30 p-2 rounded-lg mr-3">
+                                <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Qo'shimcha ma'lumotlar</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- TIN (STIR) -->
+                            <div>
+                                <label for="tin" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    STIR raqami
+                                </label>
+                                <x-input type="text" name="tin" id="tin" value="{{ old('tin') }}"
+                                    placeholder="Masalan: 305090320" maxlength="20"/>
+                                @error('tin')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- License Number -->
+                            <div>
+                                <label for="license_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Litsenziya raqami
+                                </label>
+                                <x-input type="text" name="license_number" id="license_number" value="{{ old('license_number') }}"
+                                    placeholder="Masalan: NAS UZ 001. MT. 0388-05"/>
+                                @error('license_number')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- License Registration Date -->
+                            <div>
+                                <label for="license_registration_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Litsenziya berilgan sana
+                                </label>
+                                <x-input type="date" name="license_registration_date" id="license_registration_date" value="{{ old('license_registration_date') }}"/>
+                                @error('license_registration_date')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- License Validity Period -->
+                            <div>
+                                <label for="license_validity_period" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Litsenziya amal qilish muddati
+                                </label>
+                                <x-input type="date" name="license_validity_period" id="license_validity_period" value="{{ old('license_validity_period') }}"/>
+                                @error('license_validity_period')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Manager Name -->
+                            <div>
+                                <label for="manager_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Rahbar F.I.Sh.
+                                </label>
+                                <x-input type="text" name="manager_name" id="manager_name" value="{{ old('manager_name') }}"
+                                    placeholder="Rahbarning to'liq ismi"/>
+                                @error('manager_name')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div>
+                                <label for="phone_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Telefon raqami
+                                </label>
+                                <x-input type="text" name="phone_number" id="phone_number" value="{{ old('phone_number') }}"
+                                    placeholder="Masalan: 901234567"/>
+                                @error('phone_number')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Email
+                                </label>
+                                <x-input type="email" name="email" id="email" value="{{ old('email') }}"
+                                    placeholder="info@example.com"/>
+                                @error('email')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- IFUT Code -->
+                            <div>
+                                <label for="ifut_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    IFUT kodi
+                                </label>
+                                <x-input type="text" name="ifut_code" id="ifut_code" value="{{ old('ifut_code') }}"
+                                    placeholder="Masalan: 85600 - Ta'lim sohasidagi yordamchi faoliyat"/>
+                                @error('ifut_code')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Territory -->
+                            <div class="md:col-span-2">
+                                <label for="territory" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Nazorat bo'limi (Hudud)
+                                </label>
+                                <x-input type="text" name="territory" id="territory" value="{{ old('territory') }}"
+                                    placeholder="Masalan: Toshkent shahri ta'lim sifatini nazorat qilish bo'limi"/>
+                                @error('territory')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Legal Address -->
+                            <div class="md:col-span-2">
+                                <label for="legal_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Yuridik manzil
+                                </label>
+                                <textarea name="legal_address" id="legal_address" rows="3"
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="O'quv markazining yuridik manzili">{{ old('legal_address') }}</textarea>
+                                @error('legal_address')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- ===== O'QUVCHILAR SONI ===== -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
                         <div class="flex items-center mb-6">

@@ -126,11 +126,80 @@
             </div>
         </div>
     </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-    <!-- Description -->
-    <div class="bg-white rounded-xl border border-gray-200 p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">Tavsif</h3>
-        <p class="text-gray-700 whitespace-pre-wrap">{{ $center->about }}</p>
+        <!-- Legal Info Card -->
+        <div class="bg-white rounded-xl border border-gray-200 p-6">
+            <h3 class="text-sm font-medium text-gray-500 mb-4">Huquqiy ma'lumotlar</h3>
+            <div class="space-y-2 text-sm">
+                @if($center->tin)
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">STIR:</span>
+                        <span class="font-medium text-gray-900">{{ $center->tin }}</span>
+                    </div>
+                @endif
+                @if($center->license_number)
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Litsenziya:</span>
+                        <span class="font-medium text-gray-900">{{ $center->license_number }}</span>
+                    </div>
+                @endif
+                @if($center->license_registration_date)
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Berilgan sana:</span>
+                        <span class="font-medium text-gray-900">{{ \Carbon\Carbon::parse($center->license_registration_date)->format('d.m.Y') }}</span>
+                    </div>
+                @endif
+                @if($center->license_validity_period)
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Amal qilish muddati:</span>
+                        <span class="font-medium text-gray-900">{{ \Carbon\Carbon::parse($center->license_validity_period)->format('d.m.Y') }}</span>
+                    </div>
+                @endif
+                @if($center->manager_name)
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Rahbar:</span>
+                        <span class="font-medium text-gray-900">{{ $center->manager_name }}</span>
+                    </div>
+                @endif
+                @if($center->phone_number)
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Telefon:</span>
+                        <span class="font-medium text-gray-900">{{ $center->phone_number }}</span>
+                    </div>
+                @endif
+                @if($center->email)
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Email:</span>
+                        <span class="font-medium text-gray-900">{{ $center->email }}</span>
+                    </div>
+                @endif
+                @if($center->ifut_code)
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">IFUT:</span>
+                        <span class="font-medium text-gray-900">{{ $center->ifut_code }}</span>
+                    </div>
+                @endif
+                @if($center->territory)
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Hudud:</span>
+                        <span class="font-medium text-gray-900">{{ $center->territory }}</span>
+                    </div>
+                @endif
+            </div>
+            @if($center->legal_address)
+                <div class="mt-3 pt-3 border-t border-gray-200">
+                    <span class="text-gray-600 text-sm">Yuridik manzil:</span>
+                    <p class="text-sm text-gray-900 mt-1">{{ $center->legal_address }}</p>
+                </div>
+            @endif
+        </div>
+
+        <!-- Description -->
+        <div class="bg-white rounded-xl border border-gray-200 p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Tavsif</h3>
+            <p class="text-gray-700 whitespace-pre-wrap">{{ $center->about }}</p>
+        </div>
     </div>
 
     <!-- Teachers List -->
@@ -243,9 +312,9 @@
                             <div class="flex gap-2 mt-3">
                                 <label class="inline-flex items-center cursor-pointer">
                                     <input type="checkbox" 
-                                           wire:click="toggleComment({{ $comment->id }})" 
-                                           {{ $comment->checked ? 'checked' : '' }}
-                                           class="sr-only peer">
+                                        wire:click="toggleComment({{ $comment->id }})" 
+                                        {{ $comment->checked ? 'checked' : '' }}
+                                        class="sr-only peer">
                                     <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
                                     <span class="ml-2 text-sm font-medium {{ $comment->checked ? 'text-green-600' : 'text-gray-500' }}">
                                         {{ $comment->checked ? 'Tasdiqlangan' : 'Kutilmoqda' }}

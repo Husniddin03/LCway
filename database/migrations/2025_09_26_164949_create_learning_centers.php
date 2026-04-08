@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('province')->nullable();
             $table->string('region')->nullable();
-            $table->string('address')->nullable();
+            $table->text('address')->nullable();
             $table->decimal('rating', 3, 2)->nullable();
             $table->integer('ratings_total')->default(0);
             $table->string('location')->nullable();
@@ -30,6 +30,17 @@ return new class extends Migration
             $table->integer('total_reyting')->default(0);
             $table->string('status')->default('active');
             $table->boolean('checked')->default(false);
+            $table->string('tin')->unique()->nullable()->comment('STIR raqami');
+            $table->text('legal_address')->nullable();
+            $table->string('territory')->nullable();
+            $table->string('license_number')->nullable();
+            $table->date('license_registration_date')->nullable();
+            $table->date('license_validity_period')->nullable();
+            $table->string('manager_name')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('email')->nullable();
+            $table->string('ifut_code')->nullable();
+        
             $table->timestamps();
             
             // Indexlar

@@ -16,6 +16,9 @@ class Centers extends Component
     public string $sortField = 'created_at';
     public string $sortDirection = 'desc';
     public int $perPage = 20;
+    public string $searchTin = '';
+    public string $searchLicense = '';
+    public string $searchManager = '';
 
     public bool $showCreateModal = false;
     public bool $showEditModal = false;
@@ -35,11 +38,29 @@ class Centers extends Component
     protected $queryString = [
         'search' => ['except' => ''],
         'status' => ['except' => ''],
+        'searchTin' => ['except' => ''],
+        'searchLicense' => ['except' => ''],
+        'searchManager' => ['except' => ''],
         'sortField' => ['except' => 'created_at'],
         'sortDirection' => ['except' => 'desc'],
     ];
 
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSearchTin()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSearchLicense()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSearchManager()
     {
         $this->resetPage();
     }
@@ -150,8 +171,22 @@ class Centers extends Component
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('address', 'like', '%' . $this->search . '%');
+                  ->orWhere('address', 'like', '%' . $this->search . '%')
+                  ->orWhere('legal_address', 'like', '%' . $this->search . '%')
+                  ->orWhere('territory', 'like', '%' . $this->search . '%');
             });
+        }
+
+        if ($this->searchTin) {
+            $query->where('tin', 'like', '%' . $this->searchTin . '%');
+        }
+
+        if ($this->searchLicense) {
+            $query->where('license_number', 'like', '%' . $this->searchLicense . '%');
+        }
+
+        if ($this->searchManager) {
+            $query->where('manager_name', 'like', '%' . $this->searchManager . '%');
         }
 
         if ($this->status === 'verified') {
@@ -167,7 +202,7 @@ class Centers extends Component
 
         $users = User::where('role', '!=', 'banned')->pluck('name', 'id');
 
-        return view('livewire.admin.centers', [
+        return view('livewire.admin.center.index', [
             'centers' => $centers,
             'users' => $users,
         ])->layout('layouts.admin.app', ['title' => 'O\'quv markazlari']);

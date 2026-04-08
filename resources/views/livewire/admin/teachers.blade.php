@@ -33,6 +33,7 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rasmi</th>
                     <th wire:click="sortBy('name')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase cursor-pointer">
                         Ism @if($sortField === 'name') {{ $sortDirection === 'asc' ? '↑' : '↓' }} @endif
                     </th>
@@ -45,6 +46,17 @@
                 @forelse($teachers as $teacher)
                 <tr class="hover:bg-gray-50">
                     <td class="px-6 py-4">
+                        @if($teacher->photo)
+                            <img src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}" class="w-12 h-12 object-cover rounded-lg border border-gray-200">
+                        @else
+                            <div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4">
                         <div class="text-sm font-medium text-gray-900">{{ $teacher->name }}</div>
                         <div class="text-sm text-gray-500">{{ $teacher->email }}</div>
                     </td>
@@ -56,7 +68,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="4" class="px-6 py-8 text-center text-gray-500">O'qituvchilar topilmadi</td></tr>
+                <tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">O'qituvchilar topilmadi</td></tr>
                 @endforelse
             </tbody>
         </table>

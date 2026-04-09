@@ -441,36 +441,40 @@ class SearchService
         $lng = (float) $lng;
         $radius = is_numeric($radius) ? (int) $radius : null;
 
-        // STEP 3: Haversine formula with EXACTLY 3 placeholders
+        // STEP 3: Build Haversine SQL with inline values to avoid binding conflicts
+        // Using direct value interpolation for lat/lng since they are validated/casted
         // Formula: 6371 * acos(
-        //     cos(radians(lat1)) * cos(radians(lat2)) * cos(radians(lng2 - lng1)) + 
+        //     cos(radians(lat1)) * cos(radians(lat2)) * cos(radians(lng2 - lng1)) +
         //     sin(radians(lat1)) * sin(radians(lat2))
         // )
-        // Placeholders: [lat, lng, lat] - exactly 3 bindings required
         $haversineSql = "(
             " . self::EARTH_RADIUS_KM . " * acos(
-                cos(radians(?))
+                cos(radians({$lat}))
                 * cos(radians(CAST(SUBSTRING_INDEX(location, ',', 1) AS DECIMAL(10,6))))
-                * cos(radians(CAST(SUBSTRING_INDEX(location, ',', -1) AS DECIMAL(10,6))) - radians(?))
-                + sin(radians(?))
+                * cos(radians(CAST(SUBSTRING_INDEX(location, ',', -1) AS DECIMAL(10,6)) - {$lng}))
+                + sin(radians({$lat}))
                 * sin(radians(CAST(SUBSTRING_INDEX(location, ',', 1) AS DECIMAL(10,6))))
             )
         )";
 
-        // STEP 4: Add distance column with EXACT 3 bindings
-        // Bindings: [lat, lng, lat]
-        $query->selectRaw("{$haversineSql} AS distance", [$lat, $lng, $lat]);
+        // STEP 4: Add distance column (only calculate if location exists)
+        // Use CASE to return NULL for centers without location to prevent calculation errors
+        $query->selectRaw("CASE
+            WHEN location IS NOT NULL AND location != ''
+            THEN {$haversineSql}
+            ELSE NULL
+        END AS distance");
 
-        // STEP 5: Apply radius filter only if valid radius provided
-        if ($radius !== null && $radius > 0) {
-            // For whereRaw, we need the same 3 haversine bindings + 1 radius = 4 total
-            // The SQL: haversine <= ? (radius is the 4th ?)
-            $query->whereRaw("{$haversineSql} <= ?", [$lat, $lng, $lat, $radius]);
-        }
-
-        // STEP 6: Only include centers that HAVE location data
+        // STEP 5: Only include centers that HAVE location data FIRST
+        // This must be before the radius filter to avoid calculation errors
         $query->whereNotNull('location')
               ->where('location', '!=', '');
+
+        // STEP 6: Apply radius filter only if valid radius provided
+        // Only calculate for centers with valid location data
+        if ($radius !== null && $radius > 0) {
+            $query->whereRaw("{$haversineSql} <= {$radius}");
+        }
 
         return $query;
     }
@@ -526,10 +530,24 @@ class SearchService
 
     /**
      * Apply minimal field selection for map view
+     *
+     * PRESERVATION STRATEGY:
+     * - Uses addSelect() to preserve any previously selected columns (like distance)
+     * - Merges MAP_SELECT_FIELDS with existing columns to avoid overriding
+     * - This is critical because applyGeoFilter() adds distance BEFORE this method
      */
     private function applyMapSelect(Builder $query): Builder
     {
-        return $query->select(self::MAP_SELECT_FIELDS);
+        // Get existing columns that might have been selected (e.g., distance from geo filter)
+        $existingColumns = $query->getQuery()->columns ?? [];
+
+        // Merge MAP_SELECT_FIELDS with existing columns, preserving all
+        $allColumns = array_merge(self::MAP_SELECT_FIELDS, $existingColumns);
+
+        // Remove duplicates while preserving order
+        $allColumns = array_unique($allColumns, SORT_REGULAR);
+
+        return $query->select($allColumns);
     }
 
     /**
@@ -597,11 +615,27 @@ class SearchService
 
     /**
      * Apply sorting for map view (simpler, no ratings needed)
+     *
+     * DISTANCE CHECK:
+     * - Before ordering by distance, verify the column exists in SELECT
+     * - Falls back to latest('id') if geo filter not active or distance missing
+     * - Prevents "Unknown column 'distance'" SQL errors
      */
     private function applyMapSorting(Builder $query, array $filters): Builder
     {
-        // Always sort by distance if geo filter active, otherwise by relevance/search
-        if ($this->hasGeoFilter($filters)) {
+        $columns = $query->getQuery()->columns ?? [];
+        $hasDistance = false;
+
+        // Check if distance column exists in selected columns
+        foreach ($columns as $column) {
+            if (is_string($column) && str_contains($column, 'AS distance')) {
+                $hasDistance = true;
+                break;
+            }
+        }
+
+        // Only sort by distance if geo filter is active AND distance column exists
+        if ($this->hasGeoFilter($filters) && $hasDistance) {
             $query->orderBy('distance', 'asc');
         } elseif (!empty($filters['searchText'])) {
             // Could add relevance ordering here

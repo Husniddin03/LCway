@@ -1463,8 +1463,8 @@
         position: absolute;
         top: calc(100% + 10px);
         left: 0;
-        width: 500px;
-        max-width: calc(100vw - 20px);
+        width: 800px;
+        max-width: calc(100vw - 40px);
         border-radius: 20px;
         overflow: hidden;
         z-index: 9999;
@@ -1552,7 +1552,17 @@
     /* ---- MAP AREA ---- */
     .mf-map-wrap {
         position: relative;
-        height: 265px;
+        height: 380px;
+    }
+
+    /* Desktop large screens - even bigger */
+    @media (min-width: 1280px) {
+        .mf-panel {
+            width: 900px;
+        }
+        .mf-map-wrap {
+            height: 450px;
+        }
     }
 
     #filterMapEl {
@@ -1955,11 +1965,20 @@
 
     /* bigger panel when expanded */
     .mf-panel.mf-expanded {
-        width: min(800px, calc(100vw - 20px));
+        width: min(1100px, calc(100vw - 40px));
     }
 
     .mf-panel.mf-expanded .mf-map-wrap {
-        height: 450px;
+        height: 600px;
+    }
+
+    @media (min-width: 1280px) {
+        .mf-panel.mf-expanded {
+            width: min(1200px, calc(100vw - 60px));
+        }
+        .mf-panel.mf-expanded .mf-map-wrap {
+            height: 700px;
+        }
     }
 </style>
 
@@ -1971,4 +1990,395 @@
         }
     }
 </style>
+
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- MarkerCluster CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+<!-- Map Filter Component CSS -->
+<style>
+    #filterMapEl { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; width: 100%; height: 100%; }
+    .leaflet-tile { visibility: visible !important; }
+    .leaflet-container { background: #f0f0f0; }
+    .custom-cluster { background: transparent !important; border: none !important; }
+</style>
+
+<script>
+    function mapFilterComp() {
+        return {
+            map: null,
+            markerCluster: null,
+            circle: null,
+            userMarker: null,
+            mapReady: false,
+            isPanelOpen: false,
+            locating: false,
+            isFullscreen: false,
+            lat: null,
+            lng: null,
+            radius: 10,
+            addressText: '{{ __('blog-grid.search_filter.no_location') }}',
+            isZooming: false,
+            pendingLoad: false,
+            loadingMarkers: false,
+            lastRequestId: 0,
+
+            boot() {
+                this.$watch('isPanelOpen', (value) => {
+                    if (value && !this.map) {
+                        this.$nextTick(() => {
+                            this.initMap();
+                        });
+                    } else if (value && this.map) {
+                        this.$nextTick(() => {
+                            setTimeout(() => {
+                                this.map.invalidateSize();
+                            }, 200);
+                        });
+                    }
+                });
+            },
+
+            toggle() {
+                this.isPanelOpen = !this.isPanelOpen;
+            },
+
+            initMap() {
+                const DEFAULT_LAT = 41.3111;
+                const DEFAULT_LNG = 69.2406;
+
+                const mapContainer = document.getElementById('filterMapEl');
+                if (!mapContainer) {
+                    console.error('Map container not found!');
+                    return;
+                }
+
+                if (mapContainer._leaflet_id) {
+                    console.log('Map already initialized');
+                    return;
+                }
+
+                this.map = L.map('filterMapEl', {
+                    zoomAnimation: true,
+                    markerZoomAnimation: true
+                }).setView([DEFAULT_LAT, DEFAULT_LNG], 7);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors',
+                    maxZoom: 18
+                }).addTo(this.map);
+
+                this.markerCluster = L.markerClusterGroup({
+                    chunkedLoading: true,
+                    maxClusterRadius: 60,
+                    spiderfyOnMaxZoom: true,
+                    showCoverageOnHover: true,
+                    zoomToBoundsOnClick: true,
+                    iconCreateFunction: (cluster) => {
+                        const count = cluster.getChildCount();
+                        let color = '#6366f1';
+                        let size = '36px';
+
+                        if (count < 10) {
+                            color = '#22c55e';
+                            size = '32px';
+                        } else if (count < 50) {
+                            color = '#6366f1';
+                            size = '36px';
+                        } else if (count < 100) {
+                            color = '#f97316';
+                            size = '40px';
+                        } else {
+                            color = '#ef4444';
+                            size = '44px';
+                        }
+
+                        return L.divIcon({
+                            html: `<div style="background:${color};width:${size};height:${size};border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:12px;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);">${count}</div>`,
+                            className: 'custom-cluster',
+                            iconSize: null
+                        });
+                    }
+                });
+
+                this.map.addLayer(this.markerCluster);
+
+                // Track zoom state
+                this.map.on('zoomstart', () => {
+                    this.isZooming = true;
+                });
+
+                this.map.on('zoomend', () => {
+                    this.isZooming = false;
+                    if (this.pendingLoad) {
+                        this.pendingLoad = false;
+                        this.loadMarkersByBounds();
+                    }
+                });
+
+                // Click to set location
+                this.map.on('click', (e) => {
+                    this.setLocation(e.latlng.lat, e.latlng.lng);
+                });
+
+                // Dynamic loading on move
+                let debounceTimer;
+                let isMoving = false;
+                this.map.on('moveend', () => {
+                    if (isMoving) return;
+                    isMoving = true;
+                    clearTimeout(debounceTimer);
+
+                    debounceTimer = setTimeout(() => {
+                        const zoom = this.map.getZoom();
+
+                        if (!this.mapReady || !zoom || zoom <= 0 || zoom > 20) {
+                            isMoving = false;
+                            return;
+                        }
+
+                        if (zoom < 6) {
+                            this.markerCluster.clearLayers();
+                            isMoving = false;
+                            return;
+                        }
+
+                        if (this.isZooming) {
+                            this.pendingLoad = true;
+                            isMoving = false;
+                            return;
+                        }
+
+                        this.loadMarkersByBounds();
+                        isMoving = false;
+                    }, 500);
+                });
+
+                // Ensure proper sizing before loading
+                setTimeout(() => {
+                    this.map.invalidateSize();
+                    setTimeout(() => {
+                        this.map.invalidateSize();
+                        this.mapReady = true;
+                        this.loadMarkersByBounds();
+                    }, 300);
+                }, 100);
+            },
+
+            async loadMarkersByBounds() {
+                if (this.loadingMarkers) return;
+
+                const zoom = this.map.getZoom();
+                if (!zoom || zoom <= 0 || zoom > 20) return;
+
+                this.loadingMarkers = true;
+                const requestId = ++this.lastRequestId;
+
+                try {
+                    const bounds = this.map.getBounds();
+                    const north = bounds.getNorth();
+                    const south = bounds.getSouth();
+                    const east = bounds.getEast();
+                    const west = bounds.getWest();
+
+                    console.log(`Loading markers: zoom=${zoom}`);
+
+                    // Simulate backend call - replace with actual endpoint
+                    const response = await fetch(`/api/centers/by-bounds?north=${north}&south=${south}&east=${east}&west=${west}&zoom=${zoom}`);
+                    const centers = await response.json();
+
+                    if (requestId !== this.lastRequestId) return;
+                    if (!Array.isArray(centers)) return;
+
+                    if (!this.isZooming) {
+                        this.updateMarkers(centers);
+                    } else {
+                        this.pendingLoad = true;
+                    }
+
+                } catch (error) {
+                    console.error('Error loading markers:', error);
+                } finally {
+                    if (requestId === this.lastRequestId) {
+                        this.loadingMarkers = false;
+                    }
+                }
+            },
+
+            updateMarkers(centers) {
+                if (!Array.isArray(centers) || centers.length === 0) {
+                    this.markerCluster.clearLayers();
+                    return;
+                }
+
+                const chunkSize = 100;
+                let index = 0;
+
+                this.markerCluster.clearLayers();
+
+                const processChunk = () => {
+                    const chunk = centers.slice(index, index + chunkSize);
+
+                    chunk.forEach(center => {
+                        if (!center.lat || !center.lng) return;
+
+                        const marker = L.marker([center.lat, center.lng]);
+
+                        marker.bindPopup(`
+                            <div style="padding:8px;min-width:200px;">
+                                <h3 style="font-weight:bold;font-size:14px;margin-bottom:4px;">${center.name}</h3>
+                                <p style="font-size:12px;color:#666;">${center.address || ''}</p>
+                                <p style="font-size:12px;color:#888;margin-top:4px;">${center.province || ''}, ${center.region || ''}</p>
+                            </div>
+                        `);
+
+                        marker.on('click', () => {
+                            this.setLocation(center.lat, center.lng);
+                        });
+
+                        this.markerCluster.addLayer(marker);
+                    });
+
+                    index += chunkSize;
+                    if (index < centers.length) {
+                        requestAnimationFrame(processChunk);
+                    }
+                };
+
+                processChunk();
+            },
+
+            setLocation(lat, lng) {
+                this.lat = lat;
+                this.lng = lng;
+
+                if (this.userMarker) {
+                    this.map.removeLayer(this.userMarker);
+                }
+                if (this.circle) {
+                    this.map.removeLayer(this.circle);
+                }
+
+                this.userMarker = L.marker([lat, lng], {
+                    icon: L.divIcon({
+                        html: '<div style="background:#ef4444;width:16px;height:16px;border-radius:50%;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>',
+                        className: 'user-location-marker',
+                        iconSize: [16, 16],
+                        iconAnchor: [8, 8]
+                    })
+                }).addTo(this.map);
+
+                this.circle = L.circle([lat, lng], {
+                    radius: this.radius * 1000,
+                    color: '#6366f1',
+                    fillColor: '#6366f1',
+                    fillOpacity: 0.1,
+                    weight: 2
+                }).addTo(this.map);
+
+                this.userMarker.bindPopup('Tanlangan joylashuv').openPopup();
+
+                // Update address text
+                this.reverseGeocode(lat, lng);
+
+                // Apply filter
+                this.applyFilter();
+            },
+
+            async reverseGeocode(lat, lng) {
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
+                    const data = await response.json();
+                    if (data && data.display_name) {
+                        this.addressText = data.display_name.split(',')[0];
+                    }
+                } catch (e) {
+                    this.addressText = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+                }
+            },
+
+            locateMe() {
+                if (!navigator.geolocation) {
+                    alert('Geolocation qo\'llab-quvvatlanmaydi');
+                    return;
+                }
+
+                this.locating = true;
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        this.map.setView([lat, lng], 14);
+                        this.setLocation(lat, lng);
+                        this.locating = false;
+                    },
+                    (error) => {
+                        console.error('Geolocation error:', error);
+                        alert('Joylashuvni aniqlashda xatolik');
+                        this.locating = false;
+                    },
+                    { enableHighAccuracy: true, timeout: 10000 }
+                );
+            },
+
+            updateRadius() {
+                if (this.circle && this.lat && this.lng) {
+                    this.circle.setRadius(this.radius * 1000);
+                    this.applyFilter();
+                }
+            },
+
+            toggleFullscreen() {
+                this.isFullscreen = !this.isFullscreen;
+                const panel = document.querySelector('.mf-panel');
+                if (panel) {
+                    panel.classList.toggle('mf-expanded', this.isFullscreen);
+                }
+                this.$nextTick(() => {
+                    [0, 100, 300, 500].forEach(delay => {
+                        setTimeout(() => {
+                            if (this.map) {
+                                this.map.invalidateSize(true);
+                            }
+                        }, delay);
+                    });
+                });
+            },
+
+            applyFilter() {
+                // Dispatch custom event for the parent component
+                window.dispatchEvent(new CustomEvent('map-filter-changed', {
+                    detail: {
+                        lat: this.lat,
+                        lng: this.lng,
+                        radius: this.radius
+                    }
+                }));
+            },
+
+            resetFilter() {
+                this.lat = null;
+                this.lng = null;
+                this.radius = 10;
+                this.addressText = '{{ __('blog-grid.search_filter.no_location') }}';
+
+                if (this.userMarker) {
+                    this.map.removeLayer(this.userMarker);
+                    this.userMarker = null;
+                }
+                if (this.circle) {
+                    this.map.removeLayer(this.circle);
+                    this.circle = null;
+                }
+
+                this.applyFilter();
+            }
+        }
+    }
+</script>
 

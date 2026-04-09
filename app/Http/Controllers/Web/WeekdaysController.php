@@ -15,16 +15,16 @@ class WeekdaysController extends Controller
     {
         $LearningCenter = LearningCenter::find($id);
         Gate::authorize('isOun', $LearningCenter);
-        
+
         // O'quv markazining mavjud vaqtlarini olish - id kaliti bilan
         $schedules = LearningCentersCalendar::where('learning_centers_id', $id)->get();
-        
+
         // Weekdays massivini yaratish (kunlar ro'yxati)
         $allWeekdays = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'];
-        
-        $weekdays = collect($allWeekdays)->map(function($day) use ($schedules) {
+
+        $weekdays = collect($allWeekdays)->map(function ($day) use ($schedules) {
             $schedule = $schedules->firstWhere('weekdays', $day);
-            return (object)[
+            return (object) [
                 'id' => $schedule ? $schedule->id : strtolower($day),
                 'weekdays' => $day,
                 'open_time' => $schedule ? $schedule->open_time : null,
@@ -34,7 +34,7 @@ class WeekdaysController extends Controller
                 'existing_close_time' => $schedule ? $schedule->close_time : null,
             ];
         });
-        
+
         return view('center.weekday', compact('LearningCenter', 'weekdays'));
     }
 
@@ -43,8 +43,8 @@ class WeekdaysController extends Controller
         $validated = $request->validate([
             'days' => 'nullable|array',
             'days.*.weekdays' => 'required|string|max:255',
-            'days.*.open_time'   => 'nullable',
-            'days.*.close_time'  => 'nullable',
+            'days.*.open_time' => 'nullable',
+            'days.*.close_time' => 'nullable',
         ]);
 
         if (!empty($validated['days'])) {
@@ -65,15 +65,15 @@ class WeekdaysController extends Controller
             }
         }
 
-        return redirect()->route('blog-single', $id)->with('success', "Muvaffaqiyatli yangilandi");
+        return redirect()->route('center', $id)->with('success', "Muvaffaqiyatli yangilandi");
     }
 
     public function add(Request $request, string $id)
     {
         $validated = $request->validate([
             'weekdays' => 'required|string|max:255',
-            'open_time'   => 'nullable',
-            'close_time'  => 'nullable',
+            'open_time' => 'nullable',
+            'close_time' => 'nullable',
         ]);
 
         // Avval bu kun uchun jadval borligini tekshirish
@@ -84,7 +84,7 @@ class WeekdaysController extends Controller
         if ($existingSchedule) {
             // Agar mavjud bo'lsa, yangilash
             $existingSchedule->update([
-                'open_time'  => $validated['open_time'] ?? null,
+                'open_time' => $validated['open_time'] ?? null,
                 'close_time' => $validated['close_time'] ?? null,
             ]);
 
@@ -93,9 +93,9 @@ class WeekdaysController extends Controller
             // Agar mavjud bo'lmasa, yangi yaratish
             LearningCentersCalendar::create([
                 'learning_centers_id' => $id,
-                'weekdays'            => $validated['weekdays'],
-                'open_time'           => $validated['open_time'] ?? null,
-                'close_time'          => $validated['close_time'] ?? null,
+                'weekdays' => $validated['weekdays'],
+                'open_time' => $validated['open_time'] ?? null,
+                'close_time' => $validated['close_time'] ?? null,
             ]);
 
             $message = 'Hafta kuni muvaffaqiyatli qo\'shildi';
@@ -111,9 +111,9 @@ class WeekdaysController extends Controller
     {
         $schedule = LearningCentersCalendar::findOrFail($id);
         $learningCenterId = $schedule->learning_centers_id;
-        
+
         Gate::authorize('isOun', $schedule->learningCenter);
-        
+
         $schedule->delete();
 
         return response()->json([

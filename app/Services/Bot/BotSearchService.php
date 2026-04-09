@@ -30,7 +30,7 @@ class BotSearchService
 
             // Raqamlangan ro'yxat shaklida ko'rsatish
             $keyboard = Keyboard::make()->inline();
-            
+
             foreach ($centers as $index => $center) {
                 $number = $index + 1;
                 $keyboard->row([
@@ -61,7 +61,7 @@ class BotSearchService
                 'query' => $query,
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             Telegram::sendMessage([
                 'chat_id' => $chatId,
                 'text' => '❌ Xatolik yuz berdi. Iltimos, keyinroq urinib koʻring.'
@@ -76,7 +76,7 @@ class BotSearchService
             ->get()
             ->map(function ($center) use ($latitude, $longitude) {
                 [$centerLat, $centerLon] = explode(',', trim($center->location));
-                $distance = self::calculateDistance($latitude, $longitude, (float)$centerLat, (float)$centerLon);
+                $distance = self::calculateDistance($latitude, $longitude, (float) $centerLat, (float) $centerLon);
                 $center->distance = $distance;
                 return $center;
             })
@@ -205,21 +205,155 @@ class BotSearchService
     protected static function transliterate(string $text): string
     {
         $cyrillic = [
-            'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п',
-            'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
-            'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П',
-            'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
-            'қ', 'ғ', 'ҳ', 'Қ', 'Ғ', 'Ҳ'
+            'а',
+            'б',
+            'в',
+            'г',
+            'д',
+            'е',
+            'ё',
+            'ж',
+            'з',
+            'и',
+            'й',
+            'к',
+            'л',
+            'м',
+            'н',
+            'о',
+            'п',
+            'р',
+            'с',
+            'т',
+            'у',
+            'ф',
+            'х',
+            'ц',
+            'ч',
+            'ш',
+            'щ',
+            'ъ',
+            'ы',
+            'ь',
+            'э',
+            'ю',
+            'я',
+            'А',
+            'Б',
+            'В',
+            'Г',
+            'Д',
+            'Е',
+            'Ё',
+            'Ж',
+            'З',
+            'И',
+            'Й',
+            'К',
+            'Л',
+            'М',
+            'Н',
+            'О',
+            'П',
+            'Р',
+            'С',
+            'Т',
+            'У',
+            'Ф',
+            'Х',
+            'Ц',
+            'Ч',
+            'Ш',
+            'Щ',
+            'Ъ',
+            'Ы',
+            'Ь',
+            'Э',
+            'Ю',
+            'Я',
+            'қ',
+            'ғ',
+            'ҳ',
+            'Қ',
+            'Ғ',
+            'Ҳ'
         ];
-        
+
         $latin = [
-            'a', 'b', 'v', 'g', 'd', 'e', 'yo', 'j', 'z', 'i', 'y', 'k', 'l', 'm', 'n', 'o', 'p',
-            'r', 's', 't', 'u', 'f', 'x', 'ts', 'ch', 'sh', 'sh', 'ʼ', 'i', 'ʼ', 'e', 'yu', 'ya',
-            'A', 'B', 'V', 'G', 'D', 'E', 'Yo', 'J', 'Z', 'I', 'Y', 'K', 'L', 'M', 'N', 'O', 'P',
-            'R', 'S', 'T', 'U', 'F', 'X', 'Ts', 'Ch', 'Sh', 'Sh', 'ʼ', 'I', 'ʼ', 'E', 'Yu', 'Ya',
-            'q', 'gʻ', 'h', 'Q', 'Gʻ', 'H'
+            'a',
+            'b',
+            'v',
+            'g',
+            'd',
+            'e',
+            'yo',
+            'j',
+            'z',
+            'i',
+            'y',
+            'k',
+            'l',
+            'm',
+            'n',
+            'o',
+            'p',
+            'r',
+            's',
+            't',
+            'u',
+            'f',
+            'x',
+            'ts',
+            'ch',
+            'sh',
+            'sh',
+            'ʼ',
+            'i',
+            'ʼ',
+            'e',
+            'yu',
+            'ya',
+            'A',
+            'B',
+            'V',
+            'G',
+            'D',
+            'E',
+            'Yo',
+            'J',
+            'Z',
+            'I',
+            'Y',
+            'K',
+            'L',
+            'M',
+            'N',
+            'O',
+            'P',
+            'R',
+            'S',
+            'T',
+            'U',
+            'F',
+            'X',
+            'Ts',
+            'Ch',
+            'Sh',
+            'Sh',
+            'ʼ',
+            'I',
+            'ʼ',
+            'E',
+            'Yu',
+            'Ya',
+            'q',
+            'gʻ',
+            'h',
+            'Q',
+            'Gʻ',
+            'H'
         ];
-        
+
         return str_replace($cyrillic, $latin, $text);
     }
 
@@ -245,8 +379,8 @@ class BotSearchService
                 ->implode("\n") ?: "Fanlar mavjud emas";
 
             $appUrl = env('APP_URL', 'https://your-domain.com');
-            $centerUrl = "{$appUrl}/blog-single/{$center->id}";
-            
+            $centerUrl = "{$appUrl}/center/{$center->id}";
+
             $messageText = "🏫 *{$center->name}*
 
 📍 *Manzil:* {$center->province}, {$center->region}
@@ -260,21 +394,21 @@ class BotSearchService
 
 🔗 *Batafsil ma'lumot:* [Ko'rish]({$centerUrl})";
 
-        // Joylashuvni matnga qo'shamiz
-        if ($center->location) {
-            [$latitude, $longitude] = explode(',', trim($center->location));
-            $locationText = "\n🗺️ *Joylashuv:* {$latitude}, {$longitude}";
-            $messageText .= $locationText;
-        }
+            // Joylashuvni matnga qo'shamiz
+            if ($center->location) {
+                [$latitude, $longitude] = explode(',', trim($center->location));
+                $locationText = "\n🗺️ *Joylashuv:* {$latitude}, {$longitude}";
+                $messageText .= $locationText;
+            }
 
             if ($center->logo) {
                 try {
                     $logoUrl = null;
-                    
+
                     // 1. Agar to'g'ridan-to'g'ri URL bo'lsa
                     if (filter_var($center->logo, FILTER_VALIDATE_URL)) {
                         $logoUrl = $center->logo;
-                    } 
+                    }
                     // 2. Agar storage path bo'lsa
                     else {
                         $logoPath = public_path('storage/' . $center->logo);
@@ -282,7 +416,7 @@ class BotSearchService
                             $logoUrl = \Telegram\Bot\FileUpload\InputFile::create($logoPath);
                         }
                     }
-                    
+
                     if ($logoUrl) {
                         Telegram::sendPhoto([
                             'chat_id' => $chatId,
@@ -305,7 +439,7 @@ class BotSearchService
                         'center_id' => $centerId,
                         'logo_path' => $center->logo
                     ]);
-                    
+
                     Telegram::sendMessage([
                         'chat_id' => $chatId,
                         'text' => $messageText,
@@ -326,7 +460,7 @@ class BotSearchService
             if ($center->location) {
                 try {
                     [$latitude, $longitude] = explode(',', trim($center->location));
-                    
+
                     Telegram::sendLocation([
                         'chat_id' => $chatId,
                         'latitude' => trim($latitude),
@@ -346,7 +480,7 @@ class BotSearchService
                 'centerId' => $centerId,
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             Telegram::sendMessage([
                 'chat_id' => $chatId,
                 'text' => '❌ Xatolik yuz berdi. Iltimos, keyinroq urinib koʻring.'

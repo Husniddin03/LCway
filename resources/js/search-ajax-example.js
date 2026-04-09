@@ -42,7 +42,7 @@ class CenterSearchManager {
         this.showLoadingState();
 
         try {
-            const response = await fetch('/blog-grid?' + this.buildQueryString(), {
+            const response = await fetch('/centers?' + this.buildQueryString(), {
                 method: 'GET',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -408,7 +408,7 @@ async function searchWithAbort(filters) {
     currentAbortController = new AbortController();
     
     try {
-        const response = await fetch('/blog-grid?' + params, {
+        const response = await fetch('/centers?' + params, {
             signal: currentAbortController.signal,
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         });

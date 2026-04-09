@@ -21,10 +21,10 @@ class CommentController extends Controller
             'learning_centers_id' => 'required|exists:learning_centers,id',
             'comment' => 'required|string'
         ]);
-        
+
         $comment = LearningCentersComment::create($validate);
         $comment->load('user');
-        
+
         // Agar Ajax so'rovi bo'lsa JSON qaytaramiz
         if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
             return response()->json([
@@ -37,17 +37,18 @@ class CommentController extends Controller
                 'created_at' => $comment->created_at->diffForHumans()
             ]);
         }
-        
+
         // Oddiy so'rov uchun redirect qilamiz
-        return redirect()->route('blog-single', $validate['learning_centers_id'] . '#comment')
+        return redirect()->route('center', $validate['learning_centers_id'] . '#comment')
             ->with('success', 'Izohingiz muvaffaqiyatli qo‘shildi.');
     }
 
-    public function delete(Request $request, string $id) {
+    public function delete(Request $request, string $id)
+    {
         $comment = LearningCentersComment::find($id);
         Gate::authorize('myComment', $comment);
         $comment->delete();
-        
+
         // Agar Ajax so'rovi bo'lsa JSON qaytaramiz
         if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
             return response()->json([
@@ -55,7 +56,7 @@ class CommentController extends Controller
                 'message' => 'Izoh muvaffaqiyatli o\'chirildi'
             ]);
         }
-        
+
         return back()->with('success', 'Izohingiz muvaffaqiyatli o\'chirdingiz.');
     }
 

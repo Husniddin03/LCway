@@ -19,12 +19,12 @@ class TeacherController extends Controller
     {
         $LearningCenter = LearningCenter::find(request()->query('id'));
         Gate::authorize('isOun', $LearningCenter);
-        
+
         // Get subjects for this learning center
         $subjects = SubjectsOfLearningCenter::where('learning_centers_id', $LearningCenter->id)
             ->orderBy('subject_name')
             ->get();
-        
+
         return view('teacher.create', compact('LearningCenter', 'subjects'));
     }
 
@@ -33,15 +33,15 @@ class TeacherController extends Controller
         $teacher = Teacher::findOrFail($id);
         $LearningCenter = LearningCenter::find($teacher->learning_centers_id);
         Gate::authorize('isOun', $LearningCenter);
-        
+
         // Get subjects for this learning center
         $subjects = SubjectsOfLearningCenter::where('learning_centers_id', $LearningCenter->id)
             ->orderBy('subject_name')
             ->get();
-        
+
         // Get current teacher_subject relation
         $teacherSubject = $teacher->teacherSubjects()->first();
-        
+
         return view('teacher.edit', compact('teacher', 'LearningCenter', 'subjects', 'teacherSubject'));
     }
 
@@ -99,7 +99,7 @@ class TeacherController extends Controller
             $teacher->teacherSubjects()->delete();
         }
 
-        return redirect()->route('blog-single', $teacher->learning_centers_id)
+        return redirect()->route('center', $teacher->learning_centers_id)
             ->with('success', 'Ustoz muvaffaqiyatli yangilandi');
     }
 
@@ -132,7 +132,7 @@ class TeacherController extends Controller
             $path = $request->file('photo')->store('uploads/teachers', 'public');
             $validate['photo'] = $path;
         }
-        
+
         $teacher = Teacher::create([
             'name' => $validate['name'],
             'phone' => $validate['phone'] ?? null,
@@ -155,7 +155,7 @@ class TeacherController extends Controller
             ]);
         }
 
-        return redirect()->route('blog-single', $request->route('id'))->with('success', 'Ustoz muvaffaqiyatli qo\'shildi');
+        return redirect()->route('center', $request->route('id'))->with('success', 'Ustoz muvaffaqiyatli qo\'shildi');
     }
 
 
@@ -164,7 +164,7 @@ class TeacherController extends Controller
         $teacher = Teacher::findOrFail($id);
         $LearningCenter = LearningCenter::find($teacher->learning_centers_id);
         Gate::authorize('isOun', $LearningCenter);
-        
+
         if ($teacher->photo && Storage::disk('public')->exists($teacher->photo)) {
             Storage::disk('public')->delete($teacher->photo);
         }
@@ -183,7 +183,7 @@ class TeacherController extends Controller
     {
         $LearningCenter = LearningCenter::find($id);
         Gate::authorize('isOun', $LearningCenter);
-        
+
         $request->merge(['learning_center_id' => $id]);
 
         $validate = $request->validate([
@@ -194,11 +194,12 @@ class TeacherController extends Controller
         ]);
 
         NeedTeacher::create($validate);
-    
-        return redirect()->route('blog-single', $id)->with('success', 'E\'lon muvaffaqiyatli qo;shildi');
+
+        return redirect()->route('center', $id)->with('success', 'E\'lon muvaffaqiyatli qo;shildi');
     }
 
-    public function delete_announcement(string $id) {
+    public function delete_announcement(string $id)
+    {
         $announcement = NeedTeacher::find($id);
         $LearningCenter = LearningCenter::find($announcement->learning_center_id);
         Gate::authorize('isOun', $LearningCenter);
@@ -206,5 +207,5 @@ class TeacherController extends Controller
         return back()->with('success', 'E\'lon muvaffaqiyatli o\'chirilidi');
     }
 
-    
+
 }

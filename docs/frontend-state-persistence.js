@@ -338,7 +338,7 @@ async function performSearch() {
     }
 
     try {
-        const response = await fetch('/blog-grid?' + new URLSearchParams(filters), {
+        const response = await fetch('/centers?' + new URLSearchParams(filters), {
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         });
         

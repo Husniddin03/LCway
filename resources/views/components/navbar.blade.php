@@ -41,7 +41,7 @@
                         <span
                             class="absolute bottom-0 left-0 w-full h-0.5 bg-primary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
                     </a>
-                    <a href="{{ route('blog-grid') }}"
+                    <a href="{{ route('centers') }}"
                         class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 relative group">
                         {{ __('navbar.centers') }}
                         <span
@@ -267,7 +267,7 @@
                     class="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
                     {{ __('navbar.main') }}
                 </a>
-                <a href="{{ route('blog-grid') }}"
+                <a href="{{ route('centers') }}"
                     class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
                     {{ __('navbar.centers') }}
                 </a>

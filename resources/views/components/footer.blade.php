@@ -4,13 +4,8 @@
             <!-- Company Info -->
             <div class="space-y-4">
                 <div class="flex items-center space-x-3">
-                    <x-optimized-image 
-                        src="{{ asset('images/2.png') }}" 
-                        alt="Findora" 
-                        class="w-10 h-10 rounded-full"
-                        width="40"
-                        height="40"
-                    />
+                    <x-optimized-image src="{{ asset('images/2.png') }}" alt="Findora" class="w-10 h-10 rounded-full"
+                        width="40" height="40" />
                     <span class="text-xl font-bold gradient-text">Findora</span>
                 </div>
                 <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
@@ -45,7 +40,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('blog-grid') }}"
+                        <a href="{{ route('centers') }}"
                             class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm">
                             {{ __('footer.centers') }}
                         </a>

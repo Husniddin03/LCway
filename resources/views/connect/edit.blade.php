@@ -187,7 +187,7 @@
                                 <button type="submit" class="w-full order-1 sm:order-2 py-3.5 px-6 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-lg hover:shadow-blue-500/30 transition-all flex items-center justify-center gap-2">
                                     <span>{{ __('connect-edit.buttons.save') }}</span>
                                 </button>
-                                <a href="{{ route('blog-single', $LearningCenter->id) }}" class="w-full order-2 sm:order-1 py-3.5 px-6 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-semibold rounded-xl text-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
+                                <a href="{{ route('center', $LearningCenter->id) }}" class="w-full order-2 sm:order-1 py-3.5 px-6 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-semibold rounded-xl text-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
                                     {{ __('connect-edit.buttons.back') }}
                                 </a>
                             </div>

@@ -130,7 +130,7 @@ class PageController extends Controller
      * Main search/grid view - refactored to use SearchService
      * All heavy logic moved to SearchService for clean architecture
      */
-    public function blogGrid(Request $request, SearchService $searchService)
+    public function centers(Request $request, SearchService $searchService)
     {
         $validated = $request->validate([
             'latitude' => 'nullable|numeric',
@@ -159,7 +159,7 @@ class PageController extends Controller
             'order' => $validated['order'] ?? (
                 !empty($validated['name']) ? $validated['name'] :
                 (!empty($validated['distance']) ? $validated['distance'] :
-                (!empty($validated['favorites']) ? $validated['favorites'] : 'asc'))
+                    (!empty($validated['favorites']) ? $validated['favorites'] : 'asc'))
             ),
         ]);
 
@@ -189,7 +189,7 @@ class PageController extends Controller
                     'lng' => (float) ($coords[1] ?? 0),
                     'address' => $center->address ?? '',
                     'image' => $image,
-                    'detail_url' => route('blog-single', $center->id),
+                    'detail_url' => route('center', $center->id),
                 ];
             })->values()->all();
 
@@ -242,7 +242,7 @@ class PageController extends Controller
             ->sort()
             ->values();
 
-        return view('pages.blog-grid', compact(
+        return view('pages.centers', compact(
             'LearningCenters',
             'validated',
             'pagination',
@@ -260,8 +260,8 @@ class PageController extends Controller
     {
         if ($centers->isEmpty()) {
             return '<div class="col-span-full text-center py-12">
-                <p class="text-gray-500 dark:text-gray-400">' . __('blog-grid.centers_grid.no_centers_found') . '</p>
-                <button onclick="clearAllFilters()" class="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">' . __('blog-grid.centers_grid.clear_filters') . '</button>
+                <p class="text-gray-500 dark:text-gray-400">' . __('centers.centers_grid.no_centers_found') . '</p>
+                <button onclick="clearAllFilters()" class="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">' . __('centers.centers_grid.clear_filters') . '</button>
             </div>';
         }
 
@@ -286,8 +286,8 @@ class PageController extends Controller
             }
 
             $html .= '<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <a href="' . route('blog-single', $lc->id) . '" class="absolute bottom-4 right-4 bg-white text-primary-900 px-4 py-2 rounded-xl shadow-lg flex items-center gap-2 font-bold text-sm opacity-100 translate-y-0 lg:opacity-0 lg:translate-y-2 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-300 hover:bg-primary-50">
-                        <span class="font-bold">' . __('blog-grid.centers_grid.read_more') . '</span>
+                    <a href="' . route('center', $lc->id) . '" class="absolute bottom-4 right-4 bg-white text-primary-900 px-4 py-2 rounded-xl shadow-lg flex items-center gap-2 font-bold text-sm opacity-100 translate-y-0 lg:opacity-0 lg:translate-y-2 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-300 hover:bg-primary-50">
+                        <span class="font-bold">' . __('centers.centers_grid.read_more') . '</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
@@ -313,28 +313,28 @@ class PageController extends Controller
             }
             $html .= '</div><span class="text-lg font-semibold text-primary-600 dark:text-primary-400">' . $average . '</span></div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        <a href="' . route('blog-single', $lc->id) . '" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">' . e($lc->name) . '</a>
+                        <a href="' . route('center', $lc->id) . '" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">' . e($lc->name) . '</a>
                     </h3>
                     <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
                         <div class="flex items-center gap-2 mb-2">
                             <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
                                 <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
                             </div>
-                            <h4 class="font-semibold text-gray-900 dark:text-white">' . __('blog-grid.centers_grid.announcement') . '</h4>
+                            <h4 class="font-semibold text-gray-900 dark:text-white">' . __('centers.centers_grid.announcement') . '</h4>
                         </div>';
             if ($lc->needTeachers->count() > 0) {
                 $first = $lc->needTeachers->last();
-                $html .= '<div class="space-y-2"><p class="text-sm font-medium text-success-600 dark:text-success-400">' . __('blog-grid.centers_grid.teacher_needed') . '</p>
+                $html .= '<div class="space-y-2"><p class="text-sm font-medium text-success-600 dark:text-success-400">' . __('centers.centers_grid.teacher_needed') . '</p>
                     <div class="flex items-center justify-between text-sm">
                         <span class="text-gray-700 dark:text-gray-300">🟢 ' . e($first->subject_name) . '</span>
                         <span class="text-xs text-gray-500 dark:text-gray-400">' . $first->created_at->diffForHumans() . '</span>
                     </div>';
                 if ($lc->needTeachers->count() > 1) {
-                    $html .= '<div><a href="' . route('blog-single', $lc->id) . '" class="text-sm text-primary-600 dark:text-primary-400 hover:underline">' . __('blog-grid.centers_grid.more_announcements', ['count' => $lc->needTeachers->count() - 1]) . '</a></div>';
+                    $html .= '<div><a href="' . route('center', $lc->id) . '" class="text-sm text-primary-600 dark:text-primary-400 hover:underline">' . __('centers.centers_grid.more_announcements', ['count' => $lc->needTeachers->count() - 1]) . '</a></div>';
                 }
                 $html .= '</div>';
             } else {
-                $html .= '<p class="text-sm text-gray-500 dark:text-gray-400">' . __('blog-grid.centers_grid.no_announcements') . '</p>';
+                $html .= '<p class="text-sm text-gray-500 dark:text-gray-400">' . __('centers.centers_grid.no_announcements') . '</p>';
             }
             $html .= '</div></div></div>';
         }
@@ -385,19 +385,19 @@ class PageController extends Controller
             'longitude' => 69.2401
         ];
     }
-    public function blogSingle($id)
+    public function center($id)
     {
         $LearningCenter = LearningCenter::with([
-                'needTeachers',
-                'comments.user',
-                'favorites',
-                'subjects.teacherSubjects.teacher',
-                'teachers.teacherSubjects.subject'
-            ])
+            'needTeachers',
+            'comments.user',
+            'favorites',
+            'subjects.teacherSubjects.teacher',
+            'teachers.teacherSubjects.subject'
+        ])
             ->withCount('comments')
             ->withCount('favorites')
             ->find($id);
-        
+
         // Get user's existing rating if authenticated
         $userRating = null;
         if (Auth::check()) {
@@ -406,8 +406,8 @@ class PageController extends Controller
                 ->first();
             $userRating = $favorite ? $favorite->rating : null;
         }
-        
-        return view('pages.blog-single', compact('LearningCenter', 'userRating'));
+
+        return view('pages.center', compact('LearningCenter', 'userRating'));
     }
     public function signin()
     {

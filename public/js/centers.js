@@ -1,14 +1,14 @@
-// Blog Grid JavaScript - Extracted from blog-grid.blade.php
+// Blog Grid JavaScript - Extracted from centers.blade.php
 // This file contains all JavaScript functionality for the blog grid page
 
 // Check if page was restored from cache (back button) and reload if needed
-window.addEventListener('pageshow', function(event) {
+window.addEventListener('pageshow', function (event) {
     // If persisted is true, the page was loaded from cache (bfcache)
     if (event.persisted) {
         window.location.reload();
         return;
     }
-    
+
     // Also check if the centers grid contains JSON instead of HTML
     const centersGrid = document.getElementById('centersGrid');
     if (centersGrid && centersGrid.innerHTML.trim().startsWith('{')) {
@@ -17,10 +17,10 @@ window.addEventListener('pageshow', function(event) {
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Initialize sorting buttons based on current URL
     updateSortingButtons();
-    
+
     // Search form handler
     const searchForm = document.getElementById('searchForm');
     if (searchForm) {
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize current filters
     window.currentFilters = new URLSearchParams(window.location.search);
-    
+
     // Initialize infinite scroll
     setupInfiniteScroll();
 });
@@ -37,21 +37,21 @@ document.addEventListener('DOMContentLoaded', function() {
 // Search form handler
 function handleSearch(event) {
     event.preventDefault();
-    
+
     const form = event.target;
     const formData = new FormData(form);
     const searchBtn = document.getElementById('searchBtn');
     const searchIcon = document.getElementById('searchIcon');
     const loadingIcon = document.getElementById('loadingIcon');
-    
+
     // Update URL parameters
     window.currentFilters.set('searchText', formData.get('searchText'));
-    
+
     // Show loading state
     searchBtn.disabled = true;
     searchIcon.classList.add('hidden');
     loadingIcon.classList.remove('hidden');
-    
+
     // Perform AJAX search
     performSearch();
 }
@@ -73,19 +73,19 @@ function applyFilter(type, value) {
 function applyPriceFilter() {
     const minPrice = document.getElementById('minPriceInput').value;
     const maxPrice = document.getElementById('maxPriceInput').value;
-    
+
     if (minPrice) {
         window.currentFilters.set('min_price', minPrice);
     } else {
         window.currentFilters.delete('min_price');
     }
-    
+
     if (maxPrice) {
         window.currentFilters.set('max_price', maxPrice);
     } else {
         window.currentFilters.delete('max_price');
     }
-    
+
     performSearch();
 }
 
@@ -94,11 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     if (params.has('min_price')) {
         let el = document.getElementById('minPriceInput');
-        if(el) el.value = params.get('min_price');
+        if (el) el.value = params.get('min_price');
     }
     if (params.has('max_price')) {
         let el = document.getElementById('maxPriceInput');
-        if(el) el.value = params.get('max_price');
+        if (el) el.value = params.get('max_price');
     }
 });
 
@@ -108,7 +108,7 @@ function applySorting(sortType, direction) {
     window.currentFilters.delete('distance');
     window.currentFilters.delete('favorites');
     window.currentFilters.delete('sort');
-    
+
     // Set the new sort type and direction
     window.currentFilters.set(sortType, direction);
     window.currentFilters.set('sort', sortType);
@@ -119,7 +119,7 @@ function updateSortingButtons() {
     const urlParams = new URLSearchParams(window.location.search);
     const sortType = urlParams.get('sort');
     const sortDirection = urlParams.get(sortType);
-    
+
     // Update name sorting button
     const nameButton = document.querySelector('[onclick*="applySorting(\'name\'"]');
     if (nameButton) {
@@ -134,7 +134,7 @@ function updateSortingButtons() {
             nameButton.innerHTML = 'Nomi ↑↓';
         }
     }
-    
+
     // Update distance sorting button
     const distanceButton = document.querySelector('[onclick*="applySorting(\'distance\'"]');
     if (distanceButton) {
@@ -149,7 +149,7 @@ function updateSortingButtons() {
             distanceButton.innerHTML = 'Masofasi ↑↓';
         }
     }
-    
+
     // Update favorites sorting button
     const favoritesButton = document.querySelector('[onclick*="applySorting(\'favorites\'"]');
     if (favoritesButton) {
@@ -170,17 +170,17 @@ function performSearch() {
     const loadingIndicator = document.getElementById('loadingIndicator');
     const centersGrid = document.getElementById('centersGrid');
     const resultsCount = document.getElementById('resultsCount');
-    
+
     // Show loading
     loadingIndicator.classList.remove('hidden');
     centersGrid.classList.add('hidden');
-    
+
     // Build URL
     const url = window.location.pathname + '?' + window.currentFilters.toString();
-    
+
     // Update browser URL without reload
     history.pushState(null, '', url);
-    
+
     // Perform AJAX request
     fetch(url, {
         method: 'GET',
@@ -189,76 +189,76 @@ function performSearch() {
             'Accept': 'application/json'
         }
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Update results count — use total, not the per-page count
-            resultsCount.textContent = data.pagination ? data.pagination.total : data.count;
-            
-            // Update centers grid
-            centersGrid.innerHTML = data.html;
-            
-            // Update pagination state
-            if (data.pagination) {
-                currentPage = data.pagination.current_page;
-                hasMorePages = data.pagination.has_more_pages;
-            } else {
-                // Fallback for non-paginated responses
-                currentPage = 1;
-                hasMorePages = false;
-            }
-            
-            // Update sorting buttons based on current URL
-            updateSortingButtons();
-            
-            // Reinitialize map component if needed
-            if (typeof window.mapFilterComp === 'function') {
-                // Update centers data for map
-                if (data.centers) {
-                    updateMapCenters(data.centers);
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update results count — use total, not the per-page count
+                resultsCount.textContent = data.pagination ? data.pagination.total : data.count;
+
+                // Update centers grid
+                centersGrid.innerHTML = data.html;
+
+                // Update pagination state
+                if (data.pagination) {
+                    currentPage = data.pagination.current_page;
+                    hasMorePages = data.pagination.has_more_pages;
                 } else {
-                    console.warn('No centers data received for map');
+                    // Fallback for non-paginated responses
+                    currentPage = 1;
+                    hasMorePages = false;
+                }
+
+                // Update sorting buttons based on current URL
+                updateSortingButtons();
+
+                // Reinitialize map component if needed
+                if (typeof window.mapFilterComp === 'function') {
+                    // Update centers data for map
+                    if (data.centers) {
+                        updateMapCenters(data.centers);
+                    } else {
+                        console.warn('No centers data received for map');
+                    }
+                } else {
+                    console.warn('Map component not available');
+                }
+
+                // Show/hide no more results message
+                const noMoreResults = document.getElementById('noMoreResults');
+                if (noMoreResults) {
+                    if (hasMorePages) {
+                        noMoreResults.classList.add('hidden');
+                    } else {
+                        noMoreResults.classList.remove('hidden');
+                    }
                 }
             } else {
-                console.warn('Map component not available');
+                // Show error
+                centersGrid.innerHTML = '<div class="col-span-full text-center py-8 text-red-600">Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.</div>';
             }
-            
-            // Show/hide no more results message
-            const noMoreResults = document.getElementById('noMoreResults');
-            if (noMoreResults) {
-                if (hasMorePages) {
-                    noMoreResults.classList.add('hidden');
-                } else {
-                    noMoreResults.classList.remove('hidden');
-                }
-            }
-        } else {
-            // Show error
+        })
+        .catch(error => {
+            console.error('Search error:', error);
             centersGrid.innerHTML = '<div class="col-span-full text-center py-8 text-red-600">Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.</div>';
-        }
-    })
-    .catch(error => {
-        console.error('Search error:', error);
-        centersGrid.innerHTML = '<div class="col-span-full text-center py-8 text-red-600">Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.</div>';
-    })
-    .finally(() => {
-        // Hide loading and reset button
-        loadingIndicator.classList.add('hidden');
-        centersGrid.classList.remove('hidden');
-        
-        const searchBtn = document.getElementById('searchBtn');
-        const searchIcon = document.getElementById('searchIcon');
-        const loadingIcon = document.getElementById('loadingIcon');
-        
-        if (searchBtn) {
-            searchBtn.disabled = false;
-            searchIcon.classList.remove('hidden');
-            loadingIcon.classList.add('hidden');
-        }
-        
-        // Close all dropdowns after AJAX request
-        closeAllDropdowns();
-    });
+        })
+        .finally(() => {
+            // Hide loading and reset button
+            loadingIndicator.classList.add('hidden');
+            centersGrid.classList.remove('hidden');
+
+            const searchBtn = document.getElementById('searchBtn');
+            const searchIcon = document.getElementById('searchIcon');
+            const loadingIcon = document.getElementById('loadingIcon');
+
+            if (searchBtn) {
+                searchBtn.disabled = false;
+                searchIcon.classList.remove('hidden');
+                loadingIcon.classList.add('hidden');
+            }
+
+            // Close all dropdowns after AJAX request
+            closeAllDropdowns();
+        });
 }
 
 function updateMapCenters(centers) {
@@ -277,7 +277,7 @@ function updateMapCenters(centers) {
 function closeAllDropdowns() {
     // Close all dropdown panels by clicking outside or setting their display to none
     const dropdownPanels = document.querySelectorAll('[x-show]');
-    dropdownPanels.forEach(function(panel) {
+    dropdownPanels.forEach(function (panel) {
         // Check if this panel is currently shown
         const xShowAttr = panel.getAttribute('x-show');
         if (xShowAttr) {
@@ -300,13 +300,13 @@ function closeAllDropdowns() {
             }
         }
     });
-    
+
     // Alternative approach: click outside to trigger @click.away
     document.body.click();
 }
 
 // Handle browser back/forward buttons
-window.addEventListener('popstate', function() {
+window.addEventListener('popstate', function () {
     window.currentFilters = new URLSearchParams(window.location.search);
     performSearch();
 });
@@ -321,24 +321,24 @@ let hasMorePages = true;
 
 function loadMorePages() {
     if (isLoading || !hasMorePages) return;
-    
+
     isLoading = true;
     currentPage++;
-    
+
     // Show loading indicator
     const loadingIndicator = document.getElementById('infiniteScrollLoading');
     const noMoreResults = document.getElementById('noMoreResults');
-    
+
     if (loadingIndicator) {
         loadingIndicator.classList.remove('hidden');
     }
-    
+
     // Build URL with page parameter
     const filters = new URLSearchParams(window.currentFilters.toString());
     filters.set('page', currentPage);
-    
+
     const url = window.location.pathname + '?' + filters.toString();
-    
+
     // Perform AJAX request for next page
     fetch(url, {
         method: 'GET',
@@ -347,72 +347,72 @@ function loadMorePages() {
             'Accept': 'application/json'
         }
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success && data.html) {
-            // Append new items to the grid
-            const centersGrid = document.getElementById('centersGrid');
-            if (centersGrid) {
-                // Create a temporary div to parse the HTML
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = data.html;
-                
-                // Extract and append only the center cards
-                const newCards = tempDiv.querySelectorAll('.bg-white.dark\\:bg-gray-800.rounded-xl');
-                newCards.forEach(card => {
-                    centersGrid.appendChild(card);
-                });
-            }
-            
-            // Update pagination state
-            if (data.pagination) {
-                hasMorePages = data.pagination.has_more_pages;
-                currentPage = data.pagination.current_page;
-            }
-            
-            // Update results count
-            const resultsCount = document.getElementById('resultsCount');
-            if (resultsCount && data.pagination) {
-                resultsCount.textContent = data.pagination.total;
-            }
-            
-            // Show/hide appropriate messages
-            if (!hasMorePages) {
-                if (noMoreResults) {
-                    noMoreResults.classList.remove('hidden');
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.html) {
+                // Append new items to the grid
+                const centersGrid = document.getElementById('centersGrid');
+                if (centersGrid) {
+                    // Create a temporary div to parse the HTML
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = data.html;
+
+                    // Extract and append only the center cards
+                    const newCards = tempDiv.querySelectorAll('.bg-white.dark\\:bg-gray-800.rounded-xl');
+                    newCards.forEach(card => {
+                        centersGrid.appendChild(card);
+                    });
                 }
+
+                // Update pagination state
+                if (data.pagination) {
+                    hasMorePages = data.pagination.has_more_pages;
+                    currentPage = data.pagination.current_page;
+                }
+
+                // Update results count
+                const resultsCount = document.getElementById('resultsCount');
+                if (resultsCount && data.pagination) {
+                    resultsCount.textContent = data.pagination.total;
+                }
+
+                // Show/hide appropriate messages
+                if (!hasMorePages) {
+                    if (noMoreResults) {
+                        noMoreResults.classList.remove('hidden');
+                    }
+                }
+
+                // Update map with new centers data
+                if (data.centers && typeof window.mapFilterComp === 'function') {
+                    updateMapCenters(data.centers);
+                }
+            } else {
+                console.error('Failed to load more items');
+                hasMorePages = false;
             }
-            
-            // Update map with new centers data
-            if (data.centers && typeof window.mapFilterComp === 'function') {
-                updateMapCenters(data.centers);
-            }
-        } else {
-            console.error('Failed to load more items');
+        })
+        .catch(error => {
+            console.error('Error loading more items:', error);
             hasMorePages = false;
-        }
-    })
-    .catch(error => {
-        console.error('Error loading more items:', error);
-        hasMorePages = false;
-    })
-    .finally(() => {
-        isLoading = false;
-        if (loadingIndicator) {
-            loadingIndicator.classList.add('hidden');
-        }
-    });
+        })
+        .finally(() => {
+            isLoading = false;
+            if (loadingIndicator) {
+                loadingIndicator.classList.add('hidden');
+            }
+        });
 }
 
 // Set up infinite scroll event listener
 function setupInfiniteScroll() {
     const scrollThreshold = 200; // Load more when 200px from bottom
-    
-    window.addEventListener('scroll', function() {
+
+    window.addEventListener('scroll', function () {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const windowHeight = window.innerHeight;
         const documentHeight = document.documentElement.scrollHeight;
-        
+
         // Check if user is near the bottom
         if (scrollTop + windowHeight >= documentHeight - scrollThreshold) {
             loadMorePages();
@@ -422,17 +422,17 @@ function setupInfiniteScroll() {
 
 // Reset pagination state when performing new search
 const originalPerformSearch = performSearch;
-performSearch = function() {
+performSearch = function () {
     currentPage = 1;
     hasMorePages = true;
     isLoading = false;
-    
+
     // Hide no more results message
     const noMoreResults = document.getElementById('noMoreResults');
     if (noMoreResults) {
         noMoreResults.classList.add('hidden');
     }
-    
+
     // Call original performSearch function
     originalPerformSearch.apply(this, arguments);
 };
@@ -443,7 +443,7 @@ performSearch = function() {
 
 // Alpine.js Map Filter Component
 document.addEventListener('alpine:init', () => {
-    window.mapFilterComp = function() {
+    window.mapFilterComp = function () {
         return {
             /* public state */
             isPanelOpen: false,
@@ -737,7 +737,7 @@ document.addEventListener('alpine:init', () => {
                 const name = (center && center.name) ? String(center.name) : 'O‘quv markazi';
                 const address = (center && center.address) ? String(center.address) : 'Manzil ko‘rsatilmagan';
                 const img = (center && center.image) ? String(center.image) : '';
-                const detailUrl = (center && center.detail_url) ? String(center.detail_url) : `/blog-single/${center.id}`;
+                const detailUrl = (center && center.detail_url) ? String(center.detail_url) : `/center/${center.id}`;
 
                 const gmaps = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(lat + ',' + lng)}`;
 

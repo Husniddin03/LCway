@@ -1,14 +1,14 @@
 <x-layout>
-    <x-slot:title>{{ __('blog-grid.title') }}</x-slot:title>
+    <x-slot:title>{{ __('centers.title') }}</x-slot:title>
 
     <!-- Hero Section -->
     <section
         class="text-gray-900 dark:text-white bg-gradient-to-br from-primary-800 via-accent-800 to-primary-900 dark:from-primary-700 dark:via-accent-700 dark:to-primary-900 text-white py-16">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ __('blog-grid.hero.title') }}</h1>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ __('centers.hero.title') }}</h1>
                 <p class="text-xl text-gray-900 dark:text-white text-white/90 max-w-2xl mx-auto">
-                    {{ __('blog-grid.hero.description') }}
+                    {{ __('centers.hero.description') }}
                 </p>
             </div>
         </div>
@@ -26,7 +26,7 @@
                         @endif
                     @endforeach
                     <div class="relative max-w-2xl mx-auto">
-                        <input type="text" name="searchText" id="searchText" placeholder="{{ __('blog-grid.search_filter.search_placeholder') }}"
+                        <input type="text" name="searchText" id="searchText" placeholder="{{ __('centers.search_filter.search_placeholder') }}"
                             value="{{ $validated['searchText'] ?? '' }}"
                             class="w-full px-6 py-4 pr-12 text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
                         <button type="submit" id="searchBtn"
@@ -49,7 +49,7 @@
                 <div class="pointer-events-none flex overflow-x-auto pb-[400px] -mb-[400px] -mr-6 px-6 xl:pointer-events-auto xl:mx-0 xl:px-0 xl:pb-0 xl:mb-0 xl:overflow-visible xl:flex-wrap gap-2 w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     <button type="button" onclick="clearAllFilters()"
                         class="pointer-events-auto text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 whitespace-nowrap flex-shrink-0">
-                        {{ __('blog-grid.search_filter.all') }}
+                        {{ __('centers.search_filter.all') }}
                     </button>
 
                     <!-- Filter by maps -->
@@ -65,7 +65,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            {{ __('blog-grid.search_filter.map_filter') }}
+                            {{ __('centers.search_filter.map_filter') }}
                             <svg class="mf-chevron" width="13" height="13" fill="none" stroke="currentColor"
                                 stroke-width="2.5" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -94,8 +94,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="mf-htitle">{{ __('blog-grid.search_filter.map_search') }}</div>
-                                        <div class="mf-hsub">{{ __('blog-grid.search_filter.map_subtitle') }}</div>
+                                        <div class="mf-htitle">{{ __('centers.search_filter.map_search') }}</div>
+                                        <div class="mf-hsub">{{ __('centers.search_filter.map_subtitle') }}</div>
                                     </div>
                                 </div>
                                 <button type="button" class="mf-close-btn" @click="isPanelOpen = false">
@@ -117,7 +117,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M9 20l-5.447-9.132A1 1 0 013.382 9.5h17.236a1 1 0 01.838 1.368L16 20M9 20h6M9 20V9m6 11V9" />
                                     </svg>
-                                    <span>{{ __('blog-grid.search_filter.map_loading') }}</span>
+                                    <span>{{ __('centers.search_filter.map_loading') }}</span>
                                 </div>
 
                                 {{-- Locate button --}}
@@ -128,7 +128,7 @@
                                         <circle cx="12" cy="12" r="3" />
                                         <path d="M12 2v3m0 14v3M2 12h3m14 0h3" />
                                     </svg>
-                                    <span x-text="locating ? '{{ __('blog-grid.search_filter.locating') }}' : '{{ __('blog-grid.search_filter.my_location') }}'"></span>
+                                    <span x-text="locating ? '{{ __('centers.search_filter.locating') }}' : '{{ __('centers.search_filter.my_location') }}'"></span>
                                 </button>
 
                                 {{-- Map size buttons --}}
@@ -141,7 +141,7 @@
                                     </button>
                                 </div>
 
-                                <div class="mf-map-hint">{{ __('blog-grid.search_filter.map_hint') }}</div>
+                                <div class="mf-map-hint">{{ __('centers.search_filter.map_hint') }}</div>
                             </div>
 
                             {{-- Controls --}}
@@ -151,7 +151,7 @@
                                 <div class="mf-loc-box">
                                     <div class="mf-loc-dot"></div>
                                     <div style="flex:1;min-width:0;">
-                                        <div class="mf-loc-label">{{ __('blog-grid.search_filter.selected_location') }}</div>
+                                        <div class="mf-loc-label">{{ __('centers.search_filter.selected_location') }}</div>
                                         <div class="mf-loc-text" x-text="addressText"></div>
                                         <div class="mf-loc-coords" x-show="lat && lng">
                                             <span x-text="lat ? lat.toFixed(5) : ''"></span>,
@@ -168,7 +168,7 @@
                                             <circle cx="12" cy="12" r="9" />
                                             <circle cx="12" cy="12" r="3" />
                                         </svg>
-                                        {{ __('blog-grid.search_filter.search_radius') }}
+                                        {{ __('centers.search_filter.search_radius') }}
                                     </div>
                                     <div class="mf-radius-badge" x-text="radius + ' km'"></div>
                                 </div>
@@ -198,20 +198,20 @@
                                 {{-- Actions --}}
                                 <div class="mf-actions">
                                     <button type="button" class="mf-reset-btn"
-                                        @click="resetFilter()">{{ __('blog-grid.search_filter.clear') }}</button>
+                                        @click="resetFilter()">{{ __('centers.search_filter.clear') }}</button>
                                     <button type="button" class="mf-apply-btn" @click="applyMapFilter()">
                                         <svg width="14" height="14" fill="none" stroke="currentColor"
                                             stroke-width="2.5" viewBox="0 0 24 24">
                                             <circle cx="11" cy="11" r="8" />
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
                                         </svg>
-                                        {{ __('blog-grid.search_filter.search') }}
+                                        {{ __('centers.search_filter.search') }}
                                     </button>
                                 </div>
 
                                 <div class="mf-result" x-show="resultShown">
-                                    <strong x-text="resultCount"></strong> {{ __('blog-grid.search_filter.results_found') }}
-                                    (<span x-text="radius"></span> {{ __('blog-grid.search_filter.results_radius') }})
+                                    <strong x-text="resultCount"></strong> {{ __('centers.search_filter.results_found') }}
+                                    (<span x-text="radius"></span> {{ __('centers.search_filter.results_radius') }})
                                 </div>
                             </div>
                         </div>
@@ -222,7 +222,7 @@
                     <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ sortDropdown: false }">
                         <button @click="sortDropdown = !sortDropdown"
                             class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-                            {{ __('blog-grid.search_filter.sort') }}
+                            {{ __('centers.search_filter.sort') }}
                             <svg class="w-4 h-4" :class="{ 'rotate-180': sortDropdown }" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -242,66 +242,66 @@
                                 @if (!isset($validated['name']))
                                     <button type="button" onclick="applySorting('name', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('blog-grid.search_filter.sort_name') }} ↑↓
+                                        {{ __('centers.search_filter.sort_name') }} ↑↓
                                     </button>
                                 @elseif ($validated['name'] == 'asc')
                                     <button type="button" onclick="applySorting('name', 'desc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('blog-grid.search_filter.sort_name') }} ↑
+                                        {{ __('centers.search_filter.sort_name') }} ↑
                                     </button>
                                 @elseif ($validated['name'] == 'desc')
                                     <button type="button" onclick="applySorting('name', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('blog-grid.search_filter.sort_name') }} ↓
+                                        {{ __('centers.search_filter.sort_name') }} ↓
                                     </button>
                                 @else
                                     <button type="button" onclick="applySorting('name', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('blog-grid.search_filter.sort_name') }} ↑↓
+                                        {{ __('centers.search_filter.sort_name') }} ↑↓
                                     </button>
                                 @endif
 
                                 @if (!isset($validated['distance']))
                                     <button type="button" onclick="applySorting('distance', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('blog-grid.search_filter.sort_distance') }} ↑↓
+                                        {{ __('centers.search_filter.sort_distance') }} ↑↓
                                     </button>
                                 @elseif ($validated['distance'] == 'asc')
                                     <button type="button" onclick="applySorting('distance', 'desc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('blog-grid.search_filter.sort_distance') }} ↑
+                                        {{ __('centers.search_filter.sort_distance') }} ↑
                                     </button>
                                 @elseif ($validated['distance'] == 'desc')
                                     <button type="button" onclick="applySorting('distance', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('blog-grid.search_filter.sort_distance') }} ↓
+                                        {{ __('centers.search_filter.sort_distance') }} ↓
                                     </button>
                                 @else
                                     <button type="button" onclick="applySorting('distance', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('blog-grid.search_filter.sort_distance') }} ↑↓
+                                        {{ __('centers.search_filter.sort_distance') }} ↑↓
                                     </button>
                                 @endif
 
                                 @if (!isset($validated['favorites']))
                                     <button type="button" onclick="applySorting('favorites', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('blog-grid.search_filter.sort_rating') }} ↑↓
+                                        {{ __('centers.search_filter.sort_rating') }} ↑↓
                                     </button>
                                 @elseif ($validated['favorites'] == 'asc')
                                     <button type="button" onclick="applySorting('favorites', 'desc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('blog-grid.search_filter.sort_rating') }} ↑
+                                        {{ __('centers.search_filter.sort_rating') }} ↑
                                     </button>
                                 @elseif ($validated['favorites'] == 'desc')
                                     <button type="button" onclick="applySorting('favorites', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('blog-grid.search_filter.sort_rating') }} ↓
+                                        {{ __('centers.search_filter.sort_rating') }} ↓
                                     </button>
                                 @else
                                     <button type="button" onclick="applySorting('favorites', 'asc')"
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('blog-grid.search_filter.sort_rating') }} ↑↓
+                                        {{ __('centers.search_filter.sort_rating') }} ↑↓
                                     </button>
                                 @endif
                             </div>
@@ -312,7 +312,7 @@
                     <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ type_filter: false }">
                         <button @click="type_filter = !type_filter"
                             class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-                            {{ __('blog-grid.search_filter.type') }}
+                            {{ __('centers.search_filter.type') }}
                             <svg class="w-4 h-4" :class="{ 'rotate-180': type_filter }" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -343,7 +343,7 @@
                     <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ subject_id: false }">
                         <button @click="subject_id = !subject_id"
                             class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-                            {{ __('blog-grid.search_filter.subjects') }}
+                            {{ __('centers.search_filter.subjects') }}
                             <svg class="w-4 h-4" :class="{ 'rotate-180': subject_id }" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -374,7 +374,7 @@
                     <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
                         <button @click="teacherDropdown = !teacherDropdown"
                             class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-                            {{ __('blog-grid.search_filter.teacher_announcements') }}
+                            {{ __('centers.search_filter.teacher_announcements') }}
                             <svg class="w-4 h-4" :class="{ 'rotate-180': teacherDropdown }" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -393,7 +393,7 @@
                             <div class="py-2 max-h-70 overflow-y-auto">
                                 <button type="button" onclick="applyFilter('needTeachers', 'all')"
                                     class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                    {{ __('blog-grid.search_filter.all_announcements') }}
+                                    {{ __('centers.search_filter.all_announcements') }}
                                 </button>
                                 @foreach ($subjects as $subjectName)
                                     <button type="button" onclick="applyFilter('needTeachers', '{{ $subjectName }}')"
@@ -409,7 +409,7 @@
                     <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ priceDropdown: false }">
                         <button @click="priceDropdown = !priceDropdown"
                             class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-                            {{ __('blog-grid.search_filter.price') ?? 'Narx' }}
+                            {{ __('centers.search_filter.price') ?? 'Narx' }}
                             <svg class="w-4 h-4" :class="{ 'rotate-180': priceDropdown }" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -428,24 +428,24 @@
                             
                             <div class="flex flex-col gap-3 mb-4 text-gray-900 dark:text-white">
                                 <div>
-                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('blog-grid.search_filter.min_price') ?? 'Min. narx' }}</label>
+                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('centers.search_filter.min_price') ?? 'Min. narx' }}</label>
                                     <input type="number" id="minPriceInput" min="0" placeholder="Masalan: 0" class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors">
                                 </div>
                                 <div>
-                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('blog-grid.search_filter.max_price') ?? 'Max. narx' }}</label>
+                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('centers.search_filter.max_price') ?? 'Max. narx' }}</label>
                                     <input type="number" id="maxPriceInput" min="0" placeholder="Masalan: 1000000" class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors">
                                 </div>
                             </div>
                             <button type="button" onclick="applyPriceFilter(); priceDropdown = false"
                                 class="w-full bg-primary-600 hover:bg-primary-700 text-gray-900 dark:text-white text-sm font-medium py-2 rounded-md transition-colors border-2 border-primary-500 dark:border-primary-400 shadow-sm">
-                                {{ __('blog-grid.search_filter.apply') ?? "Qo'llash" }}
+                                {{ __('centers.search_filter.apply') ?? "Qo'llash" }}
                             </button>
                         </div>
                     </div>
                 </div>
 
                 <div class="text-gray-600 dark:text-gray-400">
-                    <span id="resultsCount">{{ $pagination['total'] ?? $LearningCenters->count() }}</span> {{ __('blog-grid.search_filter.results_count') }}
+                    <span id="resultsCount">{{ $pagination['total'] ?? $LearningCenters->count() }}</span> {{ __('centers.search_filter.results_count') }}
                 </div>
             </div>
         </div>
@@ -459,7 +459,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
-                <p class="mt-2 text-gray-600 dark:text-gray-400">{{ __('blog-grid.search_filter.searching') }}</p>
+                <p class="mt-2 text-gray-600 dark:text-gray-400">{{ __('centers.search_filter.searching') }}</p>
             </div>
             <div id="centersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @forelse ($LearningCenters as $LearningCenter)
@@ -496,7 +496,7 @@
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
-                            <a href="{{ route('blog-single', $LearningCenter->id) }}"
+                            <a href="{{ route('center', $LearningCenter->id) }}"
                                 class="absolute bottom-4 right-4 
                                     /* Ranglar va shakl: Oq fon, to'q matn */
                                     bg-white text-primary-900 
@@ -510,7 +510,7 @@
                                     /* Effektlar */
                                     transition-all duration-300 hover:bg-primary-50">
                                 
-                                <span class="font-bold">{{ __('blog-grid.centers_grid.read_more') }}</span>
+                                <span class="font-bold">{{ __('centers.centers_grid.read_more') }}</span>
                                 
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -568,7 +568,7 @@
 
                             <!-- Title -->
                             <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                                <a href="{{ route('blog-single', $LearningCenter->id) }}"
+                                <a href="{{ route('center', $LearningCenter->id) }}"
                                     class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
                                     {{ $LearningCenter->name }}
                                 </a>
@@ -585,13 +585,13 @@
                                                 d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                                         </svg>
                                     </div>
-                                    <h4 class="font-semibold text-gray-900 dark:text-white">{{ __('blog-grid.centers_grid.announcement') }}</h4>
+                                    <h4 class="font-semibold text-gray-900 dark:text-white">{{ __('centers.centers_grid.announcement') }}</h4>
                                 </div>
 
                                 @if ($LearningCenter->needTeachers->count() > 0)
                                     <div class="space-y-2">
                                         <p class="text-sm font-medium text-success-600 dark:text-success-400">
-                                            {{ __('blog-grid.centers_grid.teacher_needed') }}</p>
+                                            {{ __('centers.centers_grid.teacher_needed') }}</p>
                                         @foreach ($LearningCenter->needTeachers->take(-1) as $teacher)
                                             <div class="flex items-center justify-between text-sm">
                                                 <span class="text-gray-700 dark:text-gray-300">🟢
@@ -602,24 +602,24 @@
                                         @endforeach
                                         @if ($LearningCenter->needTeachers->count() > 1)
                                             <div>
-                                                <a href="{{ route('blog-single', $LearningCenter->id) }}"
+                                                <a href="{{ route('center', $LearningCenter->id) }}"
                                                     class="text-sm text-primary-600 dark:text-primary-400 hover:underline">
-                                                    {{ __('blog-grid.centers_grid.more_announcements', ['count' => $LearningCenter->needTeachers->count() - 1]) }}
+                                                    {{ __('centers.centers_grid.more_announcements', ['count' => $LearningCenter->needTeachers->count() - 1]) }}
                                                 </a>
                                             </div>
                                         @endif
                                     </div>
                                 @else
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('blog-grid.centers_grid.no_announcements') }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('centers.centers_grid.no_announcements') }}</p>
                                 @endif
                             </div>
                         </div>
                     </div>
                 @empty
                     <div class="col-span-full text-center py-12">
-                        <p class="text-gray-500 dark:text-gray-400">{{ __('blog-grid.centers_grid.no_centers_found') }}</p>
+                        <p class="text-gray-500 dark:text-gray-400">{{ __('centers.centers_grid.no_centers_found') }}</p>
                         <button onclick="clearAllFilters()" class="mt-4 px-4 py-2 bg-primary-600 text-gray-500 dark:text-gray-400 rounded-lg hover:bg-primary-700 transition-colors">
-                            {{ __('blog-grid.centers_grid.clear_filters') }}
+                            {{ __('centers.centers_grid.clear_filters') }}
                         </button>
                     </div>
                 @endforelse
@@ -651,7 +651,7 @@
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
 <!-- Include Blog Grid JavaScript BEFORE Alpine.js -->
-<script src="{{ asset('js/blog-grid.js') }}"></script>
+<script src="{{ asset('js/centers.js') }}"></script>
 
 <!-- Initialize centers data for map component -->
 <script>
@@ -2022,7 +2022,7 @@
             lat: null,
             lng: null,
             radius: 10,
-            addressText: '{{ __('blog-grid.search_filter.no_location') }}',
+            addressText: '{{ __('centers.search_filter.no_location') }}',
             isZooming: false,
             pendingLoad: false,
             loadingMarkers: false,
@@ -2365,7 +2365,7 @@
                 this.lat = null;
                 this.lng = null;
                 this.radius = 10;
-                this.addressText = '{{ __('blog-grid.search_filter.no_location') }}';
+                this.addressText = '{{ __('centers.search_filter.no_location') }}';
 
                 if (this.userMarker) {
                     this.map.removeLayer(this.userMarker);

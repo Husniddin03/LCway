@@ -37,11 +37,11 @@ use Illuminate\Http\Request;
 
 // Asosiy sahifalar uchun route lar
 Route::get('/', [PageController::class, 'index'])->name('index');
-Route::get('/blog-grid', [PageController::class, 'blogGrid'])->name('blog-grid');
+Route::get('/centers', [PageController::class, 'centers'])->name('centers');
 Route::get('/404', [PageController::class, 'notFound'])->name('404');
 Route::get('/searchMap', [PageController::class, 'searchMap'])->name('searchMap');
 Route::get('/search', [PageController::class, 'search'])->name('search');
-Route::get('/blog-single/{id}', [PageController::class, 'blogSingle'])->name('blog-single');
+Route::get('/center/{id}', [PageController::class, 'center'])->name('center');
 
 // Language switching route
 Route::get('/language/{lang}', [LanguageController::class, 'switch'])->name('language.switch');

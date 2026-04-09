@@ -28,7 +28,7 @@ class SubjectController extends Controller
     {
         $LearningCenter = LearningCenter::find(request()->query('id'));
         Gate::authorize('isOun', $LearningCenter);
-        
+
         // Get unique subject names from all learning centers for datalist
         $existingSubjects = SubjectsOfLearningCenter::select('subject_name')
             ->distinct()
@@ -36,12 +36,12 @@ class SubjectController extends Controller
             ->where('subject_name', '!=', '')
             ->orderBy('subject_name')
             ->pluck('subject_name');
-        
+
         // Get teachers for this learning center
         $teachers = Teacher::where('learning_centers_id', $LearningCenter->id)
             ->orderBy('name')
             ->get();
-        
+
         return view('subject.create', compact('LearningCenter', 'existingSubjects', 'teachers'));
     }
 
@@ -52,7 +52,7 @@ class SubjectController extends Controller
     {
         $LearningCenter = LearningCenter::find($request->route('id'));
         Gate::authorize('isOun', $LearningCenter);
-        
+
         $request->merge(['learning_centers_id' => $request->route('id')]);
         $validate = $request->validate([
             'learning_centers_id' => 'required|exists:learning_centers,id',
@@ -86,7 +86,7 @@ class SubjectController extends Controller
             ]);
         }
 
-        return redirect()->route('blog-single', $request->route('id'))->with('success', 'Subject added successfully.');
+        return redirect()->route('center', $request->route('id'))->with('success', 'Subject added successfully.');
     }
 
     /**
@@ -105,15 +105,15 @@ class SubjectController extends Controller
         $subjectOfCenter = SubjectsOfLearningCenter::findOrFail($id);
         $LearningCenter = LearningCenter::find($subjectOfCenter->learning_centers_id);
         Gate::authorize('isOun', $LearningCenter);
-        
+
         // Get teachers for this learning center
         $teachers = Teacher::where('learning_centers_id', $LearningCenter->id)
             ->orderBy('name')
             ->get();
-        
+
         // Get current teacher_subject relation
         $teacherSubject = $subjectOfCenter->teacherSubjects()->first();
-        
+
         return view('subject.edit', compact('subjectOfCenter', 'LearningCenter', 'teachers', 'teacherSubject'));
     }
 
@@ -161,7 +161,7 @@ class SubjectController extends Controller
             $subjectOfCenter->teacherSubjects()->delete();
         }
 
-        return redirect()->route('blog-single', $subjectOfCenter->learning_centers_id)
+        return redirect()->route('center', $subjectOfCenter->learning_centers_id)
             ->with('success', "Fan muvaffaqiyatli yangilandi");
     }
 

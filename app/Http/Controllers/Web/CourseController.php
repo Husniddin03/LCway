@@ -27,19 +27,19 @@ class CourseController extends Controller
     public function index()
     {
         $centers = LearningCenter::with([
-            'user', 
-            'images', 
-            'subjects', 
+            'user',
+            'images',
+            'subjects',
             'teachers'
         ])->latest()->paginate(6);
-        return view('pages.blog-grid', compact('centers'));
+        return view('pages.centers', compact('centers'));
     }
 
     public function create()
     {
         // Get types from LearningCenter database and group them
         $types = LearningCenter::pluck('type')->filter()->unique()->sort()->values();
-        
+
         return view('center.create')
             ->with('types', $types);
     }
@@ -49,20 +49,20 @@ class CourseController extends Controller
         // Combine latitude and longitude into location string
         $location = $request->latitude . ',' . $request->longitude;
         $request->merge(['location' => $location]);
-        
+
         // Handle type validation - either from select or custom input
         $type = $request->type;
         if ($type === 'custom') {
             $validated = $request->validate([
-                'logo'         => 'required|image|max:1024',
-                'name'         => 'required|string|max:255',
-                'custom_type'  => 'required|string|max:255',
-                'about'        => 'required|string',
-                'country'      => 'required|string|max:255',
-                'province'     => 'required|string|max:255',
-                'region'       => 'required|string|max:255',
-                'address'      => 'required|string|max:255',
-                'location'     => 'required|string|max:255',
+                'logo' => 'required|image|max:1024',
+                'name' => 'required|string|max:255',
+                'custom_type' => 'required|string|max:255',
+                'about' => 'required|string',
+                'country' => 'required|string|max:255',
+                'province' => 'required|string|max:255',
+                'region' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'location' => 'required|string|max:255',
                 'student_count' => 'integer',
                 'tin' => 'nullable|string|max:20',
                 'legal_address' => 'nullable|string',
@@ -79,15 +79,15 @@ class CourseController extends Controller
             unset($validated['custom_type']);
         } else {
             $validated = $request->validate([
-                'logo'         => 'required|image|max:1024',
-                'name'         => 'required|string|max:255',
-                'type'         => 'required|string|max:255',
-                'about'        => 'required|string',
-                'country'      => 'required|string|max:255',
-                'province'     => 'required|string|max:255',
-                'region'       => 'required|string|max:255',
-                'address'      => 'required|string|max:255',
-                'location'     => 'required|string|max:255',
+                'logo' => 'required|image|max:1024',
+                'name' => 'required|string|max:255',
+                'type' => 'required|string|max:255',
+                'about' => 'required|string',
+                'country' => 'required|string|max:255',
+                'province' => 'required|string|max:255',
+                'region' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'location' => 'required|string|max:255',
                 'student_count' => 'integer',
                 'tin' => 'nullable|string|max:20',
                 'legal_address' => 'nullable|string',
@@ -101,7 +101,7 @@ class CourseController extends Controller
                 'ifut_code' => 'nullable|string|max:255',
             ]);
         }
-        
+
         // Handle country validation - either from select or custom input
         $country = $request->country;
         if ($country === 'custom') {
@@ -111,7 +111,7 @@ class CourseController extends Controller
         } else {
             $validated['country'] = $country;
         }
-        
+
         // Handle province validation - either from select or custom input
         $province = $request->province;
         if ($province === 'custom') {
@@ -121,7 +121,7 @@ class CourseController extends Controller
         } else {
             $validated['province'] = $province;
         }
-        
+
         // Handle district validation - either from select or custom input
         $region = $request->region;
         if ($region === 'custom') {
@@ -151,7 +151,7 @@ class CourseController extends Controller
             foreach ($request->file('images') as $image) {
                 $path = $this->imageService->optimizeImage($image, 'uploads/centers');
                 LearningCentersImage::create([
-                    'learning_centers_id' =>  $center->id,
+                    'learning_centers_id' => $center->id,
                     'image' => $path,
                 ]);
             }
@@ -161,37 +161,37 @@ class CourseController extends Controller
         Cache::forget('popular_courses');
         Cache::forget('course_types');
 
-        return redirect()->route('blog-single', $center->id)
+        return redirect()->route('center', $center->id)
             ->with('success', 'O‘quv markaz muvaffaqiyatli qo‘shildi.');
     }
 
     public function show($id)
     {
         $LearningCenter = LearningCenter::with([
-            'user', 
-            'images', 
-            'subjects', 
-            'teachers', 
+            'user',
+            'images',
+            'subjects',
+            'teachers',
             'comments.user',
             'favorites.user'
         ])->findOrFail($id);
 
-        return view('pages.blog-single', compact('LearningCenter'));
+        return view('pages.center', compact('LearningCenter'));
     }
 
 
     public function edit($id)
     {
         $center = LearningCenter::with([
-            'images', 
-            'subjects', 
+            'images',
+            'subjects',
             'teachers'
         ])->findOrFail($id);
         Gate::authorize('isOun', $center);
-        
+
         // Get types from LearningCenter database
         $types = LearningCenter::pluck('type')->filter()->unique()->sort()->values();
-        
+
         return view('center.edit', compact('center', 'types'));
     }
 
@@ -200,23 +200,23 @@ class CourseController extends Controller
     {
         $center = LearningCenter::findOrFail($id);
         Gate::authorize('isOun', $center);
-        
+
         // Handle type validation - either from select or custom input
         $type = $request->type;
         if ($type === 'custom') {
             $validated = $request->validate([
-                'logo'         => 'nullable|image|max:1024',
-                'name'         => 'required|string|max:255',
-                'custom_type'  => 'required|string|max:255',
-                'about'        => 'nullable|string',
-                'country'      => 'required|string|max:255',
-                'province'     => 'required|string|max:255',
-                'region'       => 'required|string|max:255',
-                'address'      => 'required|string|max:255',
-                'location'     => 'nullable|string|max:255',
+                'logo' => 'nullable|image|max:1024',
+                'name' => 'required|string|max:255',
+                'custom_type' => 'required|string|max:255',
+                'about' => 'nullable|string',
+                'country' => 'required|string|max:255',
+                'province' => 'required|string|max:255',
+                'region' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'location' => 'nullable|string|max:255',
                 'studentCount' => 'nullable|integer',
-                'images'       => 'nullable|array|max:10',
-                'images.*'     => 'image|mimes:jpeg,jpg,png,gif,webp|max:2048',
+                'images' => 'nullable|array|max:10',
+                'images.*' => 'image|mimes:jpeg,jpg,png,gif,webp|max:2048',
                 'tin' => 'nullable|string|max:20',
                 'legal_address' => 'nullable|string',
                 'territory' => 'nullable|string|max:255',
@@ -232,18 +232,18 @@ class CourseController extends Controller
             unset($validated['custom_type']);
         } else {
             $validated = $request->validate([
-                'logo'         => 'nullable|image|max:1024',
-                'name'         => 'required|string|max:255',
-                'type'         => 'required|string|max:255',
-                'about'        => 'nullable|string',
-                'country'      => 'required|string|max:255',
-                'province'     => 'required|string|max:255',
-                'region'       => 'required|string|max:255',
-                'address'      => 'required|string|max:255',
-                'location'     => 'nullable|string|max:255',
+                'logo' => 'nullable|image|max:1024',
+                'name' => 'required|string|max:255',
+                'type' => 'required|string|max:255',
+                'about' => 'nullable|string',
+                'country' => 'required|string|max:255',
+                'province' => 'required|string|max:255',
+                'region' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'location' => 'nullable|string|max:255',
                 'studentCount' => 'nullable|integer',
-                'images'       => 'nullable|array|max:10',
-                'images.*'     => 'image|mimes:jpeg,jpg,png,gif,webp|max:2048',
+                'images' => 'nullable|array|max:10',
+                'images.*' => 'image|mimes:jpeg,jpg,png,gif,webp|max:2048',
                 'tin' => 'nullable|string|max:20',
                 'legal_address' => 'nullable|string',
                 'territory' => 'nullable|string|max:255',
@@ -256,7 +256,7 @@ class CourseController extends Controller
                 'ifut_code' => 'nullable|string|max:255',
             ]);
         }
-        
+
         // Handle country validation - either from select or custom input
         $country = $request->country;
         if ($country === 'custom') {
@@ -266,7 +266,7 @@ class CourseController extends Controller
         } else {
             $validated['country'] = $country;
         }
-        
+
         // Handle province validation - either from select or custom input
         $province = $request->province;
         if ($province === 'custom') {
@@ -276,7 +276,7 @@ class CourseController extends Controller
         } else {
             $validated['province'] = $province;
         }
-        
+
         // Handle district validation - either from select or custom input
         $region = $request->region;
         if ($region === 'custom') {
@@ -306,7 +306,7 @@ class CourseController extends Controller
                 }
                 $oldImage->delete();
             }
-            
+
             // Upload new images
             foreach ($request->file('images') as $image) {
                 $path = $this->imageService->optimizeImage($image, 'uploads/centers');
@@ -322,7 +322,7 @@ class CourseController extends Controller
 
         $center->update($validated);
 
-        return redirect()->route('blog-single', $center->id)
+        return redirect()->route('center', $center->id)
             ->with('success', 'O‘quv markaz muvaffaqiyatli yangilandi.');
     }
 

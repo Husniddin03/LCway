@@ -26,7 +26,8 @@
                         @endif
                     @endforeach
                     <div class="relative max-w-2xl mx-auto">
-                        <input type="text" name="searchText" id="searchText" placeholder="{{ __('centers.search_filter.search_placeholder') }}"
+                        <input type="text" name="searchText" id="searchText"
+                            placeholder="Search centers or subjects (e.g. IELTS, Math, IT, English...)"
                             value="{{ $validated['searchText'] ?? '' }}"
                             class="w-full px-6 py-4 pr-12 text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
                         <button type="submit" id="searchBtn"
@@ -41,6 +42,9 @@
                             </svg>
                         </button>
                     </div>
+                    <p class="text-center text-sm text-gray-500 dark:text-gray-400 mt-2">
+                        You can search by subject name or center name
+                    </p>
                 </form>
             </div>
 
@@ -339,39 +343,20 @@
                         </div>
                     </div>
 
-                    <!-- Filter by subjects -->
-                    <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ subject_id: false }">
-                        <button @click="subject_id = !subject_id"
-                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-                            {{ __('centers.search_filter.subjects') }}
-                            <svg class="w-4 h-4" :class="{ 'rotate-180': subject_id }" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
+                    {{-- Subject dropdown removed: use unified search input to search by subject name --}}
 
-                        <div x-show="subject_id" @click.away="subject_id = false"
-                            x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-150"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
-                            <div class="py-2 max-h-70 overflow-y-auto">
-                                @foreach ($subjects as $subjectName)
-                                    <button type="button" onclick="applyFilter('subject_name', '{{ $subjectName }}')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                        {{ $subjectName }}
-                                    </button>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Teacher Announcements Dropdown -->
-                    <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ teacherDropdown: false }">
+                    <!-- Teacher Announcements Dropdown with Search -->
+                    <div class="pointer-events-auto text-gray-900 dark:text-white relative"
+                        x-data="{
+                            teacherDropdown: false,
+                            searchQuery: '',
+                            get filteredSubjects() {
+                                if (this.searchQuery === '') return {{ Js::from($subjects) }};
+                                return {{ Js::from($subjects) }}.filter(subject =>
+                                    subject.toLowerCase().includes(this.searchQuery.toLowerCase())
+                                );
+                            }
+                        }">
                         <button @click="teacherDropdown = !teacherDropdown"
                             class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                             {{ __('centers.search_filter.teacher_announcements') }}
@@ -389,18 +374,70 @@
                             x-transition:leave="transition ease-in duration-150"
                             x-transition:leave-start="transform opacity-100 scale-100"
                             x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
-                            <div class="py-2 max-h-70 overflow-y-auto">
-                                <button type="button" onclick="applyFilter('needTeachers', 'all')"
-                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                    {{ __('centers.search_filter.all_announcements') }}
-                                </button>
-                                @foreach ($subjects as $subjectName)
-                                    <button type="button" onclick="applyFilter('needTeachers', '{{ $subjectName }}')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
-                                        {{ $subjectName }}
+                            class="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-10 overflow-hidden">
+
+                            <!-- Search Input Header -->
+                            <div class="p-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
+                                <div class="relative">
+                                    <input
+                                        type="text"
+                                        x-model="searchQuery"
+                                        placeholder="Qidirish... (masalan: ingliz)"
+                                        class="w-full px-3 py-2 pl-9 pr-8 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all"
+                                        @click.stop
+                                    >
+                                    <!-- Search Icon -->
+                                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                    <!-- Clear Button -->
+                                    <button
+                                        x-show="searchQuery !== ''"
+                                        x-transition
+                                        @click.stop="searchQuery = ''"
+                                        class="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-colors"
+                                    >
+                                        <svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
                                     </button>
-                                @endforeach
+                                </div>
+                            </div>
+
+                            <!-- Subjects List with Custom Scrollbar -->
+                            <div class="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
+                                <!-- All Announcements Option -->
+                                <button type="button" onclick="applyFilter('needTeachers', 'all')"
+                                    @click="teacherDropdown = false"
+                                    class="block w-full text-left px-4 py-2.5 text-sm font-medium text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors border-b border-gray-100 dark:border-gray-700">
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                        </svg>
+                                        {{ __('centers.search_filter.all_announcements') }}
+                                    </span>
+                                </button>
+
+                                <!-- Filtered Subjects -->
+                                <template x-for="subject in filteredSubjects" :key="subject">
+                                    <button
+                                        type="button"
+                                        x-on:click="applyFilter('needTeachers', subject); teacherDropdown = false"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                        <span x-text="subject"></span>
+                                    </button>
+                                </template>
+
+                                <!-- No Results Message -->
+                                <div x-show="filteredSubjects.length === 0 && searchQuery !== ''" class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 text-center">
+                                    Hech narsa topilmadi
+                                </div>
+                            </div>
+
+                            <!-- Results Count -->
+                            <div class="px-3 py-2 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400 flex justify-between items-center">
+                                <span x-text="filteredSubjects.length + ' ta fan'"></span>
+                                <button @click="searchQuery = ''" x-show="searchQuery !== ''" class="text-primary-600 hover:text-primary-700 dark:text-primary-400">Tozalash</button>
                             </div>
                         </div>
                     </div>
@@ -496,7 +533,7 @@
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
-                            <a href="{{ route('center', $LearningCenter->id) }}"
+                            <a href="{{ route('center', $LearningCenter->slug) }}"
                                 class="absolute bottom-4 right-4 
                                     /* Ranglar va shakl: Oq fon, to'q matn */
                                     bg-white text-primary-900 
@@ -568,7 +605,7 @@
 
                             <!-- Title -->
                             <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                                <a href="{{ route('center', $LearningCenter->id) }}"
+                                <a href="{{ route('center', $LearningCenter->slug) }}"
                                     class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
                                     {{ $LearningCenter->name }}
                                 </a>
@@ -602,7 +639,7 @@
                                         @endforeach
                                         @if ($LearningCenter->needTeachers->count() > 1)
                                             <div>
-                                                <a href="{{ route('center', $LearningCenter->id) }}"
+                                                <a href="{{ route('center', $LearningCenter->slug) }}"
                                                     class="text-sm text-primary-600 dark:text-primary-400 hover:underline">
                                                     {{ __('centers.centers_grid.more_announcements', ['count' => $LearningCenter->needTeachers->count() - 1]) }}
                                                 </a>

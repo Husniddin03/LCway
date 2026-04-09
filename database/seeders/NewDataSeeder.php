@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\LearningCenter;
 use App\Models\SubjectsOfLearningCenter;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class NewDataSeeder extends Seeder
 {

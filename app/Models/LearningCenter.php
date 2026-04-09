@@ -4,19 +4,43 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class LearningCenter extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'logo', 'name', 'type', 'about', 'country', 'province', 'region',
-        'address', 'location', 'status', 'users_id', 
-        'student_count', 'total_reyting', 'rating', 'ratings_total',
-        'checked', 'status', 'premium', 'premium_until',
-        'tin', 'legal_address', 'territory', 'license_number',
-        'license_registration_date', 'license_validity_period',
-        'manager_name', 'phone_number', 'email', 'ifut_code',
+        'logo',
+        'name',
+        'slug',
+        'type',
+        'about',
+        'country',
+        'province',
+        'region',
+        'address',
+        'location',
+        'status',
+        'users_id',
+        'student_count',
+        'total_reyting',
+        'rating',
+        'ratings_total',
+        'checked',
+        'status',
+        'premium',
+        'premium_until',
+        'tin',
+        'legal_address',
+        'territory',
+        'license_number',
+        'license_registration_date',
+        'license_validity_period',
+        'manager_name',
+        'phone_number',
+        'email',
+        'ifut_code',
     ];
 
     protected $casts = [
@@ -66,6 +90,44 @@ class LearningCenter extends Model
         return $this->hasMany(Favorite::class, 'learning_centers_id');
     }
 
+    // Markaz saqlanayotganda avtomatik slug yasash uchun
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($center) {
+            if (empty($center->slug)) {
+                $center->slug = static::generateUniqueSlug($center->name);
+            } else {
+                // Agar seederdan slug kelgan bo'lsa ham uning unikalligini tekshiramiz
+                $center->slug = static::generateUniqueSlug($center->slug, true);
+            }
+        });
+    }
+
+    /**
+     * Noyob slug generatsiya qilish
+     */
+    public static function generateUniqueSlug($name, $isAlreadySlug = false)
+    {
+        $slug = $isAlreadySlug ? $name : Str::slug($name);
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (static::where('slug', $slug)->exists()) {
+            $slug = "{$originalSlug}-{$count}";
+            $count++;
+        }
+
+        return $slug;
+    }
+
+    // Laravel-ga ID o'rniga slug orqali qidirishni aytamiz
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     // Dynamic attribute for average user rating
     public function getUserAverageRatingAttribute()
     {
@@ -95,11 +157,11 @@ class LearningCenter extends Model
     {
         $userAverage = $this->user_average_rating;
         $userCount = $this->user_ratings_total;
-        
+
         if ($userCount == 0) {
             return $this->rating; // Return original Google rating if no user ratings
         }
-        
+
         // Calculate weighted average: 50% Google rating, 50% user ratings
         if ($this->rating > 0) {
             return round(($this->rating + $userAverage) / 2, 2);
@@ -140,7 +202,7 @@ class LearningCenter extends Model
         // Fanlar ro'yxati (qidiruvda ishlashi uchun)
         $subjects = $this->subjects->map(function ($s) {
             return [
-                'name'  => $s->subject_name ?? '',
+                'name' => $s->subject_name ?? '',
                 'price' => (int) ($s->price ?? 0),
             ];
         })->toArray();
@@ -148,7 +210,7 @@ class LearningCenter extends Model
         // O'qituvchilar
         $teachers = $this->teachers->map(function ($t) {
             return [
-                'name'    => $t->name ?? '',
+                'name' => $t->name ?? '',
                 'subject' => $t->subject_name ?? '',
             ];
         })->toArray();
@@ -157,32 +219,32 @@ class LearningCenter extends Model
         $subjectsText = $this->subjects->map(function ($s) {
             return $s->subject_name;
         })->filter()->join(', ');
-        
+
         $teachersText = $this->teachers->map(function ($t) {
             return $t->name;
         })->filter()->join(', ');
 
         return [
-            'id'            => $this->id,
-            'name'          => $this->name ?? '',
-            'type'          => $this->type ?? '',
-            'about'         => $this->about ?? '',
-            'province'      => $this->province ?? '',
-            'region'        => $this->region ?? '',
-            'address'       => $this->address ?? '',
+            'id' => $this->id,
+            'name' => $this->name ?? '',
+            'type' => $this->type ?? '',
+            'about' => $this->about ?? '',
+            'province' => $this->province ?? '',
+            'region' => $this->region ?? '',
+            'address' => $this->address ?? '',
             'student_count' => (int) ($this->student_count ?? 0),
-            'location'      => $this->location ?? '',
+            'location' => $this->location ?? '',
 
             // Qidiruv uchun birlashtirilgan matn
             'subjects_text' => $subjectsText,
             'teachers_text' => $teachersText,
-            'full_address'  => trim(($this->province ?? '') . ' ' . ($this->region ?? '') . ' ' . ($this->address ?? '')),
+            'full_address' => trim(($this->province ?? '') . ' ' . ($this->region ?? '') . ' ' . ($this->address ?? '')),
 
             // Filterlash uchun
-            'subjects'      => $subjects,
-            'teachers'      => $teachers,
-            'min_price'     => $this->subjects->min('price') ?? 0,
-            'max_price'     => $this->subjects->max('price') ?? 0,
+            'subjects' => $subjects,
+            'teachers' => $teachers,
+            'min_price' => $this->subjects->min('price') ?? 0,
+            'max_price' => $this->subjects->max('price') ?? 0,
 
             // Timestamp (sort uchun)
             'created_at_ts' => $this->created_at?->timestamp ?? 0,

@@ -11,16 +11,16 @@ use Illuminate\Support\Facades\Gate;
 
 class ConnectController extends Controller
 {
-    public function edit(string $id)
+    public function edit(LearningCenter $center)
     {
-        $LearningCenter = LearningCenter::find($id);
+        $LearningCenter = $center;
         Gate::authorize('isOun', $LearningCenter);
         return view('connect.edit', compact('LearningCenter'));
     }
 
-    public function store(Request $request, string $id)
+    public function store(Request $request, LearningCenter $center)
     {
-        $LearningCenter = LearningCenter::find($id);
+        $LearningCenter = $center;
         Gate::authorize('isOun', $LearningCenter);
         
         $request->validate([
@@ -30,7 +30,7 @@ class ConnectController extends Controller
         ]);
 
 
-        $request->merge(['learning_centers_id' => $id]);
+        $request->merge(['learning_centers_id' => $center->id]);
 
         LearningCentersConnect::create($request->all());
         return back()->with('success', 'Muoffaqiyatli qo\'shildi');

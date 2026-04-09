@@ -99,7 +99,7 @@
                             @auth
                                 @can('isOun', $LearningCenter)
                                     <div class="mt-6 text-center">
-                                        <x-button variant="outline" href="{{ route('course.editImage', $LearningCenter->id) }}">
+                                        <x-button variant="outline" href="{{ route('course.editImage', $LearningCenter->slug) }}">
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
@@ -132,7 +132,7 @@
                             @auth
                                 @can('isOun', $LearningCenter)
                                     <div class="mt-6 text-center">
-                                        <x-button variant="outline" href="{{ route('course.weekday', $LearningCenter->id) }}">
+                                        <x-button variant="outline" href="{{ route('course.weekday', $LearningCenter->slug) }}">
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
@@ -151,7 +151,7 @@
                                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Ustozlar</h2>
                                 @auth
                                     @can('isOun', $LearningCenter)
-                                        <x-button variant="primary" href="{{ route('teacher.create', 'id=' . $LearningCenter->id) }}">
+                                        <x-button variant="primary" href="{{ route('teacher.create', 'center=' . $LearningCenter->slug) }}">
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                             </svg>
@@ -250,7 +250,7 @@
                                 
                                 @auth
                                     @can('isOun', $LearningCenter)
-                                        <x-button variant="primary" href="{{ route('teacher.create', 'id=' . $LearningCenter->id) }}">
+                                        <x-button variant="primary" href="{{ route('teacher.create', 'center=' . $LearningCenter->slug) }}">
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                             </svg>
@@ -415,14 +415,14 @@
                         @auth
                             @can('isOun', $LearningCenter)
                                 <div class="mt-6 space-y-3">
-                                    <x-button variant="primary" href="{{ route('course.edit', $LearningCenter->id) }}" class="w-full">
+                                    <x-button variant="primary" href="{{ route('course.edit', $LearningCenter->slug) }}" class="w-full">
                                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>
                                         Tahrirlash
                                     </x-button>
                                     
-                                    <form action="{{ route('course.destroy', $LearningCenter->id) }}" 
+                                    <form action="{{ route('course.destroy', $LearningCenter->slug) }}" 
                                           method="POST" 
                                           onsubmit="return confirm('Rostdan ham {{ $LearningCenter->name }} markazini o‘chirilsinmi?');">
                                         @csrf
@@ -525,7 +525,7 @@
                                 <h3 class="text-xl font-bold text-gray-900 dark:text-white">Fanlar</h3>
                                 @auth
                                     @can('isOun', $LearningCenter)
-                                        <x-button variant="outline" size="sm" href="{{ route('subject.create', 'id=' . $LearningCenter->id) }}">
+                                        <x-button variant="outline" size="sm" href="{{ route('subject.create', 'center=' . $LearningCenter->slug) }}">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                             </svg>
@@ -597,7 +597,7 @@
                                 
                                 @auth
                                     @can('isOun', $LearningCenter)
-                                        <x-button variant="primary" href="{{ route('subject.create', 'id=' . $LearningCenter->id) }}">
+                                        <x-button variant="primary" href="{{ route('subject.create', 'center=' . $LearningCenter->slug) }}">
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                             </svg>
@@ -621,7 +621,7 @@
                                 </h3>
                                 @auth
                                     @can('isOun', $LearningCenter)
-                                        <x-button variant="outline" size="sm" href="{{ route('course.weekday', $LearningCenter->id) }}">
+                                        <x-button variant="outline" size="sm" href="{{ route('course.weekday', $LearningCenter->slug) }}">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                             </svg>
@@ -658,7 +658,7 @@
                                 
                                 @auth
                                     @can('isOun', $LearningCenter)
-                                        <x-button variant="primary" href="{{ route('course.weekday', $LearningCenter->id) }}">
+                                        <x-button variant="primary" href="{{ route('course.weekday', $LearningCenter->slug) }}">
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                             </svg>
@@ -682,7 +682,7 @@
                                 </h3>
                                 @auth
                                     @can('isOun', $LearningCenter)
-                                        <x-button variant="outline" size="sm" href="{{ route('connect.edit', $LearningCenter->id) }}">
+                                        <x-button variant="outline" size="sm" href="{{ route('connect.edit', $LearningCenter->slug) }}">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                             </svg>
@@ -736,7 +736,7 @@
                                 
                                 @auth
                                     @can('isOun', $LearningCenter)
-                                        <x-button variant="primary" href="{{ route('connect.edit', $LearningCenter->id) }}">
+                                        <x-button variant="primary" href="{{ route('connect.edit', $LearningCenter->slug) }}">
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                             </svg>
@@ -760,7 +760,7 @@
                                 </h3>
                                 @auth
                                     @can('isOun', $LearningCenter)
-                                        <x-button variant="outline" size="sm" href="{{ route('teacher.announcement', $LearningCenter->id) }}">
+                                        <x-button variant="primary" href="{{ route('teacher.announcement', $LearningCenter->slug) }}">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                             </svg>
@@ -820,6 +820,95 @@
             </div>
         </div>
     </section>
+
+    <!-- Related Centers Section -->
+    @if(!empty($relatedCenters) && count($relatedCenters) > 0)
+        <section class="py-16 bg-gray-100 dark:bg-gray-800">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">O'xshash markazlar</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-400">Sizga yoqqan markazga o'xshash boshqa o'quv markazlar</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    @foreach ($relatedCenters as $relatedCenter)
+                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                            <!-- Image -->
+                            <div class="relative h-48 overflow-hidden">
+                                @if($relatedCenter->logo)
+                                    @if(str_starts_with($relatedCenter->logo, 'http://') || str_starts_with($relatedCenter->logo, 'https://'))
+                                        <x-optimized-image
+                                            src="{{ $relatedCenter->logo }}"
+                                            alt="{{ $relatedCenter->name }}"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                            width="400"
+                                            height="192"
+                                        />
+                                    @else
+                                        <x-optimized-image
+                                            src="{{ asset('storage/' . $relatedCenter->logo) }}"
+                                            alt="{{ $relatedCenter->name }}"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                            width="400"
+                                            height="192"
+                                        />
+                                    @endif
+                                @else
+                                    <div class="w-full h-48 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-indigo-600 dark:to-purple-800 flex items-center justify-center">
+                                        <div class="text-white text-center px-4">
+                                            <div class="text-xl font-bold mb-1">{{ $relatedCenter->type }}</div>
+                                            <div class="text-sm opacity-90">{{ $relatedCenter->name }}</div>
+                                        </div>
+                                    </div>
+                                @endif
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="p-5">
+                                <!-- Rating -->
+                                <div class="flex items-center gap-2 mb-3">
+                                    <div class="flex items-center">
+                                        @php
+                                            $avgRating = round($relatedCenter->favorites_avg_rating ?? $relatedCenter->total_reyting ?? 0, 1);
+                                        @endphp
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <span class="text-sm {{ $avgRating >= $i ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600' }}">★</span>
+                                        @endfor
+                                    </div>
+                                    <span class="text-sm font-semibold text-primary-600 dark:text-primary-400">{{ $avgRating }}</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">({{ $relatedCenter->favorites_count ?? 0 }} baho)</span>
+                                </div>
+
+                                <!-- Name -->
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                                    {{ $relatedCenter->name }}
+                                </h3>
+
+                                <!-- Address -->
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-1 flex items-center gap-1">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                    {{ $relatedCenter->region }}{{ $relatedCenter->province ? ', ' . $relatedCenter->province : '' }}
+                                </p>
+
+                                <!-- Button -->
+                                <a href="{{ route('center', $relatedCenter->slug) }}"
+                                   class="inline-flex items-center justify-center w-full px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition-all duration-200 group-hover:shadow-lg">
+                                    Batafsil
+                                    <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
 
     <!-- CTA Section -->
     <section class="py-16 bg-gradient-to-r from-primary-600 to-accent-600">

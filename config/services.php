@@ -36,10 +36,25 @@ return [
     ],
     
     'google' => [
-        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_id'     => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => env('GOOGLE_REDIRECT_URL'),
+        'redirect'      => env('GOOGLE_REDIRECT_URL'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | AI Search Service (Optional Enhancement)
+    |--------------------------------------------------------------------------
+    | Set AI_SEARCH_ENABLED=true in .env and provide a key + URL to activate.
+    | The search system works perfectly WITHOUT this configuration.
+    | Compatible with OpenAI API or any OpenAI-compatible endpoint (Gemini, etc.)
+    */
+    'ai_search' => [
+        'enabled' => env('AI_SEARCH_ENABLED', false),
+        'url'     => env('AI_SEARCH_URL', 'https://api.openai.com/v1/chat/completions'),
+        'key'     => env('AI_SEARCH_KEY', ''),
+        'model'   => env('AI_SEARCH_MODEL', 'gpt-4o-mini'),
+        'timeout' => env('AI_SEARCH_TIMEOUT', 4),
+    ],
 
 ];

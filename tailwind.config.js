@@ -122,5 +122,47 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Custom plugin for scrollbar utilities
+    function({ addUtilities }) {
+      addUtilities({
+        '.scrollbar-thin': {
+          'scrollbar-width': 'thin',
+          '&::-webkit-scrollbar': {
+            width: '6px',
+            height: '6px',
+          },
+        },
+        '.scrollbar-thumb-gray-300': {
+          '&::-webkit-scrollbar-thumb': {
+            'background-color': '#d1d5db',
+            'border-radius': '3px',
+          },
+        },
+        '.scrollbar-thumb-gray-600': {
+          '&::-webkit-scrollbar-thumb': {
+            'background-color': '#4b5563',
+            'border-radius': '3px',
+          },
+        },
+        '.scrollbar-track-transparent': {
+          '&::-webkit-scrollbar-track': {
+            'background-color': 'transparent',
+          },
+        },
+        '.line-clamp-1': {
+          overflow: 'hidden',
+          display: '-webkit-box',
+          '-webkit-box-orient': 'vertical',
+          '-webkit-line-clamp': '1',
+        },
+        '.line-clamp-2': {
+          overflow: 'hidden',
+          display: '-webkit-box',
+          '-webkit-box-orient': 'vertical',
+          '-webkit-line-clamp': '2',
+        },
+      });
+    },
+  ],
 }

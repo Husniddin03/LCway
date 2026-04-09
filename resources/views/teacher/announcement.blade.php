@@ -144,7 +144,7 @@
                 <!-- Form Section -->
                 <div class="lg:col-span-2 animate-slide-in-right">
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-500 border border-white/20 dark:border-gray-700/50">
-                        <form action="{{ route('teacher.add_announcement', ['id' => $LearningCenter->id]) }}" method="POST" class="space-y-6">
+                        <form action="{{ route('teacher.add_announcement', $LearningCenter->slug) }}" method="POST" class="space-y-6">
                             @csrf
                             
                             <!-- Form Header -->
@@ -231,7 +231,7 @@
 
                             <!-- Action Buttons -->
                             <div class="flex flex-col sm:flex-row gap-4 mt-10 pt-8 border-t border-gray-200/50 dark:border-gray-700/50">
-                                <a href="{{ route('center', $LearningCenter->id) }}" 
+                                <a href="{{ route('center', $LearningCenter->slug) }}" 
                                 class="flex-1 px-8 py-4 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold rounded-2xl transition-all duration-300 text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-3 group">
                                     <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>

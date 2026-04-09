@@ -261,7 +261,7 @@ use Illuminate\Support\Facades\Storage;
                             <div id="courses-section" class="bg-gray-100 mb-6 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hidden">
                                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('profile.stats.courses') }}</h2>
                                 @forelse($centers as $center)
-                                    <a href="{{ route('center', $center->id) }}"
+                                    <a href="{{ route('center', $center->slug) }}"
                                         class="flex items-center justify-between p-4 mb-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
                                         <div class="flex items-center space-x-4">
                                             @if($center->logo)
@@ -304,7 +304,7 @@ use Illuminate\Support\Facades\Storage;
                                         $teacherSubject = $subject->teacherSubjects->first();
                                     @endphp
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        <a href="{{ route('center', $subject->learning_centers_id) }}" class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
+                                        <a href="{{ route('center', $subject->learningCenter->slug) }}" class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
                                             <div class="flex items-center space-x-3">
                                                 <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
                                                     <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -341,7 +341,7 @@ use Illuminate\Support\Facades\Storage;
                                         $subjectName = $teacherSubject && $teacherSubject->subject ? $teacherSubject->subject->subject_name : null;
                                     @endphp
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        <a href="{{ route('center', $teacher->learning_centers_id) }}" class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
+                                        <a href="{{ route('center', $teacher->learningCenter->slug) }}" class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
                                             <div class="flex items-center space-x-3">
                                                 @if($teacher->photo)
                                                     <img src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}" class="w-10 h-10 rounded-lg object-cover">

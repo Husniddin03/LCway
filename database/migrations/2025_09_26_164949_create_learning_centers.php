@@ -40,6 +40,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
             $table->string('ifut_code')->nullable();
+            $table->string('slug')->unique();
         
             $table->timestamps();
             

@@ -410,7 +410,7 @@
                                         </div>
                                     @endif
 
-                                    <x-button variant="outline" size="sm" href="{{ route('center', $center->id) }}">
+                                    <x-button variant="outline" size="sm" href="{{ route('center', $center->slug) }}">
                                         {{ __('index.featured_courses.details') }}
                                     </x-button>
                                 </div>

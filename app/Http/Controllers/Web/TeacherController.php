@@ -17,7 +17,8 @@ class TeacherController extends Controller
 {
     public function create()
     {
-        $LearningCenter = LearningCenter::find(request()->query('id'));
+        $idOrSlug = request()->query('center');
+        $LearningCenter = LearningCenter::where('id', $idOrSlug)->orWhere('slug', $idOrSlug)->firstOrFail();
         Gate::authorize('isOun', $LearningCenter);
 
         // Get subjects for this learning center
@@ -99,18 +100,18 @@ class TeacherController extends Controller
             $teacher->teacherSubjects()->delete();
         }
 
-        return redirect()->route('center', $teacher->learning_centers_id)
+        return redirect()->route('center', $LearningCenter->slug)
             ->with('success', 'Ustoz muvaffaqiyatli yangilandi');
     }
 
 
-    public function store(Request $request)
+    public function store(Request $request, LearningCenter $center)
     {
-        $LearningCenter = LearningCenter::find($request->route('id'));
+        $LearningCenter = $center;
         Gate::authorize('isOun', $LearningCenter);
 
         $request->merge([
-            'learning_centers_id' => $request->route('id')
+            'learning_centers_id' => $center->id
         ]);
 
         $validate = $request->validate([
@@ -155,7 +156,7 @@ class TeacherController extends Controller
             ]);
         }
 
-        return redirect()->route('center', $request->route('id'))->with('success', 'Ustoz muvaffaqiyatli qo\'shildi');
+        return redirect()->route('center', $LearningCenter->slug)->with('success', 'Ustoz muvaffaqiyatli qo\'shildi');
     }
 
 
@@ -172,19 +173,18 @@ class TeacherController extends Controller
         return redirect()->back()->with('success', "O'qituvchi muoffaqiyatli o'chirildi");
     }
 
-    public function announcement($id)
+    public function announcement(LearningCenter $center)
     {
-        $LearningCenter = LearningCenter::find($id);
+        $LearningCenter = $center;
         Gate::authorize('isOun', $LearningCenter);
         return view('teacher.announcement', compact('LearningCenter'));
     }
 
-    public function add_announcement(Request $request, $id)
+    public function add_announcement(Request $request, LearningCenter $center)
     {
-        $LearningCenter = LearningCenter::find($id);
+        $LearningCenter = $center;
         Gate::authorize('isOun', $LearningCenter);
-
-        $request->merge(['learning_center_id' => $id]);
+        $request->merge(['learning_center_id' => $center->id]);
 
         $validate = $request->validate([
             'learning_center_id' => 'required|exists:learning_centers,id',
@@ -195,7 +195,7 @@ class TeacherController extends Controller
 
         NeedTeacher::create($validate);
 
-        return redirect()->route('center', $id)->with('success', 'E\'lon muvaffaqiyatli qo;shildi');
+        return redirect()->route('center', $LearningCenter->slug)->with('success', 'E\'lon muvaffaqiyatli qo;shildi');
     }
 
     public function delete_announcement(string $id)

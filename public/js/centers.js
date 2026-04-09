@@ -737,7 +737,7 @@ document.addEventListener('alpine:init', () => {
                 const name = (center && center.name) ? String(center.name) : 'O‘quv markazi';
                 const address = (center && center.address) ? String(center.address) : 'Manzil ko‘rsatilmagan';
                 const img = (center && center.image) ? String(center.image) : '';
-                const detailUrl = (center && center.detail_url) ? String(center.detail_url) : `/center/${center.id}`;
+                const detailUrl = (center && center.detail_url) ? String(center.detail_url) : `/center/${center.slug || center.id}`;
 
                 const gmaps = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(lat + ',' + lng)}`;
 

@@ -41,7 +41,7 @@ Route::get('/centers', [PageController::class, 'centers'])->name('centers');
 Route::get('/404', [PageController::class, 'notFound'])->name('404');
 Route::get('/searchMap', [PageController::class, 'searchMap'])->name('searchMap');
 Route::get('/search', [PageController::class, 'search'])->name('search');
-Route::get('/center/{id}', [PageController::class, 'center'])->name('center');
+Route::get('/center/{center}', [PageController::class, 'center'])->name('center');
 
 // Language switching route
 Route::get('/language/{lang}', [LanguageController::class, 'switch'])->name('language.switch');
@@ -80,31 +80,31 @@ Route::middleware('auth')->group(function () {
     // course uchun route
     Route::resource('course', CourseController::class);
     // teacher uchun route lar
-    Route::post('/teacher/store/{id}', [TeacherController::class, 'store'])->name('teacher.storeid');
-    Route::get('/teacher/announcement/{id}', [TeacherController::class, 'announcement'])->name('teacher.announcement');
-    Route::post('/teacher/add_announcement/{id}', [TeacherController::class, 'add_announcement'])->name('teacher.add_announcement');
-    Route::post('/teacher/delete_announcement/{id}', [TeacherController::class, 'delete_announcement'])->name('teacher.delete_announcement');
+    Route::post('/teacher/store/{center}', [TeacherController::class, 'store'])->name('teacher.storeid');
+    Route::get('/teacher/announcement/{center}', [TeacherController::class, 'announcement'])->name('teacher.announcement');
+    Route::post('/teacher/add_announcement/{center}', [TeacherController::class, 'add_announcement'])->name('teacher.add_announcement');
+    Route::post('/teacher/delete_announcement/{center}', [TeacherController::class, 'delete_announcement'])->name('teacher.delete_announcement');
     Route::resource('teacher', TeacherController::class);
     // subject uchun route lar
-    Route::post('/subject/store/{id}', [SubjectController::class, 'store'])->name('subject.storeid');
+    Route::post('/subject/store/{center}', [SubjectController::class, 'store'])->name('subject.storeid');
     Route::resource('subject', SubjectController::class);
     // comment uchun route lar
     Route::post('comment/store', [CommentController::class, 'store'])->name('comment.store');
     Route::post('comment/delete/{id}', [CommentController::class, 'delete'])->name('comment.delete');
     Route::post('comment/favoriteStore', [CommentController::class, 'favoriteStore'])->name('comment.favoriteStore');
     // image uchun route lar
-    Route::get('center/editImage/{id}', [ImageController::class, 'edit'])->name('course.editImage');
+    Route::get('center/editImage/{center}', [ImageController::class, 'edit'])->name('course.editImage');
     Route::post('center/deleteImage/{id}', [ImageController::class, 'delete'])->name('course.deleteImage');
-    Route::post('center/storeImages/{id}', [ImageController::class, 'store'])->name('course.storeImages');
+    Route::post('center/storeImages/{center}', [ImageController::class, 'store'])->name('course.storeImages');
     // weekdays uchun route lar
-    Route::get('center/weekday/{id}', [WeekdaysController::class, 'edit'])->name('course.weekday');
-    Route::post('center/weekdayUpdate/{id}', [WeekdaysController::class, 'update'])->name('course.weekdayUpdate');
-    Route::post('center/weekdayAdd/{id}', [WeekdaysController::class, 'add'])->name('course.weekdayAdd');
+    Route::get('center/weekday/{center}', [WeekdaysController::class, 'edit'])->name('course.weekday');
+    Route::post('center/weekdayUpdate/{center}', [WeekdaysController::class, 'update'])->name('course.weekdayUpdate');
+    Route::post('center/weekdayAdd/{center}', [WeekdaysController::class, 'add'])->name('course.weekdayAdd');
     Route::post('center/weekdayDelete/{id}', [WeekdaysController::class, 'delete'])->name('course.weekdayDelete');
     // connect uchun route lar
-    Route::get('connect/edit/{id}', [ConnectController::class, 'edit'])->name('connect.edit');
+    Route::get('connect/edit/{center}', [ConnectController::class, 'edit'])->name('connect.edit');
     Route::post('connect/delete/{id}', [ConnectController::class, 'delete'])->name('connect.delete');
-    Route::post('connect/store/{id}', [ConnectController::class, 'store'])->name('connect.store');
+    Route::post('connect/store/{center}', [ConnectController::class, 'store'])->name('connect.store');
     // logout uchun route
     Route::post('logout', [LogController::class, 'logout'])->name('logout');
 });

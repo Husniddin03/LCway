@@ -38,8 +38,11 @@ class CommentController extends Controller
             ]);
         }
 
+        // Fetch learning center to get the slug for redirect
+        $learningCenter = LearningCenter::findOrFail($validate['learning_centers_id']);
+
         // Oddiy so'rov uchun redirect qilamiz
-        return redirect()->route('center', $validate['learning_centers_id'] . '#comment')
+        return redirect()->route('center', $learningCenter->slug . '#comment')
             ->with('success', 'Izohingiz muvaffaqiyatli qo‘shildi.');
     }
 

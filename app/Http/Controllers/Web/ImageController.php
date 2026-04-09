@@ -19,9 +19,9 @@ class ImageController extends Controller
     {
         $this->imageService = $imageService;
     }
-    public function edit(string $id)
+    public function edit(LearningCenter $center)
     {
-        $LearningCenter = LearningCenter::find($id);
+        $LearningCenter = $center;
         Gate::authorize('isOun', $LearningCenter);
         return view('center.edit-image', compact('LearningCenter'));
     }
@@ -36,7 +36,7 @@ class ImageController extends Controller
         return back()->with('success', 'muoffaqiyatli o\'chirildi');
     }
 
-    public function store(Request $request, string $centerId) {
+    public function store(Request $request, LearningCenter $center) {
         $validated = $request->validate([
             'images' => 'required|array',
             'images.*' => 'image|mimes:jpg,jpeg,png,gif,webp|max:2048',
@@ -47,7 +47,7 @@ class ImageController extends Controller
                 // Use the optimization service to convert to WebP and resize
                 $path = $this->imageService->optimizeImage($image, 'uploads/centers');
                 LearningCentersImage::create([
-                    'learning_centers_id' =>  $centerId,
+                    'learning_centers_id' =>  $center->id,
                     'image' => $path,
                 ]);
             }

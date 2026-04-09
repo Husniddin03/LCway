@@ -7,6 +7,7 @@ use App\Models\LearningCenter;
 use App\Models\LearningCentersImage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SamarkandCentersSeeder extends Seeder
 {
@@ -63,6 +64,13 @@ class SamarkandCentersSeeder extends Seeder
                 // Handle photos if they exist
                 if (!empty($centerData['photos']) && is_array($centerData['photos'])) {
                     foreach ($centerData['photos'] as $photoIndex => $photoData) {
+                        $imageUrl = $photoData['image_url'] ?? '';
+
+                        // Skip Google Maps images
+                        if (str_starts_with($imageUrl, 'https://maps.')) {
+                            continue;
+                        }
+
                         DB::table('learning_centers_images')->insert([
                             'learning_centers_id' => $center->id,
                             'image_path' => $photoData['image_path'] ?? '',

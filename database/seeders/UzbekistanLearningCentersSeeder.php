@@ -7,6 +7,7 @@ use App\Models\LearningCenter;
 use App\Models\LearningCentersImage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UzbekistanLearningCentersSeeder extends Seeder
 {
@@ -97,6 +98,11 @@ class UzbekistanLearningCentersSeeder extends Seeder
                 $imageUrl = $imageData['url'] ?? '';
                 
                 if (!empty($imageUrl)) {
+                    // Skip Google Maps images
+                    if (str_starts_with($imageUrl, 'https://maps.')) {
+                        continue;
+                    }
+
                     // For now, just store URL as image reference
                     DB::table('learning_centers_images')->insert([
                         'learning_centers_id' => $centerId,

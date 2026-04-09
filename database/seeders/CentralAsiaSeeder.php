@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use App\Models\LearningCenter;
 
 /**
  * Markaziy Osiyo ta'lim muassasalarini JSON dan o'qib DB ga saqlovchi seeder.
@@ -180,6 +182,7 @@ class CentralAsiaSeeder extends Seeder
 
         $data = [
             'logo'       => $logoPath,
+            'slug'       => LearningCenter::generateUniqueSlug($name),
             'type'       => $c['type']     ?? "O'quv markaz",
             'about'      => $c['about']    ?? null,
             'province'   => $c['province'] ?? '',
@@ -222,6 +225,12 @@ class CentralAsiaSeeder extends Seeder
     private function resolveLogoPath(?string $url, string $name): ?string
     {
         if (!$url) return null;
+
+        // Skip Google Maps images
+        if (str_starts_with($url, 'https://maps.')) {
+            return null;
+        }
+
         if (!$this->downloadImages) return $url;
 
         $slug     = preg_replace('/[^a-z0-9]/i', '_', mb_strtolower($name));
@@ -249,6 +258,11 @@ class CentralAsiaSeeder extends Seeder
         foreach ($images as $i => $img) {
             $url = $img['url'] ?? null;
             if (!$url) continue;
+
+            // Skip Google Maps images
+            if (str_starts_with($url, 'https://maps.')) {
+                continue;
+            }
 
             $path = $url;
             $imagePath = $url;

@@ -26,7 +26,8 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        $LearningCenter = LearningCenter::find(request()->query('id'));
+        $idOrSlug = request()->query('center');
+        $LearningCenter = LearningCenter::where('id', $idOrSlug)->orWhere('slug', $idOrSlug)->firstOrFail();
         Gate::authorize('isOun', $LearningCenter);
 
         // Get unique subject names from all learning centers for datalist
@@ -48,12 +49,12 @@ class SubjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, LearningCenter $center)
     {
-        $LearningCenter = LearningCenter::find($request->route('id'));
+        $LearningCenter = $center;
         Gate::authorize('isOun', $LearningCenter);
 
-        $request->merge(['learning_centers_id' => $request->route('id')]);
+        $request->merge(['learning_centers_id' => $center->id]);
         $validate = $request->validate([
             'learning_centers_id' => 'required|exists:learning_centers,id',
             'subject_name' => 'required|string|max:255',
@@ -86,7 +87,7 @@ class SubjectController extends Controller
             ]);
         }
 
-        return redirect()->route('center', $request->route('id'))->with('success', 'Subject added successfully.');
+        return redirect()->route('center', $LearningCenter->slug)->with('success', 'Subject added successfully.');
     }
 
     /**
@@ -161,7 +162,7 @@ class SubjectController extends Controller
             $subjectOfCenter->teacherSubjects()->delete();
         }
 
-        return redirect()->route('center', $subjectOfCenter->learning_centers_id)
+        return redirect()->route('center', $LearningCenter->slug)
             ->with('success', "Fan muvaffaqiyatli yangilandi");
     }
 

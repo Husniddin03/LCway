@@ -161,32 +161,32 @@ class CourseController extends Controller
         Cache::forget('popular_courses');
         Cache::forget('course_types');
 
-        return redirect()->route('center', $center->id)
+        return redirect()->route('center', $center->slug)
             ->with('success', 'O‘quv markaz muvaffaqiyatli qo‘shildi.');
     }
 
-    public function show($id)
+    public function show(LearningCenter $center)
     {
-        $LearningCenter = LearningCenter::with([
+        $LearningCenter = $center->load([
             'user',
             'images',
             'subjects',
             'teachers',
             'comments.user',
             'favorites.user'
-        ])->findOrFail($id);
+        ]);
 
         return view('pages.center', compact('LearningCenter'));
     }
 
 
-    public function edit($id)
+    public function edit(LearningCenter $center)
     {
-        $center = LearningCenter::with([
+        $center->load([
             'images',
             'subjects',
             'teachers'
-        ])->findOrFail($id);
+        ]);
         Gate::authorize('isOun', $center);
 
         // Get types from LearningCenter database
@@ -196,9 +196,8 @@ class CourseController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request, LearningCenter $center)
     {
-        $center = LearningCenter::findOrFail($id);
         Gate::authorize('isOun', $center);
 
         // Handle type validation - either from select or custom input
@@ -322,14 +321,13 @@ class CourseController extends Controller
 
         $center->update($validated);
 
-        return redirect()->route('center', $center->id)
+        return redirect()->route('center', $center->slug)
             ->with('success', 'O‘quv markaz muvaffaqiyatli yangilandi.');
     }
 
 
-    public function destroy($id)
+    public function destroy(LearningCenter $center)
     {
-        $center = LearningCenter::findOrFail($id);
         Gate::authorize('isOun', $center);
 
         // Markaz logosi

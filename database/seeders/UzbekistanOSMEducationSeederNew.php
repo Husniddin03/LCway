@@ -10,6 +10,7 @@ use App\Models\LearningCenterConnection;
 use App\Models\LearningCenterReview;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class UzbekistanOSMEducationSeederNew extends Seeder
 {

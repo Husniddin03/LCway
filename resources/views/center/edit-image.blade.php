@@ -664,7 +664,7 @@
                                 </div>
                                 
                                 <div class="flex gap-4">
-                                    <a href="{{ route('center', $LearningCenter->id) }}" 
+                                    <a href="{{ route('center', $LearningCenter->slug) }}" 
                                        class="modern-btn bg-gray-500 hover:bg-gray-600 flex-1">
                                         <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>

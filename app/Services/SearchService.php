@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\LearningCenter;
+use App\Helpers\TextHelper;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -74,6 +75,7 @@ class SearchService
         'id',
         'name',
         'type',
+        'slug',
         'logo',
         'address',
         'region',
@@ -91,6 +93,7 @@ class SearchService
     private const MAP_SELECT_FIELDS = [
         'id',
         'name',
+        'slug',
         'location',
         'address',
         'logo',
@@ -173,14 +176,16 @@ class SearchService
     }
 
     /**
-     * Apply global text search across learning_centers and related tables
-     * 
-     * Search strategy (performance optimized):
-     * 1. Try FULLTEXT if available (fastest for large text)
-     * 2. Fallback to LIKE with indexed columns
-     * 3. Search related tables using EXISTS (not JOIN)
-     * 
-     * Uzbek transliteration support for bilingual search
+     * Apply SMART UNIFIED SEARCH across learning_centers and related tables.
+     *
+     * Strategy:
+     * 1. TOKENIZE searchText by whitespace: "english samarkand" → ["english", "samarkand"]
+     * 2. Apply synonym expansion for subjects (math → matematika, etc.)
+     * 3. For queries > 3 chars, use FULLTEXT MATCH() AGAINST() for better performance
+     * 4. For shorter queries, use LIKE with transliteration support
+     * 5. AND logic between tokens: ALL tokens must match somewhere
+     *
+     * Performance: EXISTS (not JOIN), Full-Text where possible, indexed columns only
      */
     private function applyGlobalSearch(Builder $query, array $filters): Builder
     {
@@ -190,122 +195,236 @@ class SearchService
             return $query;
         }
 
-        // Normalize and transliterate for Uzbek language support
-        $normalizedSearch = $this->normalizeSearchText($searchText);
-        $transliterated = $this->transliterateUzbek($normalizedSearch);
+        $normalized = TextHelper::normalize($searchText);
+        $tokens = TextHelper::tokenize($normalized);
 
-        return $query->where(function (Builder $q) use ($normalizedSearch, $transliterated) {
-            // Primary search: learning_centers core fields
-            $q->where(function (Builder $qq) use ($normalizedSearch, $transliterated) {
-                $this->applyFullTextOrLike($qq, $normalizedSearch, $transliterated);
+        if (empty($tokens)) {
+            return $query;
+        }
+
+        // Check if we can use FULLTEXT search (queries > 3 characters)
+        if (strlen($normalized) > 3 && $this->hasFullTextIndex()) {
+            return $this->applyFullTextSearch($query, $normalized, $tokens);
+        }
+
+        // Fall back to LIKE-based search with synonym expansion
+        return $this->applyLikeSearchWithSynonyms($query, $tokens);
+    }
+
+    /**
+     * Apply FULLTEXT MATCH() AGAINST() search with fallback to LIKE for short tokens
+     */
+    private function applyFullTextSearch(Builder $query, string $fullText, array $tokens): Builder
+    {
+        // Use FULLTEXT on primary fields
+        $query->where(function (Builder $q) use ($fullText, $tokens) {
+            // Full-text search on name and address
+            $q->whereRaw("MATCH(name, address) AGAINST(? IN BOOLEAN MODE)", [$fullText])
+              ->orWhereRaw("MATCH(region, province) AGAINST(? IN BOOLEAN MODE)", [$fullText]);
+
+            // Also check subjects via EXISTS with token matching
+            foreach ($tokens as $token) {
+                $synonyms = TextHelper::getSubjectSynonyms($token);
+                $this->applySynonymSubjectSearch($q, $synonyms);
+            }
+        });
+
+        return $query;
+    }
+
+    /**
+     * Apply LIKE search with synonym expansion for better matching
+     */
+    private function applyLikeSearchWithSynonyms(Builder $query, array $tokens): Builder
+    {
+        foreach ($tokens as $token) {
+            // Get all synonym variants for this token
+            $synonyms = TextHelper::getSubjectSynonyms($token);
+            $variants = [];
+
+            foreach ($synonyms as $synonym) {
+                $variants[] = $synonym;
+                $variants[] = TextHelper::transliterate($synonym);
+            }
+            $variants = array_unique($variants);
+
+            $query->where(function (Builder $q) use ($variants, $token) {
+                // Search learning_centers core fields with all variants
+                $this->applyTokenLikeSearchWithVariants($q, $variants);
+
+                // Search subjects with synonym expansion
+                $this->applySynonymSubjectSearch($q, $variants);
+
+                // Search teachers
+                $this->applyTokenTeacherSearchWithVariants($q, $variants);
+
+                // Search need_teacher
+                $this->applyTokenNeedTeacherSearchWithVariants($q, $variants);
             });
+        }
 
-            // Related table searches using EXISTS (NOT JOIN for performance)
-            $this->applyRelatedTableSearch($q, $normalizedSearch, $transliterated);
+        return $query;
+    }
+
+    /**
+     * Search subjects table with synonym expansion using EXISTS
+     */
+    private function applySynonymSubjectSearch(Builder $query, array $variants): void
+    {
+        $query->orWhereExists(function ($sub) use ($variants) {
+            $sub->select(DB::raw(1))
+                ->from('subjects_of_learning_centers')
+                ->whereColumn('subjects_of_learning_centers.learning_centers_id', 'learning_centers.id')
+                ->where(function ($q) use ($variants) {
+                    foreach ($variants as $variant) {
+                        $pattern = '%' . $variant . '%';
+                        $q->orWhere('subject_name', 'LIKE', $pattern);
+                    }
+                });
         });
     }
 
     /**
-     * Apply FULLTEXT or LIKE search to learning_centers table
-     * 
-     * Priority order:
-     * 1. FULLTEXT search (if MySQL 5.6+ with index)
-     * 2. Indexed column LIKE patterns
-     * 3. Partial word matching
+     * Enhanced LIKE search with multiple variants
      */
-    private function applyFullTextOrLike(Builder $query, string $search, string $transliterated): void
+    private function applyTokenLikeSearchWithVariants(Builder $query, array $variants): void
     {
-        // NOTE: FULLTEXT is disabled until migration runs.
-        // To enable FULLTEXT after migration:
-        // 1. Run: php artisan migrate
-        // 2. Change this to: if ($this->hasFullTextIndex()) { ... }
-        
-        // Use LIKE only for now (works without FULLTEXT index)
-        $this->applyLikeSearch($query, $search, $transliterated);
-    }
+        $fields = ['name', 'address', 'region', 'province', 'type', 'manager_name'];
 
-    /**
-     * Check if FULLTEXT index exists (for future use)
-     */
-    private function hasFullTextIndex(): bool
-    {
-        try {
-            // Check if we can query using FULLTEXT
-            DB::select("SELECT 1 FROM learning_centers WHERE MATCH(name) AGAINST('test' IN NATURAL LANGUAGE MODE) LIMIT 1");
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    /**
-     * Apply LIKE pattern search with Uzbek transliteration support
-     * Searches: name, address, region, province, tin, license_number, manager_name, type
-     */
-    private function applyLikeSearch(Builder $query, string $search, string $transliterated): void
-    {
-        $searchPattern = '%' . $search . '%';
-        $transPattern = '%' . $transliterated . '%';
-
-        // Core searchable fields from learning_centers table
-        $fields = ['name', 'address', 'region', 'province', 'tin', 'license_number', 'manager_name', 'type'];
-
-        $query->orWhere(function (Builder $q) use ($fields, $searchPattern, $transPattern) {
+        $query->orWhere(function (Builder $q) use ($fields, $variants) {
             foreach ($fields as $field) {
-                $q->orWhere($field, 'LIKE', $searchPattern)
-                    ->orWhere($field, 'LIKE', $transPattern);
+                foreach ($variants as $variant) {
+                    $q->orWhere($field, 'LIKE', '%' . $variant . '%');
+                }
             }
         });
     }
 
     /**
-     * Search related tables using WHERE EXISTS (NOT JOIN)
-     * 
-     * WHY EXISTS:
-     * - Stops at first match (short-circuit evaluation)
-     * - No row duplication (unlike JOIN)
-     * - Better query plan with proper indexes
-     * - Memory efficient for 100k+ records
+     * Teacher search with variant expansion
      */
-    private function applyRelatedTableSearch(Builder $query, string $search, string $transliterated): void
+    private function applyTokenTeacherSearchWithVariants(Builder $query, array $variants): void
     {
-        $searchPattern = '%' . $search . '%';
-        $transPattern = '%' . $transliterated . '%';
-
-        // Search subjects via EXISTS
-        $query->orWhereExists(function ($subQuery) use ($searchPattern, $transPattern) {
-            $subQuery->select(DB::raw(1))
-                ->from('subjects_of_learning_centers')
-                ->whereColumn('subjects_of_learning_centers.learning_centers_id', 'learning_centers.id')
-                ->where(function ($q) use ($searchPattern, $transPattern) {
-                    $q->where('subject_name', 'LIKE', $searchPattern)
-                        ->orWhere('subject_name', 'LIKE', $transPattern);
-                });
-        });
-
-        // Search teachers via EXISTS
-        $query->orWhereExists(function ($subQuery) use ($searchPattern, $transPattern) {
-            $subQuery->select(DB::raw(1))
+        $query->orWhereExists(function ($sub) use ($variants) {
+            $sub->select(DB::raw(1))
                 ->from('teachers')
                 ->whereColumn('teachers.learning_centers_id', 'learning_centers.id')
-                ->where(function ($q) use ($searchPattern, $transPattern) {
-                    $q->where('name', 'LIKE', $searchPattern)
-                        ->orWhere('name', 'LIKE', $transPattern);
+                ->where(function ($q) use ($variants) {
+                    foreach ($variants as $variant) {
+                        $q->orWhere('name', 'LIKE', '%' . $variant . '%');
+                    }
                 });
         });
+    }
 
-        // Search need_teacher via EXISTS
-        $query->orWhereExists(function ($subQuery) use ($searchPattern, $transPattern) {
-            $subQuery->select(DB::raw(1))
+    /**
+     * Need teacher search with variant expansion
+     */
+    private function applyTokenNeedTeacherSearchWithVariants(Builder $query, array $variants): void
+    {
+        $query->orWhereExists(function ($sub) use ($variants) {
+            $sub->select(DB::raw(1))
                 ->from('need_teacher')
                 ->whereColumn('need_teacher.learning_center_id', 'learning_centers.id')
-                ->where(function ($q) use ($searchPattern, $transPattern) {
-                    $q->where('subject_name', 'LIKE', $searchPattern)
-                        ->orWhere('subject_name', 'LIKE', $transPattern)
-                        ->orWhere('description', 'LIKE', $searchPattern)
-                        ->orWhere('description', 'LIKE', $transPattern);
+                ->where(function ($q) use ($variants) {
+                    foreach ($variants as $variant) {
+                        $q->orWhere('subject_name', 'LIKE', '%' . $variant . '%')
+                          ->orWhere('description', 'LIKE', '%' . $variant . '%');
+                    }
                 });
         });
+    }
+
+    /**
+     * Apply LIKE search for a single token against learning_centers table fields.
+     * Uses OR internally: token matches if ANY field matches.
+     */
+    private function applyTokenLikeSearch(Builder $query, string $token, string $transliterated): void
+    {
+        $pattern      = '%' . $token . '%';
+        $transPattern = '%' . $transliterated . '%';
+
+        $fields = ['name', 'address', 'region', 'province', 'type', 'manager_name'];
+
+        $query->orWhere(function (Builder $q) use ($fields, $pattern, $transPattern) {
+            foreach ($fields as $field) {
+                $q->orWhere($field, 'LIKE', $pattern)
+                  ->orWhere($field, 'LIKE', $transPattern);
+            }
+        });
+    }
+
+    /**
+     * WHERE EXISTS search in subjects_of_learning_centers for a single token.
+     * Both original and transliterated variants checked for bilingual support.
+     */
+    private function applyTokenSubjectSearch(Builder $query, string $token, string $transliterated): void
+    {
+        $pattern      = '%' . $token . '%';
+        $transPattern = '%' . $transliterated . '%';
+
+        $query->orWhereExists(function ($sub) use ($pattern, $transPattern) {
+            $sub->select(DB::raw(1))
+                ->from('subjects_of_learning_centers')
+                ->whereColumn('subjects_of_learning_centers.learning_centers_id', 'learning_centers.id')
+                ->where(function ($q) use ($pattern, $transPattern) {
+                    $q->where('subject_name', 'LIKE', $pattern)
+                      ->orWhere('subject_name', 'LIKE', $transPattern);
+                });
+        });
+    }
+
+    /**
+     * WHERE EXISTS search in teachers table for a single token.
+     */
+    private function applyTokenTeacherSearch(Builder $query, string $token, string $transliterated): void
+    {
+        $pattern      = '%' . $token . '%';
+        $transPattern = '%' . $transliterated . '%';
+
+        $query->orWhereExists(function ($sub) use ($pattern, $transPattern) {
+            $sub->select(DB::raw(1))
+                ->from('teachers')
+                ->whereColumn('teachers.learning_centers_id', 'learning_centers.id')
+                ->where(function ($q) use ($pattern, $transPattern) {
+                    $q->where('name', 'LIKE', $pattern)
+                      ->orWhere('name', 'LIKE', $transPattern);
+                });
+        });
+    }
+
+    /**
+     * WHERE EXISTS search in need_teacher table for a single token.
+     */
+    private function applyTokenNeedTeacherSearch(Builder $query, string $token, string $transliterated): void
+    {
+        $pattern      = '%' . $token . '%';
+        $transPattern = '%' . $transliterated . '%';
+
+        $query->orWhereExists(function ($sub) use ($pattern, $transPattern) {
+            $sub->select(DB::raw(1))
+                ->from('need_teacher')
+                ->whereColumn('need_teacher.learning_center_id', 'learning_centers.id')
+                ->where(function ($q) use ($pattern, $transPattern) {
+                    $q->where('subject_name', 'LIKE', $pattern)
+                      ->orWhere('subject_name', 'LIKE', $transPattern)
+                      ->orWhere('description', 'LIKE', $pattern)
+                      ->orWhere('description', 'LIKE', $transPattern);
+                });
+        });
+    }
+
+    /**
+     * Check if FULLTEXT index exists (for future use when FULLTEXT migration runs)
+     */
+    private function hasFullTextIndex(): bool
+    {
+        try {
+            DB::select("SELECT 1 FROM learning_centers WHERE MATCH(name) AGAINST('test' IN NATURAL LANGUAGE MODE) LIMIT 1");
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -572,6 +691,13 @@ class SearchService
 
     /**
      * Apply sorting for list view
+     * 
+     * RELEVANCE SCORING:
+     * When search text is provided without explicit sort, we calculate relevance:
+     * - Exact name match: highest priority
+     * - Name starts with query: second priority
+     * - Name contains query: third priority
+     * - Other fields match: fourth priority
      */
     private function applySorting(Builder $query, array $filters): Builder
     {
@@ -579,11 +705,13 @@ class SearchService
         $order = $filters['order'] ?? 'asc';
 
         switch ($sort) {
+            case 'relevance':
+                $query = $this->applyRelevanceSorting($query, $filters);
+                break;
             case 'name':
                 $query->orderBy('name', $order);
                 break;
             case 'distance':
-                // Distance is calculated in geo filter, order by it
                 if ($this->hasGeoFilter($filters)) {
                     $query->orderBy('distance', $order);
                 } else {
@@ -592,25 +720,82 @@ class SearchService
                 break;
             case 'favorites':
             case 'rating':
-                // Sort by calculated total rating
                 $query->orderBy('total_reyting', $order);
                 break;
             case 'created':
                 $query->orderBy('created_at', $order);
                 break;
             default:
-                // Default: distance if geo, relevance if search, newest otherwise
-                if ($this->hasGeoFilter($filters)) {
+                // Default: relevance if search, distance if geo, newest otherwise
+                if (!empty($filters['searchText'])) {
+                    $query = $this->applyRelevanceSorting($query, $filters);
+                } elseif ($this->hasGeoFilter($filters)) {
                     $query->orderBy('distance', 'asc');
-                } elseif (!empty($filters['searchText'])) {
-                    // Could add relevance score here if implementing full-text ranking
-                    $query->latest('id');
                 } else {
                     $query->latest('id');
                 }
         }
 
         return $query;
+    }
+
+    /**
+     * Apply relevance-based sorting when search text is provided
+     */
+    private function applyRelevanceSorting(Builder $query, array $filters): Builder
+    {
+        $searchText = $filters['searchText'] ?? '';
+        if (empty($searchText)) {
+            return $query->latest('id');
+        }
+
+        $normalized = TextHelper::normalize($searchText);
+        $tokens = TextHelper::tokenize($normalized);
+        
+        if (empty($tokens)) {
+            return $query->latest('id');
+        }
+
+        // Build relevance scoring SQL
+        // Higher score = better match
+        $relevanceSql = $this->buildRelevanceScoreSql($tokens);
+        
+        // Use addSelect to avoid overwriting existing column selections
+        // This preserves columns from applyListSelect and adds relevance_score
+        $query->addSelect(DB::raw("{$relevanceSql} as relevance_score"))
+              ->orderByRaw('relevance_score DESC, total_reyting DESC, created_at DESC');
+
+        return $query;
+    }
+
+    /**
+     * Build SQL for calculating relevance score based on token matches
+     */
+    private function buildRelevanceScoreSql(array $tokens): string
+    {
+        $conditions = [];
+        
+        foreach ($tokens as $token) {
+            $escapedToken = addslashes($token);
+            
+            // Exact name match (highest weight: 100)
+            $conditions[] = "CASE WHEN LOWER(name) = '{$escapedToken}' THEN 100 ELSE 0 END";
+            
+            // Name starts with token (weight: 80)
+            $conditions[] = "CASE WHEN LOWER(name) LIKE '{$escapedToken}%' THEN 80 ELSE 0 END";
+            
+            // Name contains token (weight: 60)
+            $conditions[] = "CASE WHEN LOWER(name) LIKE '%{$escapedToken}%' THEN 60 ELSE 0 END";
+            
+            // Address/Region/Province contains token (weight: 40)
+            $conditions[] = "CASE WHEN LOWER(address) LIKE '%{$escapedToken}%' OR LOWER(region) LIKE '%{$escapedToken}%' OR LOWER(province) LIKE '%{$escapedToken}%' THEN 40 ELSE 0 END";
+            
+            // Type match (weight: 30)
+            $conditions[] = "CASE WHEN LOWER(type) LIKE '%{$escapedToken}%' THEN 30 ELSE 0 END";
+        }
+        
+        // Sum all conditions for final score
+        return '(' . implode(' + ', $conditions) . ')';
     }
 
     /**

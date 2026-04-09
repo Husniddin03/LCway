@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 
 use App\Services\SearchService;
+use App\Services\AiSearchService;
 use App\Models\Favorite;
 use App\Models\LearningCenter;
 use App\Models\LearningCentersCalendar;
@@ -137,7 +138,6 @@ class PageController extends Controller
             'longitude' => 'nullable|numeric',
             'radius' => 'nullable|numeric',
             'searchText' => 'nullable|string|max:255',
-            'subject_name' => 'nullable|string|max:255',
             'type' => 'nullable|string|max:255',
             'name' => 'nullable|in:asc,desc',
             'distance' => 'nullable|in:asc,desc',
@@ -153,15 +153,35 @@ class PageController extends Controller
         ]);
 
         // -------------------------------------------------------
-        // Delegate all search logic to SearchService (clean controller)
+        // OPTIONAL AI ENHANCEMENT (never breaks search if AI fails)
         // -------------------------------------------------------
-        $filters = array_merge($validated, [
-            'order' => $validated['order'] ?? (
-                !empty($validated['name']) ? $validated['name'] :
-                (!empty($validated['distance']) ? $validated['distance'] :
-                    (!empty($validated['favorites']) ? $validated['favorites'] : 'asc'))
-            ),
-        ]);
+        $aiFilters = [];
+        try {
+            if (!empty($validated['searchText'])) {
+                /** @var AiSearchService $aiService */
+                $aiService = app(AiSearchService::class);
+                $aiFilters = $aiService->parse($validated['searchText']);
+            }
+        } catch (\Throwable $e) {
+            // AI failed silently — proceed with normal database search
+            $aiFilters = [];
+        }
+
+        // -------------------------------------------------------
+        // Delegate all search logic to SearchService (clean controller)
+        // AI filters are merged but user-submitted values always win.
+        // -------------------------------------------------------
+        $filters = array_merge(
+            $aiFilters,     // AI suggestions (lowest priority)
+            $validated,     // Explicit user filters (always override AI)
+            [
+                'order' => $validated['order'] ?? (
+                    !empty($validated['name']) ? $validated['name'] :
+                    (!empty($validated['distance']) ? $validated['distance'] :
+                        (!empty($validated['favorites']) ? $validated['favorites'] : 'asc'))
+                ),
+            ]
+        );
 
         // Get paginated results
         $paginator = $searchService->search($filters);
@@ -184,12 +204,13 @@ class PageController extends Controller
 
                 return [
                     'id' => $center->id,
+                    'slug' => $center->slug,
                     'name' => $center->name,
                     'lat' => (float) ($coords[0] ?? 0),
                     'lng' => (float) ($coords[1] ?? 0),
                     'address' => $center->address ?? '',
                     'image' => $image,
-                    'detail_url' => route('center', $center->id),
+                    'detail_url' => route('center', $center->slug),
                 ];
             })->values()->all();
 
@@ -286,7 +307,7 @@ class PageController extends Controller
             }
 
             $html .= '<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <a href="' . route('center', $lc->id) . '" class="absolute bottom-4 right-4 bg-white text-primary-900 px-4 py-2 rounded-xl shadow-lg flex items-center gap-2 font-bold text-sm opacity-100 translate-y-0 lg:opacity-0 lg:translate-y-2 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-300 hover:bg-primary-50">
+                    <a href="' . route('center', $lc->slug) . '" class="absolute bottom-4 right-4 bg-white text-primary-900 px-4 py-2 rounded-xl shadow-lg flex items-center gap-2 font-bold text-sm opacity-100 translate-y-0 lg:opacity-0 lg:translate-y-2 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-300 hover:bg-primary-50">
                         <span class="font-bold">' . __('centers.centers_grid.read_more') . '</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -313,7 +334,7 @@ class PageController extends Controller
             }
             $html .= '</div><span class="text-lg font-semibold text-primary-600 dark:text-primary-400">' . $average . '</span></div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        <a href="' . route('center', $lc->id) . '" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">' . e($lc->name) . '</a>
+                        <a href="' . route('center', $lc->slug) . '" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">' . e($lc->name) . '</a>
                     </h3>
                     <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
                         <div class="flex items-center gap-2 mb-2">
@@ -330,7 +351,7 @@ class PageController extends Controller
                         <span class="text-xs text-gray-500 dark:text-gray-400">' . $first->created_at->diffForHumans() . '</span>
                     </div>';
                 if ($lc->needTeachers->count() > 1) {
-                    $html .= '<div><a href="' . route('center', $lc->id) . '" class="text-sm text-primary-600 dark:text-primary-400 hover:underline">' . __('centers.centers_grid.more_announcements', ['count' => $lc->needTeachers->count() - 1]) . '</a></div>';
+                    $html .= '<div><a href="' . route('center', $lc->slug) . '" class="text-sm text-primary-600 dark:text-primary-400 hover:underline">' . __('centers.centers_grid.more_announcements', ['count' => $lc->needTeachers->count() - 1]) . '</a></div>';
                 }
                 $html .= '</div>';
             } else {
@@ -349,7 +370,7 @@ class PageController extends Controller
      */
     private function hasActiveFilters($validated)
     {
-        $filterFields = ['searchText', 'subject_name', 'type', 'needTeachers', 'dayMode'];
+        $filterFields = ['searchText', 'type', 'needTeachers', 'dayMode'];
 
         foreach ($filterFields as $field) {
             if (!empty($validated[$field])) {
@@ -385,29 +406,106 @@ class PageController extends Controller
             'longitude' => 69.2401
         ];
     }
-    public function center($id)
+    public function center(LearningCenter $center)
     {
-        $LearningCenter = LearningCenter::with([
+        $LearningCenter = $center->load([
             'needTeachers',
             'comments.user',
             'favorites',
             'subjects.teacherSubjects.teacher',
             'teachers.teacherSubjects.subject'
-        ])
-            ->withCount('comments')
-            ->withCount('favorites')
-            ->find($id);
+        ]);
+
+        $LearningCenter->loadCount(['comments', 'favorites']);
 
         // Get user's existing rating if authenticated
         $userRating = null;
         if (Auth::check()) {
             $favorite = Favorite::where('users_id', Auth::id())
-                ->where('learning_centers_id', $id)
+                ->where('learning_centers_id', $center->id)
                 ->first();
             $userRating = $favorite ? $favorite->rating : null;
         }
 
-        return view('pages.center', compact('LearningCenter', 'userRating'));
+        // Fetch related centers with caching (30 minutes)
+        $relatedCenters = $this->getRelatedCenters($center);
+
+        return view('pages.center', compact('LearningCenter', 'userRating', 'relatedCenters'));
+    }
+
+    /**
+     * Get related centers based on type, location, and subjects
+     * Cached for 30 minutes to reduce database load
+     *
+     * @param LearningCenter $center The current center being viewed
+     * @return \Illuminate\Support\Collection<int, LearningCenter>
+     */
+    private function getRelatedCenters(LearningCenter $center): \Illuminate\Support\Collection
+    {
+        $cacheKey = "related_centers:{$center->id}:{$center->updated_at->timestamp}";
+
+        return Cache::remember($cacheKey, 30, function () use ($center) {
+            // Get current center's subject IDs for comparison
+            $centerSubjectIds = $center->subjects->pluck('id')->toArray();
+
+            $query = LearningCenter::query()
+                ->where('id', '!=', $center->id) // Exclude current center
+                ->where('status', 'active') // Only active centers
+                ->where(function ($q) use ($center) {
+                    // Same type OR same region/province
+                    $q->where('type', $center->type)
+                      ->orWhere('region', $center->region)
+                      ->orWhere('province', $center->province);
+                })
+                ->with(['subjects', 'favorites']) // Eager load for subject intersection
+                ->withAvg('favorites', 'rating') // For rating display
+                ->withCount('favorites'); // For rating count
+
+            $candidates = $query->limit(20)->get();
+
+            // Calculate relevance score for each candidate
+            $scored = $candidates->map(function ($candidate) use ($center, $centerSubjectIds) {
+                $score = 0;
+
+                // Same type: +30 points
+                if ($candidate->type === $center->type) {
+                    $score += 30;
+                }
+
+                // Same region: +20 points
+                if ($candidate->region === $center->region) {
+                    $score += 20;
+                }
+
+                // Same province: +15 points
+                if ($candidate->province === $center->province) {
+                    $score += 15;
+                }
+
+                // Overlapping subjects: +10 points per subject
+                $candidateSubjectIds = $candidate->subjects->pluck('id')->toArray();
+                $commonSubjects = array_intersect($centerSubjectIds, $candidateSubjectIds);
+                $score += count($commonSubjects) * 10;
+
+                // Bonus for high rating: +5 points
+                if (($candidate->favorites_avg_rating ?? 0) >= 4.0) {
+                    $score += 5;
+                }
+
+                return [
+                    'center' => $candidate,
+                    'score' => $score,
+                    'common_subjects' => count($commonSubjects),
+                ];
+            });
+
+            // Sort by score descending, then by rating
+            $sorted = $scored->sortByDesc('score')
+                            ->sortByDesc(fn($item) => $item['center']->favorites_avg_rating ?? 0);
+
+            // Return top 8 centers
+            return $sorted->take(8)->pluck('center');
+        });
     }
     public function signin()
     {

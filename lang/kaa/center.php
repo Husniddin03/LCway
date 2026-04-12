@@ -208,5 +208,104 @@ return [
     'delete_comment_confirm' => 'Rostan bul sharhdi óshiriw kerek pe?',
     'network_error' => 'Tarmaq qáteligi. Qayta urınıp kóriń.',
     'error_occurred' => 'Qátelik boldı',
-    'delete_comment_error' => 'Sharhdi óshiriwde qátelik boldı',
+    'delete_comment_error' => 'Sharhdi óshiriwde qátelik boldi',
+    
+    // Hero section
+    'contact_btn' => 'Baylanis',
+    'gallery_btn' => 'Súwretler',
+    
+    // Navigation
+    'nav_about' => 'Biz haqqimizda',
+    'nav_gallery' => 'Súwretler',
+    'nav_teachers' => 'O\'qitpawshilar',
+    'nav_comments' => 'Sharhler',
+    'nav_contact' => 'Baylanis',
+    
+    // About section
+    'about_title' => 'Biz haqqimizda',
+    'no_info_available' => 'Ma\'lumot joq',
+    
+    // Stats
+    'students' => 'O\'qiwshilar',
+    'teachers_count' => 'O\'qitpawshilar',
+    'subjects_count' => 'Pánler',
+    'ratings_count' => 'Baholar',
+    
+    // Contact sidebar
+    'contact_title' => 'Baylanis',
+    'phone_label' => 'Telefon',
+    'email_label' => 'Email',
+    'address_label' => 'Mánzil',
+    
+    // Social networks
+    'social_networks_title' => 'Ijtimaiy tarmaqlar',
+    
+    // Gallery
+    'gallery_title' => 'Súwretler galereyas',
+    'gallery_description' => 'Súwretlerge basip, úlkenlew kóriw',
+    'zoom_image' => 'Úlkenlew',
+    'gallery_navigation' => '?? túbmeler menen navigaciya ? ESC yoki click menen yopiw',
+    
+    // Teachers
+    'teachers_title' => 'O\'qitpawshilarimiz',
+    'teachers_description' => 'Tájiriyali hám kwalifikaciyali o\'qitpawshilar jámasi',
+    
+    // Legal info
+    'legal_info_title' => 'Yuridik ma\'lumotlar',
+    'legal_info_description' => 'Merkezdi rasmiy ma\'lumotlar hám litsenziyalar',
+    'legal_info_section' => 'Yuridik ma\'lumotlar',
+    'inn_label' => 'INN nomeri',
+    'legal_address_label' => 'Yuridik mánzili',
+    'license_section' => 'Litsenziya',
+    'license_number_label' => 'Litsenziya nomeri',
+    'license_date_label' => 'Dizimge aling\'an sánesi',
+    'license_validity_label' => 'Qollaniliw múddeti',
+    'manager_section' => 'Menejer ma\'lumotlar',
+    'manager_name_label' => 'Menejer ati',
+    'phone_number_label' => 'Telefon nomeri',
+    'ifut_code_label' => 'IFUT kodi',
+    'territory_section' => 'Aýmaq',
+    'territory_label' => 'Xizmet kórsetiw aýmaq',
+    
+    // Subjects and teachers
+    'subjects_teachers_title' => 'Pánler hám o\'qitpawshilar',
+    'subjects_teachers_description' => 'Merkezimizde o\'qitilatug\'n pánler hám olardin\' kwalifikaciyali o\'qitpawshilar',
+    'prices_label' => 'Bahalar',
+    'price_not_set' => 'Baha belgilenbegen',
+    'teachers_list' => 'O\'qitpawshilar',
+    'no_teacher_assigned' => 'Bul pán\'a o\'qitpawshi biriktirilbegen',
+    
+    // Comments
+    'comments_title' => 'Pikir hám múlahazalar',
+    'comments_description' => 'O\'qiw merkez haqqinda pikiriwizi bildiriw',
+    'rate_center' => 'Bahala',
+    'leave_comment' => 'Sharh qaldir',
+    'comment_placeholder' => 'Pikiriwizi jaz...',
+    'submit' => 'Jiberiw',
+    'login_to_comment_text' => 'Sharh qaldirish ushin sistema kiriw',
+    'login_btn' => 'Kiriw',
+    
+    // Share section
+    'share_title' => 'Basqalar da biliwi kerek!',
+    'share_description' => 'Bul o\'qiw merkez haqqinda doslariwiza aytip beriñ',
+    'share_function_not_available' => 'Bólishiw funksiyasi joq',
+    'share_with_friends' => 'Dostlar menen bólishiw',
+    
+    // Time labels
+    'just_now' => 'Házirgi',
+    
+    // Error messages
+    'error_occurred' => 'Qátelik júz berdi',
+    'network_error' => 'Tarmaq qátelig',
+    
+    // Confirm messages
+    'delete_comment_confirm' => 'Sharhdi óshiriwge iseniñiz bar ma?',
+    'delete_confirm_js' => 'Óshiriwdi tastiqla',
+    'delete_error_js' => 'Óshiriwde qátelik',
+    
+    // Gallery lightbox
+    'lightbox_more_text' => 'Tári',
+    
+    // Rating count
+    'rating_count_suffix' => 'baho',
 ];

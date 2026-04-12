@@ -12,8 +12,8 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="font-semibold text-gray-900 dark:text-white">Ish jadvali</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Hafta kunlari bo'yicha ish vaqti</p>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">{{ __('user.modals.work_schedule') }}</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.modals.weekday_schedule') }}</p>
                 </div>
             </div>
             <button @click="closeWeekdayModal()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
@@ -25,8 +25,8 @@
             {{-- Current Schedule List --}}
             <div x-show="weekdays.length > 0">
                 <div class="flex items-center justify-between mb-3">
-                    <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Mavjad jadval</h4>
-                    <span class="text-xs text-gray-500" x-text="weekdays.length + ' kun'"></span>
+                    <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('user.modals.current_schedule') }}</h4>
+                    <span class="text-xs text-gray-500" x-text="weekdays.length + ' {{ __('user.modals.days') }}'"></span>
                 </div>
                 
                 <div class="space-y-3">
@@ -40,7 +40,7 @@
                             {{-- Day Info --}}
                             <div class="flex-1 min-w-0">
                                 <p class="font-medium text-gray-900 dark:text-white" x-text="day.weekdays"></p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400" x-show="!day.open_time && !day.close_time">Ish vaqti kiritilmagan</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400" x-show="!day.open_time && !day.close_time">{{ __('user.modals.no_work_time') }}</p>
                                 <p class="text-sm text-green-600 dark:text-green-400" x-show="day.open_time || day.close_time">
                                     <span x-text="day.open_time || '--:--'"></span> - <span x-text="day.close_time || '--:--'"></span>
                                 </p>
@@ -65,28 +65,28 @@
                 <svg class="w-16 h-16 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-1">Jadval hali qo'shilmagan</h4>
-                <p class="text-gray-500 dark:text-gray-400">Ish vaqtini belgilash uchun quyidagi tugmani bosing</p>
+                <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-1">{{ __('user.modals.no_schedule_yet') }}</h4>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('user.modals.add_schedule_instruction') }}</p>
             </div>
 
             {{-- Add/Edit Form --}}
             <div class="border-t border-gray-200 dark:border-gray-700 pt-6" x-show="weekdayForm.show">
-                <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4" x-text="weekdayForm.editing ? 'Jadvalni tahrirlash' : 'Yangi ish kuni qo\'shish'"></h4>
+                <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4" x-text="weekdayForm.editing ? '{{ __('user.modals.edit_schedule') }}' : '{{ __('user.modals.add_weekday') }}'"></h4>
                 
                 <form @submit.prevent="saveWeekday()" class="space-y-4">
                     {{-- Day Selection --}}
                     <div x-show="!weekdayForm.editing">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Hafta kuni</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('user.modals.weekday') }}</label>
                         <select x-model="weekdayForm.weekdays" required
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white">
-                            <option value="">Tanlang</option>
-                            <option value="Dushanba">Dushanba</option>
-                            <option value="Seshanba">Seshanba</option>
-                            <option value="Chorshanba">Chorshanba</option>
-                            <option value="Payshanba">Payshanba</option>
-                            <option value="Juma">Juma</option>
-                            <option value="Shanba">Shanba</option>
-                            <option value="Yakshanba">Yakshanba</option>
+                            <option value="">{{ __('user.modals.select') }}</option>
+                            <option value="Dushanba">{{ __('user.modals.monday') }}</option>
+                            <option value="Seshanba">{{ __('user.modals.tuesday') }}</option>
+                            <option value="Chorshanba">{{ __('user.modals.wednesday') }}</option>
+                            <option value="Payshanba">{{ __('user.modals.thursday') }}</option>
+                            <option value="Juma">{{ __('user.modals.friday') }}</option>
+                            <option value="Shanba">{{ __('user.modals.saturday') }}</option>
+                            <option value="Yakshanba">{{ __('user.modals.sunday') }}</option>
                         </select>
                     </div>
                     
@@ -95,7 +95,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1">
                                 <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                Ochilish vaqti
+                                {{ __('user.modals.open_time') }}
                             </label>
                             <input type="time" x-model="weekdayForm.open_time"
                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white">
@@ -103,7 +103,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1">
                                 <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                                Yopilish vaqti
+                                {{ __('user.modals.close_time') }}
                             </label>
                             <input type="time" x-model="weekdayForm.close_time"
                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white">
@@ -112,8 +112,8 @@
                     
                     {{-- Form Actions --}}
                     <div class="flex gap-3 pt-2">
-                        <button type="button" @click="weekdayForm.show = false; resetWeekdayForm()" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">Bekor</button>
-                        <button type="submit" class="flex-1 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700">Saqlash</button>
+                        <button type="button" @click="weekdayForm.show = false; resetWeekdayForm()" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">{{ __('user.modals.cancel') }}</button>
+                        <button type="submit" class="flex-1 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700">{{ __('user.modals.save') }}</button>
                     </div>
                 </form>
             </div>
@@ -123,7 +123,7 @@
                 <button @click="weekdayForm.show = true; weekdayForm.editing = false; resetWeekdayForm()" 
                         class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-xl transition-all shadow-lg hover:shadow-xl">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                    Ish kuni qo'shish
+                    {{ __('user.modals.add_weekday') }}
                 </button>
             </div>
         </div>

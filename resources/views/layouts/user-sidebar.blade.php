@@ -117,7 +117,7 @@
                     <svg class="w-5 h-5 {{ request()->routeIs('user.dashboard') ? 'text-white' : 'text-gray-500 dark:text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
                     </svg>
-                    Dashboard
+                    {{ __('user.sidebar.dashboard') }}
                 </a>
 
                 <a href="{{ route('user.centers') }}" 
@@ -125,7 +125,7 @@
                     <svg class="w-5 h-5 {{ request()->routeIs('user.centers') ? 'text-white' : 'text-gray-500 dark:text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                     </svg>
-                    Markazlarim
+                    {{ __('user.sidebar.centers') }}
                 </a>
 
                 <a href="{{ route('profile') }}" 
@@ -133,7 +133,7 @@
                     <svg class="w-5 h-5 {{ request()->routeIs('profile') ? 'text-white' : 'text-gray-500 dark:text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                     </svg>
-                    Profil
+                    {{ __('user.sidebar.profile') }}
                 </a>
 
                 <a href="{{ route('course.create') }}" 
@@ -141,7 +141,7 @@
                     <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
-                    Yangi markaz
+                    {{ __('user.sidebar.new_center') }}
                 </a>
             </nav>
 
@@ -152,7 +152,7 @@
                     <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
-                    Bosh sahifa
+                    {{ __('user.sidebar.home') }}
                 </a>
 
                 <form method="POST" action="{{ route('logout') }}" class="block">
@@ -161,7 +161,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                         </svg>
-                        Chiqish
+                        {{ __('user.sidebar.logout') }}
                     </button>
                 </form>
             </div>
@@ -176,7 +176,65 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
-                <h1 class="font-semibold text-gray-900 dark:text-white">{{ $header ?? 'Dashboard' }}</h1>
+                <h1 class="font-semibold text-gray-900 dark:text-white">{{ $header ?? __('user.sidebar.dashboard')  }}</h1>
+            </header>
+
+            <!-- Desktop Header with Language Switcher -->
+            <header class="hidden lg:flex h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 items-center justify-between px-8">
+                <h1 class="font-semibold text-gray-900 dark:text-white">{{ $header ?? __('user.sidebar.dashboard')  }}</h1>
+                
+                <!-- Language Switcher -->
+                <div x-data="{ open: false }" class="relative">
+                    <button @click="open = !open" 
+                            class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                        </svg>
+                        {{ strtoupper(app()->getLocale()) }}
+                        <svg class="w-4 h-4" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    
+                    <div x-show="open" 
+                         @click.away="open = false"
+                         x-transition:enter="transition ease-out duration-100"
+                         x-transition:enter-start="transform opacity-0 scale-95"
+                         x-transition:enter-end="transform opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75"
+                         x-transition:leave-start="transform opacity-100 scale-100"
+                         x-transition:leave-end="transform opacity-0 scale-95"
+                         class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                        
+                        <!-- Uzbek -->
+                        <a href="{{ route('language.switch', 'uz') }}" 
+                           class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ app()->getLocale() === 'uz' ? 'bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400' : '' }}">
+                            <span class="text-lg">UZ</span>
+                            <span>O'zbekcha</span>
+                        </a>
+                        
+                        <!-- Russian -->
+                        <a href="{{ route('language.switch', 'ru') }}" 
+                           class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ app()->getLocale() === 'ru' ? 'bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400' : '' }}">
+                            <span class="text-lg">RU</span>
+                            <span>Pycc&#1082;&#1080;&#1081;</span>
+                        </a>
+                        
+                        <!-- English -->
+                        <a href="{{ route('language.switch', 'en') }}" 
+                           class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ app()->getLocale() === 'en' ? 'bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400' : '' }}">
+                            <span class="text-lg">EN</span>
+                            <span>English</span>
+                        </a>
+                        
+                        <!-- Karakalpak -->
+                        <a href="{{ route('language.switch', 'kaa') }}" 
+                           class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ app()->getLocale() === 'kaa' ? 'bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400' : '' }}">
+                            <span class="text-lg">QA</span>
+                            <span>Qaraqalpaqsha</span>
+                        </a>
+                    </div>
+                </div>
             </header>
 
             <!-- Page Content -->

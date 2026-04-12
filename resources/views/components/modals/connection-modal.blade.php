@@ -3,7 +3,7 @@
     <div class="absolute inset-0 bg-black/50" @click="closeConnectionModal()"></div>
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md mx-4 relative z-10">
         <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 class="font-semibold text-gray-900 dark:text-white" x-text="editing.connection ? 'Aloqani tahrirlash' : 'Yangi aloqa'"></h3>
+            <h3 class="font-semibold text-gray-900 dark:text-white" x-text="editing.connection ? '{{ __('user.modals.edit_connection') }}' : '{{ __('user.modals.new_connection') }}'"></h3>
             <button @click="closeConnectionModal()" class="text-gray-500 hover:text-gray-700">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -12,15 +12,15 @@
             <!-- Validation error message -->
             <div x-show="connectionError" x-text="connectionError" class="text-red-500 text-sm bg-red-50 dark:bg-red-900/20 p-2 rounded-lg"></div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nomi</label>
-                <input type="text" x-model="forms.connection.name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white" placeholder="Telefon, Telegram, Email..." required>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('user.modals.name') }}</label>
+                <input type="text" x-model="forms.connection.name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white" placeholder="{{ __('user.modals.connection_placeholder') }}" required>
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">URL / Manzil</label>
-                <input type="text" x-model="forms.connection.url" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white" placeholder="https://t.me/username yoki +998901234567" required>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('user.modals.url_address') }}</label>
+                <input type="text" x-model="forms.connection.url" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white" placeholder="{{ __('user.modals.url_placeholder') }}" required>
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ikonka</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('user.modals.icon') }}</label>
                 <input type="hidden" x-model="forms.connection.icon" id="connection-icon-input">
                 
                 <!-- Icon Picker Grid -->
@@ -133,13 +133,13 @@
                 
                 <!-- Selected icon display -->
                 <div x-show="forms.connection.icon" class="mt-2 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                    <span>Tanlangan:</span>
+                    <span>{{ __('user.modals.selected') }}:</span>
                     <span x-text="forms.connection.icon" class="font-medium text-violet-600 dark:text-violet-400 capitalize"></span>
                 </div>
             </div>
             <div class="flex gap-3 pt-2">
-                <button type="button" @click="closeConnectionModal()" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">Bekor</button>
-                <button type="submit" class="flex-1 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700">Saqlash</button>
+                <button type="button" @click="closeConnectionModal()" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">{{ __('user.modals.cancel') }}</button>
+                <button type="submit" class="flex-1 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700">{{ __('user.modals.save') }}</button>
             </div>
         </form>
     </div>

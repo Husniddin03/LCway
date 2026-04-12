@@ -21,7 +21,7 @@
         <div class="mb-6">
             <a href="{{ route('user.centers') }}" class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                Markazlarimga qaytish
+                {{ __('user.center_create.back_to_centers') }}
             </a>
         </div>
 
@@ -313,15 +313,17 @@
                 </div>
 
                 <!-- ===== MANZIL MA'LUMOTLARI ===== -->
-                <div class="rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                    <div class="flex items-center mb-6">
-                        <div class="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg mr-3">
-                            <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg mr-3">
+                                <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('user.center_create.location_title') }}</h3>
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('course-create.location.title') }}</h3>
                     </div>
 
                     <!-- Search and Map Container -->
@@ -334,7 +336,7 @@
                                 </svg>
                                 <input type="text" id="map-search" 
                                     class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 text-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent !bg-white !text-gray-900"
-                                    placeholder="Shahar, ko'cha yoki mo'ljalni kiriting..."
+                                    placeholder="{{ __('user.center_create.search_placeholder') }}"
                                     onkeydown="if(event.key==='Enter'){event.preventDefault();searchLocation();}">
                             </div>
                             <!-- Search Results Dropdown -->
@@ -345,7 +347,7 @@
                         <div class="absolute bottom-3 right-3 z-[1000]">
                             <button type="button" onclick="getCurrentLocation()"
                                 class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 border-2 border-white"
-                                title="Mening joylashuvim">
+                                title="{{ __('user.center_create.my_location') }}">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -392,7 +394,7 @@
                         <!-- Country -->
                         <div>
                             <label for="country" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Davlat {{ __('course-create.required') }}
+                                {{ __('user.center_create.country_label') }} {{ __('course-create.required') }}
                             </label>
                             <select name="country" id="country"
                                 class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -471,22 +473,6 @@
                             </label>
                             <select name="region" id="district"
                                 class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                required onchange="toggleCustomDistrict(this.value)">
-                                <option value="" disabled selected>{{ __('course-create.location.district_placeholder') }}</option>
-                                @if(old('region'))
-                                    <option value="{{ old('region') }}" selected>{{ old('region') }}</option>
-                                @endif
-                                <option value="custom">📝 Boshqa tuman (qo'lda yozing)</option>
-                            </select>
-                            
-                            <!-- Custom District Input -->
-                            <div id="customDistrictDiv" class="mt-3 hidden">
-                                <input type="text" name="custom_district" id="custom_district" 
-                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="Tuman/Shahar nomini kiriting..."
-                                    value="{{ old('custom_district') }}">
-                            </div>
-                            
                             @error('region')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                             @enderror
@@ -521,17 +507,17 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Qo'shimcha ma'lumotlar</h3>
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('user.center_create.legal_info_title') }}</h3>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- TIN (STIR) -->
                         <div>
                             <label for="tin" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                STIR raqami
+                                {{ __('user.center_create.tin_label') }}
                             </label>
                             <x-input type="text" name="tin" id="tin" value="{{ old('tin') }}"
-                                placeholder="Masalan: 305090320" maxlength="20"/>
+                                placeholder="{{ __('user.center_create.tin_placeholder') }}" maxlength="20"/>
                             @error('tin')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                             @enderror
@@ -540,10 +526,10 @@
                         <!-- License Number -->
                         <div>
                             <label for="license_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Litsenziya raqami
+                                {{ __('user.center_create.license_number_label') }}
                             </label>
                             <x-input type="text" name="license_number" id="license_number" value="{{ old('license_number') }}"
-                                placeholder="Masalan: NAS UZ 001. MT. 0388-05"/>
+                                placeholder="{{ __('user.center_create.license_number_placeholder') }}"/>
                             @error('license_number')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                             @enderror
@@ -552,7 +538,7 @@
                         <!-- License Registration Date -->
                         <div>
                             <label for="license_registration_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Litsenziya berilgan sana
+                                {{ __('user.center_create.license_date_label') }}
                             </label>
                             <x-input type="date" name="license_registration_date" id="license_registration_date" value="{{ old('license_registration_date') }}"/>
                             @error('license_registration_date')
@@ -563,7 +549,7 @@
                         <!-- License Validity Period -->
                         <div>
                             <label for="license_validity_period" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Litsenziya amal qilish muddati
+                                {{ __('user.center_create.license_validity_label') }}
                             </label>
                             <x-input type="date" name="license_validity_period" id="license_validity_period" value="{{ old('license_validity_period') }}"/>
                             @error('license_validity_period')
@@ -574,10 +560,10 @@
                         <!-- Manager Name -->
                         <div>
                             <label for="manager_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Rahbar F.I.Sh.
+                                {{ __('user.center_create.manager_name_label') }}
                             </label>
                             <x-input type="text" name="manager_name" id="manager_name" value="{{ old('manager_name') }}"
-                                placeholder="Rahbarning to'liq ismi"/>
+                                placeholder="{{ __('user.center_create.manager_name_placeholder') }}"/>
                             @error('manager_name')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                             @enderror
@@ -586,10 +572,10 @@
                         <!-- Phone Number -->
                         <div>
                             <label for="phone_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Telefon raqami
+                                {{ __('user.center_create.phone_label') }}
                             </label>
                             <x-input type="text" name="phone_number" id="phone_number" value="{{ old('phone_number') }}"
-                                placeholder="Masalan: 901234567"/>
+                                placeholder="{{ __('user.center_create.phone_placeholder') }}"/>
                             @error('phone_number')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                             @enderror
@@ -598,10 +584,10 @@
                         <!-- Email -->
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Email
+                                {{ __('user.center_create.email_label') }}
                             </label>
                             <x-input type="email" name="email" id="email" value="{{ old('email') }}"
-                                placeholder="info@example.com"/>
+                                placeholder="{{ __('user.center_create.email_placeholder') }}"/>
                             @error('email')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                             @enderror
@@ -610,10 +596,10 @@
                         <!-- IFUT Code -->
                         <div>
                             <label for="ifut_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                IFUT kodi
+                                {{ __('user.center_create.ifut_label') }}
                             </label>
                             <x-input type="text" name="ifut_code" id="ifut_code" value="{{ old('ifut_code') }}"
-                                placeholder="Masalan: 85600 - Ta'lim sohasidagi yordamchi faoliyat"/>
+                                placeholder="{{ __('user.center_create.ifut_placeholder') }}"/>
                             @error('ifut_code')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                             @enderror
@@ -622,10 +608,10 @@
                         <!-- Territory -->
                         <div class="md:col-span-2">
                             <label for="territory" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Nazorat bo'limi (Hudud)
+                                {{ __('user.center_create.territory_label') }}
                             </label>
                             <x-input type="text" name="territory" id="territory" value="{{ old('territory') }}"
-                                placeholder="Masalan: Toshkent shahri ta'lim sifatini nazorat qilish bo'limi"/>
+                                placeholder="{{ __('user.center_create.territory_placeholder') }}"/>
                             @error('territory')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                             @enderror
@@ -634,11 +620,11 @@
                         <!-- Legal Address -->
                         <div class="md:col-span-2">
                             <label for="legal_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Yuridik manzil
+                                {{ __('user.center_create.legal_address_label') }}
                             </label>
                             <textarea name="legal_address" id="legal_address" rows="3"
                                 class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="O'quv markazining yuridik manzili">{{ old('legal_address') }}</textarea>
+                                placeholder="{{ __('user.center_create.legal_address_placeholder') }}">{{ old('legal_address') }}</textarea>
                             @error('legal_address')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                             @enderror

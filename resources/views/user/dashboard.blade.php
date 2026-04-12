@@ -1,7 +1,7 @@
 @extends('layouts.user-sidebar')
 
-@section('title', 'Dashboard')
-@section('header', 'Dashboard')
+@section('title', __('user.dashboard.title'))
+@section('header', __('user.dashboard.title'))
 
 @php
 $totalCenters = $user->centers->count();
@@ -17,8 +17,8 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
 @section('content')
 <!-- Welcome Section -->
 <div class="mb-8">
-    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Salom, {{ $user->name }}! 👋</h1>
-    <p class="text-gray-600 dark:text-gray-400 mt-1">Dashboard'da o'z markazlaringizni boshqaring</p>
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('user.dashboard.welcome', ['name' => $user->name]) }}! 👋</h1>
+    <p class="text-gray-600 dark:text-gray-400 mt-1">{{ __('user.dashboard.description') }}</p>
 </div>
 
 <!-- Statistics Grid -->
@@ -27,7 +27,7 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
     <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 card-hover">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Jami markazlar</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.dashboard.total_centers') }}</p>
                 <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $totalCenters }}</p>
             </div>
             <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl flex items-center justify-center">
@@ -38,7 +38,7 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
         </div>
         <div class="mt-3 flex items-center text-sm">
             <span class="text-green-500 font-medium">+{{ $totalCenters > 0 ? 100 : 0 }}%</span>
-            <span class="text-gray-400 ml-1">o'sish</span>
+            <span class="text-gray-400 ml-1">{{ __('user.dashboard.growth') }}</span>
         </div>
     </div>
 
@@ -46,7 +46,7 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
     <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 card-hover">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Tasdiqlangan</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.dashboard.verified') }}</p>
                 <p class="text-2xl font-bold text-green-600 dark:text-green-400 mt-1">{{ $verifiedCenters }}</p>
             </div>
             <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
@@ -56,7 +56,7 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
             </div>
         </div>
         <div class="mt-3 flex items-center text-sm">
-            <span class="text-gray-400">{{ $totalCenters > 0 ? round(($verifiedCenters / $totalCenters) * 100) : 0 }}% tasdiqlangan</span>
+            <span class="text-gray-400">{{ $totalCenters > 0 ? round(($verifiedCenters / $totalCenters) * 100) : 0 }}% {{ __('user.dashboard.verified_percent') }}</span>
         </div>
     </div>
 
@@ -64,7 +64,7 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
     <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 card-hover">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Tekshirilmoqda</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.dashboard.pending') }}</p>
                 <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-400 mt-1">{{ $pendingCenters }}</p>
             </div>
             <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center">
@@ -74,7 +74,7 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
             </div>
         </div>
         <div class="mt-3 flex items-center text-sm">
-            <span class="text-gray-400">Kutilmoqda</span>
+            <span class="text-gray-400">{{ __('user.dashboard.waiting') }}</span>
         </div>
     </div>
 
@@ -82,7 +82,7 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
     <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 card-hover">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">O'qituvchilar</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.dashboard.teachers') }}</p>
                 <p class="text-2xl font-bold text-purple-600 dark:text-purple-400 mt-1">{{ $totalTeachers }}</p>
             </div>
             <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
@@ -92,7 +92,7 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
             </div>
         </div>
         <div class="mt-3 flex items-center text-sm">
-            <span class="text-gray-400">Barcha markazlarda</span>
+            <span class="text-gray-400">{{ __('user.dashboard.all_centers') }}</span>
         </div>
     </div>
 
@@ -100,7 +100,7 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
     <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 card-hover">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Fanlar</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.dashboard.subjects') }}</p>
                 <p class="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">{{ $totalSubjects }}</p>
             </div>
             <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
@@ -110,7 +110,7 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
             </div>
         </div>
         <div class="mt-3 flex items-center text-sm">
-            <span class="text-gray-400">Faol fanlar</span>
+            <span class="text-gray-400">{{ __('user.dashboard.active_subjects') }}</span>
         </div>
     </div>
 
@@ -118,7 +118,7 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
     <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 card-hover">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Baholar</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.dashboard.ratings') }}</p>
                 <p class="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1">{{ $totalFavorites }}</p>
             </div>
             <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
@@ -129,7 +129,7 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
         </div>
         <div class="mt-3 flex items-center text-sm">
             <span class="text-amber-500 font-medium">{{ $totalComments }}</span>
-            <span class="text-gray-400 ml-1">izoh</span>
+            <span class="text-gray-400 ml-1">{{ __('user.dashboard.comments') }}</span>
         </div>
     </div>
 </div>
@@ -138,14 +138,14 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
 <div class="bg-gradient-to-r from-violet-600 to-purple-600 rounded-xl p-6 text-white mb-8">
     <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
-            <h3 class="text-lg font-semibold">Yangi markaz qo'shish</h3>
-            <p class="text-white/80 text-sm">O'quv markazingizni qo'shing va ko'proq o'quvchilarni jalb qiling</p>
+            <h3 class="text-lg font-semibold">{{ __('user.dashboard.add_center_title') }}</h3>
+            <p class="text-white/80 text-sm">{{ __('user.dashboard.add_center_description') }}</p>
         </div>
         <a href="{{ route('course.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-violet-600 font-medium rounded-lg hover:shadow-lg transition-all">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
-            Markaz qo'shish
+            {{ __('user.dashboard.add_center_button') }}
         </a>
     </div>
 </div>
@@ -153,8 +153,8 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
 <!-- Recent Centers -->
 <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-        <h3 class="font-semibold text-gray-900 dark:text-white">So'nggi markazlar</h3>
-        <a href="{{ route('user.centers') }}" class="text-violet-600 dark:text-violet-400 hover:underline text-sm">Barchasini ko'rish</a>
+        <h3 class="font-semibold text-gray-900 dark:text-white">{{ __('user.dashboard.recent_centers') }}</h3>
+        <a href="{{ route('user.centers') }}" class="text-violet-600 dark:text-violet-400 hover:underline text-sm">{{ __('user.dashboard.view_all') }}</a>
     </div>
     @if($recentCenters->count() > 0)
         <div class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -191,12 +191,12 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
                             </span>
                         </div>
                         <a href="{{ route('user.center.manage', $center->slug) }}" class="px-3 py-1 bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 text-xs font-medium rounded-lg hover:bg-violet-200 dark:hover:bg-violet-900/50 transition-colors">
-                            Batafsil
+                            {{ __('user.dashboard.details') }}
                         </a>
                         @if($center->checked)
-                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-medium rounded-full">Tasdiqlangan</span>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-medium rounded-full">{{ __('user.dashboard.verified') }}</span>
                         @else
-                            <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-xs font-medium rounded-full">Tekshirilmoqda</span>
+                            <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-xs font-medium rounded-full">{{ __('user.dashboard.pending') }}</span>
                         @endif
                     </div>
                 </div>
@@ -209,12 +209,12 @@ $recentCenters = $user->centers->sortByDesc('created_at')->take(5);
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                 </svg>
             </div>
-            <p class="text-gray-500 dark:text-gray-400">Hali markazlar yo'q</p>
+            <p class="text-gray-500 dark:text-gray-400">{{ __('user.dashboard.no_centers') }}</p>
             <a href="{{ route('course.create') }}" class="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
-                Markaz qo'shish
+                {{ __('user.dashboard.add_center_button') }}
             </a>
         </div>
     @endif

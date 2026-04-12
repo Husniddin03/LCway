@@ -1,6 +1,6 @@
 @extends('layouts.user-sidebar')
 
-@section('title', $center->name . ' - Boshqaruv')
+@section('title', $center->name . ' - ' . __('user.center_manage.title_suffix'))
 @section('header', $center->name)
 
 @section('content')
@@ -36,13 +36,13 @@
                 <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                 </svg>
-                Saytda ko'rish
+                {{ __('user.center_manage.view_on_site') }}
             </a>
             <a href="{{ route('course.edit', $center->slug) }}" class="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors text-sm font-medium">
                 <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                 </svg>
-                Tahrirlash
+                {{ __('user.center_manage.edit') }}
             </a>
         </div>
     </div>
@@ -52,16 +52,16 @@
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Status</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('user.center_manage.status') }}</p>
                     @if($center->checked)
                         <span class="inline-flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-medium rounded-full mt-1">
                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            Tasdiqlangan
+                            {{ __('user.center_manage.verified') }}
                         </span>
                     @else
                         <span class="inline-flex items-center gap-1 px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-sm font-medium rounded-full mt-1">
                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            Tekshirilmoqda
+                            {{ __('user.center_manage.pending') }}
                         </span>
                     @endif
                 </div>
@@ -73,15 +73,15 @@
             </div>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-            <p class="text-xs text-gray-500 dark:text-gray-400">O'qituvchilar</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('user.center_manage.teachers') }}</p>
             <p class="text-2xl font-bold text-purple-600 dark:text-purple-400" x-text="stats.teachers">{{ $center->teachers->count() }}</p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-            <p class="text-xs text-gray-500 dark:text-gray-400">Fanlar</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('user.center_manage.subjects') }}</p>
             <p class="text-2xl font-bold text-blue-600 dark:text-blue-400" x-text="stats.subjects">{{ $center->subjects->count() }}</p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-            <p class="text-xs text-gray-500 dark:text-gray-400">Baholar</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('user.center_manage.ratings') }}</p>
             <p class="text-2xl font-bold text-amber-600 dark:text-amber-400">{{ $center->favorites->count() }}</p>
         </div>
     </div>
@@ -89,60 +89,60 @@
     <!-- About -->
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Markaz haqida</h3>
-            <a href="{{ route('course.edit', $center) }}" class="text-violet-600 dark:text-violet-400 hover:underline text-sm">Tahrirlash</a>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('user.center_manage.about') }}</h3>
+            <a href="{{ route('course.edit', $center) }}" class="text-violet-600 dark:text-violet-400 hover:underline text-sm">{{ __('user.center_manage.edit') }}</a>
         </div>
-        <p class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{{ $center->about ?: 'Ma\'lumot kiritilmagan' }}</p>
+        <p class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{{ $center->about ?: __('user.center_manage.no_info') }}</p>
     </div>
 
     
-    <!-- Yuridik malumotlar -->
+    <!-- {{ __('user.center_manage.legal_info') }} -->
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Yuridik malumotlar</h3>
-            <a href="{{ route('course.edit', $center) }}" class="text-violet-600 dark:text-violet-400 hover:underline text-sm">Tahrirlash</a>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('user.center_manage.legal_info') }}</h3>
+            <a href="{{ route('course.edit', $center) }}" class="text-violet-600 dark:text-violet-400 hover:underline text-sm">{{ __('user.center_manage.edit') }}</a>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">TIN</p>
-                <p class="font-medium text-gray-900 dark:text-white" x-text="center.tin || 'Kiritilmagan'"></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.center_manage.tin') }}</p>
+                <p class="font-medium text-gray-900 dark:text-white" x-text="center.tin || __('user.center_manage.not_entered')"></p>
             </div>
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Yuridik manzili</p>
-                <p class="font-medium text-gray-900 dark:text-white" x-text="center.legal_address || 'Kiritilmagan'"></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.center_manage.legal_address') }}</p>
+                <p class="font-medium text-gray-900 dark:text-white" x-text="center.legal_address || __('user.center_manage.not_entered')"></p>
             </div>
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Litsenziya raqami</p>
-                <p class="font-medium text-gray-900 dark:text-white" x-text="center.license_number || 'Kiritilmagan'"></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.center_manage.license_number') }}</p>
+                <p class="font-medium text-gray-900 dark:text-white" x-text="center.license_number || __('user.center_manage.not_entered')"></p>
             </div>
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Ro'yxat sanasi</p>
-                <p class="font-medium text-gray-900 dark:text-white" x-text="center.license_registration_date ? new Date(center.license_registration_date).toLocaleDateString('uz-UZ') : 'Kiritilmagan'"></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.center_manage.registration_date') }}</p>
+                <p class="font-medium text-gray-900 dark:text-white" x-text="center.license_registration_date ? new Date(center.license_registration_date).toLocaleDateString('uz-UZ') : __('user.center_manage.not_entered')"></p>
             </div>
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Amal qilish muddati</p>
-                <p class="font-medium text-gray-900 dark:text-white" x-text="center.license_validity_period ? new Date(center.license_validity_period).toLocaleDateString('uz-UZ') : 'Kiritilmagan'"></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.center_manage.validity_period') }}</p>
+                <p class="font-medium text-gray-900 dark:text-white" x-text="center.license_validity_period ? new Date(center.license_validity_period).toLocaleDateString('uz-UZ') : __('user.center_manage.not_entered')"></p>
             </div>
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Menejer ismi</p>
-                <p class="font-medium text-gray-900 dark:text-white" x-text="center.manager_name || 'Kiritilmagan'"></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.center_manage.manager_name') }}</p>
+                <p class="font-medium text-gray-900 dark:text-white" x-text="center.manager_name || __('user.center_manage.not_entered')"></p>
             </div>
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Telefon raqami</p>
-                <p class="font-medium text-gray-900 dark:text-white" x-text="center.phone_number || 'Kiritilmagan'"></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.center_manage.phone_number') }}</p>
+                <p class="font-medium text-gray-900 dark:text-white" x-text="center.phone_number || __('user.center_manage.not_entered')"></p>
             </div>
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
-                <p class="font-medium text-gray-900 dark:text-white" x-text="center.email || 'Kiritilmagan'"></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.center_manage.email') }}</p>
+                <p class="font-medium text-gray-900 dark:text-white" x-text="center.email || __('user.center_manage.not_entered')"></p>
             </div>
             <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">IFUT kodi</p>
-                <p class="font-medium text-gray-900 dark:text-white" x-text="center.ifut_code || 'Kiritilmagan'"></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.center_manage.ifut_code') }}</p>
+                <p class="font-medium text-gray-900 dark:text-white" x-text="center.ifut_code || __('user.center_manage.not_entered')"></p>
             </div>
             <div class="md:col-span-2">
-                <p class="text-sm text-gray-500 dark:text-gray-400">Hudud</p>
-                <p class="font-medium text-gray-900 dark:text-white" x-text="center.territory || 'Kiritilmagan'"></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('user.center_manage.territory') }}</p>
+                <p class="font-medium text-gray-900 dark:text-white" x-text="center.territory || __('user.center_manage.not_entered')"></p>
             </div>
         </div>
     </div>
@@ -150,10 +150,10 @@
     <!-- Contacts -->
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Aloqa ma'lumotlari (<span x-text="connections.length">{{ $center->connections->count() }}</span>)</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('user.center_manage.contact_info') }} (<span x-text="connections.length">{{ $center->connections->count() }}</span>)</h3>
             <button @click="openConnectionModal()" class="inline-flex items-center gap-1 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Qo‘shish
+                {{__('user.dashboard.add')}}
             </button>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" x-show="connections.length > 0">
@@ -169,7 +169,7 @@
                         <p class="text-sm font-medium text-gray-900 dark:text-white truncate" x-text="conn.name"></p>
                         <p class="text-xs text-gray-500 dark:text-gray-400 truncate" x-text="conn.url"></p>
                     </div>
-                    <button @click="deleteConnection(conn.id)" class="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button @click="deleteConnection(conn.id)" class="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity" title="{{ __('user.center_manage.delete') }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                     </button>
                 </div>
@@ -177,10 +177,10 @@
         </div>
         <div x-show="connections.length === 0" class="text-center py-8">
             <svg class="w-12 h-12 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-            <p class="text-gray-500 dark:text-gray-400 mb-3">Aloqa ma'lumotlari yo'q</p>
+            <p class="text-gray-500 dark:text-gray-400 mb-3">{{ __('user.center_manage.no_contacts') }}</p>
             <button @click="openConnectionModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Qo‘shish
+                {{__('user.dashboard.add')}}
             </button>
         </div>
     </div>
@@ -188,10 +188,10 @@
     <!-- Teachers -->
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">O'qituvchilar (<span x-text="teachers.length">{{ $center->teachers->count() }}</span>)</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('user.center_manage.teachers') }} (<span x-text="teachers.length">{{ $center->teachers->count() }}</span>)</h3>
             <button @click="openTeacherModal()" class="inline-flex items-center gap-1 px-3 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Qo‘shish
+                {{__('user.dashboard.add')}}
             </button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" x-show="teachers.length > 0">
@@ -208,10 +208,10 @@
                             <div class="flex items-center justify-between">
                                 <p class="font-medium text-gray-900 dark:text-white" x-text="teacher.name"></p>
                                 <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <button @click="openTeacherViewModal(teacher)" class="text-green-500 hover:text-green-700" title="O'qituvchi ma'lumotlari">
+                                    <button @click="openTeacherViewModal(teacher)" class="text-green-500 hover:text-green-700" title="{{ __('user.center_manage.teacher_info') }}">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                     </button>
-                                    <button @click="openTeacherSubjectModal(teacher)" class="text-blue-500 hover:text-blue-700" title="Fan biriktirish">
+                                    <button @click="openTeacherSubjectModal(teacher)" class="text-blue-500 hover:text-blue-700" title="{{ __('user.center_manage.assign_subject') }}">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                                     </button>
                                     <button @click="editTeacher(teacher)" class="text-violet-500 hover:text-violet-700">
@@ -222,7 +222,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400" x-text="teacher.phone || 'Telefon yo\'q'"></p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400" x-text="teacher.phone || __('user.center_manage.no_phone')"></p>
                             <div class="mt-2 flex flex-wrap gap-1" x-show="teacher.subjects && teacher.subjects.length > 0">
                                 <template x-for="subj in teacher.subjects" :key="subj.id">
                                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300" x-text="subj.name"></span>
@@ -235,10 +235,10 @@
         </div>
         <div x-show="teachers.length === 0" class="text-center py-8">
             <svg class="w-12 h-12 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-            <p class="text-gray-500 dark:text-gray-400 mb-3">O'qituvchilar yo'q</p>
+            <p class="text-gray-500 dark:text-gray-400 mb-3">{{ __('user.center_manage.no_teachers') }}</p>
             <button @click="openTeacherModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                O'qituvchi qo'shish
+                {{ __('user.center_manage.add_teacher') }}
             </button>
         </div>
     </div>
@@ -246,10 +246,10 @@
     <!-- Subjects -->
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Fanlar (<span x-text="subjects.length">{{ $center->subjects->count() }}</span>)</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('user.center_manage.subjects') }} (<span x-text="subjects.length">{{ $center->subjects->count() }}</span>)</h3>
             <button @click="openSubjectModal()" class="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Qo‘shish
+                {{__('user.dashboard.add')}}
             </button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" x-show="subjects.length > 0">
@@ -271,7 +271,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400"><span x-text="subject.teacher_count || 0"></span> o'qituvchi</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400"><span x-text="subject.teacher_count || 0"></span> {{ __('user.center_manage.teacher') }}</p>
                             <!-- Show assigned teachers -->
                             <div class="mt-2 flex flex-wrap gap-1" x-show="subject.teachers && subject.teachers.length > 0">
                                 <template x-for="tchr in subject.teachers" :key="tchr.id">
@@ -284,10 +284,10 @@
             </template>
         </div>
         <div x-show="subjects.length === 0" class="text-center py-8">
-            <p class="text-gray-500 dark:text-gray-400 mb-3">Fanlar yo'q</p>
+            <p class="text-gray-500 dark:text-gray-400 mb-3">{{ __('user.center_manage.no_subjects') }}</p>
             <button @click="openSubjectModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Fan qo'shish
+                {{ __('user.center_manage.add_subject') }}
             </button>
         </div>
     </div>
@@ -295,10 +295,10 @@
     <!-- Work Schedule -->
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Ish jadvali (<span x-text="weekdays.length">{{ $center->calendar->count() }}</span>)</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('user.center_manage.work_schedule') }} (<span x-text="weekdays.length">{{ $center->calendar->count() }}</span>)</h3>
             <button @click="openWeekdayModal()" class="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                Qo‘shish
+                {{__('user.dashboard.add')}}
             </button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" x-show="weekdays.length > 0">
@@ -326,10 +326,10 @@
         </div>
         <div x-show="weekdays.length === 0" class="text-center py-8">
             <svg class="w-12 h-12 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <p class="text-gray-500 dark:text-gray-400 mb-3">Ish jadvali yo'q</p>
+            <p class="text-gray-500 dark:text-gray-400 mb-3">{{ __('user.center_manage.no_schedule') }}</p>
             <button @click="openWeekdayModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Jadval qo'shish
+                {{ __('user.center_manage.add_schedule') }}
             </button>
         </div>
     </div>
@@ -337,10 +337,10 @@
     <!-- Images -->
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Rasmlar (<span x-text="images.length">{{ $center->images->count() }}</span>)</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('user.center_manage.images') }} (<span x-text="images.length">{{ $center->images->count() }}</span>)</h3>
             <button @click="openImageModal()" class="inline-flex items-center gap-1 px-3 py-1.5 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 rounded-lg hover:bg-pink-200 dark:hover:bg-pink-900/50 transition-colors text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Qo‘shish
+                {{__('user.dashboard.add')}}
             </button>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4" x-show="images.length > 0">
@@ -355,10 +355,10 @@
         </div>
         <div x-show="images.length === 0" class="text-center py-8">
             <svg class="w-12 h-12 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            <p class="text-gray-500 dark:text-gray-400 mb-3">Rasmlar yo'q</p>
+            <p class="text-gray-500 dark:text-gray-400 mb-3">{{ __('user.center_manage.no_images') }}</p>
             <button @click="openImageModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Rasm qo'shish
+                {{ __('user.center_manage.add_image') }}
             </button>
         </div>
     </div>
@@ -502,7 +502,7 @@
                     } else {
                         this.connections.push(data.data);
                     }
-                    this.showToast(this.editing.connection ? 'Yangilandi' : 'Qo\'shildi');
+                    this.showToast(this.editing.connection ? '{{ __('user.center_manage.updated') }}' : '{{ __('user.center_manage.added') }}');
                     this.closeConnectionModal();
                 } else {
                     this.showToast(data.message || 'Xatolik yuz berdi', 'error');
@@ -604,19 +604,19 @@
             // Helper functions for formatting
             getSubjectTypeText(type) {
                 const types = {
-                    'individual': 'Individual',
-                    'group': 'Guruhli',
-                    'both': 'Ikkalasi ham'
+                    'individual': '{{ __('user.center_manage.individual') }}',
+                    'group': '{{ __('user.center_manage.group') }}',
+                    'both': '{{ __('user.center_manage.both') }}'
                 };
                 return types[type] || type;
             },
 
             getPeriodText(period) {
                 const periods = {
-                    'monthly': 'Oylik',
-                    'course': 'Kurs davomida',
-                    'hourly': 'Soatbay',
-                    'per_lesson': 'Dars uchun'
+                    'monthly': '{{ __('user.center_manage.monthly') }}',
+                    'course': '{{ __('user.center_manage.course_duration') }}',
+                    'hourly': '{{ __('user.center_manage.hourly') }}',
+                    'per_lesson': '{{ __('user.center_manage.per_lesson') }}'
                 };
                 return periods[period] || period;
             },
@@ -629,11 +629,11 @@
             },
             async saveTeacherSubject() {
                 if (!this.selectedTeacher) {
-                    this.showToast('O\'qituvchi tanlanmagan', 'error');
+                    this.showToast('{{ __('user.center_manage.teacher_not_selected') }}', 'error');
                     return;
                 }
                 if (!this.teacherSubjectForm.subject_id) {
-                    this.showToast('Fan tanlang', 'error');
+                    this.showToast('{{ __('user.center_manage.subject_not_selected') }}', 'error');
                     return;
                 }
                 

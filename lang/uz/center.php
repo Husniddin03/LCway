@@ -209,4 +209,106 @@ return [
     'network_error' => 'Tarmoq xatosi. Qayta urinib ko\'ring.',
     'error_occurred' => 'Xatolik yuz berdi',
     'delete_comment_error' => 'Izohni o\'chirishda xatolik yuz berdi',
+    
+    // Hero section
+    'contact_btn' => 'Bog\'lanish',
+    'gallery_btn' => 'Rasmlar',
+    
+    // Navigation
+    'nav_about' => 'Biz haqimizda',
+    'nav_gallery' => 'Rasmlar',
+    'nav_teachers' => 'O\'qituvchilar',
+    'nav_comments' => 'Izohlar',
+    'nav_contact' => 'Aloqa',
+    
+    // About section
+    'about_title' => 'Biz haqimizda',
+    'no_info_available' => 'Ma\'lumot mavjud emas',
+    
+    // Stats
+    'students' => 'O\'quvchilar',
+    'teachers_count' => 'O\'qituvchilar',
+    'subjects_count' => 'Fanlar',
+    'ratings_count' => 'Baholar',
+    
+    // Contact sidebar
+    'contact_title' => 'Aloqa',
+    'phone_label' => 'Telefon',
+    'email_label' => 'Email',
+    'address_label' => 'Manzil',
+    
+    // Social networks
+    'social_networks_title' => 'Ijtimoiy tarmoqlar',
+    
+    // Gallery
+    'gallery_title' => 'Rasmlar galereyasi',
+    'gallery_description' => 'Rasmlarni bosib, kattalashtirib ko\'rish',
+    'zoom_image' => 'Kattalashtirish',
+    'gallery_navigation' => '?? tugmalari bilan navigatsiya ? ESC yoki click bilan yopish',
+    
+    // Teachers
+    'teachers_title' => 'O\'qituvchilarimiz',
+    'teachers_description' => 'Tajribali va malakali o\'qituvchilar jamoasi',
+    
+    // Legal info
+    'legal_info_title' => 'Yuridik ma\'lumotlar',
+    'legal_info_description' => 'Markazning rasmiy ma\'lumotlari va litsenziyalari',
+    'legal_info_section' => 'Yuridik ma\'lumotlar',
+    'inn_label' => 'INN raqami',
+    'legal_address_label' => 'Yuridik manzili',
+    'license_section' => 'Litsenziya',
+    'license_number_label' => 'Litsenziya raqami',
+    'license_date_label' => 'Ro\'yxatdan o\'tkazilgan sana',
+    'license_validity_label' => 'Amal qilish muddati',
+    'manager_section' => 'Menejer ma\'lumotlari',
+    'manager_name_label' => 'Menejer ismi',
+    'phone_number_label' => 'Telefon raqami',
+    'ifut_code_label' => 'IFUT kodi',
+    'territory_section' => 'Hudud',
+    'territory_label' => 'Xizmat ko\'rsatish hududi',
+    
+    // Subjects and teachers
+    'subjects_teachers_title' => 'Fanlar va o\'qituvchilar',
+    'subjects_teachers_description' => 'Markazimizda o\'qitiladigan fanlar va ularning malakali o\'qituvchilari',
+    'prices_label' => 'Narxlar',
+    'price_not_set' => 'Narx belgilanmagan',
+    'teachers_list' => 'O\'qituvchilar',
+    'no_teacher_assigned' => 'Bu fanga o\'qituvchi biriktirilmagan',
+    
+    // Comments
+    'comments_title' => 'Fikr va mulohazalar',
+    'comments_description' => 'O\'quv markazi haqida fikringizni bildiring',
+    'rate_center' => 'Baholang',
+    'leave_comment' => 'Izoh qoldiring',
+    'comment_placeholder' => 'Fikringizni yozing...',
+    'submit' => 'Yuborish',
+    'login_to_comment_text' => 'Izoh qoldirish uchun tizimga kiring',
+    'login_btn' => 'Kirish',
+    
+    // Share section
+    'share_title' => 'Boshqalar ham bilishlari kerak!',
+    'share_description' => 'Ushbu o\'quv markazi haqida do\'stlaringizga aytib bering',
+    'share_function_not_available' => 'Ulashish funksiyasi mavjud emas',
+    'share_with_friends' => 'Do\'stlar bilan ulashish',
+    
+    // Rating labels
+    'rating_labels' => ['Yomon', 'Qoniqarsiz', 'Yaxshi', 'Ajoyib', 'A\'lo'],
+    
+    // Time labels
+    'just_now' => 'Hozirgina',
+    
+    // Error messages
+    'error_occurred' => 'Xatolik yuz berdi',
+    'network_error' => 'Tarmoq xatoligi',
+    
+    // Confirm messages
+    'delete_comment_confirm' => 'Izohni o\'chirmoqchimisiz?',
+    'delete_confirm_js' => 'O\'chirishni tasdiqlaysizmi?',
+    'delete_error_js' => 'O\'chirishda xatolik',
+    
+    // Gallery lightbox
+    'lightbox_more_text' => 'Yana',
+    
+    // Rating count
+    'rating_count_suffix' => 'baho',
 ];

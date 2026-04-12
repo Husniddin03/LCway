@@ -209,4 +209,103 @@ return [
     'network_error' => 'Network error. Please try again.',
     'error_occurred' => 'An error occurred',
     'delete_comment_error' => 'Error deleting comment',
+    
+    // Hero section
+    'contact_btn' => 'Contact',
+    'gallery_btn' => 'Gallery',
+    
+    // Navigation
+    'nav_about' => 'About Us',
+    'nav_gallery' => 'Gallery',
+    'nav_teachers' => 'Teachers',
+    'nav_comments' => 'Comments',
+    'nav_contact' => 'Contact',
+    
+    // About section
+    'about_title' => 'About Us',
+    'no_info_available' => 'No information available',
+    
+    // Stats
+    'students' => 'Students',
+    'teachers_count' => 'Teachers',
+    'subjects_count' => 'Subjects',
+    'ratings_count' => 'Ratings',
+    
+    // Contact sidebar
+    'contact_title' => 'Contact',
+    'phone_label' => 'Phone',
+    'email_label' => 'Email',
+    'address_label' => 'Address',
+    
+    // Social networks
+    'social_networks_title' => 'Social Networks',
+    
+    // Gallery
+    'gallery_title' => 'Photo Gallery',
+    'gallery_description' => 'Click on images to zoom in',
+    'zoom_image' => 'Zoom',
+    'gallery_navigation' => 'Navigate with arrow keys ? ESC or click to close',
+    
+    // Teachers
+    'teachers_title' => 'Our Teachers',
+    'teachers_description' => 'Experienced and qualified teaching team',
+    
+    // Legal info
+    'legal_info_title' => 'Legal Information',
+    'legal_info_description' => 'Official information and licenses of the center',
+    'legal_info_section' => 'Legal Information',
+    'inn_label' => 'TIN',
+    'legal_address_label' => 'Legal Address',
+    'license_section' => 'License',
+    'license_number_label' => 'License Number',
+    'license_date_label' => 'Registration Date',
+    'license_validity_label' => 'Validity Period',
+    'manager_section' => 'Manager Information',
+    'manager_name_label' => 'Manager Name',
+    'phone_number_label' => 'Phone Number',
+    'ifut_code_label' => 'IFUT Code',
+    'territory_section' => 'Territory',
+    'territory_label' => 'Service Area',
+    
+    // Subjects and teachers
+    'subjects_teachers_title' => 'Subjects and Teachers',
+    'subjects_teachers_description' => 'Subjects taught at our center and their qualified teachers',
+    'prices_label' => 'Prices',
+    'price_not_set' => 'Price not set',
+    'teachers_list' => 'Teachers',
+    'no_teacher_assigned' => 'No teacher assigned to this subject',
+    
+    // Comments
+    'comments_title' => 'Reviews and Feedback',
+    'comments_description' => 'Share your thoughts about the learning center',
+    'rate_center' => 'Rate the Center',
+    'leave_comment' => 'Leave a Comment',
+    'comment_placeholder' => 'Write your thoughts here...',
+    'submit' => 'Submit',
+    'login_to_comment_text' => 'Login to leave a comment',
+    'login_btn' => 'Login',
+    
+    // Share section
+    'share_title' => 'Others Should Know This!',
+    'share_description' => 'Tell your friends about this learning center',
+    'share_function_not_available' => 'Sharing function not available',
+    'share_with_friends' => 'Share with Friends',
+    
+    // Time labels
+    'just_now' => 'Just now',
+    
+    // Error messages
+    'error_occurred' => 'An error occurred',
+    'network_error' => 'Network error',
+    
+    // Confirm messages
+    'delete_comment_confirm' => 'Delete this comment?',
+    'delete_confirm_js' => 'Confirm deletion',
+    'delete_error_js' => 'Deletion error',
+    
+    // Gallery lightbox
+    'lightbox_more_text' => 'More',
+    
+    // Rating count
+    'rating_count_suffix' => 'ratings',
 ];

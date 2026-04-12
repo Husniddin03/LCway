@@ -209,4 +209,103 @@ return [
     'network_error' => 'Ошибка сети. Пожалуйста, попробуйте снова.',
     'error_occurred' => 'Произошла ошибка',
     'delete_comment_error' => 'Ошибка при удалении комментария',
+    
+    // Hero section
+    'contact_btn' => 'Связаться',
+    'gallery_btn' => 'Галерея',
+    
+    // Navigation
+    'nav_about' => 'О нас',
+    'nav_gallery' => 'Галерея',
+    'nav_teachers' => 'Преподаватели',
+    'nav_comments' => 'Комментарии',
+    'nav_contact' => 'Контакт',
+    
+    // About section
+    'about_title' => 'О нас',
+    'no_info_available' => 'Информация недоступна',
+    
+    // Stats
+    'students' => 'Студенты',
+    'teachers_count' => 'Преподаватели',
+    'subjects_count' => 'Предметы',
+    'ratings_count' => 'Оценки',
+    
+    // Contact sidebar
+    'contact_title' => 'Контакт',
+    'phone_label' => 'Телефон',
+    'email_label' => 'Email',
+    'address_label' => 'Адрес',
+    
+    // Social networks
+    'social_networks_title' => 'Социальные сети',
+    
+    // Gallery
+    'gallery_title' => 'Фотогалерея',
+    'gallery_description' => 'Нажмите на изображение для увеличения',
+    'zoom_image' => 'Увеличить',
+    'gallery_navigation' => 'Навигация клавишами ? ESC или клик для закрытия',
+    
+    // Teachers
+    'teachers_title' => 'Наши преподаватели',
+    'teachers_description' => 'Опытная и квалифицированная команда преподавателей',
+    
+    // Legal info
+    'legal_info_title' => 'Юридическая информация',
+    'legal_info_description' => 'Официальная информация о центре и лицензии',
+    'legal_info_section' => 'Юридическая информация',
+    'inn_label' => 'ИНН',
+    'legal_address_label' => 'Юридический адрес',
+    'license_section' => 'Лицензия',
+    'license_number_label' => 'Номер лицензии',
+    'license_date_label' => 'Дата регистрации',
+    'license_validity_label' => 'Срок действия',
+    'manager_section' => 'Информация о менеджере',
+    'manager_name_label' => 'Имя менеджера',
+    'phone_number_label' => 'Номер телефона',
+    'ifut_code_label' => 'Код ИФУТ',
+    'territory_section' => 'Территория',
+    'territory_label' => 'Зона обслуживания',
+    
+    // Subjects and teachers
+    'subjects_teachers_title' => 'Предметы и преподаватели',
+    'subjects_teachers_description' => 'Предметы и их квалифицированные преподаватели в нашем центре',
+    'prices_label' => 'Цены',
+    'price_not_set' => 'Цена не указана',
+    'teachers_list' => 'Преподаватели',
+    'no_teacher_assigned' => 'Преподаватель не назначен',
+    
+    // Comments
+    'comments_title' => 'Отзывы и мнения',
+    'comments_description' => 'Поделитесь своим мнением об учебном центре',
+    'rate_center' => 'Оцените центр',
+    'leave_comment' => 'Оставить комментарий',
+    'comment_placeholder' => 'Напишите свое мнение...',
+    'submit' => 'Отправить',
+    'login_to_comment_text' => 'Войдите чтобы оставить комментарий',
+    'login_btn' => 'Войти',
+    
+    // Share section
+    'share_title' => 'Другим должно это знать!',
+    'share_description' => 'Расскажите друзьям об этом учебном центре',
+    'share_function_not_available' => 'Функция деления недоступна',
+    'share_with_friends' => 'Поделиться с друзьями',
+    
+    // Time labels
+    'just_now' => 'Только что',
+    
+    // Error messages
+    'error_occurred' => 'Произошла ошибка',
+    'network_error' => 'Сетевая ошибка',
+    
+    // Confirm messages
+    'delete_comment_confirm' => 'Удалить этот комментарий?',
+    'delete_confirm_js' => 'Подтвердите удаление',
+    'delete_error_js' => 'Ошибка удаления',
+    
+    // Gallery lightbox
+    'lightbox_more_text' => 'Еще',
+    
+    // Rating count
+    'rating_count_suffix' => 'оценок',
 ];

@@ -3,7 +3,7 @@
     <div class="absolute inset-0 bg-black/50" @click="closeTeacherViewModal()"></div>
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-2xl mx-4 relative z-10 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 class="font-semibold text-gray-900 dark:text-white">O'qituvchi ma'lumotlari</h3>
+            <h3 class="font-semibold text-gray-900 dark:text-white">{{ __('user.modals.teacher_info') }}</h3>
             <button @click="closeTeacherViewModal()" class="text-gray-500 hover:text-gray-700">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -21,14 +21,14 @@
                 
                 <div class="flex-1">
                     <h4 class="text-xl font-semibold text-gray-900 dark:text-white" x-text="viewingTeacher ? viewingTeacher.name : ''"></h4>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1" x-text="viewingTeacher ? (viewingTeacher.phone || 'Telefon yo\'q') : ''"></p>
-                    <p class="text-sm text-gray-700 dark:text-gray-300 mt-2" x-text="viewingTeacher ? (viewingTeacher.about || 'Bio ma\'lumotlari yo\'q') : ''"></p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1" x-text="viewingTeacher ? (viewingTeacher.phone || '{{ __('user.modals.no_phone') }}') : ''"></p>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mt-2" x-text="viewingTeacher ? (viewingTeacher.about || '{{ __('user.modals.no_bio') }}') : ''"></p>
                 </div>
             </div>
             
             <!-- Assigned Subjects -->
             <div>
-                <h5 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Biriktirilgan fanlar</h5>
+                <h5 class="text-lg font-medium text-gray-900 dark:text-white mb-3">{{ __('user.modals.assigned_subjects') }}</h5>
                 <div x-show="viewingTeacher && viewingTeacher.subjects && viewingTeacher.subjects.length > 0" class="space-y-3">
                     <template x-for="subject in (viewingTeacher ? viewingTeacher.subjects : [])" :key="subject.id">
                         <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
@@ -63,8 +63,8 @@
         </div>
         
         <div class="flex gap-3 p-4 border-t border-gray-200 dark:border-gray-700">
-            <button @click="closeTeacherViewModal()" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">Yopish</button>
-            <button @click="openTeacherSubjectModal(viewingTeacher); closeTeacherViewModal();" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Fan biriktirish</button>
+            <button @click="closeTeacherViewModal()" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">{{ __('user.modals.close') }}</button>
+            <button @click="openTeacherSubjectModal(viewingTeacher); closeTeacherViewModal();" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">{{ __('user.modals.assign_subject') }}</button>
         </div>
     </div>
 </div>

@@ -147,7 +147,7 @@
                         <svg class="w-4 h-4 text-amber-300" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                         </svg>
-                        {{ $avgRating }} ({{ $LearningCenter->favorites()->count() }} baho)
+                        {{ $avgRating }} ({{ $LearningCenter->favorites()->count() }} {{ __('center.rating_count_suffix') }})
                     </span>
                 @endif
             </div>
@@ -157,13 +157,13 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                     </svg>
-                    Bog'lanish
+                    {{ __('center.contact_btn') }}
                 </a>
                 <a href="#gallery" class="px-8 py-4 bg-white/10 backdrop-blur-md border-2 border-white/50 text-white font-bold rounded-full hover:bg-white/20 hover:scale-105 transition-all flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01"/>
                     </svg>
-                    Rasmlar
+                    {{ __('center.gallery_btn') }}
                 </a>
             </div>
         </div>
@@ -179,15 +179,15 @@
     <div class="sticky top-[70px] z-40 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 py-3" data-aos="fade-down">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav class="flex items-center gap-1 overflow-x-auto scrollbar-hide">
-                <a href="#about" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">Biz haqimizda</a>
+                <a href="#about" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">{{ __('center.nav_about') }}</a>
                 @if($LearningCenter->images->count() > 0)
-                    <a href="#gallery" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">Rasmlar</a>
+                    <a href="#gallery" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">{{ __('center.nav_gallery') }}</a>
                 @endif
                 @if($LearningCenter->teachers->count() > 0)
-                    <a href="#teachers" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">O'qituvchilar</a>
+                    <a href="#teachers" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">{{ __('center.nav_teachers') }}</a>
                 @endif
-                <a href="#comments" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">Izohlar</a>
-                <a href="#contact" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">Aloqa</a>
+                <a href="#comments" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">{{ __('center.nav_comments') }}</a>
+                <a href="#contact" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">{{ __('center.nav_contact') }}</a>
             </nav>
         </div>
     </div>
@@ -226,11 +226,11 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                 </div>
-                                <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Biz haqimizda</h2>
+                                <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ __('center.about_title') }}</h2>
                             </div>
                         </div>
                         <div class="prose prose-lg max-w-none text-gray-600 dark:text-gray-300 leading-relaxed">
-                            <p class="text-lg">{{ $LearningCenter->about ?? 'Ma\'lumot mavjud emas' }}</p>
+                            <p class="text-lg">{{ $LearningCenter->about ?? __('center.no_info_available') }}</p>
                         </div>
                     </div>
 
@@ -238,19 +238,19 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4" data-aos="fade-up" data-aos-delay="100">
                         <div class="glass-card rounded-2xl p-6 text-center hover-lift">
                             <div class="text-3xl font-black text-purple-600 dark:text-purple-400">{{ $LearningCenter->student_count ?? 0 }}</div>
-                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">O'quvchilar</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('center.students') }}</div>
                         </div>
                         <div class="glass-card rounded-2xl p-6 text-center hover-lift">
                             <div class="text-3xl font-black text-violet-600 dark:text-violet-400">{{ $LearningCenter->teachers->count() }}</div>
-                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">O'qituvchilar</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('center.teachers_count') }}</div>
                         </div>
                         <div class="glass-card rounded-2xl p-6 text-center hover-lift">
                             <div class="text-3xl font-black text-fuchsia-600 dark:text-fuchsia-400">{{ $LearningCenter->subjects->count() }}</div>
-                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Fanlar</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('center.subjects_count') }}</div>
                         </div>
                         <div class="glass-card rounded-2xl p-6 text-center hover-lift">
                             <div class="text-3xl font-black text-pink-600 dark:text-pink-400">{{ $LearningCenter->favorites()->count() }}</div>
-                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Baholar</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('center.ratings_count') }}</div>
                         </div>
                     </div>
                 </div>
@@ -264,7 +264,7 @@
                                 <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                                 </svg>
-                                Aloqa
+                                {{ __('center.contact_title') }}
                             </h3>
                         </div>
                         <div class="space-y-4">
@@ -276,7 +276,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">Telefon</div>
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.phone_label') }}</div>
                                         <div class="font-semibold text-gray-900 dark:text-gray-100">{{ $LearningCenter->phone_number }}</div>
                                     </div>
                                 </a>
@@ -289,7 +289,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">Email</div>
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.email_label') }}</div>
                                         <div class="font-semibold text-gray-900 dark:text-gray-100">{{ $LearningCenter->email }}</div>
                                     </div>
                                 </a>
@@ -301,7 +301,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">Manzil</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.address_label') }}</div>
                                     <div class="font-semibold text-gray-900 dark:text-gray-100">{{ $LearningCenter->address }}</div>
                                 </div>
                             </a>
@@ -311,7 +311,7 @@
                     <!-- Social Links -->
                     @if($LearningCenter->connections && $LearningCenter->connections->count() > 0)
                         <div class="glass-card rounded-3xl p-6 hover-lift" data-aos="fade-left" data-aos-delay="100">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Ijtimoiy tarmoqlar</h3>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">{{ __('center.social_networks_title') }}</h3>
                             <div class="grid grid-cols-2 gap-3">
                                 @foreach ($LearningCenter->connections as $connection)
                                     <a href="{{ $connection->url }}" target="_blank" class="flex items-center gap-2 p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">
@@ -332,8 +332,8 @@
         <section id="gallery" class="py-16 bg-white dark:bg-gray-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12" data-aos="fade-up">
-                    <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">Rasmlar galereyasi</h2>
-                    <p class="text-gray-500 dark:text-gray-400">Rasmlarni bosib, kattalashtirib ko'rish</p>
+                    <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">{{ __('center.gallery_title') }}</h2>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('center.gallery_description') }}</p>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="center-gallery">
@@ -345,7 +345,7 @@
                                  alt="{{ $LearningCenter->name }}" 
                                  class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-4">
-                                <span class="text-white text-sm font-medium">Kattalashtirish</span>
+                                <span class="text-white text-sm font-medium">{{ __('center.zoom_image') }}</span>
                             </div>
                             <div class="absolute top-3 right-3 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                 <svg class="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -361,7 +361,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/>
                         </svg>
-                        ← → tugmalari bilan navigatsiya • ESC yoki click bilan yopish
+                        {{ __('center.gallery_navigation') }}
                     </p>
                 </div>
             </div>
@@ -373,8 +373,8 @@
         <section id="teachers" class="py-16 bg-gray-50 dark:bg-gray-900">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12" data-aos="fade-up">
-                    <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">O'qituvchilarimiz</h2>
-                    <p class="text-gray-500 dark:text-gray-400">Tajribali va malakali o'qituvchilar jamoasi</p>
+                    <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">{{ __('center.teachers_title') }}</h2>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('center.teachers_description') }}</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -432,8 +432,8 @@
         <section id="yuridik" class="py-16 bg-white dark:bg-gray-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12" data-aos="fade-up">
-                    <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">Yuridik ma'lumotlar</h2>
-                    <p class="text-gray-500 dark:text-gray-400">Markazning rasmiy ma'lumotlari va litsenziyalari</p>
+                    <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">{{ __('center.legal_info_title') }}</h2>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('center.legal_info_description') }}</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -446,17 +446,17 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Yuridik ma'lumotlar</h3>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('center.legal_info_section') }}</h3>
                             </div>
                             @if($LearningCenter->tin)
                                 <div class="mb-3">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">INN raqami</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.inn_label') }}</p>
                                     <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->tin }}</p>
                                 </div>
                             @endif
                             @if($LearningCenter->legal_address)
                                 <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Yuridik manzili</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.legal_address_label') }}</p>
                                     <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->legal_address }}</p>
                                 </div>
                             @endif
@@ -472,23 +472,23 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Litsenziya</h3>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('center.license_section') }}</h3>
                             </div>
                             @if($LearningCenter->license_number)
                                 <div class="mb-3">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Litsenziya raqami</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.license_number_label') }}</p>
                                     <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->license_number }}</p>
                                 </div>
                             @endif
                             @if($LearningCenter->license_registration_date)
                                 <div class="mb-3">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Ro'yxatdan o'tkazilgan sana</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.license_date_label') }}</p>
                                     <p class="font-medium text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($LearningCenter->license_registration_date)->locale('uz')->format('d F Y') }}</p>
                                 </div>
                             @endif
                             @if($LearningCenter->license_validity_period)
                                 <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Amal qilish muddati</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.license_validity_label') }}</p>
                                     <p class="font-medium text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($LearningCenter->license_validity_period)->locale('uz')->format('d F Y') }}</p>
                                 </div>
                             @endif
@@ -504,29 +504,29 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Menejer ma'lumotlari</h3>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('center.manager_section') }}</h3>
                             </div>
                             @if($LearningCenter->manager_name)
                                 <div class="mb-3">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Menejer ismi</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.manager_name_label') }}</p>
                                     <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->manager_name }}</p>
                                 </div>
                             @endif
                             @if($LearningCenter->phone_number)
                                 <div class="mb-3">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Telefon raqami</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.phone_number_label') }}</p>
                                     <a href="tel:{{ $LearningCenter->phone_number }}" class="font-medium text-purple-600 dark:text-purple-400 hover:underline">{{ $LearningCenter->phone_number }}</a>
                                 </div>
                             @endif
                             @if($LearningCenter->email)
                                 <div class="mb-3">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.email_label') }}</p>
                                     <a href="mailto:{{ $LearningCenter->email }}" class="font-medium text-purple-600 dark:text-purple-400 hover:underline">{{ $LearningCenter->email }}</a>
                                 </div>
                             @endif
                             @if($LearningCenter->ifut_code)
                                 <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">IFUT kodi</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.ifut_code_label') }}</p>
                                     <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->ifut_code }}</p>
                                 </div>
                             @endif
@@ -543,10 +543,10 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Hudud</h3>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('center.territory_section') }}</h3>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Xizmat ko'rsatish hududi</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('center.territory_label') }}</p>
                                 <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->territory }}</p>
                             </div>
                         </div>
@@ -561,8 +561,8 @@
         <section id="subjects-teachers" class="py-16 bg-gray-50 dark:bg-gray-900">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12" data-aos="fade-up">
-                    <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">Fanlar va o'qituvchilar</h2>
-                    <p class="text-gray-500 dark:text-gray-400">Markazimizda o'qitiladigan fanlar va ularning malakali o'qituvchilari</p>
+                    <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">{{ __('center.subjects_teachers_title') }}</h2>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('center.subjects_teachers_description') }}</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -580,7 +580,7 @@
 
                             <!-- Narx ma'lumotlari -->
                             <div class="mb-4">
-                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Narxlar</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">{{ __('center.prices_label') }}</p>
                                 <div class="flex flex-wrap gap-2">
                                     @if($subject->teacherSubjects->isNotEmpty())
                                         @foreach($subject->teacherSubjects->unique('price') as $ts)
@@ -595,7 +595,7 @@
                                         @endforeach
                                     @else
                                         <span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-sm font-medium rounded-full">
-                                            Narx belgilanmagan
+                                            {{ __('center.price_not_set') }}
                                         </span>
                                     @endif
                                 </div>
@@ -603,7 +603,7 @@
 
                             <!-- O'qituvchilar ro'yxati -->
                             <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">O'qituvchilar ({{ $subject->teacherSubjects->count() }})</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">{{ __('center.teachers_list') }} ({{ $subject->teacherSubjects->count() }})</p>
                                 <div class="space-y-3">
                                     @if($subject->teacherSubjects->isNotEmpty())
                                         @foreach($subject->teacherSubjects as $ts)
@@ -667,7 +667,7 @@
                                             <svg class="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                                             </svg>
-                                            <p class="text-gray-500 dark:text-gray-400 text-sm">Bu fanga o'qituvchi biriktirilmagan</p>
+                                            <p class="text-gray-500 dark:text-gray-400 text-sm">{{ __('center.no_teacher_assigned') }}</p>
                                         </div>
                                     @endif
                                 </div>
@@ -683,14 +683,14 @@
     <section id="comments" class="py-16 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">Fikr va mulohazalar</h2>
-                <p class="text-gray-500 dark:text-gray-400">O'quv markazi haqida fikringizni bildiring</p>
+                <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">{{ __('center.comments_title') }}</h2>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('center.comments_description') }}</p>
             </div>
 
             <!-- Rating Section -->
             @auth
                 <div class="glass-card rounded-3xl p-8 mb-8" data-aos="fade-up">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Baholang</h3>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">{{ __('center.rate_center') }}</h3>
                     <div class="flex items-center gap-2" id="rating-container" data-center-id="{{ $LearningCenter->id }}">
                         @for ($i = 1; $i <= 5; $i++)
                             <button class="star-btn text-4xl text-gray-300 dark:text-gray-600 hover:text-amber-400 transition-all duration-200 hover:scale-125" data-value="{{ $i }}">★</button>
@@ -701,10 +701,10 @@
 
                 <!-- Comment Form -->
                 <div class="glass-card rounded-3xl p-8 mb-8" data-aos="fade-up">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Izoh qoldiring</h3>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">{{ __('center.leave_comment') }}</h3>
                     <form id="commentForm" class="space-y-4">
                         @csrf
-                        <textarea id="commentInput" rows="4" class="w-full px-4 py-4 rounded-2xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none" placeholder="Fikringizni yozing..."></textarea>
+                        <textarea id="commentInput" rows="4" class="w-full px-4 py-4 rounded-2xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none" placeholder="{{ __('center.comment_placeholder') }}"></textarea>
                         <div id="commentError" class="hidden p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm"></div>
                         <button type="submit" id="submitComment" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-2">
                             <svg id="sendIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -714,7 +714,7 @@
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
-                            Yuborish
+                            {{ __('center.submit') }}
                         </button>
                     </form>
                 </div>
@@ -725,9 +725,9 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
                         </svg>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">Izoh qoldirish uchun tizimga kiring</p>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">{{ __('center.login_to_comment_text') }}</p>
                     <a href="{{ route('signin') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl transition-colors">
-                        Kirish
+                        {{ __('center.login_btn') }}
                     </a>
                 </div>
             @endauth
@@ -748,7 +748,7 @@
                                     </div>
                                     @auth
                                         @if(auth()->user()->id === $comment->user->id)
-                                            <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Izohni o\'chirmoqchimisiz?')">
+                                            <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('{{ __('center.delete_comment_confirm') }}')">
                                                 @csrf
                                                 <button type="submit" class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors p-1 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -793,14 +793,14 @@
     <!-- 🎯 CTA SECTION -->
     <section class="py-20 bg-gradient-to-r from-violet-600 to-purple-600">
         <div class="max-w-4xl mx-auto px-4 text-center" data-aos="fade-up">
-            <h2 class="text-4xl font-black text-white mb-4">Boshqalar ham bilishlari kerak!</h2>
-            <p class="text-xl text-white/80 mb-8">Ushbu o'quv markazi haqida do'stlaringizga aytib bering</p>
+            <h2 class="text-4xl font-black text-white mb-4">{{ __('center.share_title') }}</h2>
+            <p class="text-xl text-white/80 mb-8">{{ __('center.share_description') }}</p>
             <div class="flex flex-wrap items-center justify-center gap-4">
-                <button onclick="navigator.share ? navigator.share({title: '{{ $LearningCenter->name }}', text: '{{ $LearningCenter->about }}', url: window.location.href}) : alert('Ulashish funksiyasi mavjud emas')" class="px-8 py-4 bg-white text-purple-700 font-bold rounded-full hover:scale-105 transition-all shadow-xl flex items-center gap-2">
+                <button onclick="navigator.share ? navigator.share({title: '{{ $LearningCenter->name }}', text: '{{ $LearningCenter->about }}', url: window.location.href}) : alert('{{ __('center.share_function_not_available') }}')" class="px-8 py-4 bg-white text-purple-700 font-bold rounded-full hover:scale-105 transition-all shadow-xl flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
                     </svg>
-                    Do'stlar bilan ulashish
+                    {{ __('center.share_with_friends') }}
                 </button>
             </div>
         </div>
@@ -833,7 +833,7 @@
                         body: JSON.stringify({ rating: value, learning_centers_id: centerId })
                     });
                     
-                    const messages = ['Yomon', 'Qoniqarsiz', 'Yaxshi', 'Ajoyib', 'A\'lo'];
+                    const messages = @json(__('center.rating_labels'));
                     document.getElementById('rating-message').textContent = `${value} - ${messages[value - 1]}`;
                 });
             });
@@ -878,7 +878,7 @@
                                     <div class="flex items-center justify-between">
                                         <div>
                                             <h4 class="font-bold text-gray-900 dark:text-gray-100">${data.user_name}</h4>
-                                            <p class="text-xs text-gray-500">Hozirgina</p>
+                                            <p class="text-xs text-gray-500">{{ __('center.just_now') }}</p>
                                         </div>
                                     </div>
                                     <p class="mt-3 text-gray-700 dark:text-gray-300">${input.value}</p>
@@ -889,11 +889,11 @@
                         input.value = '';
                     } else {
                         const err = await response.json();
-                        error.textContent = err.message || 'Xatolik yuz berdi';
+                        error.textContent = err.message || '{{ __('center.error_occurred') }}';
                         error.classList.remove('hidden');
                     }
                 } catch (err) {
-                    error.textContent = 'Tarmoq xatoligi';
+                    error.textContent = '{{ __('center.network_error') }}';
                     error.classList.remove('hidden');
                 } finally {
                     btn.disabled = false;
@@ -949,7 +949,7 @@
                 openEffect: 'zoom',
                 closeEffect: 'fade',
                 slideEffect: 'slide',
-                moreText: 'Yana',
+                moreText: '{{ __('center.lightbox_more_text') }}',
                 moreLength: 60,
                 cssEfects: {
                     fade: { in: 'fadeIn', out: 'fadeOut' },

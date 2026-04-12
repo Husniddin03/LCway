@@ -4,7 +4,7 @@
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-lg mx-4 relative z-10 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
             <h3 class="font-semibold text-gray-900 dark:text-white">
-                <span x-text="selectedTeacher ? selectedTeacher.name + ' - Fan biriktirish' : 'Fan biriktirish'"></span>
+                <span x-text="selectedTeacher ? selectedTeacher.name + ' - {{ __('user.modals.assign_subject') }}' : '{{ __('user.modals.assign_subject') }}'"></span>
             </h3>
             <button @click="closeTeacherSubjectModal()" class="text-gray-500 hover:text-gray-700">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -13,9 +13,9 @@
         <div class="p-4 space-y-4">
             <!-- Subject Selection -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Fan *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('user.modals.subject') }} *</label>
                 <select x-model="teacherSubjectForm.subject_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white">
-                    <option value="">Fan tanlang</option>
+                    <option value="">{{ __('user.modals.select_subject') }}</option>
                     <template x-for="subject in availableSubjects" :key="subject.id">
                         <option :value="subject.id" x-text="subject.name"></option>
                     </template>
@@ -24,57 +24,57 @@
 
             <!-- Subject Type -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Fan turi</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('user.modals.subject_type') }}</label>
                 <select x-model="teacherSubjectForm.subject_type" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white">
                     <option value="">Tanlang</option>
-                    <option value="individual">Individual</option>
-                    <option value="group">Guruhli</option>
-                    <option value="both">Ikkalasi ham</option>
+                    <option value="individual">{{ __('user.modals.individual') }}</option>
+                    <option value="group">{{ __('user.modals.group') }}</option>
+                    <option value="both">{{ __('user.modals.both') }}</option>
                 </select>
             </div>
 
             <!-- Subject Icon -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Fan ikonkasi</label>
-                <input type="text" x-model="teacherSubjectForm.subject_icon" placeholder="Masalan: book, calculator, code" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('user.modals.subject_icon') }}</label>
+                <input type="text" x-model="teacherSubjectForm.subject_icon" placeholder="{{ __('user.modals.icon_placeholder') }}" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white">
             </div>
 
             <!-- Description -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tavsif</label>
-                <textarea x-model="teacherSubjectForm.description" rows="2" placeholder="Fan haqida qo'shimcha ma'lumot" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white"></textarea>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('user.modals.description') }}</label>
+                <textarea x-model="teacherSubjectForm.description" rows="2" placeholder="{{ __('user.modals.subject_description') }}" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white"></textarea>
             </div>
 
             <!-- Price and Currency -->
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Narx</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('user.modals.price') }}</label>
                     <input type="number" x-model="teacherSubjectForm.price" placeholder="0" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Valyuta</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('user.modals.currency') }}</label>
                     <select x-model="teacherSubjectForm.currency" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white">
-                        <option value="UZS">UZS (so'm)</option>
-                        <option value="USD">USD ($)</option>
+                        <option value="UZS">{{ __('user.modals.uzs_currency') }}</option>
+                        <option value="USD">{{ __('user.modals.usd_currency') }}</option>
                     </select>
                 </div>
             </div>
 
             <!-- Period -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Davr</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('user.modals.period') }}</label>
                 <select x-model="teacherSubjectForm.period" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-violet-500 focus:border-violet-500 dark:bg-gray-700 dark:text-white">
                     <option value="">Tanlang</option>
-                    <option value="monthly">Oylik</option>
-                    <option value="course">Kurs davomida</option>
-                    <option value="hourly">Soatbay</option>
-                    <option value="per_lesson">Dars uchun</option>
+                    <option value="monthly">{{ __('user.modals.monthly') }}</option>
+                    <option value="course">{{ __('user.modals.course_duration') }}</option>
+                    <option value="hourly">{{ __('user.modals.hourly') }}</option>
+                    <option value="per_lesson">{{ __('user.modals.per_lesson') }}</option>
                 </select>
             </div>
 
             <div class="flex gap-3 pt-4">
-                <button type="button" @click="closeTeacherSubjectModal()" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">Bekor</button>
-                <button type="button" @click="saveTeacherSubject()" class="flex-1 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700">Saqlash</button>
+                <button type="button" @click="closeTeacherSubjectModal()" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">{{ __('user.modals.cancel') }}</button>
+                <button type="button" @click="saveTeacherSubject()" class="flex-1 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700">{{ __('user.modals.save') }}</button>
             </div>
         </div>
     </div>

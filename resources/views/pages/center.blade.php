@@ -427,6 +427,258 @@
         </section>
     @endif
 
+    <!-- YURIDIK MALUMOTLAR SECTION -->
+    @if($LearningCenter->tin || $LearningCenter->legal_address || $LearningCenter->license_number || $LearningCenter->manager_name || $LearningCenter->phone_number || $LearningCenter->email || $LearningCenter->territory)
+        <section id="yuridik" class="py-16 bg-white dark:bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">Yuridik ma'lumotlar</h2>
+                    <p class="text-gray-500 dark:text-gray-400">Markazning rasmiy ma'lumotlari va litsenziyalari</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Yuridik ma'lumotlar -->
+                    @if($LearningCenter->tin || $LearningCenter->legal_address)
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-2xl p-6" data-aos="fade-up">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mr-3">
+                                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Yuridik ma'lumotlar</h3>
+                            </div>
+                            @if($LearningCenter->tin)
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">INN raqami</p>
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->tin }}</p>
+                                </div>
+                            @endif
+                            @if($LearningCenter->legal_address)
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Yuridik manzili</p>
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->legal_address }}</p>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
+                    <!-- Litsenziya ma'lumotlari -->
+                    @if($LearningCenter->license_number || $LearningCenter->license_registration_date || $LearningCenter->license_validity_period)
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-2xl p-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3">
+                                    <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Litsenziya</h3>
+                            </div>
+                            @if($LearningCenter->license_number)
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Litsenziya raqami</p>
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->license_number }}</p>
+                                </div>
+                            @endif
+                            @if($LearningCenter->license_registration_date)
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Ro'yxatdan o'tkazilgan sana</p>
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($LearningCenter->license_registration_date)->locale('uz')->format('d F Y') }}</p>
+                                </div>
+                            @endif
+                            @if($LearningCenter->license_validity_period)
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Amal qilish muddati</p>
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($LearningCenter->license_validity_period)->locale('uz')->format('d F Y') }}</p>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
+                    <!-- Menejer ma'lumotlari -->
+                    @if($LearningCenter->manager_name || $LearningCenter->phone_number || $LearningCenter->email || $LearningCenter->ifut_code)
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-2xl p-6" data-aos="fade-up" data-aos-delay="200">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mr-3">
+                                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Menejer ma'lumotlari</h3>
+                            </div>
+                            @if($LearningCenter->manager_name)
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Menejer ismi</p>
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->manager_name }}</p>
+                                </div>
+                            @endif
+                            @if($LearningCenter->phone_number)
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Telefon raqami</p>
+                                    <a href="tel:{{ $LearningCenter->phone_number }}" class="font-medium text-purple-600 dark:text-purple-400 hover:underline">{{ $LearningCenter->phone_number }}</a>
+                                </div>
+                            @endif
+                            @if($LearningCenter->email)
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
+                                    <a href="mailto:{{ $LearningCenter->email }}" class="font-medium text-purple-600 dark:text-purple-400 hover:underline">{{ $LearningCenter->email }}</a>
+                                </div>
+                            @endif
+                            @if($LearningCenter->ifut_code)
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">IFUT kodi</p>
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->ifut_code }}</p>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
+                    <!-- Hudud ma'lumotlari -->
+                    @if($LearningCenter->territory)
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-2xl p-6" data-aos="fade-up" data-aos-delay="300">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center mr-3">
+                                    <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Hudud</h3>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Xizmat ko'rsatish hududi</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->territory }}</p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </section>
+    @endif
+
+    <!-- FANLAR VA O'QITUVCHILAR SECTION -->
+    @if($LearningCenter->subjects->count() > 0)
+        <section id="subjects-teachers" class="py-16 bg-gray-50 dark:bg-gray-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">Fanlar va o'qituvchilar</h2>
+                    <p class="text-gray-500 dark:text-gray-400">Markazimizda o'qitiladigan fanlar va ularning malakali o'qituvchilari</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+                    @foreach($LearningCenter->subjects as $index => $subject)
+                        <div class="glass-card rounded-3xl p-6 hover-lift" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+                            <!-- Fan nomi -->
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ $subject->subject_name }}</h3>
+                                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- Narx ma'lumotlari -->
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Narxlar</p>
+                                <div class="flex flex-wrap gap-2">
+                                    @if($subject->teacherSubjects->isNotEmpty())
+                                        @foreach($subject->teacherSubjects->unique('price') as $ts)
+                                            @if($ts->price)
+                                                <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-medium rounded-full">
+                                                    {{ number_format($ts->price) }} {{ $ts->currency ?? 'UZS' }}
+                                                    @if($ts->period)
+                                                        <span class="text-xs">({{ $ts->period }})</span>
+                                                    @endif
+                                                </span>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-sm font-medium rounded-full">
+                                            Narx belgilanmagan
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <!-- O'qituvchilar ro'yxati -->
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">O'qituvchilar ({{ $subject->teacherSubjects->count() }})</p>
+                                <div class="space-y-3">
+                                    @if($subject->teacherSubjects->isNotEmpty())
+                                        @foreach($subject->teacherSubjects as $ts)
+                                            @if($ts->teacher)
+                                                <div class="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-xl">
+                                                    <!-- O'qituvchi rasmi -->
+                                                    <div class="relative">
+                                                        @if($ts->teacher->photo)
+                                                            <img src="{{ asset('storage/' . $ts->teacher->photo) }}" alt="{{ $ts->teacher->name }}" class="w-12 h-12 rounded-full object-cover">
+                                                        @else
+                                                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                                                                <span class="text-white font-bold">{{ substr($ts->teacher->name, 0, 1) }}</span>
+                                                            </div>
+                                                        @endif
+                                                        <!-- Status indicator -->
+                                                        <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
+                                                    </div>
+
+                                                    <!-- O'qituvchi ma'lumotlari -->
+                                                    <div class="flex-1">
+                                                        <h4 class="font-semibold text-gray-900 dark:text-white">{{ $ts->teacher->name }}</h4>
+                                                        <div class="flex items-center gap-3 mt-1">
+                                                            @if($ts->subject_type)
+                                                                <span class="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full">
+                                                                    {{ $ts->subject_type }}
+                                                                </span>
+                                                            @endif
+                                                            @if($ts->teacher->phone)
+                                                                <a href="tel:{{ $ts->teacher->phone }}" class="text-xs text-purple-600 dark:text-purple-400 hover:underline">
+                                                                    {{ $ts->teacher->phone }}
+                                                                </a>
+                                                            @endif
+                                                        </div>
+                                                        @if($ts->description)
+                                                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{{ $ts->description }}</p>
+                                                        @endif
+                                                    </div>
+
+                                                    <!-- Contact button -->
+                                                    <div class="flex gap-2">
+                                                        @if($ts->teacher->phone)
+                                                            <a href="tel:{{ $ts->teacher->phone }}" class="w-8 h-8 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg flex items-center justify-center hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors">
+                                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                                                </svg>
+                                                            </a>
+                                                        @endif
+                                                        @if($ts->teacher->about)
+                                                            <button onclick="showTeacherInfo('{{ $ts->teacher->id }}')" class="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg flex items-center justify-center hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors">
+                                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                                </svg>
+                                                            </button>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <div class="text-center py-4">
+                                            <svg class="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                            </svg>
+                                            <p class="text-gray-500 dark:text-gray-400 text-sm">Bu fanga o'qituvchi biriktirilmagan</p>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     <!-- 💬 COMMENTS SECTION -->
     <section id="comments" class="py-16 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -494,6 +746,18 @@
                                         <h4 class="font-bold text-gray-900 dark:text-gray-100">{{ $comment->user->name }}</h4>
                                         <p class="text-xs text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() }}</p>
                                     </div>
+                                    @auth
+                                        @if(auth()->user()->id === $comment->user->id)
+                                            <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Izohni o\'chirmoqchimisiz?')">
+                                                @csrf
+                                                <button type="submit" class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors p-1 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endauth
                                 </div>
                                 <p class="mt-3 text-gray-700 dark:text-gray-300">{{ $comment->comment }}</p>
                             </div>

@@ -48,6 +48,8 @@ class LearningCenter extends Model
         'rating' => 'float',
         'premium' => 'boolean',
         'premium_until' => 'datetime',
+        'license_registration_date' => 'date',
+        'license_validity_period' => 'date',
     ];
 
     public function user()
@@ -173,11 +175,6 @@ class LearningCenter extends Model
     public function connections()
     {
         return $this->hasMany(LearningCentersConnect::class, 'learning_centers_id');
-    }
-
-    public function needTeachers()
-    {
-        return $this->hasMany(NeedTeacher::class, 'learning_center_id');
     }
 
     /* ═══════════════════════════════════════════════

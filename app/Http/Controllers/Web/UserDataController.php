@@ -15,20 +15,9 @@ class UserDataController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $centers = $user->centers()->paginate(10);
-        $allCenters = $user->centers; // For stats
+        $user->load(['centers.teachers', 'centers.subjects', 'centers.favorites', 'centers.comments']);
         
-        // Get subjects with teacherSubjects pivot data
-        $subjects = \App\Models\SubjectsOfLearningCenter::whereHas('learningCenter', function($query) use ($user) {
-            $query->where('users_id', $user->id);
-        })->with(['teacherSubjects', 'learningCenter'])->paginate(12);
-        
-        // Get teachers with teacherSubjects pivot data
-        $teachers = \App\Models\Teacher::whereHas('learningCenter', function($query) use ($user) {
-            $query->where('users_id', $user->id);
-        })->with(['teacherSubjects.subject', 'learningCenter'])->paginate(12);
-        
-        return view('user.profile', compact('user', 'centers', 'allCenters', 'subjects', 'teachers'));
+        return view('user.profile-new', compact('user'));
     }
 
     public function edit()

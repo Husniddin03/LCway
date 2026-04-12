@@ -9,7 +9,9 @@ use App\Helpers\TextHelper;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Production-Ready Search Service for Learning Centers
@@ -38,9 +40,7 @@ use Illuminate\Support\Facades\DB;
  * // teachers table
  * $table->index(['learning_centers_id', 'name']); // composite for exists queries
  * 
- * // need_teacher table
- * $table->index(['learning_center_id', 'subject_name']); // composite for exists queries
- * $table->index('created_at'); // for sorting announcements
+
  * 
  * // teacher_subjects table (for price filtering)
  * $table->index(['subject_id', 'price']); // composite for price range queries
@@ -69,6 +69,16 @@ class SearchService
     private const MAX_MAP_RESULTS = 200;
 
     /**
+     * Cache TTL in seconds (5 minutes)
+     */
+    private const CACHE_TTL = 300;
+
+    /**
+     * Maximum tokens to process
+     */
+    private const MAX_TOKENS = 5;
+
+    /**
      * Required fields for list display - selective loading for memory efficiency
      */
     private const LIST_SELECT_FIELDS = [
@@ -84,6 +94,7 @@ class SearchService
         'student_count',
         'rating',
         'total_reyting',
+        'checked',
         'created_at',
     ];
 
@@ -104,29 +115,110 @@ class SearchService
      * Main search method - entry point for all searches
      * 
      * @param array $filters Search filters from validated request
-     *                     - searchText: string|null
-     *                     - type: string|null
-     *                     - subject_name: string|null
-     *                     - needTeachers: string|null ('all' or subject name)
-     *                     - min_price: float|null
-     *                     - max_price: float|null
-     *                     - latitude: float|null
-     *                     - longitude: float|null
-     *                     - radius: float|null (km)
-     *                     - sort: string|null (name, distance, favorites, rating)
-     *                     - order: string|null (asc, desc)
-     *                     - page: int|null
-     *                     - per_page: int|null
      * @return LengthAwarePaginator
      */
     public function search(array $filters): LengthAwarePaginator
     {
+        // Generate cache key based on filters
+        $cacheKey = $this->getCacheKey($filters);
+        
+        // Check cache first
+        if ($cached = Cache::get($cacheKey)) {
+            return $cached;
+        }
+
+        // Apply query modifiers from search text (arzon, yaqin, etc.)
+        $filters = $this->applyQueryModifiers($filters);
+
         $query = $this->buildBaseQuery($filters);
         $query = $this->applyListSelect($query);
         $query = $this->applyEagerLoads($query);
         $query = $this->applySorting($query, $filters);
 
-        return $this->paginate($query, $filters);
+        $results = $this->paginate($query, $filters);
+        
+        // Cache results
+        Cache::put($cacheKey, $results, self::CACHE_TTL);
+        
+        // Log search for analytics
+        $this->logSearch($filters, $results->total());
+
+        return $results;
+    }
+
+    /**
+     * Generate cache key from filters
+     */
+    private function getCacheKey(array $filters): string
+    {
+        $keyData = [
+            'search' => $filters['searchText'] ?? '',
+            'type' => $filters['type'] ?? '',
+            'subject' => $filters['subject_name'] ?? '',
+            'checked' => $filters['checked'] ?? '',
+            'price_min' => $filters['min_price'] ?? '',
+            'price_max' => $filters['max_price'] ?? '',
+            'lat' => $filters['latitude'] ?? '',
+            'lng' => $filters['longitude'] ?? '',
+            'radius' => $filters['radius'] ?? '',
+            'sort' => $filters['sort'] ?? '',
+            'order' => $filters['order'] ?? '',
+            'page' => $filters['page'] ?? 1,
+        ];
+        
+        return 'search:' . md5(serialize($keyData));
+    }
+
+    /**
+     * Apply query modifiers detected from search text
+     * Handles: arzon, qimmat, yaqin, eng yaxshi, etc.
+     */
+    private function applyQueryModifiers(array $filters): array
+    {
+        if (empty($filters['searchText'])) {
+            return $filters;
+        }
+
+        $modifiers = TextHelper::detectModifiers($filters['searchText']);
+        
+        // Apply detected modifiers
+        if (isset($modifiers['sort']) && empty($filters['sort'])) {
+            $filters['sort'] = $modifiers['sort'];
+        }
+        
+        if (isset($modifiers['order']) && empty($filters['order'])) {
+            $filters['order'] = $modifiers['order'];
+        }
+        
+        if (isset($modifiers['radius']) && empty($filters['radius'])) {
+            $filters['radius'] = $modifiers['radius'];
+        }
+        
+        // Detect type from query
+        $detectedType = TextHelper::detectType($filters['searchText']);
+        if ($detectedType && empty($filters['type'])) {
+            $filters['type'] = $detectedType;
+        }
+
+        return $filters;
+    }
+
+    /**
+     * Log search for analytics
+     */
+    private function logSearch(array $filters, int $resultCount): void
+    {
+        if (empty($filters['searchText'])) {
+            return;
+        }
+
+        Log::info('Search query', [
+            'query' => $filters['searchText'],
+            'results' => $resultCount,
+            'filters' => array_diff_key($filters, array_flip(['searchText'])),
+            'ip' => request()->ip(),
+            'timestamp' => now()->toIso8601String(),
+        ]);
     }
 
     /**
@@ -163,8 +255,8 @@ class SearchService
         $query = $this->applyGlobalSearch($query, $filters);
         $query = $this->applyTypeFilter($query, $filters);
         $query = $this->applySubjectFilter($query, $filters);
-        $query = $this->applyNeedTeachersFilter($query, $filters);
         $query = $this->applyPriceFilter($query, $filters);
+        $query = $this->applyCheckedFilter($query, $filters);
         $query = $this->applyGeoFilter(
             $query,
             isset($filters['latitude']) ? (float) $filters['latitude'] : null,
@@ -176,16 +268,18 @@ class SearchService
     }
 
     /**
-     * Apply SMART UNIFIED SEARCH across learning_centers and related tables.
+     * Apply SMART NLP SEARCH across learning_centers and related tables.
      *
-     * Strategy:
-     * 1. TOKENIZE searchText by whitespace: "english samarkand" → ["english", "samarkand"]
-     * 2. Apply synonym expansion for subjects (math → matematika, etc.)
-     * 3. For queries > 3 chars, use FULLTEXT MATCH() AGAINST() for better performance
-     * 4. For shorter queries, use LIKE with transliteration support
-     * 5. AND logic between tokens: ALL tokens must match somewhere
+     * NEW STRATEGY (AI-Free, Token-Based):
+     * 1. PROCESS: "Samarqanddagi eng yaxshi ingliz kurslar" 
+     *    → tokenize → strip suffixes → remove stop words
+     *    → ["samarqand", "ingliz"]
+     * 2. AUTO-CORRECT: Fix typos via Levenshtein distance (≤2)
+     * 3. SYNONYM NORMALIZE: ingliz → english
+     * 4. TOKEN-BASED AND SEARCH: ALL tokens must match
+     * 5. RELEVANCE SCORING: Rank by match quality
      *
-     * Performance: EXISTS (not JOIN), Full-Text where possible, indexed columns only
+     * Performance: EXISTS (not JOIN), indexed columns, 5min cache
      */
     private function applyGlobalSearch(Builder $query, array $filters): Builder
     {
@@ -195,20 +289,97 @@ class SearchService
             return $query;
         }
 
-        $normalized = TextHelper::normalize($searchText);
-        $tokens = TextHelper::tokenize($normalized);
-
+        // STEP 1: Full NLP pipeline processing
+        $tokens = TextHelper::processQuery($searchText);
+        
         if (empty($tokens)) {
             return $query;
         }
 
-        // Check if we can use FULLTEXT search (queries > 3 characters)
-        if (strlen($normalized) > 3 && $this->hasFullTextIndex()) {
-            return $this->applyFullTextSearch($query, $normalized, $tokens);
+        // STEP 2: Auto-correct typos
+        $tokens = TextHelper::autoCorrect($tokens);
+
+        // STEP 3: Normalize to canonical forms (synonyms)
+        $tokens = array_map(fn($t) => TextHelper::normalizeToken($t), $tokens);
+        $tokens = array_unique($tokens);
+
+        // STEP 4: Build token-based AND search
+        return $this->applyTokenBasedSearch($query, $tokens);
+    }
+
+    /**
+     * Token-based AND search - ALL tokens must match somewhere
+     * Uses EXISTS for efficient related table queries
+     */
+    private function applyTokenBasedSearch(Builder $query, array $tokens): Builder
+    {
+        foreach ($tokens as $token) {
+            // Get all variants (original + transliterated)
+            $variants = TextHelper::getTokenVariants($token);
+            
+            $query->where(function (Builder $q) use ($variants, $token) {
+                // Search learning_centers fields
+                $this->applyTokenSearchToFields($q, $variants);
+                
+                // Search subjects
+                $this->applyTokenSearchToSubjects($q, $variants);
+                
+                // Search teachers
+                $this->applyTokenSearchToTeachers($q, $variants);
+            });
         }
 
-        // Fall back to LIKE-based search with synonym expansion
-        return $this->applyLikeSearchWithSynonyms($query, $tokens);
+        return $query;
+    }
+
+    /**
+     * Search main fields with token variants
+     */
+    private function applyTokenSearchToFields(Builder $query, array $variants): void
+    {
+        $fields = ['name', 'address', 'region', 'province', 'type', 'manager_name'];
+        
+        $query->orWhere(function (Builder $q) use ($fields, $variants) {
+            foreach ($fields as $field) {
+                foreach ($variants as $variant) {
+                    $q->orWhere($field, 'LIKE', '%' . $variant . '%');
+                }
+            }
+        });
+    }
+
+    /**
+     * Search subjects table with EXISTS
+     */
+    private function applyTokenSearchToSubjects(Builder $query, array $variants): void
+    {
+        $query->orWhereExists(function ($sub) use ($variants) {
+            $sub->select(DB::raw(1))
+                ->from('subjects_of_learning_centers')
+                ->whereColumn('subjects_of_learning_centers.learning_centers_id', 'learning_centers.id')
+                ->where(function ($q) use ($variants) {
+                    foreach ($variants as $variant) {
+                        $q->orWhere('subject_name', 'LIKE', '%' . $variant . '%');
+                    }
+                });
+        });
+    }
+
+    /**
+     * Search teachers table with EXISTS
+     */
+    private function applyTokenSearchToTeachers(Builder $query, array $variants): void
+    {
+        $query->orWhereExists(function ($sub) use ($variants) {
+            $sub->select(DB::raw(1))
+                ->from('teachers')
+                ->whereColumn('teachers.learning_centers_id', 'learning_centers.id')
+                ->where(function ($q) use ($variants) {
+                    foreach ($variants as $variant) {
+                        $q->orWhere('name', 'LIKE', '%' . $variant . '%');
+                    }
+                });
+        });
     }
 
     /**
@@ -257,9 +428,6 @@ class SearchService
 
                 // Search teachers
                 $this->applyTokenTeacherSearchWithVariants($q, $variants);
-
-                // Search need_teacher
-                $this->applyTokenNeedTeacherSearchWithVariants($q, $variants);
             });
         }
 
@@ -312,24 +480,6 @@ class SearchService
                 ->where(function ($q) use ($variants) {
                     foreach ($variants as $variant) {
                         $q->orWhere('name', 'LIKE', '%' . $variant . '%');
-                    }
-                });
-        });
-    }
-
-    /**
-     * Need teacher search with variant expansion
-     */
-    private function applyTokenNeedTeacherSearchWithVariants(Builder $query, array $variants): void
-    {
-        $query->orWhereExists(function ($sub) use ($variants) {
-            $sub->select(DB::raw(1))
-                ->from('need_teacher')
-                ->whereColumn('need_teacher.learning_center_id', 'learning_centers.id')
-                ->where(function ($q) use ($variants) {
-                    foreach ($variants as $variant) {
-                        $q->orWhere('subject_name', 'LIKE', '%' . $variant . '%')
-                          ->orWhere('description', 'LIKE', '%' . $variant . '%');
                     }
                 });
         });
@@ -394,27 +544,6 @@ class SearchService
     }
 
     /**
-     * WHERE EXISTS search in need_teacher table for a single token.
-     */
-    private function applyTokenNeedTeacherSearch(Builder $query, string $token, string $transliterated): void
-    {
-        $pattern      = '%' . $token . '%';
-        $transPattern = '%' . $transliterated . '%';
-
-        $query->orWhereExists(function ($sub) use ($pattern, $transPattern) {
-            $sub->select(DB::raw(1))
-                ->from('need_teacher')
-                ->whereColumn('need_teacher.learning_center_id', 'learning_centers.id')
-                ->where(function ($q) use ($pattern, $transPattern) {
-                    $q->where('subject_name', 'LIKE', $pattern)
-                      ->orWhere('subject_name', 'LIKE', $transPattern)
-                      ->orWhere('description', 'LIKE', $pattern)
-                      ->orWhere('description', 'LIKE', $transPattern);
-                });
-        });
-    }
-
-    /**
      * Check if FULLTEXT index exists (for future use when FULLTEXT migration runs)
      */
     private function hasFullTextIndex(): bool
@@ -468,38 +597,6 @@ class SearchService
     }
 
     /**
-     * Apply "need teachers" filter
-     * 'all' = has any announcement, otherwise filter by subject name
-     */
-    private function applyNeedTeachersFilter(Builder $query, array $filters): Builder
-    {
-        $needTeachers = $filters['needTeachers'] ?? null;
-
-        if (empty($needTeachers)) {
-            return $query;
-        }
-
-        if ($needTeachers === 'all') {
-            // Has any need_teacher records
-            return $query->has('needTeachers');
-        }
-
-        // Filter by specific subject in need_teacher
-        $pattern = '%' . $needTeachers . '%';
-        $transPattern = '%' . $this->transliterateUzbek($needTeachers) . '%';
-
-        return $query->whereExists(function ($subQuery) use ($pattern, $transPattern) {
-            $subQuery->select(DB::raw(1))
-                ->from('need_teacher')
-                ->whereColumn('need_teacher.learning_center_id', 'learning_centers.id')
-                ->where(function ($q) use ($pattern, $transPattern) {
-                    $q->where('subject_name', 'LIKE', $pattern)
-                        ->orWhere('subject_name', 'LIKE', $transPattern);
-                });
-        });
-    }
-
-    /**
      * Apply price range filter via teacher_subjects relationship
      * Path: learning_center -> subjects -> teacherSubjects -> price
      */
@@ -530,6 +627,28 @@ class SearchService
                     }
                 });
         });
+    }
+
+    /**
+     * Apply verified/checked filter
+     * Options: '1' = verified only, '0' = unverified only, null/empty = all
+     */
+    private function applyCheckedFilter(Builder $query, array $filters): Builder
+    {
+        $checked = $filters['checked'] ?? null;
+
+        if ($checked === '1' || $checked === 1 || $checked === true) {
+            // Verified only - use integer comparison
+            $query->where('checked', '=', 1);
+        } elseif ($checked === '0' || $checked === 0 || $checked === false) {
+            // Unverified only - use integer comparison
+            $query->where(function ($q) {
+                $q->where('checked', '=', 0)->orWhereNull('checked');
+            });
+        }
+        // If null/empty, show all (no filter applied)
+
+        return $query;
     }
 
     /**
@@ -677,14 +796,8 @@ class SearchService
      */
     private function applyEagerLoads(Builder $query): Builder
     {
-        // Load latest needTeachers (limit in relation would need custom logic)
-        $query->with(['needTeachers' => function ($q) {
-            $q->latest()->limit(3); // Only load 3 latest announcements
-        }]);
-
         // Use withCount for aggregates (more efficient than loading all)
         $query->withCount('favorites');
-        $query->withCount('needTeachers');
 
         return $query;
     }
@@ -741,6 +854,7 @@ class SearchService
 
     /**
      * Apply relevance-based sorting when search text is provided
+     * Uses new NLP pipeline for token extraction and scoring
      */
     private function applyRelevanceSorting(Builder $query, array $filters): Builder
     {
@@ -749,53 +863,20 @@ class SearchService
             return $query->latest('id');
         }
 
-        $normalized = TextHelper::normalize($searchText);
-        $tokens = TextHelper::tokenize($normalized);
+        // Use full NLP pipeline to get clean tokens
+        $tokens = TextHelper::processQuery($searchText);
         
         if (empty($tokens)) {
             return $query->latest('id');
         }
 
-        // Build relevance scoring SQL
-        // Higher score = better match
-        $relevanceSql = $this->buildRelevanceScoreSql($tokens);
+        // Build relevance scoring SQL using TextHelper weights
+        $relevanceSql = TextHelper::buildRelevanceSql($tokens);
         
-        // Use addSelect to avoid overwriting existing column selections
-        // This preserves columns from applyListSelect and adds relevance_score
         $query->addSelect(DB::raw("{$relevanceSql} as relevance_score"))
               ->orderByRaw('relevance_score DESC, total_reyting DESC, created_at DESC');
 
         return $query;
-    }
-
-    /**
-     * Build SQL for calculating relevance score based on token matches
-     */
-    private function buildRelevanceScoreSql(array $tokens): string
-    {
-        $conditions = [];
-        
-        foreach ($tokens as $token) {
-            $escapedToken = addslashes($token);
-            
-            // Exact name match (highest weight: 100)
-            $conditions[] = "CASE WHEN LOWER(name) = '{$escapedToken}' THEN 100 ELSE 0 END";
-            
-            // Name starts with token (weight: 80)
-            $conditions[] = "CASE WHEN LOWER(name) LIKE '{$escapedToken}%' THEN 80 ELSE 0 END";
-            
-            // Name contains token (weight: 60)
-            $conditions[] = "CASE WHEN LOWER(name) LIKE '%{$escapedToken}%' THEN 60 ELSE 0 END";
-            
-            // Address/Region/Province contains token (weight: 40)
-            $conditions[] = "CASE WHEN LOWER(address) LIKE '%{$escapedToken}%' OR LOWER(region) LIKE '%{$escapedToken}%' OR LOWER(province) LIKE '%{$escapedToken}%' THEN 40 ELSE 0 END";
-            
-            // Type match (weight: 30)
-            $conditions[] = "CASE WHEN LOWER(type) LIKE '%{$escapedToken}%' THEN 30 ELSE 0 END";
-        }
-        
-        // Sum all conditions for final score
-        return '(' . implode(' + ', $conditions) . ')';
     }
 
     /**

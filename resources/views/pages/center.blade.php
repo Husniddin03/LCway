@@ -1,907 +1,424 @@
 <x-layout>
-    <x-slot:title>{{ $LearningCenter->name }} haqida batafsil ma'lumot</x-slot:title>
-    
-    <!-- Hero Section -->
-    <section class="relative py-16 md:py-20 bg-gradient-to-br from-primary-600 via-accent-600 to-primary-800 overflow-hidden">
-        <!-- Background Shapes -->
-        <div class="absolute inset-0">
-            <div class="absolute top-20 left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-20 right-20 w-96 h-96 bg-accent-400/20 rounded-full blur-3xl"></div>
-            <div class="absolute top-1/2 left-1/3 w-64 h-64 bg-white/5 rounded-full blur-2xl"></div>
-        </div>
+@push('styles')
+    <!-- GLightbox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.2.0/dist/css/glightbox.min.css">
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4f46e5; }
         
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="text-center text-white">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ $LearningCenter->name }}</h1>
-                <p class="text-xl text-white/90 max-w-3xl mx-auto">{{ $LearningCenter->type }}</p>
+        /* Glass Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass-card {
+            background: rgba(31, 41, 55, 0.9);
+            border: 1px solid rgba(75, 85, 99, 0.4);
+        }
+        
+        /* Hover Effects */
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* Image Zoom */
+        .img-zoom {
+            overflow: hidden;
+        }
+        .img-zoom img {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .img-zoom:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Pulse Animation */
+        @keyframes softPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-soft-pulse {
+            animation: softPulse 2s ease-in-out infinite;
+        }
+        
+        /* GLightbox Custom Styles */
+        .glightbox-container {
+            z-index: 999999 !important;
+        }
+        .gslide {
+            backdrop-filter: blur(20px);
+        }
+        .pswp__img {
+            border-radius: 12px !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+        }
+        .pswp__button--arrow--prev,
+        .pswp__button--arrow--next {
+            width: 60px !important;
+            height: 60px !important;
+            background: rgba(255, 255, 255, 0.95) !important;
+            border-radius: 50% !important;
+            margin: 0 20px !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+        }
+        .pswp__button--close {
+            width: 50px !important;
+            height: 50px !important;
+            background: rgba(255, 255, 255, 0.95) !important;
+            border-radius: 50% !important;
+            top: 20px !important;
+            right: 20px !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+        }
+        .pswp__top-bar {
+            background: transparent !important;
+        }
+        
+        /* Comment Animation */
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .comment-enter {
+            animation: slideInUp 0.4s ease-out;
+        }
+        
+        /* Shimmer */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+    </style>
+@endpush
+
+<x-slot:title>{{ $LearningCenter->name }} - {{ __('center.title') }}</x-slot:title>
+
+    <!-- 🎨 MODERN HERO -->
+    <section class="relative min-h-[65vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-600 dark:from-violet-900 dark:via-purple-900 dark:to-fuchsia-900">
+            <div class="absolute inset-0 overflow-hidden">
+                <div class="absolute -top-20 -left-20 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+                <div class="absolute top-1/3 right-0 w-80 h-80 bg-pink-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+                <div class="absolute bottom-0 left-1/3 w-72 h-72 bg-indigo-400/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+            </div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-4 text-center" data-aos="fade-up">
+            @if ($LearningCenter->checked)
+                <div class="inline-flex items-center gap-2 px-5 py-2.5 mb-6 bg-emerald-500/20 backdrop-blur-md border border-emerald-400/40 rounded-full animate-soft-pulse">
+                    <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span class="text-sm font-semibold text-emerald-100">{{ __('center.verified') }}</span>
+                </div>
+            @endif
+
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 text-white leading-tight drop-shadow-2xl">
+                {{ $LearningCenter->name }}
+            </h1>
+
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                @if($LearningCenter->type)
+                    <span class="px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/30 rounded-full text-sm font-medium text-white/90">
+                        {{ $LearningCenter->type->name ?? $LearningCenter->type }}
+                    </span>
+                @endif
+                <span class="px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/30 rounded-full text-sm font-medium text-white/90 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    </svg>
+                    {{ $LearningCenter->region }}, {{ $LearningCenter->province }}
+                </span>
+                @php
+                    $avgRating = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
+                @endphp
+                @if($avgRating > 0)
+                    <span class="px-5 py-2.5 bg-amber-500/20 backdrop-blur-md border border-amber-400/40 rounded-full text-sm font-semibold text-amber-100 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-amber-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        {{ $avgRating }} ({{ $LearningCenter->favorites()->count() }} baho)
+                    </span>
+                @endif
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-4 mt-8">
+                <a href="#contact" class="px-8 py-4 bg-white text-purple-700 font-bold rounded-full hover:scale-105 transition-all shadow-xl shadow-purple-500/30 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    Bog'lanish
+                </a>
+                <a href="#gallery" class="px-8 py-4 bg-white/10 backdrop-blur-md border-2 border-white/50 text-white font-bold rounded-full hover:bg-white/20 hover:scale-105 transition-all flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01"/>
+                    </svg>
+                    Rasmlar
+                </a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-8 h-8 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- 📍 STICKY NAVIGATION -->
+    <div class="sticky top-[70px] z-40 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 py-3" data-aos="fade-down">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex items-center gap-1 overflow-x-auto scrollbar-hide">
+                <a href="#about" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">Biz haqimizda</a>
+                @if($LearningCenter->images->count() > 0)
+                    <a href="#gallery" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">Rasmlar</a>
+                @endif
+                @if($LearningCenter->teachers->count() > 0)
+                    <a href="#teachers" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">O'qituvchilar</a>
+                @endif
+                <a href="#comments" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">Izohlar</a>
+                <a href="#contact" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">Aloqa</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- 📸 MAIN IMAGE -->
+    <section class="py-12 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="relative group rounded-3xl overflow-hidden shadow-2xl" data-aos="zoom-in">
+                @if($LearningCenter->logo)
+                    <img src="{{ asset('storage/' . $LearningCenter->logo) }}" alt="{{ $LearningCenter->name }}" class="w-full h-[400px] md:h-[500px] object-cover">
+                @else
+                    <div class="w-full h-[400px] md:h-[500px] bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-500 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-6xl font-bold mb-2">{{ $LearningCenter->type }}</div>
+                            <div class="text-2xl opacity-90">{{ $LearningCenter->name }}</div>
+                        </div>
+                    </div>
+                @endif
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </div>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <section class="py-16 bg-gray-50 dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <!-- Main Content Area -->
-                <div class="lg:col-span-2">
-                    <!-- Main Image -->
-                    <div class="mb-8">
-                        <div class="relative rounded-2xl overflow-hidden shadow-xl">
-                            <img src="{{ asset('storage/' . $LearningCenter->logo) }}" 
-                                 alt="{{ $LearningCenter->name }}" 
-                                 class="w-full h-96 object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-                        </div>
-                    </div>
-
-                    <!-- Rating and Meta Info -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
-                        <div class="flex flex-wrap items-center justify-between gap-4">
-                            <div class="flex items-center space-x-4">
-                                @php
-                                    $average = round($LearningCenter->favorites()->avg('rating') ?? 0, 1);
-                                @endphp
-                                <div class="flex items-center">
-                                    <div class="flex text-yellow-400">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            @php
-                                                $diff = $average - $i;
-                                            @endphp
-                                            <span class="text-2xl {{ $average >= $i ? '' : ($diff > -1 && $diff < 0 ? 'opacity-50' : 'opacity-20') }}">
-                                                ★
-                                            </span>
-                                        @endfor
-                                    </div>
-                                    <span class="ml-2 text-lg font-semibold text-gray-900 dark:text-white">{{ $average }}</span>
-                                </div>
-                            </div>
-                            
-                            <div class="flex flex-wrap gap-2 text-sm text-gray-600 dark:text-gray-400">
-                                <span class="flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                    {{ $LearningCenter->user->name }}
-                                </span>
-                                <span class="flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    {{ $LearningCenter->created_at->diffForHumans() }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- About Section -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Markaz haqida</h2>
-                        <div class="prose prose-lg max-w-none text-gray-600 dark:text-gray-300">
-                            <p>{{ $LearningCenter->about }}</p>
-                        </div>
-                    </div>
-
-                    <!-- Image Gallery -->
-                    @if($LearningCenter->images->count() > 0)
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Rasmlar</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                @foreach ($LearningCenter->images as $image)
-                                    <div class="relative group overflow-hidden rounded-xl">
-                                        <img src="{{ asset('storage/' . $image->image) }}" 
-                                             alt="Gallery image" 
-                                             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
-                                    </div>
-                                @endforeach
-                            </div>
-                            
-                            @auth
-                                @can('isOun', $LearningCenter)
-                                    <div class="mt-6 text-center">
-                                        <x-button variant="outline" href="{{ route('course.editImage', $LearningCenter->slug) }}">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                            Rasmlarni tahrirlash
-                                        </x-button>
-                                    </div>
-                                @endcan
-                            @endauth
-                        </div>
-                    @endif
-
-                    <!-- Schedule Section -->
-                    @if($LearningCenter->calendar && $LearningCenter->calendar->count() > 0)
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Ish grafigi</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                @foreach ($LearningCenter->calendar as $calendar)
-                                    <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
-                                        <div>
-                                            <h4 class="font-semibold text-gray-900 dark:text-white">{{ $calendar->weekdays }}</h4>
-                                            <p class="text-gray-600 dark:text-gray-400">
-                                                {{ date('H:i', strtotime($calendar->open_time)) }} - {{ date('H:i', strtotime($calendar->close_time)) }}
-                                            </p>
-                                        </div>
-                                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                                    </div>
-                                @endforeach
-                            </div>
-                            
-                            @auth
-                                @can('isOun', $LearningCenter)
-                                    <div class="mt-6 text-center">
-                                        <x-button variant="outline" href="{{ route('course.weekday', $LearningCenter->slug) }}">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            Grafikni tahrirlash
-                                        </x-button>
-                                    </div>
-                                @endcan
-                            @endauth
-                        </div>
-                    @endif
-
-                    <!-- Teachers Section -->
-                    @if($LearningCenter->teachers->count() > 0)
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                            <div class="flex items-center justify-between mb-6">
-                                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Ustozlar</h2>
-                                @auth
-                                    @can('isOun', $LearningCenter)
-                                        <x-button variant="primary" href="{{ route('teacher.create', 'center=' . $LearningCenter->slug) }}">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                            </svg>
-                                            Yangi ustoz
-                                        </x-button>
-                                    @endcan
-                                @endauth
-                            </div>
-                            
-                            <div class="space-y-6">
-                                @foreach ($LearningCenter->teachers as $teacher)
-                                    <div class="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors group">
-                                        <div class="flex-shrink-0">
-                                            <div class="w-16 h-16 relative">
-                                                @if(isset($teacher->photo))
-                                                    <img src="{{ asset('storage/' . $teacher->photo) }}" 
-                                                         alt="{{ $teacher->name }}" 
-                                                         class="w-16 h-16 rounded-full object-cover ring-2 ring-white dark:ring-gray-700">
-                                                @else
-                                                    <img src="https://ui-avatars.com/api/?name={{ $teacher->name }}&background=random&size=64" 
-                                                         alt="{{ $teacher->name }}" 
-                                                         class="w-16 h-16 rounded-full ring-2 ring-white dark:ring-gray-700">
-                                                @endif
-                                                <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white dark:border-gray-700"></div>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="flex items-start justify-between">
-                                                <div>
-                                                    <h4 class="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{{ $teacher->name }}</h4>
-                                                    @php
-                                                        $teacherSubject = $teacher->teacherSubjects->first();
-                                                        $subjectName = $teacherSubject?->subject?->subject_name ?? 'Fan biriktirilmagan';
-                                                        $subjectType = $teacherSubject?->subject_type ?? '';
-                                                    @endphp
-                                                    <p class="text-primary-600 dark:text-primary-400 font-medium flex items-center mt-1">
-                                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                                        </svg>
-                                                        {{ $subjectName }}
-                                                        @if($subjectType)
-                                                            <span class="ml-2 text-sm text-gray-500">({{ $subjectType }})</span>
-                                                        @endif
-                                                    </p>
-                                                    <p class="text-gray-600 dark:text-gray-400 mt-2 line-clamp-2">{{ $teacher->about }}</p>
-                                                    @if($teacherSubject && $teacherSubject->price)
-                                                        <p class="text-sm text-green-600 dark:text-green-400 mt-1">
-                                                            {{ number_format($teacherSubject->price) }} {{ $teacherSubject->currency ?? 'so\'m' }}/{{ $teacherSubject->period ?? 'oy' }}
-                                                        </p>
-                                                    @endif
-                                                    <div class="flex items-center mt-2 text-sm text-gray-500 dark:text-gray-400">
-                                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                                        </svg>
-                                                        {{ $teacher->phone }}
-                                                    </div>
-                                                </div>
-                                                
-                                                <!-- Teacher actions for owner -->
-                                                @auth
-                                                    @can('isOun', $LearningCenter)
-                                                        <div class="flex items-center space-x-2">
-                                                            <x-button variant="outline" size="sm" href="{{ route('teacher.edit', $teacher->id) }}" class="p-2">
-                                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                                </svg>
-                                                            </x-button>
-                                                            <form action="{{ route('teacher.destroy', $teacher->id) }}" method="POST" onsubmit="return confirm('Rostdan ham {{ $teacher->name }}ni o‘chirilsinmi?');">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
-                                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                                    </svg>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    @endcan
-                                                @endauth
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    @else
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                            <div class="text-center py-8">
-                                <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+    <!-- 📝 ABOUT & SIDEBAR GRID -->
+    <section id="about" class="py-16 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- About Card -->
+                    <div class="glass-card rounded-3xl p-8 hover-lift" data-aos="fade-up">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Ustozlar hozircha yo'q</h3>
-                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazida hozircha ustozlar ro'yxatlanmagan</p>
-                                
-                                @auth
-                                    @can('isOun', $LearningCenter)
-                                        <x-button variant="primary" href="{{ route('teacher.create', 'center=' . $LearningCenter->slug) }}">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                            </svg>
-                                            Birinchi ustozni qo'shish
-                                        </x-button>
-                                    @endcan
-                                @endauth
+                                <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Biz haqimizda</h2>
                             </div>
                         </div>
-                    @endif
-
-                    <!-- Location Section -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
-                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Manzil</h2>
-                        <div class="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden">
-                            <iframe src="https://www.google.com/maps?q={{ $LearningCenter->location }}&hl=uz&z=14&output=embed"
-                                    allowfullscreen 
-                                    loading="lazy"
-                                    class="w-full h-96 rounded-xl border-0"></iframe>
-                        </div>
-                        <div class="mt-4">
-                            <p class="text-gray-600 dark:text-gray-400">
-                                <a href="https://www.google.com/maps?q={{ $LearningCenter->location }}" 
-                                   target="_blank" 
-                                   class="text-primary-600 dark:text-primary-400 hover:underline">
-                                    {{ $LearningCenter->address }}
-                                </a>
-                            </p>
+                        <div class="prose prose-lg max-w-none text-gray-600 dark:text-gray-300 leading-relaxed">
+                            <p class="text-lg">{{ $LearningCenter->about ?? 'Ma\'lumot mavjud emas' }}</p>
                         </div>
                     </div>
 
-                    <!-- Comments Section -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
-                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Izohlar</h2>
-                        
-                        <!-- Rating Form -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Markazni baholang</h3>
-                            <div class="flex items-center space-x-4">
-                                <div class="flex text-2xl" id="rating1" data-center-id="{{ $LearningCenter->id }}" @auth data-user-rating="{{ $userRating ?? 0 }}" @endauth>
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @php
-                                            $isActive = auth()->check() && $userRating && $i <= $userRating;
-                                        @endphp
-                                        <span class="star cursor-pointer text-gray-300 hover:text-yellow-400 transition-colors {{ $isActive ? 'text-yellow-400 active' : '' }}" data-value="{{ $i }}">★</span>
-                                    @endfor
-                                </div>
-                                <span id="result1" class="text-lg font-medium text-gray-600 dark:text-gray-400">
-                                    @auth
-                                        @if($userRating)
-                                            @php
-                                                $ratings_text = ['Juda yomon', 'Yomon', "O'rtacha", 'Yaxshi', 'Ajoyib'];
-                                            @endphp
-                                            {{ $userRating }} ⭐ - {{ $ratings_text[$userRating - 1] }}
-                                        @endif
-                                    @endauth
-                                </span>
-                            </div>
+                    <!-- Stats -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="glass-card rounded-2xl p-6 text-center hover-lift">
+                            <div class="text-3xl font-black text-purple-600 dark:text-purple-400">{{ $LearningCenter->student_count ?? 0 }}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">O'quvchilar</div>
                         </div>
-                        
-                        @auth
-                            <!-- AJAX Comment Form -->
-                            <form id="commentForm" class="mb-8">
-                                @csrf
-                                <input type="hidden" name="learning_centers_id" value="{{ $LearningCenter->id }}">
-                                <div class="flex space-x-4">
-                                    <input name="comment" 
-                                           id="commentInput"
-                                           type="text" 
-                                           placeholder="{{ $LearningCenter->name }} haqida fikringizni qoldiring..."
-                                           class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-                                           required>
-                                    <button type="submit" id="submitComment" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-xl transition-colors duration-200 flex items-center">
-                                        <svg id="sendIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                                        </svg>
-                                        <svg id="loadingIcon" class="w-5 h-5 animate-spin hidden" fill="none" viewBox="0 0 24 24">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <p id="commentError" class="text-red-500 text-sm mt-2 hidden"></p>
-                            </form>
-                        @else
-                            <!-- Guest Login/Register Prompt -->
-                            <div class="mb-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-                                <p class="text-gray-700 dark:text-gray-300 mb-4">Izoh qoldirish uchun tizimga kiring yoki ro'yxatdan o'ting</p>
-                                <div class="flex gap-3">
-                                    <a href="{{ route('signin') }}" class="flex-1 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-lg transition-colors">
-                                        Kirish
-                                    </a>
-                                    <a href="{{ route('signup') }}" class="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white text-center rounded-lg transition-colors">
-                                        Ro'yxatdan o'tish
-                                    </a>
-                                </div>
-                            </div>
-                        @endauth
-                        
-                        <!-- Comments List -->
-                        <div>
-                            <p class="text-gray-600 dark:text-gray-400 mb-3">Jami izohlar: <span id="commentsCount">{{ $LearningCenter->comments->count() }}</span></p>
-                            <div id="commentsList" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">
-                                @foreach ($LearningCenter->comments->reverse() as $comment)
-                                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-xl" id="comment-{{ $comment->id }}">
-                                        <div class="flex items-start justify-between">
-                                            <div>
-                                                <p class="font-semibold text-gray-900 dark:text-white">{{ $comment->user->name }}</p>
-                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $comment->user->email }}</p>
-                                            </div>
-                                            <span class="text-sm text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() }}</span>
-                                        </div>
-                                        <p class="mt-2 text-gray-600 dark:text-gray-300">{{ $comment->comment }}</p>
-                                        
-                                        @auth
-                                            @can('myComment', $comment)
-                                                <button onclick="deleteComment({{ $comment->id }})" class="mt-4 text-red-500 hover:text-red-700 text-sm transition-colors">
-                                                    Izohni o'chirish
-                                                </button>
-                                            @endcan
-                                        @endauth
-                                    </div>
-                                @endforeach
-                            </div>
+                        <div class="glass-card rounded-2xl p-6 text-center hover-lift">
+                            <div class="text-3xl font-black text-violet-600 dark:text-violet-400">{{ $LearningCenter->teachers->count() }}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">O'qituvchilar</div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 text-center hover-lift">
+                            <div class="text-3xl font-black text-fuchsia-600 dark:text-fuchsia-400">{{ $LearningCenter->subjects->count() }}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Fanlar</div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 text-center hover-lift">
+                            <div class="text-3xl font-black text-pink-600 dark:text-pink-400">{{ $LearningCenter->favorites()->count() }}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Baholar</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Sidebar -->
-                <div class="lg:col-span-1">
-                    <!-- Quick Info Card -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tezkor ma'lumot</h3>
-                        
+                <div class="lg:col-span-1 space-y-6">
+                    <!-- Contact Card -->
+                    <div id="contact" class="glass-card rounded-3xl p-6 hover-lift" data-aos="fade-left">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                Aloqa
+                            </h3>
+                        </div>
                         <div class="space-y-4">
-                            <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Turi</p>
-                                <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->type }}</p>
-                            </div>
-                            
-                            <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Manzil</p>
-                                <a href="https://www.google.com/maps?q={{ $LearningCenter->location }}" 
-                                   target="_blank" 
-                                   class="text-primary-600 dark:text-primary-400 hover:underline text-sm">
-                                    {{ $LearningCenter->address }}
-                                </a>
-                            </div>
-                            
-                            <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Qo'shilgan sana</p>
-                                <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->created_at->diffForHumans() }}</p>
-                            </div>
-                            
-                            <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">O'quvchilar soni</p>
-                                <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->student_count ?? 0 }}</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Action Buttons -->
-                        @auth
-                            @can('isOun', $LearningCenter)
-                                <div class="mt-6 space-y-3">
-                                    <x-button variant="primary" href="{{ route('course.edit', $LearningCenter->slug) }}" class="w-full">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            @if($LearningCenter->phone_number)
+                                <a href="tel:{{ $LearningCenter->phone_number }}" class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">
+                                    <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                                         </svg>
-                                        Tahrirlash
-                                    </x-button>
-                                    
-                                    <form action="{{ route('course.destroy', $LearningCenter->slug) }}" 
-                                          method="POST" 
-                                          onsubmit="return confirm('Rostdan ham {{ $LearningCenter->name }} markazini o‘chirilsinmi?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="w-full bg-danger-600 hover:bg-danger-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200">
-                                            <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                            O'chirish
-                                        </button>
-                                    </form>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">Telefon</div>
+                                        <div class="font-semibold text-gray-900 dark:text-gray-100">{{ $LearningCenter->phone_number }}</div>
+                                    </div>
+                                </a>
+                            @endif
+                            @if($LearningCenter->email)
+                                <a href="mailto:{{ $LearningCenter->email }}" class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">
+                                    <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">Email</div>
+                                        <div class="font-semibold text-gray-900 dark:text-gray-100">{{ $LearningCenter->email }}</div>
+                                    </div>
+                                </a>
+                            @endif
+                            <a href="https://www.openstreetmap.org/search?query={{ urlencode($LearningCenter->address) }}" target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">
+                                <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    </svg>
                                 </div>
-                            @endcan
-                        @endauth
+                                <div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">Manzil</div>
+                                    <div class="font-semibold text-gray-900 dark:text-gray-100">{{ $LearningCenter->address }}</div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
-                    
-                    <!-- Legal Information -->
-                    @if($LearningCenter->tin || $LearningCenter->license_number || $LearningCenter->manager_name || $LearningCenter->legal_address)
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Huquqiy ma'lumotlar</h3>
-                            
-                            <div class="space-y-3">
-                                @if($LearningCenter->tin)
-                                    <div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">STIR raqami</p>
-                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->tin }}</p>
-                                    </div>
-                                @endif
-                                
-                                @if($LearningCenter->license_number)
-                                    <div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">Litsenziya raqami</p>
-                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->license_number }}</p>
-                                    </div>
-                                @endif
-                                
-                                @if($LearningCenter->license_registration_date)
-                                    <div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">Litsenziya berilgan sana</p>
-                                        <p class="font-medium text-gray-900 dark:text-white">{{ is_string($LearningCenter->license_registration_date) ? $LearningCenter->license_registration_date : $LearningCenter->license_registration_date->format('d.m.Y') }}</p>
-                                    </div>
-                                @endif
-                                
-                                @if($LearningCenter->license_validity_period)
-                                    <div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">Litsenziya amal qilish muddati</p>
-                                        <p class="font-medium text-gray-900 dark:text-white">{{ is_string($LearningCenter->license_validity_period) ? $LearningCenter->license_validity_period : $LearningCenter->license_validity_period->format('d.m.Y') }}</p>
-                                    </div>
-                                @endif
-                                
-                                @if($LearningCenter->manager_name)
-                                    <div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">Rahbar</p>
-                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->manager_name }}</p>
-                                    </div>
-                                @endif
-                                
-                                @if($LearningCenter->phone_number)
-                                    <div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">Telefon</p>
-                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->phone_number }}</p>
-                                    </div>
-                                @endif
-                                
-                                @if($LearningCenter->email)
-                                    <div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
-                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->email }}</p>
-                                    </div>
-                                @endif
-                                
-                                @if($LearningCenter->ifut_code)
-                                    <div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">IFUT kodi</p>
-                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->ifut_code }}</p>
-                                    </div>
-                                @endif
-                                
-                                @if($LearningCenter->territory)
-                                    <div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">Nazorat bo'limi</p>
-                                        <p class="font-medium text-gray-900 dark:text-white">{{ $LearningCenter->territory }}</p>
-                                    </div>
-                                @endif
-                                
-                                @if($LearningCenter->legal_address)
-                                    <div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">Yuridik manzil</p>
-                                        <p class="font-medium text-gray-900 dark:text-white text-sm">{{ $LearningCenter->legal_address }}</p>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    @endif
-                    
-                    <!-- Subjects -->
-                    @if($LearningCenter->subjects->count() > 0)
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Fanlar</h3>
-                                @auth
-                                    @can('isOun', $LearningCenter)
-                                        <x-button variant="outline" size="sm" href="{{ route('subject.create', 'center=' . $LearningCenter->slug) }}">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                            </svg>
-                                            Qo'shish
-                                        </x-button>
-                                    @endcan
-                                @endauth
-                            </div>
-                            
-                            <div class="space-y-3">
-                                @foreach ($LearningCenter->subjects as $subject)
-                                    @php
-                                        $subjectPivot = $subject->teacherSubjects->first();
-                                    @endphp
-                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors group">
-                                        <div class="flex items-center space-x-3">
-                                            <div class="w-8 h-8 flex items-center justify-center">
-                                                <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                                    {{ strtoupper(substr($subject->subject_name, 0, 1)) }}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <p class="font-medium text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{{ $subject->subject_name }}</p>
-                                                @if($subjectPivot)
-                                                    <p class="text-sm text-blue-600 dark:text-blue-400 font-medium">{{ $subjectPivot->subject_type ?? 'Fan turi ko\'rsatilmagan' }}</p>
-                                                    <p class="text-sm text-gray-600 dark:text-gray-400 italic">{{ $subjectPivot->description ?? 'Tavsif ko\'rsatilmagan' }}</p>
-                                                    <p class="text-sm text-green-600 dark:text-green-400 font-semibold">{{ number_format($subjectPivot->price ?? 0) }} {{ $subjectPivot->currency ?? 'so\'m' }}/{{ $subjectPivot->period ?? 'oy' }}</p>
-                                                @else
-                                                    <p class="text-sm text-orange-500 dark:text-orange-400">O'qituvchi biriktirilmagan</p>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Subject actions for owner -->
-                                        @auth
-                                            @can('isOun', $LearningCenter)
-                                                <div class="flex items-center space-x-2">
-                                                    <x-button variant="outline" size="sm" href="{{ route('subject.edit', $subject->id) }}" class="p-2">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                        </svg>
-                                                    </x-button>
-                                                    <form action="{{ route('subject.destroy', $subject->id) }}" method="POST" onsubmit="return confirm('Rostdan ham {{ $subject->subject_name }} fani o\'chirilsinmi?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="p-2 text-red-500 hover:text-red-700 transition-colors">
-                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                            </svg>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            @endcan
-                                        @endauth
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    @else
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-                            <div class="text-center py-8">
-                                <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Fanlar hozircha yo'q</h3>
-                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazida hozircha fanlar ro'yxatlanmagan</p>
-                                
-                                @auth
-                                    @can('isOun', $LearningCenter)
-                                        <x-button variant="primary" href="{{ route('subject.create', 'center=' . $LearningCenter->slug) }}">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                            </svg>
-                                            Birinchi fanni qo'shish
-                                        </x-button>
-                                    @endcan
-                                @endauth
-                            </div>
-                        </div>
-                    @endif
 
-                    <!-- Weekly Schedule -->
-                    @if($LearningCenter->calendar && $LearningCenter->calendar->count() > 0)
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 my-8">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    Haftalik jadval
-                                </h3>
-                                @auth
-                                    @can('isOun', $LearningCenter)
-                                        <x-button variant="outline" size="sm" href="{{ route('course.weekday', $LearningCenter->slug) }}">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                            </svg>
-                                            Tahrirlash
-                                        </x-button>
-                                    @endcan
-                                @endauth
-                            </div>
-                            <div class="space-y-3">
-                                @forelse ($LearningCenter->calendar as $schedule)
-                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                                        <span class="font-medium text-gray-900 dark:text-white">{{ $schedule->weekdays }}</span>
-                                        <span class="text-sm text-gray-500 dark:text-gray-400">
-                                            {{ $schedule->open_time ? substr($schedule->open_time, 0, 5) : '--:--' }} - {{ $schedule->close_time ? substr($schedule->close_time, 0, 5) : '--:--' }}
-                                        </span>
-                                    </div>
-                                @empty
-                                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                                        <p>Jadval mavjud emas</p>
-                                    </div>
-                                @endforelse
-                            </div>
-                        </div>
-                    @else
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 my-8">
-                            <div class="text-center py-8">
-                                <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Jadval hozircha yo'q</h3>
-                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazda hozircha ish jadvali ko'rsatilmagan</p>
-                                
-                                @auth
-                                    @can('isOun', $LearningCenter)
-                                        <x-button variant="primary" href="{{ route('course.weekday', $LearningCenter->slug) }}">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                            </svg>
-                                            Jadval qo'shish
-                                        </x-button>
-                                    @endcan
-                                @endauth
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Social Networks -->
+                    <!-- Social Links -->
                     @if($LearningCenter->connections && $LearningCenter->connections->count() > 0)
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
-                                    </svg>
-                                    Ijtimoiy tarmoqlar
-                                </h3>
-                                @auth
-                                    @can('isOun', $LearningCenter)
-                                        <x-button variant="outline" size="sm" href="{{ route('connect.edit', $LearningCenter->slug) }}">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                            </svg>
-                                            Qo'shish
-                                        </x-button>
-                                    @endcan
-                                @endauth
-                            </div>
+                        <div class="glass-card rounded-3xl p-6 hover-lift" data-aos="fade-left" data-aos-delay="100">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Ijtimoiy tarmoqlar</h3>
                             <div class="grid grid-cols-2 gap-3">
                                 @foreach ($LearningCenter->connections as $connection)
-                                    @php
-                                        $url = $connection->url;
-                                        $name = strtolower($connection->connection_name);
-                                        
-                                        // Phone redirect
-                                        if ($name === 'phone' || str_contains($url, 'tel:')) {
-                                            $url = str_replace('tel:', '', $url);
-                                            $href = 'tel:' . $url;
-                                        }
-                                        // Email redirect  
-                                        elseif ($name === 'email' || str_contains($url, 'mailto:')) {
-                                            $url = str_replace('mailto:', '', $url);
-                                            $href = 'mailto:' . $url;
-                                        }
-                                        // Regular URL
-                                        else {
-                                            $href = $url;
-                                        }
-                                    @endphp
-                                    <a href="{{ $href }}" 
-                                       @if(!str_starts_with($href, 'tel:') && !str_starts_with($href, 'mailto:')) target="_blank" @endif
-                                       class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                                        <div class="w-8 h-8 flex items-center justify-center bg-white dark:bg-gray-600 rounded-lg mr-3">
-                                            <x-social-icon :icon="$connection->connection_icon" size="w-5 h-5" />
-                                        </div>
-                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">{{ $connection->connection_name }}</span>
+                                    <a href="{{ $connection->url }}" target="_blank" class="flex items-center gap-2 p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">
+                                        <x-social-icon :icon="$connection->connection_icon" size="w-5 h-5" />
+                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $connection->connection_name }}</span>
                                     </a>
                                 @endforeach
                             </div>
                         </div>
-                    @else
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
-                            <div class="text-center py-8">
-                                <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Ijtimoiy tarmoqlar yo'q</h3>
-                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazda hozircha aloqa ma'lumotlari ro'yxatlanmagan</p>
-                                
-                                @auth
-                                    @can('isOun', $LearningCenter)
-                                        <x-button variant="primary" href="{{ route('connect.edit', $LearningCenter->slug) }}">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                            </svg>
-                                            Aloqa qo'shish
-                                        </x-button>
-                                    @endcan
-                                @endauth
-                            </div>
-                        </div>
                     @endif
-
-                    <!-- Teacher Announcements -->
-                    @if($LearningCenter->needTeachers && $LearningCenter->needTeachers->count() > 0)
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
-                                    </svg>
-                                    O'qituvchi e'lonlari
-                                </h3>
-                                @auth
-                                    @can('isOun', $LearningCenter)
-                                        <x-button variant="primary" href="{{ route('teacher.announcement', $LearningCenter->slug) }}">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                            </svg>
-                                            E'lon qo'shish
-                                        </x-button>
-                                    @endcan
-                                @endauth
-                            </div>
-                            <div class="space-y-4">
-                                @foreach ($LearningCenter->needTeachers as $announcement)
-                                    <div class="p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-700/50 rounded-xl">
-                                        <div class="flex items-center gap-3 mb-2">
-                                            <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold">
-                                                {{ strtoupper(substr($announcement->subject_name, 0, 1)) }}
-                                            </div>
-                                            <div>
-                                                <h4 class="font-semibold text-gray-900 dark:text-white">{{ $announcement->subject_name }}</h4>
-                                                @if($announcement->subject_type)
-                                                    <span class="text-xs text-gray-500 dark:text-gray-400">{{ $announcement->subject_type }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        @if($announcement->description)
-                                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">{{ $announcement->description }}</p>
-                                        @endif
-                                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">{{ $announcement->created_at->diffForHumans() }}</p>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    @else
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
-                            <div class="text-center py-8">
-                                <div class="w-16 h-16 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">E'lonlar yo'q</h3>
-                                <p class="text-gray-600 dark:text-gray-400 mb-4">Bu o'quv markazda hozircha o'qituvchi e'lonlari yo'q</p>
-                                
-                                @auth
-                                    @can('isOun', $LearningCenter)
-                                        <x-button variant="primary" href="{{ route('teacher.announcement', $LearningCenter->id) }}">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                            </svg>
-                                            E'lon yaratish
-                                        </x-button>
-                                    @endcan
-                                @endauth
-                            </div>
-                        </div>
-                    @endif
-
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Related Centers Section -->
-    @if(!empty($relatedCenters) && count($relatedCenters) > 0)
-        <section class="py-16 bg-gray-100 dark:bg-gray-800">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">O'xshash markazlar</h2>
-                    <p class="text-lg text-gray-600 dark:text-gray-400">Sizga yoqqan markazga o'xshash boshqa o'quv markazlar</p>
+    <!-- 🖼️ GALLERY SECTION -->
+    @if($LearningCenter->images->count() > 0)
+        <section id="gallery" class="py-16 bg-white dark:bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">Rasmlar galereyasi</h2>
+                    <p class="text-gray-500 dark:text-gray-400">Rasmlarni bosib, kattalashtirib ko'rish</p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    @foreach ($relatedCenters as $relatedCenter)
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
-                            <!-- Image -->
-                            <div class="relative h-48 overflow-hidden">
-                                @if($relatedCenter->logo)
-                                    @if(str_starts_with($relatedCenter->logo, 'http://') || str_starts_with($relatedCenter->logo, 'https://'))
-                                        <x-optimized-image
-                                            src="{{ $relatedCenter->logo }}"
-                                            alt="{{ $relatedCenter->name }}"
-                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                            width="400"
-                                            height="192"
-                                        />
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="center-gallery">
+                    @foreach ($LearningCenter->images as $index => $image)
+                        <a href="{{ asset('storage/' . $image->image) }}" 
+                           class="glightbox img-zoom group relative rounded-2xl overflow-hidden shadow-lg aspect-square"
+                           data-aos="zoom-in" data-aos-delay="{{ $index * 50 }}">
+                            <img src="{{ asset('storage/' . $image->image) }}" 
+                                 alt="{{ $LearningCenter->name }}" 
+                                 class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-4">
+                                <span class="text-white text-sm font-medium">Kattalashtirish</span>
+                            </div>
+                            <div class="absolute top-3 right-3 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <svg class="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+                                </svg>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+
+                <div class="text-center mt-8">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/>
+                        </svg>
+                        ← → tugmalari bilan navigatsiya • ESC yoki click bilan yopish
+                    </p>
+                </div>
+            </div>
+        </section>
+    @endif
+
+    <!-- 👨‍🏫 TEACHERS SECTION -->
+    @if($LearningCenter->teachers->count() > 0)
+        <section id="teachers" class="py-16 bg-gray-50 dark:bg-gray-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">O'qituvchilarimiz</h2>
+                    <p class="text-gray-500 dark:text-gray-400">Tajribali va malakali o'qituvchilar jamoasi</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    @foreach ($LearningCenter->teachers as $index => $teacher)
+                        <div class="glass-card rounded-3xl p-6 hover-lift" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+                            <div class="flex items-start gap-4">
+                                <div class="relative">
+                                    @if(isset($teacher->photo))
+                                        <img src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}" class="w-20 h-20 rounded-2xl object-cover ring-4 ring-purple-100 dark:ring-purple-900/30">
                                     @else
-                                        <x-optimized-image
-                                            src="{{ asset('storage/' . $relatedCenter->logo) }}"
-                                            alt="{{ $relatedCenter->name }}"
-                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                            width="400"
-                                            height="192"
-                                        />
+                                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white text-2xl font-bold ring-4 ring-purple-100 dark:ring-purple-900/30">
+                                            {{ strtoupper(substr($teacher->name, 0, 1)) }}
+                                        </div>
                                     @endif
-                                @else
-                                    <div class="w-full h-48 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-indigo-600 dark:to-purple-800 flex items-center justify-center">
-                                        <div class="text-white text-center px-4">
-                                            <div class="text-xl font-bold mb-1">{{ $relatedCenter->type }}</div>
-                                            <div class="text-sm opacity-90">{{ $relatedCenter->name }}</div>
+                                    <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-start justify-between">
+                                        <div>
+                                            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $teacher->name }}</h3>
+                                            @if($teacher->teacherSubjects->count() > 0)
+                                                <div class="flex flex-wrap gap-2 mt-2">
+                                                    @foreach($teacher->teacherSubjects as $ts)
+                                                        <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-medium rounded-full">
+                                                            {{ $ts->subject->subject_name ?? '' }}
+                                                            @if($ts->price)
+                                                                <span class="text-green-600 dark:text-green-400">({{ number_format($ts->price) }})</span>
+                                                            @endif
+                                                        </span>
+                                                    @endforeach
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
-                                @endif
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            </div>
-
-                            <!-- Content -->
-                            <div class="p-5">
-                                <!-- Rating -->
-                                <div class="flex items-center gap-2 mb-3">
-                                    <div class="flex items-center">
-                                        @php
-                                            $avgRating = round($relatedCenter->favorites_avg_rating ?? $relatedCenter->total_reyting ?? 0, 1);
-                                        @endphp
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <span class="text-sm {{ $avgRating >= $i ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600' }}">★</span>
-                                        @endfor
-                                    </div>
-                                    <span class="text-sm font-semibold text-primary-600 dark:text-primary-400">{{ $avgRating }}</span>
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">({{ $relatedCenter->favorites_count ?? 0 }} baho)</span>
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm mt-3 line-clamp-2">{{ $teacher->about }}</p>
+                                    @if($teacher->phone)
+                                        <a href="tel:{{ $teacher->phone }}" class="inline-flex items-center gap-1 mt-3 text-sm text-purple-600 dark:text-purple-400 hover:underline">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                            </svg>
+                                            {{ $teacher->phone }}
+                                        </a>
+                                    @endif
                                 </div>
-
-                                <!-- Name -->
-                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                                    {{ $relatedCenter->name }}
-                                </h3>
-
-                                <!-- Address -->
-                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-1 flex items-center gap-1">
-                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    </svg>
-                                    {{ $relatedCenter->region }}{{ $relatedCenter->province ? ', ' . $relatedCenter->province : '' }}
-                                </p>
-
-                                <!-- Button -->
-                                <a href="{{ route('center', $relatedCenter->slug) }}"
-                                   class="inline-flex items-center justify-center w-full px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition-all duration-200 group-hover:shadow-lg">
-                                    Batafsil
-                                    <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                                    </svg>
-                                </a>
                             </div>
                         </div>
                     @endforeach
@@ -910,279 +427,273 @@
         </section>
     @endif
 
-    <!-- CTA Section -->
-    <section class="py-16 bg-gradient-to-r from-primary-600 to-accent-600">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-                Ushbu markazga qiziqish bildiraysizmi?
-            </h2>
-            <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                Bog'lanish orqali qo'shimcha ma'lumot oling yoki to'g'ridan-to'g'ri markazga murojaat qiling
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                @foreach ($LearningCenter->connections as $connection)
-                    @php
-                        $url = $connection->url;
-                        $name = strtolower($connection->connection_name);
-                        
-                        // Phone redirect
-                        if ($name === 'phone' || str_contains($url, 'tel:')) {
-                            $url = str_replace('tel:', '', $url);
-                            $href = 'tel:' . $url;
-                        }
-                        // Email redirect  
-                        elseif ($name === 'email' || str_contains($url, 'mailto:')) {
-                            $url = str_replace('mailto:', '', $url);
-                            $href = 'mailto:' . $url;
-                        }
-                        // Regular URL
-                        else {
-                            $href = $url;
-                        }
-                    @endphp
-                    <a href="{{ $href }}" 
-                       @if(!str_starts_with($href, 'tel:') && !str_starts_with($href, 'mailto:')) target="_blank" @endif
-                       class="bg-white/10 border border-white/20 text-white hover:bg-white/20 font-semibold py-3 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2">
-                        <span class="w-5 h-5 flex items-center justify-center">
-                            <x-social-icon :icon="$connection->connection_icon" size="w-5 h-5" />
-                        </span>
-                        <span>{{ $connection->connection_name }}</span>
+    <!-- 💬 COMMENTS SECTION -->
+    <section id="comments" class="py-16 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class="text-4xl font-black text-gray-900 dark:text-gray-100 mb-4">Fikr va mulohazalar</h2>
+                <p class="text-gray-500 dark:text-gray-400">O'quv markazi haqida fikringizni bildiring</p>
+            </div>
+
+            <!-- Rating Section -->
+            @auth
+                <div class="glass-card rounded-3xl p-8 mb-8" data-aos="fade-up">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Baholang</h3>
+                    <div class="flex items-center gap-2" id="rating-container" data-center-id="{{ $LearningCenter->id }}">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <button class="star-btn text-4xl text-gray-300 dark:text-gray-600 hover:text-amber-400 transition-all duration-200 hover:scale-125" data-value="{{ $i }}">★</button>
+                        @endfor
+                    </div>
+                    <p id="rating-message" class="text-sm text-amber-600 dark:text-amber-400 mt-2 font-medium"></p>
+                </div>
+
+                <!-- Comment Form -->
+                <div class="glass-card rounded-3xl p-8 mb-8" data-aos="fade-up">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Izoh qoldiring</h3>
+                    <form id="commentForm" class="space-y-4">
+                        @csrf
+                        <textarea id="commentInput" rows="4" class="w-full px-4 py-4 rounded-2xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none" placeholder="Fikringizni yozing..."></textarea>
+                        <div id="commentError" class="hidden p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm"></div>
+                        <button type="submit" id="submitComment" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-2">
+                            <svg id="sendIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                            </svg>
+                            <svg id="loadingIcon" class="w-5 h-5 hidden animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Yuborish
+                        </button>
+                    </form>
+                </div>
+            @else
+                <div class="glass-card rounded-3xl p-8 mb-8 text-center" data-aos="fade-up">
+                    <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                        </svg>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Izoh qoldirish uchun tizimga kiring</p>
+                    <a href="{{ route('signin') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl transition-colors">
+                        Kirish
                     </a>
+                </div>
+            @endauth
+
+            <!-- Comments List -->
+            <div id="commentsList" class="space-y-4 max-h-[500px] overflow-y-auto">
+                @foreach ($LearningCenter->comments->reverse() as $comment)
+                    <div class="glass-card rounded-2xl p-6 comment-enter" id="comment-{{ $comment->id }}">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                                {{ strtoupper(substr($comment->user->name, 0, 1)) }}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 dark:text-gray-100">{{ $comment->user->name }}</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() }}</p>
+                                    </div>
+                                </div>
+                                <p class="mt-3 text-gray-700 dark:text-gray-300">{{ $comment->comment }}</p>
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
             </div>
         </div>
     </section>
-</x-layout>
 
-<style>
-    /* Rating System Styles */
-    .star {
-        cursor: pointer;
-        transition: all 0.2s ease;
-        user-select: none;
-    }
+    <!-- 🗺️ MAP SECTION -->
+    <section class="py-16 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-card rounded-3xl overflow-hidden" data-aos="zoom-in">
+                @php
+                    $coords = $LearningCenter->location ? explode(',', $LearningCenter->location) : null;
+                    $lat = isset($coords[0]) && is_numeric(trim($coords[0])) ? (float) trim($coords[0]) : 41.2995;
+                    $lon = isset($coords[1]) && is_numeric(trim($coords[1])) ? (float) trim($coords[1]) : 69.2401;
+                    $bboxLeft = $lon - 0.01;
+                    $bboxRight = $lon + 0.01;
+                    $bboxBottom = $lat - 0.01;
+                    $bboxTop = $lat + 0.01;
+                @endphp
+                <iframe src="https://www.openstreetmap.org/export/embed.html?bbox={{ urlencode("$bboxLeft,$bboxBottom,$bboxRight,$bboxTop") }}&layer=mapnik&marker={{ $lat }}%2C{{ $lon }}"
+                        class="w-full h-[400px] border-0"
+                        allowfullscreen
+                        loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </section>
 
-    .star:hover {
-        transform: scale(1.1);
-    }
+    <!-- 🎯 CTA SECTION -->
+    <section class="py-20 bg-gradient-to-r from-violet-600 to-purple-600">
+        <div class="max-w-4xl mx-auto px-4 text-center" data-aos="fade-up">
+            <h2 class="text-4xl font-black text-white mb-4">Boshqalar ham bilishlari kerak!</h2>
+            <p class="text-xl text-white/80 mb-8">Ushbu o'quv markazi haqida do'stlaringizga aytib bering</p>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <button onclick="navigator.share ? navigator.share({title: '{{ $LearningCenter->name }}', text: '{{ $LearningCenter->about }}', url: window.location.href}) : alert('Ulashish funksiyasi mavjud emas')" class="px-8 py-4 bg-white text-purple-700 font-bold rounded-full hover:scale-105 transition-all shadow-xl flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                    </svg>
+                    Do'stlar bilan ulashish
+                </button>
+            </div>
+        </div>
+    </section>
 
-    .star.hover {
-        color: #fbbf24;
-    }
-
-    .star.active {
-        color: #f59e0b;
-    }
-
-    /* Dark mode adjustments */
-    .dark .star.hover {
-        color: #fbbf24;
-    }
-
-    .dark .star.active {
-        color: #f59e0b;
-    }
-</style>
-
-
-@auth
-    <script>
-        // Rating functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const ratings = {};
-
-            function initRating(ratingId, resultId) {
-                const starsContainer = document.getElementById(ratingId);
-                if (!starsContainer) return;
-                
-                const stars = starsContainer.querySelectorAll('.star');
-
-                stars.forEach(star => {
-                    star.addEventListener('mouseenter', () => {
-                        const value = star.dataset.value;
-                        highlightStars(stars, value);
-                    });
-
-                    star.addEventListener('click', () => {
-                        const value = star.dataset.value;
-                        const centerId = starsContainer.dataset.centerId;
-                        ratings[ratingId] = value;
-
-                        // Update stars
-                        stars.forEach(s => {
-                            if (s.dataset.value <= value) {
-                                s.classList.add('active');
-                            } else {
-                                s.classList.remove('active');
-                            }
-                        });
-
-                        updateResult(resultId, value);
-
-                        // Send rating to server
-                        sendRating(centerId, value);
+    <!-- 📜 SCRIPTS -->
+    @auth
+        <script>
+            // Rating functionality
+            document.querySelectorAll('.star-btn').forEach(star => {
+                star.addEventListener('mouseenter', function() {
+                    const value = this.dataset.value;
+                    document.querySelectorAll('.star-btn').forEach((s, i) => {
+                        s.classList.toggle('text-amber-400', i < value);
+                        s.classList.toggle('text-gray-300', i >= value);
+                        s.classList.toggle('dark:text-gray-600', i >= value);
                     });
                 });
-
-                starsContainer.addEventListener('mouseleave', () => {
-                    const savedRating = ratings[ratingId];
-                    if (savedRating) {
-                        highlightStars(stars, savedRating);
-                    } else {
-                        stars.forEach(s => s.classList.remove('hover'));
-                    }
-                });
-            }
-
-            function highlightStars(stars, value) {
-                stars.forEach(star => {
-                    if (star.dataset.value <= value) {
-                        star.classList.add('hover');
-                    } else {
-                        star.classList.remove('hover');
-                    }
-                });
-            }
-
-            function updateResult(resultId, value) {
-                const resultEl = document.getElementById(resultId);
-                if (!resultEl) return;
                 
-                const ratings_text = ['Juda yomon', 'Yomon', "O'rtacha", 'Yaxshi', 'Ajoyib'];
-                resultEl.textContent = `${value} ⭐ - ${ratings_text[value - 1]}`;
-            }
-
-            // Send rating to server
-            function sendRating(centerId, value) {
-                fetch('/comment/favoriteStore', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        rating: value,
-                        learning_centers_id: centerId
-                    })
-                })
-                .then(async response => {
-                    const text = await response.text();
-
-                    try {
-                        const data = JSON.parse(text);
-                        if (!response.ok) {
-                            console.error('Server returned error:', data);
-                        } else {
-                            console.log('Reyting yuborildi:', data);
-                        }
-                    } catch (err) {
-                        console.error('JSON.parse xatosi:', err);
-                        console.error('Server returned raw text:', text);
-                    }
-                })
-                .catch(error => {
-                    console.error('Fetch xatosi:', error);
-                });
-            }
-
-            // Initialize rating
-            initRating('rating1', 'result1');
-        });
-
-        document.getElementById('commentForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitComment');
-            const sendIcon = document.getElementById('sendIcon');
-            const loadingIcon = document.getElementById('loadingIcon');
-            const errorDiv = document.getElementById('commentError');
-            const input = document.getElementById('commentInput');
-            
-            // Show loading state
-            submitBtn.disabled = true;
-            sendIcon.classList.add('hidden');
-            loadingIcon.classList.remove('hidden');
-            errorDiv.classList.add('hidden');
-            
-            try {
-                const response = await fetch('{{ route('comment.store') }}', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        learning_centers_id: {{ $LearningCenter->id }},
-                        comment: input.value
-                    })
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
+                star.addEventListener('click', function() {
+                    const value = this.dataset.value;
+                    const centerId = document.getElementById('rating-container').dataset.centerId;
                     
-                    // Add new comment to list
-                    const commentsList = document.getElementById('commentsList');
-                    const newComment = document.createElement('div');
-                    newComment.className = 'p-4 bg-gray-50 dark:bg-gray-700 rounded-xl';
-                    newComment.innerHTML = `
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <p class="font-semibold text-gray-900 dark:text-white">${data.user_name}</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">${data.user_email}</p>
+                    fetch('/comment/favoriteStore', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ rating: value, learning_centers_id: centerId })
+                    });
+                    
+                    const messages = ['Yomon', 'Qoniqarsiz', 'Yaxshi', 'Ajoyib', 'A\'lo'];
+                    document.getElementById('rating-message').textContent = `${value} - ${messages[value - 1]}`;
+                });
+            });
+
+            // Comment form
+            document.getElementById('commentForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = document.getElementById('submitComment');
+                const sendIcon = document.getElementById('sendIcon');
+                const loadingIcon = document.getElementById('loadingIcon');
+                const input = document.getElementById('commentInput');
+                const error = document.getElementById('commentError');
+                
+                btn.disabled = true;
+                sendIcon.classList.add('hidden');
+                loadingIcon.classList.remove('hidden');
+                error.classList.add('hidden');
+                
+                try {
+                    const response = await fetch('{{ route('comment.store') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            learning_centers_id: {{ $LearningCenter->id }},
+                            comment: input.value
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        const commentsList = document.getElementById('commentsList');
+                        const newComment = document.createElement('div');
+                        newComment.className = 'glass-card rounded-2xl p-6 comment-enter';
+                        newComment.innerHTML = `
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">${data.user_name.charAt(0).toUpperCase()}</div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h4 class="font-bold text-gray-900 dark:text-gray-100">${data.user_name}</h4>
+                                            <p class="text-xs text-gray-500">Hozirgina</p>
+                                        </div>
+                                    </div>
+                                    <p class="mt-3 text-gray-700 dark:text-gray-300">${input.value}</p>
+                                </div>
                             </div>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">Hozirgina</span>
-                        </div>
-                        <p class="mt-2 text-gray-600 dark:text-gray-300">${input.value}</p>
-                        <button onclick="deleteComment(${data.comment_id})" class="mt-4 text-red-500 hover:text-red-700 text-sm transition-colors">
-                            Izohni o'chirish
-                        </button>
-                    `;
-                    commentsList.insertBefore(newComment, commentsList.children[1]);
-                    
-                    // Update count
-                    const countSpan = document.getElementById('commentsCount');
-                    countSpan.textContent = parseInt(countSpan.textContent) + 1;
-                    
-                    // Clear input
-                    input.value = '';
-                } else {
-                    const error = await response.json();
-                    errorDiv.textContent = error.message || 'Xatolik yuz berdi';
-                    errorDiv.classList.remove('hidden');
-                }
-            } catch (err) {
-                errorDiv.textContent = 'Tarmoq xatosi. Qayta urinib ko\'ring.';
-                errorDiv.classList.remove('hidden');
-            } finally {
-                submitBtn.disabled = false;
-                sendIcon.classList.remove('hidden');
-                loadingIcon.classList.add('hidden');
-            }
-        });
-
-        async function deleteComment(commentId) {
-            if (!confirm('Rostdan bu izohni o\'chirilsinmi?')) return;
-            
-            try {
-                const response = await fetch(`/comments/${commentId}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-                        'Accept': 'application/json',
-                        'X-HTTP-Method-Override': 'DELETE'
+                        `;
+                        commentsList.insertBefore(newComment, commentsList.firstChild);
+                        input.value = '';
+                    } else {
+                        const err = await response.json();
+                        error.textContent = err.message || 'Xatolik yuz berdi';
+                        error.classList.remove('hidden');
                     }
-                });
-                
-                if (response.ok) {
-                    document.getElementById(`comment-${commentId}`).remove();
-                    const countSpan = document.getElementById('commentsCount');
-                    countSpan.textContent = parseInt(countSpan.textContent) - 1;
+                } catch (err) {
+                    error.textContent = 'Tarmoq xatoligi';
+                    error.classList.remove('hidden');
+                } finally {
+                    btn.disabled = false;
+                    sendIcon.classList.remove('hidden');
+                    loadingIcon.classList.add('hidden');
                 }
-            } catch (err) {
-                alert('Izohni o\'chirishda xatolik yuz berdi');
+            });
+
+            // Delete comment
+            async function deleteComment(id) {
+                if (!confirm('O\'chirishni tasdiqlaysizmi?')) return;
+                
+                try {
+                    const response = await fetch(`/comments/${id}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-HTTP-Method-Override': 'DELETE'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        document.getElementById(`comment-${id}`).remove();
+                    }
+                } catch (err) {
+                    alert('O\'chirishda xatolik');
+                }
             }
-        }
+        </script>
+    @endauth
+
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
     </script>
-@endauth
+
+
+    @push('scripts')
+        <!-- GLightbox -->
+        <script src="https://cdn.jsdelivr.net/npm/glightbox@3.2.0/dist/js/glightbox.min.js"></script>
+        <script>
+            const lightbox = GLightbox({
+                selector: '.glightbox',
+                touchNavigation: true,
+                loop: true,
+                autoplayVideos: true,
+                draggable: true,
+                openEffect: 'zoom',
+                closeEffect: 'fade',
+                slideEffect: 'slide',
+                moreText: 'Yana',
+                moreLength: 60,
+                cssEfects: {
+                    fade: { in: 'fadeIn', out: 'fadeOut' },
+                    zoom: { in: 'zoomIn', out: 'zoomOut' },
+                    slide: { in: 'slideInRight', out: 'slideOutLeft' }
+                }
+            });
+        </script>
+    @endpush
+
+</x-layout>

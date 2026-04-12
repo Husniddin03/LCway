@@ -9,7 +9,6 @@ use App\Services\AiSearchService;
 use App\Models\Favorite;
 use App\Models\LearningCenter;
 use App\Models\LearningCentersCalendar;
-use App\Models\NeedTeacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -144,7 +143,7 @@ class PageController extends Controller
             'favorites' => 'nullable|in:asc,desc',
             'sort' => 'nullable|in:name,distance,favorites,rating,created',
             'order' => 'nullable|in:asc,desc',
-            'needTeachers' => 'nullable|string|max:255',
+            'checked' => 'nullable|in:0,1',
             'min_price' => 'nullable|numeric|min:0',
             'max_price' => 'nullable|numeric|min:0',
             'dayMode' => 'nullable|in:true',
@@ -184,8 +183,24 @@ class PageController extends Controller
         );
 
         // Get paginated results
-        $paginator = $searchService->search($filters);
-        $LearningCenters = collect($paginator->items());
+        try {
+            $paginator = $searchService->search($filters);
+            $LearningCenters = collect($paginator->items());
+        } catch (\Exception $e) {
+            \Log::error('Search error: ' . $e->getMessage());
+            \Log::error($e->getTraceAsString());
+
+            // Return JSON error for AJAX requests
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => $e->getMessage(),
+                    'trace' => app()->environment('local') ? $e->getTraceAsString() : null,
+                ], 500);
+            }
+
+            throw $e;
+        }
 
         // Get lightweight map results
         $centersForMap = $searchService->searchForMap($filters)
@@ -210,7 +225,7 @@ class PageController extends Controller
                     'lng' => (float) ($coords[1] ?? 0),
                     'address' => $center->address ?? '',
                     'image' => $image,
-                    'detail_url' => route('center', $center->slug),
+                    'detail_url' => !empty($center->slug) ? route('center', $center->slug) : '#',
                 ];
             })->values()->all();
 
@@ -257,11 +272,13 @@ class PageController extends Controller
 
         // Load filter options
         $types = LearningCenter::distinct()->pluck('type')->filter()->sort()->values();
-        $subjects = \App\Models\SubjectsOfLearningCenter::distinct()
-            ->pluck('subject_name')
-            ->filter()
-            ->sort()
-            ->values();
+        $subjects = collect([]);
+
+        // Get typo suggestion if no results
+        $typoSuggestion = null;
+        if ($paginator->total() === 0 && !empty($validated['searchText'])) {
+            $typoSuggestion = TextHelper::getTypoSuggestion($validated['searchText']);
+        }
 
         return view('pages.centers', compact(
             'LearningCenters',
@@ -270,7 +287,8 @@ class PageController extends Controller
             'types',
             'userLocation',
             'centersForMap',
-            'subjects'
+            'subjects',
+            'typoSuggestion'
         ));
     }
 
@@ -281,8 +299,19 @@ class PageController extends Controller
     {
         if ($centers->isEmpty()) {
             return '<div class="col-span-full text-center py-12">
-                <p class="text-gray-500 dark:text-gray-400">' . __('centers.centers_grid.no_centers_found') . '</p>
-                <button onclick="clearAllFilters()" class="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">' . __('centers.centers_grid.clear_filters') . '</button>
+                <div class="relative max-w-lg mx-auto">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl opacity-20 blur"></div>
+                    <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-12 text-center border border-gray-100 dark:border-gray-700">
+                        <div class="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">' . __('centers.centers_grid.no_centers_found') . '</h3>
+                        <p class="text-gray-500 dark:text-gray-400 mb-6">' . __('centers.centers_grid.try_adjusting') . '</p>
+                        <button onclick="clearAllFilters()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all">' . __('centers.centers_grid.clear_filters') . '</button>
+                    </div>
+                </div>
             </div>';
         }
 
@@ -290,74 +319,82 @@ class PageController extends Controller
         foreach ($centers as $lc) {
             $average = $lc->display_rating;
 
-            $html .= '<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
-                <div class="relative h-48 overflow-hidden">';
+            $html .= '<div class="group relative">';
+            // Glow effect
+            $html .= '<div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-500"></div>';
+            // Card
+            $html .= '<div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-full border border-gray-100 dark:border-gray-700 group-hover:-translate-y-1">';
+            // Image container
+            $html .= '<div class="relative h-52 overflow-hidden">';
 
             if ($lc->logo) {
                 $logoUrl = (str_starts_with($lc->logo, 'http://') || str_starts_with($lc->logo, 'https://'))
                     ? $lc->logo
                     : asset('storage/' . $lc->logo);
-                $html .= '<img src="' . $logoUrl . '" alt="' . e($lc->name) . '" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">';
+                $html .= '<img src="' . $logoUrl . '" alt="' . e($lc->name) . '" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">';
             } else {
-                $html .= '<div class="w-full h-48 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-indigo-600 dark:to-purple-800 flex items-center justify-center">
-                    <div class="text-white text-center px-4">
-                        <div class="text-xl font-bold mb-1">' . e($lc->type) . '</div>
+                $html .= '<div class="w-full h-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 dark:from-indigo-600 dark:via-purple-700 dark:to-pink-800 flex items-center justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[url(\'data:image/svg+xml,%3Csvg width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22 fill-rule=%22evenodd%22%3E%3Ccircle cx=%223%22 cy=%223%22 r=%223%22/%3E%3Ccircle cx=%2213%22 cy=%2213%22 r=%223%22/%3E%3C/g%3E%3C/svg%3E\')]"></div>
+                    <div class="text-white text-center px-4 relative z-10">
+                        <div class="text-2xl font-bold mb-1 drop-shadow-lg">' . e($lc->type) . '</div>
                         <div class="text-sm opacity-90">' . e($lc->name) . '</div>
-                    </div></div>';
+                    </div>
+                </div>';
             }
 
-            $html .= '<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <a href="' . route('center', $lc->slug) . '" class="absolute bottom-4 right-4 bg-white text-primary-900 px-4 py-2 rounded-xl shadow-lg flex items-center gap-2 font-bold text-sm opacity-100 translate-y-0 lg:opacity-0 lg:translate-y-2 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-300 hover:bg-primary-50">
-                        <span class="font-bold">' . __('centers.centers_grid.read_more') . '</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
+            // Rating badge
+            $html .= '<div class="absolute top-3 right-3 bg-white dark:bg-gray-800 px-2.5 py-1 rounded-full shadow-lg border border-gray-200 dark:border-gray-600">
+                <div class="flex items-center gap-1">
+                    <span class="text-amber-500 text-sm">★</span>
+                    <span class="text-sm font-black text-gray-900 dark:text-white">' . $average . '</span>
                 </div>
-                <div class="p-6">
-                    <div class="flex flex-wrap gap-2 mb-4 text-sm text-gray-600 dark:text-gray-400">
-                        <div class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            <span>' . e($lc->region) . ', ' . e($lc->province) . '</span>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                            <span>' . $lc->date . '</span>
-                        </div>';
+            </div>';
+
+            // Verified badge
+            if ($lc->checked) {
+                $html .= '<div class="absolute top-3 left-3 bg-emerald-500/95 backdrop-blur p-1.5 rounded-full shadow-lg">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>';
+            }
+
+            // View button overlay
+            $html .= '<a href="' . route('center', $lc->slug) . '" class="absolute inset-0 flex items-end justify-center p-4 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span class="px-6 py-2.5 bg-white text-indigo-600 font-semibold rounded-xl shadow-lg hover:bg-gray-50 transition-colors flex items-center gap-2">' . __('centers.centers_grid.read_more') . '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></span>
+            </a>';
+            $html .= '</div>'; // End image container
+
+            // Content
+            $html .= '<div class="p-5">';
+            // Title
+            $html .= '<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                <a href="' . route('center', $lc->slug) . '">' . e($lc->name) . '</a>
+            </h3>';
+            $html .= '<p class="text-sm text-gray-500 dark:text-gray-400 mb-3">' . e($lc->type) . '</p>';
+
+            // Meta information
+            $html .= '<div class="flex flex-wrap gap-2 mb-3 text-sm text-gray-600 dark:text-gray-400">';
+            $html .= '<div class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span class="truncate">' . e($lc->region) . ', ' . e($lc->province) . '</span>
+            </div>';
             if (isset($lc->distance)) {
-                $html .= '<div class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg><span>' . $lc->distance . ' km</span></div>';
+                $html .= '<div class="flex items-center gap-1.5 px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/30 rounded-full">
+                    <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                    </svg>
+                    <span class="text-xs font-medium text-indigo-600 dark:text-indigo-400">' . round($lc->distance, 1) . ' km</span>
+                </div>';
             }
-            $html .= '</div>
-                    <div class="flex items-center gap-3 mb-4"><div class="flex items-center">';
-            for ($i = 1; $i <= 5; $i++) {
-                $html .= '<span class="text-lg ' . ($average >= $i ? 'text-yellow-400' : (($average - $i > -1 && $average - $i < 0) ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600')) . '">★</span>';
-            }
-            $html .= '</div><span class="text-lg font-semibold text-primary-600 dark:text-primary-400">' . $average . '</span></div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        <a href="' . route('center', $lc->slug) . '" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">' . e($lc->name) . '</a>
-                    </h3>
-                    <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
-                                <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
-                            </div>
-                            <h4 class="font-semibold text-gray-900 dark:text-white">' . __('centers.centers_grid.announcement') . '</h4>
-                        </div>';
-            if ($lc->needTeachers->count() > 0) {
-                $first = $lc->needTeachers->last();
-                $html .= '<div class="space-y-2"><p class="text-sm font-medium text-success-600 dark:text-success-400">' . __('centers.centers_grid.teacher_needed') . '</p>
-                    <div class="flex items-center justify-between text-sm">
-                        <span class="text-gray-700 dark:text-gray-300">🟢 ' . e($first->subject_name) . '</span>
-                        <span class="text-xs text-gray-500 dark:text-gray-400">' . $first->created_at->diffForHumans() . '</span>
-                    </div>';
-                if ($lc->needTeachers->count() > 1) {
-                    $html .= '<div><a href="' . route('center', $lc->slug) . '" class="text-sm text-primary-600 dark:text-primary-400 hover:underline">' . __('centers.centers_grid.more_announcements', ['count' => $lc->needTeachers->count() - 1]) . '</a></div>';
-                }
-                $html .= '</div>';
-            } else {
-                $html .= '<p class="text-sm text-gray-500 dark:text-gray-400">' . __('centers.centers_grid.no_announcements') . '</p>';
-            }
-            $html .= '</div></div></div>';
+            $html .= '</div>'; // End meta
+
+            $html .= '</div>'; // End content
+            $html .= '</div>'; // End card
+            $html .= '</div>'; // End group
         }
 
         return $html;
@@ -370,7 +407,7 @@ class PageController extends Controller
      */
     private function hasActiveFilters($validated)
     {
-        $filterFields = ['searchText', 'type', 'needTeachers', 'dayMode'];
+        $filterFields = ['searchText', 'type', 'checked', 'dayMode'];
 
         foreach ($filterFields as $field) {
             if (!empty($validated[$field])) {
@@ -409,7 +446,6 @@ class PageController extends Controller
     public function center(LearningCenter $center)
     {
         $LearningCenter = $center->load([
-            'needTeachers',
             'comments.user',
             'favorites',
             'subjects.teacherSubjects.teacher',

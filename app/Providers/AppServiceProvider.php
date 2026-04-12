@@ -44,7 +44,16 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('isOun', function (User $user, LearningCenter $center) {
-            return $user->id === $center->user->id;
+            // First check direct users_id column (more reliable)
+            if ($center->users_id !== null && $user->id === $center->users_id) {
+                return true;
+            }
+
+            // Fallback to user relationship check
+            if (!$center->relationLoaded('user')) {
+                $center->load('user');
+            }
+            return $center->user && $user->id === $center->user->id;
         });
 
         Gate::define('myComment', function (User $user, LearningCentersComment $comment) {

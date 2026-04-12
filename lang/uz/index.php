@@ -11,11 +11,18 @@ return [
         'description' => 'Bu yerda siz o\'zingizga mos bo\'lgan o\'quv markazlarni topishingiz mumkin. Biz sizga eng yaxshi xizmatni taqdim etamiz.',
         'browse_courses' => 'Hoziroq kurslarni tanlash',
         'contact_info' => 'Har qanday savol yoki taklif uchun biz bilan bog\'laning',
+        'badge' => ':count ta o\'quv markaz',
+        'phone' => 'Aloqa',
+        'verified_centers' => 'Tasdiqlangan markazlar',
+        'top_rated' => 'Eng yuqori reyting',
+        'support_24_7' => '24/7 Qo\'llab-quvvatlash',
     ],
     
     // Features Section
     'features' => [
+        'badge' => 'Xususiyatlar',
         'title' => 'Xususiyatlarimiz',
+        'subtitle' => 'Biz nima taklif qilamiz',
         'teacher_selection' => [
             'title' => 'O\'qituvchilar tanlovi',
             'description' => 'O\'zingizga munosib ko\'rgan o\'qituvchilarni tanlang.',
@@ -34,6 +41,9 @@ return [
     'about' => [
         'badge' => 'Nima uchun bizni tanlaysiz',
         'title' => 'Biz eng yaxshi xizmatlarni taqdim etamiz',
+        'centers' => 'Markazlar',
+        'students' => 'O\'quvchilar',
+        'cities' => 'Shaharlar',
         'description' => 'Biz haqimizda ko\'proq ma\'lumot olish uchun pastdagi videoni koring va biz haqimizda o\'z fikringizni qoldiring.',
         'video_question' => 'Bizning ishga munosabatingiz qanday?',
         'watch_video' => 'Videoni tomosha qiling',
@@ -42,6 +52,7 @@ return [
     
     // Services Section
     'services' => [
+        'badge' => 'Xizmatlar',
         'title' => 'Biz siz uchun eng yaxshi sifatli xizmatni taklif etamiz',
         'description' => 'Bu yerda biz qila oladigan ishlar berilgan',
         'startup_development' => [
@@ -72,6 +83,7 @@ return [
     
     // Featured Courses Section
     'featured_courses' => [
+        'badge' => 'Tavsiya etilgan',
         'title' => 'Mashhur o\'quv markazlari',
         'description' => 'Eng yaxshi reytingga ega o\'quv markazlari bilan tanishing',
         'view_all' => 'Barcha markazlarni ko\'rish',
@@ -81,8 +93,17 @@ return [
     
     // Categories Section
     'categories' => [
+        'badge' => 'Kategoriyalar',
         'title' => 'O\'qish yo\'nalishlari',
         'description' => 'O\'zingizga mos bo\'lgan yo\'nalishni tanlang',
+        'it' => 'IT va dasturlash',
+        'languages' => 'Chet tillari',
+        'mathematics' => 'Matematika',
+        'science' => 'Fan',
+        'arts' => 'San\'at',
+        'music' => 'Musiqa',
+        'sports' => 'Sport',
+        'business' => 'Biznes',
         'items' => [
             'IT va dasturlash',
             'Chet tillari',
@@ -101,6 +122,7 @@ return [
     
     // Testimonials Section
     'testimonials' => [
+        'badge' => 'Guvohlar',
         'title' => 'O\'quvchilarimiz fikrlari',
         'description' => 'Bitiruvchilarimiz tajribasi va muvaffaqiyatlari',
         'testimonial1' => [
@@ -126,13 +148,16 @@ return [
         'count_suffix' => 'ta',
         'description' => 'Ular safida siz ham bo\'ling va o\'zingizning o\'quv markazingizni qo\'shing!',
         'button' => 'Hoziroq qo\'shiling',
+        'explore' => 'Kashf qilish',
     ],
     
     // Contact Section
     'contact' => [
+        'badge' => 'Aloqa',
         'title' => 'Aloqa uchun',
         'description' => 'Agar sizda biror loyiha websayt yoki taklif bo\'lsa biz siz bilan albatta bog\'lanamiz. Buning uchun bizga o\'z malumotlaringizni yuboring yoki berilgan manzillar bilan bog\'laning!',
         'contact_us' => 'Biz bilan bog\'laning',
+        'address_value' => 'Toshkent, O\'zbekiston',
         'email' => 'Elektron pochta',
         'phone' => 'Telefon raqam',
         'address' => 'Manzil',
@@ -147,7 +172,8 @@ return [
         'form' => [
             'title' => 'Xabar yuboring',
             'success' => 'Xabar muvaffaqiyatli yuborildi!',
-            'error' => 'Xabarni yuborishda xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.',
+            'error' => 'Xabar yuborishda xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.',
+            'sending' => 'Yuborilmoqda...',
             'fullname' => 'To\'liq ismingiz',
             'email' => 'Email manzilingiz',
             'message' => 'Xabaringiz',

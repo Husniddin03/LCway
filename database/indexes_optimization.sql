@@ -26,11 +26,6 @@ ALTER TABLE subjects_of_learning_centers ADD INDEX idx_slc_subject_name (subject
 ALTER TABLE teachers ADD INDEX idx_teachers_center_name (learning_centers_id, name);
 ALTER TABLE teachers ADD INDEX idx_teachers_name (name);
 
--- need_teacher table indexes
-ALTER TABLE need_teacher ADD INDEX idx_nt_center_subject (learning_center_id, subject_name);
-ALTER TABLE need_teacher ADD INDEX idx_nt_subject_name (subject_name);
-ALTER TABLE need_teacher ADD INDEX idx_nt_created_at (created_at);
-
 -- teacher_subjects table indexes (for price filtering)
 ALTER TABLE teacher_subjects ADD INDEX idx_ts_subject_price (subject_id, price);
 ALTER TABLE teacher_subjects ADD INDEX idx_ts_price (price);
@@ -46,7 +41,6 @@ ALTER TABLE favorites ADD INDEX idx_fav_user_center (users_id, learning_centers_
 ANALYZE TABLE learning_centers;
 ANALYZE TABLE subjects_of_learning_centers;
 ANALYZE TABLE teachers;
-ANALYZE TABLE need_teacher;
 ANALYZE TABLE teacher_subjects;
 ANALYZE TABLE favorites;
 
@@ -57,6 +51,5 @@ ANALYZE TABLE favorites;
 SHOW INDEX FROM learning_centers;
 SHOW INDEX FROM subjects_of_learning_centers;
 SHOW INDEX FROM teachers;
-SHOW INDEX FROM need_teacher;
 SHOW INDEX FROM teacher_subjects;
 SHOW INDEX FROM favorites;

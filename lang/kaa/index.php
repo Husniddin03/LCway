@@ -11,11 +11,18 @@ return [
         'description' => 'Mında siz ózizge ma\'s bolǵan o\'qıw merkezlerin tabıwıńız múmkin. Biz sizge eń jaqsı xızmetni keltiriwimiz.',
         'browse_courses' => 'Dárejelerdi saylan',
         'contact_info' => 'Qanday da soraw yaki usnıs ushın biz menen baylanısıńız',
+        'badge' => ':count ta o\'qıw merkezi',
+        'phone' => 'Baylanıs',
+        'verified_centers' => 'Tastıyıqlangan merkezler',
+        'top_rated' => 'Eń joqarı reyting',
+        'support_24_7' => '24/7 Qo\'llap-quwatlaw',
     ],
     
     // Features Section
     'features' => [
+        'badge' => 'Múmkinshilikler',
         'title' => 'Bizdin múmkinshiliklerimiz',
+        'subtitle' => 'Biz nima usinis etemiz',
         'teacher_selection' => [
             'title' => 'O\'qıtıwshılar saylawı',
             'description' => 'Ózizge ma\'s ko\'rgen o\'qıtıwshılardı saylań.',
@@ -34,6 +41,9 @@ return [
     'about' => [
         'badge' => 'Náme ushın bizdi saylaysız',
         'title' => 'Biz eń jaqsı xızmetlerdi keltiremiz',
+        'centers' => 'Merkezler',
+        'students' => 'O\'qıwshılar',
+        'cities' => 'Qalalar',
         'description' => 'Biz haqqımızda kop ma\'lumat alıw ushın tómendegi videoni kóriń hám biz haqqımızda óz pikirińizdi qaldırıń.',
         'video_question' => 'Bizdin ishge munásibetińiz qanday?',
         'watch_video' => 'Videonı kóriw',
@@ -42,6 +52,7 @@ return [
     
     // Services Section
     'services' => [
+        'badge' => 'Xızmetler',
         'title' => 'Biz siz ushın eń jaqsı sapalı xızmetni usınıs etemiz',
         'description' => 'Mında biz qıla alatın isler berilgen',
         'startup_development' => [
@@ -72,6 +83,7 @@ return [
     
     // Featured Courses Section
     'featured_courses' => [
+        'badge' => 'Usınıs etiledigan',
         'title' => 'Populyar o\'qıw merkezleri',
         'description' => 'Eń jaqsı reytingqa iye o\'qıw merkezleri menen tanısıń',
         'view_all' => 'Barlıq merkezlerdi kóriw',
@@ -81,8 +93,17 @@ return [
     
     // Categories Section
     'categories' => [
+        'badge' => 'Kategoriyalar',
         'title' => 'O\'qıw baǵıtları',
         'description' => 'Ózizge ma\'s baǵıttı saylań',
+        'it' => 'IT hám dasturlaw',
+        'languages' => 'Shet tilleri',
+        'mathematics' => 'Matematika',
+        'science' => 'Fan',
+        'arts' => 'Óner',
+        'music' => 'Muzıka',
+        'sports' => 'Sport',
+        'business' => 'Biznes',
         'items' => [
             'IT hám dasturlaw',
             'Shet tilleri',
@@ -101,6 +122,7 @@ return [
     
     // Testimonials Section
     'testimonials' => [
+        'badge' => 'Pikirler',
         'title' => 'O\'qıwshılarımız pikirleri',
         'description' => 'Bitiriwshilerimiz tajribası hám muvaffaqqıyatları',
         'testimonial1' => [
@@ -126,13 +148,16 @@ return [
         'count_suffix' => 'ta',
         'description' => 'Olardı qatında siz de bolıń hám óz o\'qıw merkezińizdi qosıń!',
         'button' => 'Dárejede qosılıń',
+        'explore' => 'Izzet qılıw',
     ],
     
     // Contact Section
     'contact' => [
+        'badge' => 'Baylanıs',
         'title' => 'Baylanıs ushın',
         'description' => 'Eger sizde biror loyiha websayt yaki usnıs bolsa biz siz menen albatta baylanamız. Bunı ushın bizga óz maǵlıwmatlarıńızdı jiberiń yaki berilgen manziller menen baylanısıńız!',
         'contact_us' => 'Biz menen baylanısıńız',
+        'address_value' => 'Nukus, Qaraqalpaqstan',
         'email' => 'Elektron pochta',
         'phone' => 'Telefon nomeri',
         'address' => 'Manzil',
@@ -146,8 +171,9 @@ return [
         'message_placeholder' => 'Xabarıńıznı mına jerge jazıńız...',
         'form' => [
             'title' => 'Xabar jiberiń',
-            'success' => 'Xabar muvaffaqıyatlı jiberildi!',
-            'error' => 'Xabardı jiberiwde qátolik júz berdi. Iltimas, qaytadan urınıp kóriń.',
+            'success' => 'Xabar jiberildi!',
+            'error' => 'Xabar jiberiwde qatelik boldi. Qayta urinip korin.',
+            'sending' => 'Jiberilmoqda...',
             'fullname' => 'Tolıq atıńız',
             'email' => 'Email manzilińiz',
             'message' => 'Xabarıńız',

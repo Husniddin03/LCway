@@ -55,6 +55,19 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->name('api.')->gro
     Route::get('/centers-statistics', [AdminLearningCenterController::class, 'statistics'])->name('centers.statistics');
     Route::delete('/center-images/{imageId}', [AdminLearningCenterController::class, 'deleteImage'])->name('centers.delete-image');
 
+    Route::post('/centers/{center}/connections', [CenterManageController::class, 'storeConnection']);
+    Route::put('/centers/{center}/connections/{id}', [CenterManageController::class, 'updateConnection']);
+    Route::delete('/centers/{center}/connections/{id}', [CenterManageController::class, 'deleteConnection']);
+
+    Route::post('/centers/{center}/teachers', [CenterManageController::class, 'storeTeacher']);
+    Route::post('/centers/{center}/teachers/{teacherId}', [CenterManageController::class, 'updateTeacher']);
+    Route::delete('/centers/{center}/teachers/{teacherId}', [CenterManageController::class, 'destroyTeacher']);
+    Route::post('/centers/{center}/teachers/{teacherId}/subjects', [CenterManageController::class, 'assignTeacherSubjects']);
+
+    Route::post('/centers/{center}/subjects', [CenterManageController::class, 'storeSubject']);
+    Route::put('/centers/{center}/subjects/{id}', [CenterManageController::class, 'updateSubject']);
+    Route::delete('/centers/{center}/subjects/{id}', [CenterManageController::class, 'deleteSubject']);
+
     // Teachers
     Route::get('/teachers', [AdminTeacherController::class, 'index'])->name('teachers.index');
     Route::post('/teachers', [AdminTeacherController::class, 'store'])->name('teachers.store');

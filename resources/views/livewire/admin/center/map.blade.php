@@ -408,7 +408,7 @@
                                 ${center.phone ? `<p class="text-sm text-gray-500 mt-1">📞 ${center.phone}</p>` : ''}
                                 ${center.distance ? `<p class="text-sm text-indigo-600 mt-1 font-medium">📍 ${center.distance} km</p>` : ''}
                                 <div class="mt-3 pt-2 border-t border-gray-200">
-                                    <a href="/admin/centers/${center.id}" class="inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded hover:bg-indigo-700 transition-colors">
+                                    <a href="/admin/centers/${center.id}" class="inline-flex items-center px-3 py-1.5 text-gray-50 text-xs font-medium rounded hover:bg-indigo-700 transition-colors">
                                         Batafsil ma'lumot
                                         <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>

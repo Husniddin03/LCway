@@ -11,11 +11,18 @@ return [
         'description' => 'Here you can find the learning centers that suit you best. We provide you with the best service.',
         'browse_courses' => 'Browse Courses Now',
         'contact_info' => 'Contact us for any questions or suggestions',
+        'badge' => ':count learning centers',
+        'phone' => 'Contact',
+        'verified_centers' => 'Verified Centers',
+        'top_rated' => 'Top Rated',
+        'support_24_7' => '24/7 Support',
     ],
     
     // Features Section
     'features' => [
+        'badge' => 'Features',
         'title' => 'Our Features',
+        'subtitle' => 'What we offer',
         'teacher_selection' => [
             'title' => 'Teacher Selection',
             'description' => 'Choose the teachers that you find suitable.',
@@ -34,6 +41,9 @@ return [
     'about' => [
         'badge' => 'Why Choose Us',
         'title' => 'We Provide the Best Services',
+        'centers' => 'Centers',
+        'students' => 'Students',
+        'cities' => 'Cities',
         'description' => 'Watch the video below to learn more about us and leave your opinion about us.',
         'video_question' => 'What do you think about our work?',
         'watch_video' => 'Watch the video',
@@ -42,6 +52,7 @@ return [
     
     // Services Section
     'services' => [
+        'badge' => 'Services',
         'title' => 'We Offer the Best Quality Service for You',
         'description' => 'Here are the things we can do',
         'startup_development' => [
@@ -72,6 +83,7 @@ return [
     
     // Featured Courses Section
     'featured_courses' => [
+        'badge' => 'Featured',
         'title' => 'Popular Learning Centers',
         'description' => 'Meet the learning centers with the best ratings',
         'view_all' => 'View All Centers',
@@ -81,8 +93,17 @@ return [
     
     // Categories Section
     'categories' => [
+        'badge' => 'Categories',
         'title' => 'Study Directions',
         'description' => 'Choose the direction that suits you',
+        'it' => 'IT and Programming',
+        'languages' => 'Foreign Languages',
+        'mathematics' => 'Mathematics',
+        'science' => 'Science',
+        'arts' => 'Arts',
+        'music' => 'Music',
+        'sports' => 'Sports',
+        'business' => 'Business',
         'items' => [
             'IT and Programming',
             'Foreign Languages',
@@ -105,13 +126,16 @@ return [
         'count_suffix' => 'centers',
         'description' => 'Join them and add your own learning center!',
         'button' => 'Join Now',
+        'explore' => 'Explore',
     ],
     
     // Contact Section
     'contact' => [
+        'badge' => 'Contact',
         'title' => 'Contact Us',
         'description' => 'If you have any project website or suggestions, we will definitely contact you. For this, send us your information or contact us at the provided addresses!',
         'contact_us' => 'Contact Us',
+        'address_value' => 'Tashkent, Uzbekistan',
         'email' => 'Email',
         'phone' => 'Phone Number',
         'address' => 'Address',
@@ -126,7 +150,8 @@ return [
         'form' => [
             'title' => 'Send Message',
             'success' => 'Message sent successfully!',
-            'error' => 'Error sending message. Please try again.',
+            'error' => 'An error occurred while sending the message. Please try again.',
+            'sending' => 'Sending...',
             'fullname' => 'Your Full Name',
             'email' => 'Your Email Address',
             'message' => 'Your Message',
@@ -139,6 +164,7 @@ return [
     
     // Testimonials Section
     'testimonials' => [
+        'badge' => 'Testimonials',
         'title' => 'Our Students\' Feedback',
         'description' => 'Experiences and successes of our graduates',
         'testimonial1' => [

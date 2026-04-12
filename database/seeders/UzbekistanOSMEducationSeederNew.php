@@ -117,6 +117,7 @@ class UzbekistanOSMEducationSeederNew extends Seeder
             'total_reyting' => (float) ($data['rating'] ?? 0), // Initial total_reyting equals Google rating
             'ratings_total' => $data['ratings_total'] ?? 0,
             'status' => $data['status'] ?? 'active',
+            'checked' => false,
         ]);
     }
     

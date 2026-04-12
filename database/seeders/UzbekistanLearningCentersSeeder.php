@@ -63,6 +63,7 @@ class UzbekistanLearningCentersSeeder extends Seeder
                     'status' => $centerData['status'] ?? 'active',
                     'created_at' => now(),
                     'updated_at' => now(),
+                    'checked' => false,
                 ];
                 
                 // Create learning center

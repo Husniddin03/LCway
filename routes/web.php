@@ -3,14 +3,13 @@
 use App\Http\Controllers\Web\LanguageController;
 use App\Http\Controllers\Web\ChatController;
 use App\Http\Controllers\Web\CommentController;
-use App\Http\Controllers\Web\ConnectController;
+use App\Http\Controllers\Api\CenterManageController;
 use App\Http\Controllers\Web\CourseController;
 use App\Http\Controllers\Web\UserDataController;
+use App\Http\Controllers\Web\UserDashboardController;
 use App\Http\Controllers\Web\ImageController;
 use App\Http\Controllers\Auth\LogController;
 use App\Http\Controllers\Web\PageController;
-use App\Http\Controllers\Web\SubjectController;
-use App\Http\Controllers\Web\TeacherController;
 use App\Http\Controllers\Web\WeekdaysController;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Users;
@@ -29,11 +28,22 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use App\Models\LearningCenter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+
+// Explicit route model binding for 'center' parameter
+Route::bind('center', function ($value) {
+    return LearningCenter::where('slug', $value)->firstOrFail();
+});
+
+// Explicit route model binding for 'course' parameter (for resource routes)
+Route::bind('course', function ($value) {
+    return LearningCenter::where('slug', $value)->firstOrFail();
+});
 
 // Asosiy sahifalar uchun route lar
 Route::get('/', [PageController::class, 'index'])->name('index');
@@ -57,6 +67,41 @@ Route::middleware('guest')->group(function () {
 });
 // auth bo‘lgan foydalanuvchilar uchun route lar
 Route::middleware('auth')->group(function () {
+    // User Dashboard
+    Route::get('/my-dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('/my-centers', [UserDashboardController::class, 'centers'])->name('user.centers');
+    Route::get('/my-centers/{center:slug}/manage', [UserDashboardController::class, 'show'])->name('user.center.manage');
+
+    // API Routes for Center Management (Modal-based)
+    Route::prefix('api/centers/{center:slug}')->group(function () {
+        // Connections
+        Route::post('/connections', [CenterManageController::class, 'storeConnection']);
+        Route::put('/connections/{connection}', [CenterManageController::class, 'updateConnection']);
+        Route::delete('/connections/{connection}', [CenterManageController::class, 'destroyConnection']);
+
+        // Teachers
+        Route::post('/teachers', [CenterManageController::class, 'storeTeacher']);
+        Route::put('/teachers/{teacher}', [CenterManageController::class, 'updateTeacher']);
+        Route::delete('/teachers/{teacher}', [CenterManageController::class, 'destroyTeacher']);
+        Route::post('/teachers/{teacher}/subjects', [CenterManageController::class, 'assignTeacherSubjects']);
+
+        // Subjects
+        Route::post('/subjects', [CenterManageController::class, 'storeSubject']);
+        Route::put('/subjects/{subject}', [CenterManageController::class, 'updateSubject']);
+        Route::delete('/subjects/{subject}', [CenterManageController::class, 'destroySubject']);
+
+        // Images
+        Route::post('/images', [CenterManageController::class, 'storeImage']);
+        Route::post('/images/multiple', [CenterManageController::class, 'storeMultipleImages']);
+        Route::delete('/images/{image}', [CenterManageController::class, 'destroyImage']);
+
+        // Weekdays
+        Route::get('/weekdays', [CenterManageController::class, 'getWeekdays']);
+        Route::post('/weekdays', [CenterManageController::class, 'storeWeekday']);
+        Route::put('/weekdays/{weekday}', [CenterManageController::class, 'updateWeekday']);
+        Route::delete('/weekdays/{weekday}', [CenterManageController::class, 'destroyWeekday']);
+    });
+
     // profile uchun route
     Route::get('/profile', [UserDataController::class, 'index'])->name('profile');
     Route::get('/profile/edit', [UserDataController::class, 'edit'])->name('profile.edit');

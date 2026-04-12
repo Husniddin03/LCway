@@ -59,6 +59,7 @@ class SamarkandCentersSeeder extends Seeder
                     'ratings_total' => (int) ($centerData['ratings_total'] ?? 0),
                     'type' => $centerData['type'] ?? 'O\'quv markaz',
                     'status' => 'active',
+                    'checked' => false,
                 ]);
                 
                 // Handle photos if they exist

@@ -6,8 +6,16 @@ return [
     
     // Hero Section
     'hero' => [
+        'badge' => 'O\'quv markazlar',
         'title' => 'O\'quv markazlar',
         'description' => 'O\'zbekiston bo\'ylab eng yaxshi o\'quv markazlarini toping va o\'zingizga mos kurslarni tanlang',
+    ],
+
+    // Search Section
+    'search' => [
+        'placeholder' => 'O\'quv markazini qidiring...',
+        'button' => 'Qidirish',
+        'hint' => 'Nom, tur yoki joylashuv bo\'yicha qidiring',
     ],
     
     // Search and Filter Section
@@ -35,13 +43,24 @@ return [
         'type' => 'Turi',
         'teacher_announcements' => 'O\'qituvchi e\'lonlari',
         'all_announcements' => 'Barcha e\'lonlar',
-        'results_count' => 'ta o\'quv markaz topildi',
-        'searching' => 'Qidiryapman...',
+        'results_count' => 'ta natija',
+        'searching' => 'Qidirilmoqda...',
+        'expand' => 'Kattalashtirish',
+        'apply' => 'Qo\'llash',
         'price' => 'Narx',
         'min_price' => 'Min. narx',
         'max_price' => 'Max. narx',
-        'apply' => 'Qo\'llash',
-        'example_price' => 'Masalan: :price',
+        'min_price_placeholder' => 'Masalan: 0',
+        'max_price_placeholder' => 'Masalan: 1000000',
+        'example_price' => 'masalan: :price',
+        'subject_placeholder' => 'Qidirish... (masalan: ingliz)',
+        'subject_count' => ' ta fan',
+        'clear_button' => 'Tozalash',
+        'no_results' => 'Hech narsa topilmadi',
+        'click_map' => 'Joylashuvni tanlash uchun xaritaga bosing',
+        'verified_only' => 'Faqat tasdiqlanganlar',
+        'unverified_only' => 'Faqat tasdiqlanmaganlar',
+        'all_status' => 'Barcha holatlar',
     ],
     
     // Learning Centers Grid
@@ -53,5 +72,9 @@ return [
         'no_announcements' => 'Hozicha e\'lon berilmagan!',
         'no_centers_found' => 'Hech qanday o\'quv markazi topilmadi',
         'clear_filters' => 'Filterni tozalash',
+        'try_adjusting' => 'Qidiruv yoki filterni o\'zgartirib ko\'ring',
+        'did_you_mean' => 'Siz bunimi nazarda tutdingiz',
+        'loading_more' => 'Yuklanmoqda...',
+        'all_results' => 'Barcha natijalar yuklandi',
     ],
 ];

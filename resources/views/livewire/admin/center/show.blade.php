@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="flex space-x-3">
-            <a href="{{ route('admin.centers.edit', $center->id) }}" 
+            <a href="{{ route('admin.centers.edit', $center->slug) }}" 
                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
                 Tahrirlash
             </a>
@@ -372,39 +372,39 @@
 
     <!-- Images List with PhotoSwipe -->
     <div class="bg-white rounded-xl border border-gray-200 p-6" x-data="{
-        images: {{ $center->images->map(fn($img) => ['src' => asset('storage/' . $img->image), 'width' => 1200, 'height' => 800, 'id' => $img->id])->toJson() }},
-        initPhotoSwipe() {
-            const lightbox = new window.PhotoSwipeLightbox({
-                dataSource: this.images,
-                pswpModule: window.PhotoSwipe,
-                showHideAnimationType: 'zoom',
-                bgOpacity: 0.9,
-            });
-            
-            const deleteIcon = `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path></svg>`;
-            
-            lightbox.on('afterInit', () => {
-                const pswp = lightbox.pswp;
-                const deleteBtn = document.createElement('button');
-                deleteBtn.innerHTML = deleteIcon + '<span style=\'margin-left: 6px;\'>O\'chirish</span>';
-                deleteBtn.style.cssText = 'position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 10000; background: #dc2626; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; font-size: 14px;';
-                deleteBtn.onclick = () => {
-                    if (confirm('O\'chirishni tasdiqlaysizmi?')) {
-                        const imageId = pswp.currSlide.data.id;
-                        @this.deleteImage(imageId);
-                        pswp.close();
-                    }
-                };
-                pswp.element.appendChild(deleteBtn);
-            });
-            
-            lightbox.init();
-            this.lightbox = lightbox;
-        },
-        openPhotoSwipe(index) {
-            this.lightbox.loadAndOpen(index);
-        }
-    }" x-init="initPhotoSwipe()">
+            images: {{ $center->images->map(fn($img) => ['src' => asset('storage/' . $img->image), 'width' => 1200, 'height' => 800, 'id' => $img->id])->toJson() }},
+            initPhotoSwipe() {
+                const lightbox = new window.PhotoSwipeLightbox({
+                    dataSource: this.images,
+                    pswpModule: window.PhotoSwipe,
+                    showHideAnimationType: 'zoom',
+                    bgOpacity: 0.9,
+                });
+                
+                const deleteIcon = `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path></svg>`;
+                
+                lightbox.on('afterInit', () => {
+                    const pswp = lightbox.pswp;
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerHTML = deleteIcon + '<span style=\'margin-left: 6px;\'>O\'chirish</span>';
+                    deleteBtn.style.cssText = 'position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 10000; background: #dc2626; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; font-size: 14px;';
+                    deleteBtn.onclick = () => {
+                        if (confirm('O\'chirishni tasdiqlaysizmi?')) {
+                            const imageId = pswp.currSlide.data.id;
+                            @this.deleteImage(imageId);
+                            pswp.close();
+                        }
+                    };
+                    pswp.element.appendChild(deleteBtn);
+                });
+                
+                lightbox.init();
+                this.lightbox = lightbox;
+            },
+            openPhotoSwipe(index) {
+                this.lightbox.loadAndOpen(index);
+            }
+        }" x-init="initPhotoSwipe()">
         <style>
             .pswp__button--delete {
                 color: #fff !important;

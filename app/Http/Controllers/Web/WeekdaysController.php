@@ -13,6 +13,7 @@ class WeekdaysController extends Controller
 {
     public function edit(LearningCenter $center)
     {
+        $center->load('user');
         $LearningCenter = $center;
         Gate::authorize('isOun', $LearningCenter);
 
@@ -112,6 +113,7 @@ class WeekdaysController extends Controller
         $schedule = LearningCentersCalendar::findOrFail($id);
         $learningCenterId = $schedule->learning_centers_id;
 
+        $schedule->learningCenter->load('user');
         Gate::authorize('isOun', $schedule->learningCenter);
 
         $schedule->delete();

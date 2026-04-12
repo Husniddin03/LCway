@@ -1,219 +1,293 @@
 <x-layout>
     <x-slot:title>{{ __('centers.title') }}</x-slot:title>
 
-    <!-- Hero Section -->
-    <section
-        class="text-gray-900 dark:text-white bg-gradient-to-br from-primary-800 via-accent-800 to-primary-900 dark:from-primary-700 dark:via-accent-700 dark:to-primary-900 text-white py-16">
-        <div class="max-w-7xl mx-auto px-6">
+    {{-- Hero Section --}}
+    <section class="relative overflow-hidden">
+        {{-- Gradient Background --}}
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-900 dark:via-purple-800 dark:to-pink-900 transition-colors duration-500">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 400 400%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.05%22/%3E%3C/svg%3E')]"></div>
+        </div>
+
+        {{-- Floating Orbs --}}
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-10 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-10 right-1/4 w-80 h-80 bg-pink-400/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div class="text-center">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ __('centers.hero.title') }}</h1>
-                <p class="text-xl text-gray-900 dark:text-white text-white/90 max-w-2xl mx-auto">
+                {{-- Badge --}}
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl mb-6">
+                    <svg class="w-5 h-5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <span class="text-sm font-medium text-white/90">{{ __('centers.hero.badge') }}</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
+                    {{ __('centers.hero.title') }}
+                </h1>
+                <p class="text-xl text-white/80 max-w-2xl mx-auto">
                     {{ __('centers.hero.description') }}
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- Search and Filter Section -->
-    <section class="py-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div class="max-w-7xl mx-auto px-6">
-            <!-- Search Bar -->
-            <div class="mb-6">
+    {{-- Search and Filter Section --}}
+    <section class="relative z-20 py-10 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {{-- Search Bar --}}
+            <div class="mb-8">
                 <form id="searchForm" class="relative">
                     @foreach ($validated as $key => $value)
                         @if ($key !== 'searchText')
                             <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
                         @endif
                     @endforeach
-                    <div class="relative max-w-2xl mx-auto">
-                        <input type="text" name="searchText" id="searchText"
-                            placeholder="Search centers or subjects (e.g. IELTS, Math, IT, English...)"
-                            value="{{ $validated['searchText'] ?? '' }}"
-                            class="w-full px-6 py-4 pr-12 text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
-                        <button type="submit" id="searchBtn"
-                            class="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
-                            <svg id="searchIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                            <svg id="loadingIcon" class="w-5 h-5 hidden animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                            </svg>
-                        </button>
+                    <div class="relative max-w-3xl mx-auto">
+                        <div class="relative flex items-center bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500/30 focus-within:border-indigo-500 transition-all duration-200">
+                            <div class="pl-6 pr-3">
+                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                            <input type="text" name="searchText" id="searchText"
+                                placeholder="{{ __('centers.search.placeholder') }}"
+                                value="{{ $validated['searchText'] ?? '' }}"
+                                class="flex-1 py-5 pr-4 text-gray-900 dark:text-white bg-transparent border-none outline-none text-lg placeholder-gray-400">
+                            <button type="submit" id="searchBtn"
+                                class="m-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-lg transition-all duration-200 flex items-center gap-2">
+                                <svg id="searchIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                <svg id="loadingIcon" class="w-5 h-5 hidden animate-spin" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span>{{ __('centers.search.button') }}</span>
+                            </button>
+                        </div>
                     </div>
-                    <p class="text-center text-sm text-gray-500 dark:text-gray-400 mt-2">
-                        You can search by subject name or center name
+                    <p class="text-center text-sm text-gray-500 dark:text-gray-400 mt-3">
+                        {{ __('centers.search.hint') }}
                     </p>
                 </form>
             </div>
 
-            <!-- Filter Navigation -->
+            {{-- Filters --}}
             <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 relative z-20">
-                <div class="pointer-events-none flex overflow-x-auto pb-[400px] -mb-[400px] -mr-6 px-6 xl:pointer-events-auto xl:mx-0 xl:px-0 xl:pb-0 xl:mb-0 xl:overflow-visible xl:flex-wrap gap-2 w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <div class="flex overflow-x-auto pb-2 -mr-6 px-6 xl:mx-0 xl:px-0 xl:pb-0 xl:overflow-visible xl:flex-wrap gap-3 w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                    {{-- All Button --}}
                     <button type="button" onclick="clearAllFilters()"
-                        class="pointer-events-auto text-gray-900 dark:text-white px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 whitespace-nowrap flex-shrink-0">
+                        class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 whitespace-nowrap flex-shrink-0 font-medium flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                        </svg>
                         {{ __('centers.search_filter.all') }}
                     </button>
 
-                    <!-- Filter by maps -->
-                    {{-- ========== COMPONENT ========== --}}
-                    <div class="pointer-events-auto relative" x-data="mapFilterComp()" x-init="boot()">
-
-                        {{-- Trigger --}}
-                        <button type="button" class="mf-btn whitespace-nowrap flex-shrink-0" :class="isPanelOpen && 'is-open'" @click="toggle()">
-                            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    {{-- Map Filter --}}
+                    <div class="relative" x-data="mapFilterComp()" x-init="boot()">
+                        <button type="button" 
+                            class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-md transition-all whitespace-nowrap flex items-center gap-2"
+                            :class="isPanelOpen && 'ring-2 ring-indigo-400'"
+                            @click="toggle()">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                             {{ __('centers.search_filter.map_filter') }}
-                            <svg class="mf-chevron" width="13" height="13" fill="none" stroke="currentColor"
-                                stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            <svg class="w-4 h-4 transition-transform" :class="isPanelOpen && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
 
-                        {{-- Panel --}}
-                        <div class="mf-panel" x-show="isPanelOpen" x-transition:enter="transition ease-out duration-200"
+                        {{-- Map Panel --}}
+                        <div x-show="isPanelOpen" 
+                            x-transition:enter="transition ease-out duration-200"
                             x-transition:enter-start="opacity-0 -translate-y-2 scale-95"
                             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
                             x-transition:leave="transition ease-in duration-150"
                             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-                            x-transition:leave-end="opacity-0 -translate-y-2 scale-95" @click.outside="isPanelOpen = false"
+                            x-transition:leave-end="opacity-0 -translate-y-2 scale-95" 
+                            @click.outside="isPanelOpen = false"
+                            class="mf-panel fixed xl:absolute inset-2 sm:inset-4 xl:inset-auto xl:top-full xl:left-0 xl:mt-2 w-[calc(100%-16px)] sm:w-[calc(100%-32px)] xl:w-[900px] xl:max-w-[calc(100vw-40px)] bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 max-h-[90vh] xl:max-h-none overflow-hidden flex flex-col"
+                            :class="isFullscreen && 'mf-fullscreen'"
                             style="display:none;">
-
-                            {{-- Header --}}
-                            <div class="mf-header">
-                                <div style="display:flex;align-items:center;gap:10px;">
-                                    <div class="mf-hicon">
-                                        <svg width="16" height="16" fill="none" stroke="#fff"
-                                            stroke-width="2" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            
+                            {{-- Resize Handle (Desktop only) --}}
+                            <div class="hidden xl:block absolute bottom-0 right-0 w-6 h-6 cursor-nwse-resize z-50"
+                                @mousedown.prevent="startResize($event)"
+                                @touchstart.prevent="startResize($event)">
+                                <svg class="w-full h-full text-gray-400 hover:text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M22 22H20V20H22V22ZM22 18H18V22H20V20H22V18ZM18 18H16V20H18V18Z"/>
+                                </svg>
+                            </div>
+                            
+                            {{-- Panel Header --}}
+                            <div class="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="mf-htitle">{{ __('centers.search_filter.map_search') }}</div>
-                                        <div class="mf-hsub">{{ __('centers.search_filter.map_subtitle') }}</div>
+                                        <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('centers.search_filter.map_search') }}</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('centers.search_filter.map_subtitle') }}</div>
                                     </div>
                                 </div>
-                                <button type="button" class="mf-close-btn" @click="isPanelOpen = false">
-                                    <svg width="18" height="18" fill="none" stroke="currentColor"
-                                        stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                <button type="button" class="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors" @click="isPanelOpen = false">
+                                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                             </div>
 
-                            {{-- Map area --}}
-                            <div class="mf-map-wrap" id="mf-map-wrap">
-                                <div id="filterMapEl"></div>
-
-                                {{-- Loading placeholder --}}
-                                <div class="mf-placeholder" x-show="!mapReady">
-                                    <svg width="36" height="36" fill="none" stroke="currentColor"
-                                        stroke-width="1.5" viewBox="0 0 24 24" style="opacity:.4;">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M9 20l-5.447-9.132A1 1 0 013.382 9.5h17.236a1 1 0 01.838 1.368L16 20M9 20h6M9 20V9m6 11V9" />
-                                    </svg>
-                                    <span>{{ __('centers.search_filter.map_loading') }}</span>
+                            {{-- Map Area --}}
+                            <div class="relative bg-gray-50 dark:bg-gray-900 flex-1 min-h-[350px]"
+                                :style="`height: ${mapHeight}px`">
+                                <div id="filterMapEl" class="absolute inset-0 w-full h-full rounded-lg"></div>
+                                
+                                {{-- Mobile Resize Handle --}}
+                                <div class="xl:hidden absolute bottom-2 left-1/2 transform -translate-x-1/2 w-12 h-1.5 bg-gray-400 rounded-full cursor-ns-resize z-40"
+                                    @mousedown.prevent="startResize($event)"
+                                    @touchstart.prevent="startResize($event)">
+                                </div>
+                                
+                                {{-- Loading Placeholder --}}
+                                <div x-show="!mapReady" class="absolute inset-0 flex flex-col items-center justify-center gap-3 text-gray-400 bg-white dark:bg-gray-800">
+                                    <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
+                                        <svg class="w-8 h-8 text-indigo-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-9.132A1 1 0 013.382 9.5h17.236a1 1 0 01.838 1.368L16 20M9 20h6M9 20V9m6 11V4m0 0L9 7" />
+                                        </svg>
+                                    </div>
+                                    <span class="text-sm font-medium">{{ __('centers.search_filter.map_loading') }}</span>
                                 </div>
 
-                                {{-- Locate button --}}
-                                <button type="button" class="mf-locate-btn" @click.stop="locateMe()">
-                                    <svg width="14" height="14" fill="none" stroke="currentColor"
-                                        stroke-width="2" viewBox="0 0 24 24"
-                                        :style="locating ? 'animation:spin 1s linear infinite' : ''">
-                                        <circle cx="12" cy="12" r="3" />
-                                        <path d="M12 2v3m0 14v3M2 12h3m14 0h3" />
-                                    </svg>
-                                    <span x-text="locating ? '{{ __('centers.search_filter.locating') }}' : '{{ __('centers.search_filter.my_location') }}'"></span>
-                                </button>
+                                {{-- Map Toolbar --}}
+                                <div class="absolute top-3 left-3 right-3 z-[999] flex items-center gap-2 flex-wrap pointer-events-none">
+                                    {{-- Locate Button --}}
+                                    <button type="button" 
+                                        class="pointer-events-auto flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-indigo-600 hover:text-white transition-all border border-gray-200 dark:border-gray-700"
+                                        @click.stop="locateMe()">
+                                        <svg class="w-4 h-4" :class="locating && 'animate-spin'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="3" stroke-width="2"/>
+                                            <path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-width="2"/>
+                                        </svg>
+                                        <span x-text="locating ? '{{ __('centers.search_filter.locating') }}' : '{{ __('centers.search_filter.my_location') }}'"></span>
+                                    </button>
 
-                                {{-- Map size buttons --}}
-                                <div class="mf-map-size-btns">
-                                    <button type="button" class="mf-sizebtn" title="Kattalashtirish"
+                                    {{-- Expand Button --}}
+                                    <button type="button" 
+                                        class="pointer-events-auto p-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-700"
                                         @click.stop="toggleFullscreen()">
-                                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/>
+                                        <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/>
                                         </svg>
                                     </button>
                                 </div>
 
-                                <div class="mf-map-hint">{{ __('centers.search_filter.map_hint') }}</div>
+                                {{-- Hint --}}
+                                <div class="absolute bottom-3 left-3 z-10 px-3 py-2 bg-indigo-600 text-white rounded-lg text-xs font-semibold shadow-lg">
+                                    <span class="flex items-center gap-1.5">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/>
+                                        </svg>
+                                        {{ __('centers.search_filter.map_hint') }}
+                                    </span>
+                                </div>
                             </div>
 
                             {{-- Controls --}}
-                            <div class="mf-controls">
-
-                                {{-- Location info --}}
-                                <div class="mf-loc-box">
-                                    <div class="mf-loc-dot"></div>
-                                    <div style="flex:1;min-width:0;">
-                                        <div class="mf-loc-label">{{ __('centers.search_filter.selected_location') }}</div>
-                                        <div class="mf-loc-text" x-text="addressText"></div>
-                                        <div class="mf-loc-coords" x-show="lat && lng">
+                            <div class="p-4 bg-white dark:bg-gray-800 overflow-y-auto max-h-[35vh]">
+                                {{-- Location Info --}}
+                                <div class="flex items-start gap-3 p-3 bg-indigo-50/50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800/50 mb-4">
+                                    <div class="w-8 h-8 bg-indigo-100 dark:bg-indigo-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide mb-1">{{ __('centers.search_filter.selected_location') }}</div>
+                                        <div class="text-sm font-medium text-gray-800 dark:text-gray-200 truncate" x-text="addressText || '{{ __('centers.search_filter.click_map') }}'"></div>
+                                        <div class="text-xs text-gray-400 mt-0.5 font-mono" x-show="lat && lng">
                                             <span x-text="lat ? lat.toFixed(5) : ''"></span>,
                                             <span x-text="lng ? lng.toFixed(5) : ''"></span>
                                         </div>
                                     </div>
                                 </div>
 
-                                {{-- Radius row --}}
-                                <div class="mf-radius-row">
-                                    <div class="mf-radius-lbl">
-                                        <svg width="13" height="13" fill="none" stroke="#6366f1"
-                                            stroke-width="2" viewBox="0 0 24 24">
-                                            <circle cx="12" cy="12" r="9" />
-                                            <circle cx="12" cy="12" r="3" />
-                                        </svg>
-                                        {{ __('centers.search_filter.search_radius') }}
+                                {{-- Radius Slider --}}
+                                <div class="mb-5">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center gap-2 text-sm font-semibold text-gray-800 dark:text-gray-200">
+                                            <div class="w-7 h-7 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center">
+                                                <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <circle cx="12" cy="12" r="9" stroke-width="2"/>
+                                                    <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                                                </svg>
+                                            </div>
+                                            {{ __('centers.search_filter.search_radius') }}
+                                        </div>
+                                        <span class="px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded-full shadow-md" x-text="radius + ' km'"></span>
                                     </div>
-                                    <div class="mf-radius-badge" x-text="radius + ' km'"></div>
+                                    <div class="relative">
+                                        <input type="range" min="1" max="50" step="1"
+                                            x-model.number="radius" @input="onRadiusChange()"
+                                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full appearance-none cursor-pointer accent-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/30">
+                                    </div>
+                                    <div class="flex justify-between text-xs text-gray-400 mt-2 font-medium">
+                                        <span class="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">1 km</span>
+                                        <span class="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">25 km</span>
+                                        <span class="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">50 km</span>
+                                    </div>
                                 </div>
 
-                                <input type="range" min="1" max="50" step="1"
-                                    x-model.number="radius" @input="onRadiusChange()" class="mf-slider"
-                                    :style="`background:linear-gradient(to right,#4f46e5 0%,#4f46e5 ${(radius-1)/49*100}%,${darkMode?'#374151':'#e5e7eb'} ${(radius-1)/49*100}%,${darkMode?'#374151':'#e5e7eb'} 100%)`">
-
-                                <div class="mf-slider-marks">
-                                    <span>1 km</span><span>25 km</span><span>50 km</span>
-                                </div>
-
-                                <div class="mf-quick">
+                                {{-- Quick Radius Buttons --}}
+                                <div class="flex gap-2 mb-5">
                                     <template x-for="r in [2,5,10,20]" :key="r">
-                                        <button type="button" class="mf-qbtn"
-                                            :class="radius == r ? 'mf-qbtn-on' : 'mf-qbtn-off'"
+                                        <button type="button"
+                                            class="flex-1 px-3 py-2 text-xs font-semibold rounded-xl transition-all border"
+                                            :class="radius == r ? 'bg-indigo-600 border-indigo-600 text-white shadow-md' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-indigo-300 dark:hover:border-indigo-700'"
                                             @click="radius = r; onRadiusChange()" x-text="r + ' km'">
                                         </button>
                                     </template>
                                 </div>
 
-                                {{-- Hidden form inputs --}}
                                 <input type="hidden" name="latitude" :value="lat">
                                 <input type="hidden" name="longitude" :value="lng">
                                 <input type="hidden" name="radius" :value="radius">
 
                                 {{-- Actions --}}
-                                <div class="mf-actions">
-                                    <button type="button" class="mf-reset-btn"
-                                        @click="resetFilter()">{{ __('centers.search_filter.clear') }}</button>
-                                    <button type="button" class="mf-apply-btn" @click="applyMapFilter()">
-                                        <svg width="14" height="14" fill="none" stroke="currentColor"
-                                            stroke-width="2.5" viewBox="0 0 24 24">
-                                            <circle cx="11" cy="11" r="8" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
+                                <div class="flex gap-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+                                    <button type="button"
+                                        class="flex-1 px-4 py-3 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500 transition-all"
+                                        @click="resetFilter()">
+                                        <span class="flex items-center justify-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                            {{ __('centers.search_filter.clear') }}
+                                        </span>
+                                    </button>
+                                    <button type="button" 
+                                        class="flex-1 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all flex items-center justify-center gap-2"
+                                        @click="applyMapFilter()">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <circle cx="11" cy="11" r="8" stroke-width="2"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-4.35-4.35" />
                                         </svg>
                                         {{ __('centers.search_filter.search') }}
                                     </button>
                                 </div>
 
-                                <div class="mf-result" x-show="resultShown">
+                                {{-- Results --}}
+                                <div x-show="resultShown" class="mt-3 text-center text-sm text-gray-600 dark:text-gray-400">
                                     <strong x-text="resultCount"></strong> {{ __('centers.search_filter.results_found') }}
                                     (<span x-text="radius"></span> {{ __('centers.search_filter.results_radius') }})
                                 </div>
@@ -221,249 +295,258 @@
                         </div>
                     </div>
 
-
                     <!-- Sort Dropdown -->
-                    <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ sortDropdown: false }">
-                        <button @click="sortDropdown = !sortDropdown"
-                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+                    <div class="relative inline-block" x-data="dropdown()" x-init="init('sort')">
+                        <button @click="toggle()" type="button"
+                            class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-gray-900 dark:text-white rounded-lg transition-colors duration-200 flex items-center gap-2 whitespace-nowrap">
                             {{ __('centers.search_filter.sort') }}
-                            <svg class="w-4 h-4" :class="{ 'rotate-180': sortDropdown }" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
+                            <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': isOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
 
-                        <div x-show="sortDropdown" @click.away="sortDropdown = false"
+                        <!-- Desktop Dropdown -->
+                        <div x-show="isOpen && !isMobile" @click.away="close()" x-cloak
                             x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:enter-start="opacity-0 translate-y-1"
+                            x-transition:enter-end="opacity-100 translate-y-0"
                             x-transition:leave="transition ease-in duration-150"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+                            x-transition:leave-start="opacity-100 translate-y-0"
+                            x-transition:leave-end="opacity-0 translate-y-1"
+                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[100]">
                             <div class="py-2">
                                 @if (!isset($validated['name']))
-                                    <button type="button" onclick="applySorting('name', 'asc')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('centers.search_filter.sort_name') }} ↑↓
-                                    </button>
+                                    <button type="button" onclick="applySorting('name', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.sort_name') }} ↑↓</button>
                                 @elseif ($validated['name'] == 'asc')
-                                    <button type="button" onclick="applySorting('name', 'desc')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('centers.search_filter.sort_name') }} ↑
-                                    </button>
+                                    <button type="button" onclick="applySorting('name', 'desc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-2 text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">{{ __('centers.search_filter.sort_name') }} ↑</button>
                                 @elseif ($validated['name'] == 'desc')
-                                    <button type="button" onclick="applySorting('name', 'asc')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('centers.search_filter.sort_name') }} ↓
-                                    </button>
+                                    <button type="button" onclick="applySorting('name', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-2 text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">{{ __('centers.search_filter.sort_name') }} ↓</button>
                                 @else
-                                    <button type="button" onclick="applySorting('name', 'asc')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('centers.search_filter.sort_name') }} ↑↓
-                                    </button>
+                                    <button type="button" onclick="applySorting('name', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.sort_name') }} ↑↓</button>
                                 @endif
 
                                 @if (!isset($validated['distance']))
-                                    <button type="button" onclick="applySorting('distance', 'asc')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('centers.search_filter.sort_distance') }} ↑↓
-                                    </button>
+                                    <button type="button" onclick="applySorting('distance', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.sort_distance') }} ↑↓</button>
                                 @elseif ($validated['distance'] == 'asc')
-                                    <button type="button" onclick="applySorting('distance', 'desc')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('centers.search_filter.sort_distance') }} ↑
-                                    </button>
+                                    <button type="button" onclick="applySorting('distance', 'desc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-2 text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">{{ __('centers.search_filter.sort_distance') }} ↑</button>
                                 @elseif ($validated['distance'] == 'desc')
-                                    <button type="button" onclick="applySorting('distance', 'asc')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('centers.search_filter.sort_distance') }} ↓
-                                    </button>
+                                    <button type="button" onclick="applySorting('distance', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-2 text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">{{ __('centers.search_filter.sort_distance') }} ↓</button>
                                 @else
-                                    <button type="button" onclick="applySorting('distance', 'asc')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('centers.search_filter.sort_distance') }} ↑↓
-                                    </button>
+                                    <button type="button" onclick="applySorting('distance', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.sort_distance') }} ↑↓</button>
                                 @endif
 
                                 @if (!isset($validated['favorites']))
-                                    <button type="button" onclick="applySorting('favorites', 'asc')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('centers.search_filter.sort_rating') }} ↑↓
-                                    </button>
+                                    <button type="button" onclick="applySorting('favorites', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.sort_rating') }} ↑↓</button>
                                 @elseif ($validated['favorites'] == 'asc')
-                                    <button type="button" onclick="applySorting('favorites', 'desc')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('centers.search_filter.sort_rating') }} ↑
-                                    </button>
+                                    <button type="button" onclick="applySorting('favorites', 'desc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-2 text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">{{ __('centers.search_filter.sort_rating') }} ↑</button>
                                 @elseif ($validated['favorites'] == 'desc')
-                                    <button type="button" onclick="applySorting('favorites', 'asc')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('centers.search_filter.sort_rating') }} ↓
-                                    </button>
+                                    <button type="button" onclick="applySorting('favorites', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-2 text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">{{ __('centers.search_filter.sort_rating') }} ↓</button>
                                 @else
-                                    <button type="button" onclick="applySorting('favorites', 'asc')"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:border-1 hover:rounded-md">
-                                        {{ __('centers.search_filter.sort_rating') }} ↑↓
-                                    </button>
+                                    <button type="button" onclick="applySorting('favorites', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.sort_rating') }} ↑↓</button>
                                 @endif
+                            </div>
+                        </div>
+
+                        <!-- Mobile Dropdown -->
+                        <div x-show="isOpen && isMobile" x-cloak
+                            class="fixed inset-0 z-[9999] flex items-start justify-center pt-20 px-4"
+                            @click.self="close()">
+                            <div class="absolute inset-0 bg-black/50" @click="close()"></div>
+                            <div class="relative w-full max-w-sm bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95">
+                                <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                                    <span class="font-medium text-gray-900 dark:text-white">{{ __('centers.search_filter.sort') }}</span>
+                                    <button @click="close()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="py-2 max-h-[60vh] overflow-y-auto">
+                                    @if (!isset($validated['name']))
+                                        <button type="button" onclick="applySorting('name', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.sort_name') }} ↑↓</button>
+                                    @elseif ($validated['name'] == 'asc')
+                                        <button type="button" onclick="applySorting('name', 'desc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-3 text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">{{ __('centers.search_filter.sort_name') }} ↑</button>
+                                    @elseif ($validated['name'] == 'desc')
+                                        <button type="button" onclick="applySorting('name', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-3 text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">{{ __('centers.search_filter.sort_name') }} ↓</button>
+                                    @else
+                                        <button type="button" onclick="applySorting('name', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.sort_name') }} ↑↓</button>
+                                    @endif
+
+                                    @if (!isset($validated['distance']))
+                                        <button type="button" onclick="applySorting('distance', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.sort_distance') }} ↑↓</button>
+                                    @elseif ($validated['distance'] == 'asc')
+                                        <button type="button" onclick="applySorting('distance', 'desc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-3 text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">{{ __('centers.search_filter.sort_distance') }} ↑</button>
+                                    @elseif ($validated['distance'] == 'desc')
+                                        <button type="button" onclick="applySorting('distance', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-3 text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">{{ __('centers.search_filter.sort_distance') }} ↓</button>
+                                    @else
+                                        <button type="button" onclick="applySorting('distance', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.sort_distance') }} ↑↓</button>
+                                    @endif
+
+                                    @if (!isset($validated['favorites']))
+                                        <button type="button" onclick="applySorting('favorites', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.sort_rating') }} ↑↓</button>
+                                    @elseif ($validated['favorites'] == 'asc')
+                                        <button type="button" onclick="applySorting('favorites', 'desc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-3 text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">{{ __('centers.search_filter.sort_rating') }} ↑</button>
+                                    @elseif ($validated['favorites'] == 'desc')
+                                        <button type="button" onclick="applySorting('favorites', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-3 text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">{{ __('centers.search_filter.sort_rating') }} ↓</button>
+                                    @else
+                                        <button type="button" onclick="applySorting('favorites', 'asc'); dropdowns.sort.close()" class="block w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.sort_rating') }} ↑↓</button>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Filter by type -->
-                    <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ type_filter: false }">
-                        <button @click="type_filter = !type_filter"
-                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-                            {{ __('centers.search_filter.type') }}
-                            <svg class="w-4 h-4" :class="{ 'rotate-180': type_filter }" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
+                    <!-- Verified Filter -->
+                    <div class="relative inline-block" x-data="dropdown()" x-init="init('verified')">
+                        <button @click="toggle()" type="button"
+                            class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-gray-900 dark:text-white rounded-lg transition-colors duration-200 flex items-center gap-2 whitespace-nowrap">
+                            @if (!isset($validated['checked']))
+                                {{ __('centers.search_filter.all_status') }}
+                            @elseif ($validated['checked'] == '1')
+                                {{ __('centers.search_filter.verified_only') }}
+                            @elseif ($validated['checked'] == '0')
+                                {{ __('centers.search_filter.unverified_only') }}
+                            @else
+                                {{ __('centers.search_filter.all_status') }}
+                            @endif
+                            <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': isOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
 
-                        <div x-show="type_filter" @click.away="type_filter = false"
+                        <!-- Desktop Dropdown -->
+                        <div x-show="isOpen && !isMobile" @click.away="close()" x-cloak
                             x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:enter-start="opacity-0 translate-y-1"
+                            x-transition:enter-end="opacity-100 translate-y-0"
                             x-transition:leave="transition ease-in duration-150"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
-                            <div class="py-2 max-h-70 overflow-y-auto">
+                            x-transition:leave-start="opacity-100 translate-y-0"
+                            x-transition:leave-end="opacity-0 translate-y-1"
+                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[100]">
+                            <div class="py-2">
+                                <button type="button" onclick="removeFilter('checked'); dropdowns.verified.close()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.all_status') }}</button>
+                                <button type="button" onclick="applyFilter('checked', '1'); dropdowns.verified.close()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.verified_only') }}</button>
+                                <button type="button" onclick="applyFilter('checked', '0'); dropdowns.verified.close()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.unverified_only') }}</button>
+                            </div>
+                        </div>
+
+                        <!-- Mobile Dropdown -->
+                        <div x-show="isOpen && isMobile" x-cloak
+                            class="fixed inset-0 z-[9999] flex items-start justify-center pt-20 px-4"
+                            @click.self="close()">
+                            <div class="absolute inset-0 bg-black/50" @click="close()"></div>
+                            <div class="relative w-full max-w-sm bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95">
+                                <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                                    <span class="font-medium text-gray-900 dark:text-white">{{ __('centers.search_filter.status') }}</span>
+                                    <button @click="close()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="py-2 max-h-[60vh] overflow-y-auto">
+                                    <button type="button" onclick="removeFilter('checked'); dropdowns.verified.close()" class="block w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.all_status') }}</button>
+                                    <button type="button" onclick="applyFilter('checked', '1'); dropdowns.verified.close()" class="block w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.verified_only') }}</button>
+                                    <button type="button" onclick="applyFilter('checked', '0'); dropdowns.verified.close()" class="block w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">{{ __('centers.search_filter.unverified_only') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Type Filter -->
+                    <div class="relative inline-block" x-data="dropdown()" x-init="init('type')">
+                        <button @click="toggle()" type="button"
+                            class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-gray-900 dark:text-white rounded-lg transition-colors duration-200 flex items-center gap-2 whitespace-nowrap">
+                            {{ __('centers.search_filter.type') }}
+                            <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': isOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <!-- Desktop Dropdown -->
+                        <div x-show="isOpen && !isMobile" @click.away="close()" x-cloak
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 translate-y-1"
+                            x-transition:enter-end="opacity-100 translate-y-0"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 translate-y-0"
+                            x-transition:leave-end="opacity-0 translate-y-1"
+                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[100]">
+                            <div class="py-2 max-h-64 overflow-y-auto">
                                 @foreach ($types as $type)
-                                    <button type="button" onclick='applyFilter("type", "{{ $type }}")'
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:border-1 hover:rounded-md">
+                                    <button type="button" onclick='applyFilter("type", "{{ $type }}"); dropdowns.type.close()'
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                                         {{ $type }}
                                     </button>
                                 @endforeach
                             </div>
                         </div>
-                    </div>
 
-                    {{-- Subject dropdown removed: use unified search input to search by subject name --}}
-
-                    <!-- Teacher Announcements Dropdown with Search -->
-                    <div class="pointer-events-auto text-gray-900 dark:text-white relative"
-                        x-data="{
-                            teacherDropdown: false,
-                            searchQuery: '',
-                            get filteredSubjects() {
-                                if (this.searchQuery === '') return {{ Js::from($subjects) }};
-                                return {{ Js::from($subjects) }}.filter(subject =>
-                                    subject.toLowerCase().includes(this.searchQuery.toLowerCase())
-                                );
-                            }
-                        }">
-                        <button @click="teacherDropdown = !teacherDropdown"
-                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-                            {{ __('centers.search_filter.teacher_announcements') }}
-                            <svg class="w-4 h-4" :class="{ 'rotate-180': teacherDropdown }" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-
-                        <div x-show="teacherDropdown" @click.away="teacherDropdown = false"
-                            x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-150"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-10 overflow-hidden">
-
-                            <!-- Search Input Header -->
-                            <div class="p-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
-                                <div class="relative">
-                                    <input
-                                        type="text"
-                                        x-model="searchQuery"
-                                        placeholder="Qidirish... (masalan: ingliz)"
-                                        class="w-full px-3 py-2 pl-9 pr-8 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all"
-                                        @click.stop
-                                    >
-                                    <!-- Search Icon -->
-                                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                    </svg>
-                                    <!-- Clear Button -->
-                                    <button
-                                        x-show="searchQuery !== ''"
-                                        x-transition
-                                        @click.stop="searchQuery = ''"
-                                        class="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-colors"
-                                    >
-                                        <svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        <!-- Mobile Dropdown -->
+                        <div x-show="isOpen && isMobile" x-cloak
+                            class="fixed inset-0 z-[9999] flex items-start justify-center pt-20 px-4"
+                            @click.self="close()">
+                            <div class="absolute inset-0 bg-black/50" @click="close()"></div>
+                            <div class="relative w-full max-w-sm bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95">
+                                <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                                    <span class="font-medium text-gray-900 dark:text-white">{{ __('centers.search_filter.type') }}</span>
+                                    <button @click="close()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </button>
                                 </div>
-                            </div>
-
-                            <!-- Subjects List with Custom Scrollbar -->
-                            <div class="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
-                                <!-- All Announcements Option -->
-                                <button type="button" onclick="applyFilter('needTeachers', 'all')"
-                                    @click="teacherDropdown = false"
-                                    class="block w-full text-left px-4 py-2.5 text-sm font-medium text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors border-b border-gray-100 dark:border-gray-700">
-                                    <span class="flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                        </svg>
-                                        {{ __('centers.search_filter.all_announcements') }}
-                                    </span>
-                                </button>
-
-                                <!-- Filtered Subjects -->
-                                <template x-for="subject in filteredSubjects" :key="subject">
-                                    <button
-                                        type="button"
-                                        x-on:click="applyFilter('needTeachers', subject); teacherDropdown = false"
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                        <span x-text="subject"></span>
-                                    </button>
-                                </template>
-
-                                <!-- No Results Message -->
-                                <div x-show="filteredSubjects.length === 0 && searchQuery !== ''" class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 text-center">
-                                    Hech narsa topilmadi
+                                <div class="py-2 max-h-[60vh] overflow-y-auto">
+                                    @foreach ($types as $type)
+                                        <button type="button" onclick='applyFilter("type", "{{ $type }}"); dropdowns.type.close()'
+                                            class="block w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                            {{ $type }}
+                                        </button>
+                                    @endforeach
                                 </div>
-                            </div>
-
-                            <!-- Results Count -->
-                            <div class="px-3 py-2 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400 flex justify-between items-center">
-                                <span x-text="filteredSubjects.length + ' ta fan'"></span>
-                                <button @click="searchQuery = ''" x-show="searchQuery !== ''" class="text-primary-600 hover:text-primary-700 dark:text-primary-400">Tozalash</button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Price Range Dropdown -->
-                    <div class="pointer-events-auto text-gray-900 dark:text-white relative" x-data="{ priceDropdown: false }">
-                        <button @click="priceDropdown = !priceDropdown"
-                            class="text-gray-900 dark:text-white px-4 py-2 bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+                    <div class="relative inline-block" x-data="dropdown()" x-init="init('price')">
+                        <button @click="toggle()" type="button"
+                            class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-gray-900 dark:text-white rounded-lg transition-colors duration-200 flex items-center gap-2 whitespace-nowrap">
                             {{ __('centers.search_filter.price') ?? 'Narx' }}
-                            <svg class="w-4 h-4" :class="{ 'rotate-180': priceDropdown }" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
+                            <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': isOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
 
-                        <div x-show="priceDropdown" @click.away="priceDropdown = false"
+                        <!-- Desktop Dropdown -->
+                        <div x-show="isOpen && !isMobile" @click.away="close()" x-cloak
                             x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:enter-start="opacity-0 translate-y-1"
+                            x-transition:enter-end="opacity-100 translate-y-0"
                             x-transition:leave="transition ease-in duration-150"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-20 p-4">
+                            x-transition:leave-start="opacity-100 translate-y-0"
+                            x-transition:leave-end="opacity-0 translate-y-1"
+                            class="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[100] p-4">
                             
-                            <div class="flex flex-col gap-3 mb-4 text-gray-900 dark:text-white">
+                            <div class="flex flex-col gap-3 mb-4">
                                 <div>
                                     <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('centers.search_filter.min_price') ?? 'Min. narx' }}</label>
                                     <input type="number" id="minPriceInput" min="0" placeholder="Masalan: 0" class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors">
@@ -473,1949 +556,641 @@
                                     <input type="number" id="maxPriceInput" min="0" placeholder="Masalan: 1000000" class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors">
                                 </div>
                             </div>
-                            <button type="button" onclick="applyPriceFilter(); priceDropdown = false"
-                                class="w-full bg-primary-600 hover:bg-primary-700 text-gray-900 dark:text-white text-sm font-medium py-2 rounded-md transition-colors border-2 border-primary-500 dark:border-primary-400 shadow-sm">
-                                {{ __('centers.search_filter.apply') ?? "Qo'llash" }}
+                            <button type="button" onclick="applyPriceFilter(); dropdowns.price.close()"
+                                class="w-full bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium py-2 rounded-md transition-colors">
+                                {{ __('centers.search_filter.apply') }}
                             </button>
+                        </div>
+
+                        <!-- Mobile Dropdown -->
+                        <div x-show="isOpen && isMobile" x-cloak
+                            class="fixed inset-0 z-[9999] flex items-start justify-center pt-20 px-4"
+                            @click.self="close()">
+                            <div class="absolute inset-0 bg-black/50" @click="close()"></div>
+                            <div class="relative w-full max-w-sm bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95">
+                                <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                                    <span class="font-medium text-gray-900 dark:text-white">{{ __('centers.search_filter.price') ?? 'Narx' }}</span>
+                                    <button @click="close()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex flex-col gap-3 mb-4">
+                                        <div>
+                                            <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('centers.search_filter.min_price') ?? 'Min. narx' }}</label>
+                                            <input type="number" id="minPriceInputMobile" min="0" placeholder="Masalan: 0" class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('centers.search_filter.max_price') ?? 'Max. narx' }}</label>
+                                            <input type="number" id="maxPriceInputMobile" min="0" placeholder="Masalan: 1000000" class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors">
+                                        </div>
+                                    </div>
+                                    <button type="button" onclick="applyPriceFilterMobile(); dropdowns.price.close()"
+                                        class="w-full bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium py-2 rounded-md transition-colors">
+                                        {{ __('centers.search_filter.apply') }}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="text-gray-600 dark:text-gray-400">
+                <div class="text-gray-600 dark:text-gray-400 text-sm whitespace-nowrap">
                     <span id="resultsCount">{{ $pagination['total'] ?? $LearningCenters->count() }}</span> {{ __('centers.search_filter.results_count') }}
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Learning Centers Grid -->
-    <section class="py-12 bg-gray-50 dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto px-6">
-            <div id="loadingIndicator" class="hidden text-center py-8">
-                <svg class="w-8 h-8 animate-spin mx-auto text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+    {{-- Centers Grid --}}
+    <section class="py-16 bg-white dark:bg-gray-900 relative z-10 overflow-hidden transition-colors duration-500">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-gray-50/80 to-transparent dark:from-gray-800/50"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            {{-- Loading Indicator --}}
+            <div id="loadingIndicator" class="hidden text-center py-12">
+                <svg class="w-12 h-12 animate-spin mx-auto text-indigo-600" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <p class="mt-2 text-gray-600 dark:text-gray-400">{{ __('centers.search_filter.searching') }}</p>
+                <p class="mt-3 text-gray-600 dark:text-gray-400">{{ __('centers.search_filter.searching') }}</p>
             </div>
+
+            {{-- Grid --}}
             <div id="centersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @forelse ($LearningCenters as $LearningCenter)
-                    <div
-                        class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
-                        <!-- Image -->
-                        <div class="relative h-48 overflow-hidden">
-                            @if($LearningCenter->logo)
-                                @if(str_starts_with($LearningCenter->logo, 'http://') || str_starts_with($LearningCenter->logo, 'https://'))
-                                    <x-optimized-image 
-                                        src="{{ $LearningCenter->logo }}"
-                                        alt="{{ $LearningCenter->name }}"
-                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                        width="400"
-                                        height="192"
-                                    />
+                    <div class="group relative">
+                        {{-- Glow Effect --}}
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-500"></div>
+                        
+                        {{-- Card --}}
+                        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-full border border-gray-100 dark:border-gray-700 group-hover:-translate-y-1">
+                            {{-- Image --}}
+                            <div class="relative h-52 overflow-hidden">
+                                @if($LearningCenter->logo)
+                                    @if(str_starts_with($LearningCenter->logo, 'http://') || str_starts_with($LearningCenter->logo, 'https://'))
+                                        <x-optimized-image src="{{ $LearningCenter->logo }}" alt="{{ $LearningCenter->name }}"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" width="400" height="208" />
+                                    @else
+                                        <x-optimized-image src="{{ asset('storage/' . $LearningCenter->logo) }}" alt="{{ $LearningCenter->name }}"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" width="400" height="208" />
+                                    @endif
                                 @else
-                                    <x-optimized-image 
-                                        src="{{ asset('storage/' . $LearningCenter->logo) }}"
-                                        alt="{{ $LearningCenter->name }}"
-                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                        width="400"
-                                        height="192"
-                                    />
-                                @endif
-                            @else
-                                <div class="w-full h-48 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-indigo-600 dark:to-purple-800 flex items-center justify-center">
-                                    <div class="text-white text-center px-4">
-                                        <div class="text-xl font-bold mb-1">{{ $LearningCenter->type }}</div>
-                                        <div class="text-sm opacity-90">{{ $LearningCenter->name }}</div>
+                                    <div class="w-full h-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 dark:from-indigo-600 dark:via-purple-700 dark:to-pink-800 flex items-center justify-center relative overflow-hidden">
+                                        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22 fill-rule=%22evenodd%22%3E%3Ccircle cx=%223%22 cy=%223%22 r=%223%22/%3E%3Ccircle cx=%2213%22 cy=%2213%22 r=%223%22/%3E%3C/g%3E%3C/svg%3E')]"></div>
+                                        <div class="text-white text-center px-4 relative z-10">
+                                            <div class="text-2xl font-bold mb-1 drop-shadow-lg">{{ $LearningCenter->type }}</div>
+                                            <div class="text-sm opacity-90">{{ Str::limit($LearningCenter->name, 25) }}</div>
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            </div>
-                            <a href="{{ route('center', $LearningCenter->slug) }}"
-                                class="absolute bottom-4 right-4 
-                                    /* Ranglar va shakl: Oq fon, to'q matn */
-                                    bg-white text-primary-900 
-                                    px-4 py-2 rounded-xl shadow-lg
-                                    /* Tekislash */
-                                    flex items-center gap-2 font-bold text-sm
-                                    /* Mobil uchun: Doimiy ko'rinish */
-                                    opacity-100 translate-y-0
-                                    /* Desktop uchun: Hover effekti */
-                                    lg:opacity-0 lg:translate-y-2 lg:group-hover:opacity-100 lg:group-hover:translate-y-0
-                                    /* Effektlar */
-                                    transition-all duration-300 hover:bg-primary-50">
-                                
-                                <span class="font-bold">{{ __('centers.centers_grid.read_more') }}</span>
-                                
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </a>
-                        </div>
+                                @endif
 
-                        <!-- Content -->
-                        <div class="p-6">
-                            <!-- Meta Information -->
-                            <div class="flex flex-wrap gap-2 mb-4 text-sm text-gray-600 dark:text-gray-400">
-                                <div class="flex items-center gap-1 truncate">
-                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
-                                    <span class="truncate">{{ $LearningCenter->region . ', ' . $LearningCenter->province }}</span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    <span>{{ $LearningCenter->created_at->diffForHumans() }}</span>
-                                </div>
-                                @if (isset($LearningCenter->distance))
+                                {{-- Rating Badge --}}
+                                <div class="absolute top-3 right-3 bg-white dark:bg-gray-800 px-2.5 py-1 rounded-full shadow-lg border border-gray-200 dark:border-gray-600">
                                     <div class="flex items-center gap-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                                        <span class="text-amber-500 text-sm">★</span>
+                                        <span class="text-sm font-black text-gray-900 dark:text-white">{{ $LearningCenter->calculated_total_reyting }}</span>
+                                    </div>
+                                </div>
+
+                                {{-- Verified Badge --}}
+                                @if ($LearningCenter->checked)
+                                    <div class="absolute top-3 left-3 bg-emerald-500/95 backdrop-blur p-1.5 rounded-full shadow-lg">
+                                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
                                         </svg>
-                                        <span>{{ $LearningCenter->distance }} km</span>
                                     </div>
                                 @endif
-                            </div>
 
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="flex items-center">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @php
-                                            $diff = $LearningCenter->calculated_total_reyting - $i;
-                                        @endphp
-                                        <span
-                                            class="text-lg {{ $LearningCenter->calculated_total_reyting >= $i ? 'text-yellow-400' : ($diff > -1 && $diff < 0 ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600') }}">
-                                            ★
-                                        </span>
-                                    @endfor
-                                </div>
-                                <span
-                                    class="text-lg font-semibold text-primary-600 dark:text-primary-400">{{ $LearningCenter->calculated_total_reyting }}</span>
-                            </div>
-
-                            <!-- Title -->
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                                {{-- View Button Overlay --}}
                                 <a href="{{ route('center', $LearningCenter->slug) }}"
-                                    class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                                    {{ $LearningCenter->name }}
-                                </a>
-                            </h3>
-
-                            <!-- Teacher Announcements -->
-                            <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <div
-                                        class="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
-                                        <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                                    class="absolute inset-0 flex items-end justify-center p-4 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <span class="px-6 py-2.5 bg-white text-indigo-600 font-semibold rounded-xl shadow-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
+                                        {{ __('centers.centers_grid.read_more') }}
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                         </svg>
+                                    </span>
+                                </a>
+                            </div>
+
+                            {{-- Content --}}
+                            <div class="p-5">
+                                {{-- Title --}}
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                    <a href="{{ route('center', $LearningCenter->slug) }}">{{ $LearningCenter->name }}</a>
+                                </h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">{{ $LearningCenter->type }}</p>
+
+                                {{-- Meta --}}
+                                <div class="flex flex-wrap gap-2 mb-3 text-sm text-gray-600 dark:text-gray-400">
+                                    <div class="flex items-center gap-1.5">
+                                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <span class="truncate">{{ $LearningCenter->region . ', ' . $LearningCenter->province }}</span>
                                     </div>
-                                    <h4 class="font-semibold text-gray-900 dark:text-white">{{ __('centers.centers_grid.announcement') }}</h4>
+                                    @if (isset($LearningCenter->distance))
+                                        <div class="flex items-center gap-1.5 px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/30 rounded-full">
+                                            <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                                            </svg>
+                                            <span class="text-xs font-medium text-indigo-600 dark:text-indigo-400">{{ round($LearningCenter->distance, 1) }} km</span>
+                                        </div>
+                                    @endif
                                 </div>
 
-                                @if ($LearningCenter->needTeachers->count() > 0)
-                                    <div class="space-y-2">
-                                        <p class="text-sm font-medium text-success-600 dark:text-success-400">
-                                            {{ __('centers.centers_grid.teacher_needed') }}</p>
-                                        @foreach ($LearningCenter->needTeachers->take(-1) as $teacher)
-                                            <div class="flex items-center justify-between text-sm">
-                                                <span class="text-gray-700 dark:text-gray-300">🟢
-                                                    {{ $teacher->subject_name }}</span>
-                                                <span
-                                                    class="text-xs text-gray-500 dark:text-gray-400">{{ $teacher->created_at->diffForHumans() }}</span>
-                                            </div>
-                                        @endforeach
-                                        @if ($LearningCenter->needTeachers->count() > 1)
-                                            <div>
-                                                <a href="{{ route('center', $LearningCenter->slug) }}"
-                                                    class="text-sm text-primary-600 dark:text-primary-400 hover:underline">
-                                                    {{ __('centers.centers_grid.more_announcements', ['count' => $LearningCenter->needTeachers->count() - 1]) }}
-                                                </a>
-                                            </div>
-                                        @endif
-                                    </div>
-                                @else
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('centers.centers_grid.no_announcements') }}</p>
-                                @endif
                             </div>
                         </div>
                     </div>
                 @empty
-                    <div class="col-span-full text-center py-12">
-                        <p class="text-gray-500 dark:text-gray-400">{{ __('centers.centers_grid.no_centers_found') }}</p>
-                        <button onclick="clearAllFilters()" class="mt-4 px-4 py-2 bg-primary-600 text-gray-500 dark:text-gray-400 rounded-lg hover:bg-primary-700 transition-colors">
-                            {{ __('centers.centers_grid.clear_filters') }}
-                        </button>
+                    {{-- Empty State --}}
+                    <div class="col-span-full">
+                        <div class="relative max-w-lg mx-auto">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl opacity-20 blur"></div>
+                            <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-12 text-center border border-gray-100 dark:border-gray-700">
+                                <div class="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ __('centers.centers_grid.no_centers_found') }}</h3>
+                                <p class="text-gray-500 dark:text-gray-400 mb-6">{{ __('centers.centers_grid.try_adjusting') }}</p>
+
+                                @if(!empty($typoSuggestion))
+                                    <div class="mb-4 p-4 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-xl">
+                                        <p class="text-indigo-800 dark:text-indigo-200 text-sm">
+                                            {{ __('centers.centers_grid.did_you_mean') }}:
+                                            <a href="{{ route('centers', array_merge(request()->except('searchText'), ['searchText' => $typoSuggestion])) }}"
+                                               class="font-semibold underline hover:text-indigo-600 dark:hover:text-indigo-400">"{{ $typoSuggestion }}"</a>?
+                                        </p>
+                                    </div>
+                                @endif
+
+                                <button onclick="clearAllFilters()"
+                                    class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all">
+                                    {{ __('centers.centers_grid.clear_filters') }}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 @endforelse
             </div>
             
-            <!-- Infinite Scroll Loading Indicator -->
-            <div id="infiniteScrollLoading" class="hidden text-center py-8">
-                <svg class="w-8 h-8 animate-spin mx-auto text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            {{-- Infinite Scroll Loading --}}
+            <div id="infiniteScrollLoading" class="hidden text-center py-12">
+                <svg class="w-10 h-10 animate-spin mx-auto text-indigo-600" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <p class="mt-2 text-gray-600 dark:text-gray-400">Yana ma'lumotlar yuklanmoqda...</p>
+                <p class="mt-3 text-gray-600 dark:text-gray-400">{{ __('centers.centers_grid.loading_more') }}</p>
             </div>
-            
-            <!-- No More Results Message -->
-            <div id="noMoreResults" class="hidden text-center py-8">
-                <p class="text-gray-500 dark:text-gray-400">Barcha natijalar ko'rsatilgan</p>
+
+            {{-- No More Results --}}
+            <div id="noMoreResults" class="hidden text-center py-12">
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700/50 rounded-full">
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span class="text-gray-600 dark:text-gray-400">{{ __('centers.centers_grid.all_results') }}</span>
+                </div>
             </div>
         </div>
     </section>
-</x-layout>
 
-<!-- Include Leaflet.js for map functionality -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""></script>
-
-<!-- Include Leaflet MarkerCluster for clustering -->
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-
-<!-- Include Blog Grid JavaScript BEFORE Alpine.js -->
-<script src="{{ asset('js/centers.js') }}"></script>
-
-<!-- Initialize centers data for map component -->
-<script>
-    // Set centers data from Laravel
-    window._CENTERS = @json($centersForMap ?? []);
-    
-    // Initialize pagination variables
-    window.currentPage = @json($pagination['current_page'] ?? 1);
-    window.hasMorePages = @json(($pagination['has_more_pages'] ?? false) ? 'true' : 'false');
-</script>
-
-
-<style>
-    body.mf-fullscreen-open {
-        overflow: hidden;
-    }
-
-    .mf-panel.mf-fullscreen {
-        position: fixed !important;
-        inset: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        border-radius: 0 !important;
-        margin: 0 !important;
-        z-index: 9999 !important;
-        max-height: none !important;
-    }
-
-    .mf-panel.mf-fullscreen .mf-map-wrap {
-        height: calc(100vh - 210px) !important;
-        min-height: 320px;
-    }
-
-    @media (max-width: 640px) {
-        .mf-panel.mf-fullscreen .mf-map-wrap {
-            height: calc(100vh - 250px) !important;
-        }
-    }
-
-    /* Leaflet popup card */
-    .mf-popup .leaflet-popup-content-wrapper {
-        border-radius: 14px;
-        padding: 0;
-        overflow: hidden;
-        box-shadow: 0 18px 60px rgba(0,0,0,.22);
-    }
-
-    .mf-popup .leaflet-popup-content {
-        margin: 0;
-        width: 320px;
-    }
-
-    @media (max-width: 480px) {
-        .mf-popup .leaflet-popup-content {
-            width: 280px;
-        }
-    }
-
-    .mf-card {
-        background: #fff;
-        color: #111827;
-    }
-
-    .dark .mf-card {
-        background: #111827;
-        color: #f3f4f6;
-    }
-
-    .mf-card-top {
-        display: flex;
-        gap: 12px;
-        padding: 12px;
-        align-items: center;
-    }
-
-    .mf-card-img {
-        width: 54px;
-        height: 54px;
-        border-radius: 12px;
-        object-fit: cover;
-        flex: 0 0 auto;
-        background: #f3f4f6;
-    }
-
-    .dark .mf-card-img {
-        background: rgba(255,255,255,.06);
-    }
-
-    .mf-card-img--placeholder {
-        display: block;
-        background: linear-gradient(135deg, rgba(99,102,241,.25), rgba(16,185,129,.18));
-    }
-
-    .mf-card-main {
-        min-width: 0;
-        flex: 1;
-    }
-
-    .mf-card-title {
-        font-weight: 800;
-        font-size: 14px;
-        line-height: 1.2;
-        margin-bottom: 4px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .mf-card-sub {
-        font-size: 12px;
-        line-height: 1.35;
-        color: #6b7280;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .dark .mf-card-sub {
-        color: #9ca3af;
-    }
-
-    .mf-card-actions {
-        padding: 0 12px 12px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-    }
-
-    .mf-card-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        height: 40px;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 13px;
-        text-decoration: none;
-        border: 1px solid rgba(17,24,39,.12);
-        background: #fff;
-        color: #111827;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    .dark .mf-card-btn {
-        background: rgba(255,255,255,.06);
-        color: #f3f4f6;
-        border-color: rgba(255,255,255,.12);
-    }
-
-    .mf-card-btn--primary {
-        background: #4f46e5;
-        border-color: #4f46e5;
-        color: #fff;
-    }
-
-    .mf-user-popup {
-        padding: 10px 12px;
-        font-weight: 700;
-        font-size: 13px;
-    }
-
-    /* Custom pins */
-    .mf-pin {
-        position: relative;
-        width: 30px;
-        height: 30px;
-        border-radius: 999px;
-        background: rgba(79,70,229,.12);
-        border: 1px solid rgba(79,70,229,.22);
-        box-shadow: 0 10px 22px rgba(0,0,0,.18);
-        transform: translateY(-2px);
-    }
-
-    .mf-pin-dot {
-        position: absolute;
-        inset: 7px;
-        border-radius: 999px;
-        background: #4f46e5;
-        border: 2px solid #fff;
-        box-shadow: 0 8px 18px rgba(79,70,229,.35);
-    }
-
-    .mf-pin-user {
-        background: rgba(16,185,129,.12);
-        border-color: rgba(16,185,129,.22);
-        width: 34px;
-        height: 34px;
-    }
-
-    .mf-pin-user .mf-pin-dot {
-        background: #10b981;
-        box-shadow: 0 10px 22px rgba(16,185,129,.35);
-        inset: 8px;
-    }
-
-    /* Rating Stars */
-    .star {
-        transition: color 0.2s ease;
-    }
-
-    /* Map Container */
-    #map-container.hidden {
-        display: none;
-    }
-
-    #map-container.show {
-        display: block;
-    }
-
-    /* Search Results */
-    .search-result-item {
-        padding: 8px 12px;
-        cursor: pointer;
-        border-bottom: 1px solid #e5e7eb;
-        transition: background-color 0.2s;
-    }
-
-    .search-result-item:hover {
-        background-color: #f3f4f6;
-    }
-
-    .dark .search-result-item {
-        border-bottom-color: #374151;
-    }
-
-    .dark .search-result-item:hover {
-        background-color: #374151;
-    }
-
-    /* Base styles remain the same */
-    .favorite {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .favorite .stars {
-        display: flex;
-        justify-content: center;
-        gap: 5px;
-        font-size: 40px;
-        cursor: pointer;
-        position: relative;
-    }
-
-    .favorite .star {
-        color: #ddd;
-        transition: color 0.2s ease;
-        user-select: none;
-        position: relative;
-    }
-
-    .favorite .star.full {
-        color: #ffc107;
-    }
-
-    .favorite .star.half {
-        background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .favorite .result {
-        font-size: 18px;
-        color: #667eea;
-        font-weight: bold;
-        min-height: 30px;
-    }
-
-    .standard-img {
-        aspect-ratio: 4 / 3;
-        object-fit: cover;
-        width: 100%;
-        height: auto;
-    }
-
-    /* Navigation Links - Responsive */
-    .nav-links {
-        display: flex;
-        gap: 20px;
-        margin-top: 10px;
-        list-style: none;
-        padding: 0;
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    .nav-links-li:hover {
-        color: blue;
-    }
-
-    /* Map Container - Responsive */
-    #map-container {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.5s ease;
-        position: relative;
-    }
-
-    #map-container.active {
-        max-height: 700px;
-        margin-top: 10px;
-    }
-
-    #map {
-        width: 100%;
-        height: 400px;
-        border-radius: 10px;
-    }
-
-    /* Map Form - Desktop */
-    .map-form {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: white;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        width: 320px;
-        z-index: 1000;
-        max-height: 90vh;
-        overflow-y: auto;
-    }
-
-    .map-form input,
-    .map-form select,
-    .map-form button {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 14px;
-        outline: none;
-        box-sizing: border-box;
-    }
-
-    .map-form button {
-        background-color: #4285f4;
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-weight: 500;
-    }
-
-    .map-form button:hover {
-        background-color: #3367d6;
-    }
-
-    /* Search Box - Responsive */
-    .search-box {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        background: white;
-        padding: 10px;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        width: 300px;
-        z-index: 1000;
-        max-width: calc(100vw - 360px);
-    }
-
-    .search-input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 14px;
-        outline: none;
-        box-sizing: border-box;
-    }
-
-    .search-results {
-        max-height: 250px;
-        overflow-y: auto;
-        margin-top: 8px;
-        display: none;
-        background: white;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-    }
-
-    .result-item {
-        padding: 10px;
-        cursor: pointer;
-        border-bottom: 1px solid #eee;
-        font-size: 13px;
-    }
-
-    .result-item:hover {
-        background: #f5f5f5;
-    }
-
-    /* Locate Button */
-    .locate-btn {
-        position: absolute;
-        right: 10px;
-        bottom: 10px;
-        background: white;
-        border: 2px solid white;
-        border-radius: 50%;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        cursor: pointer;
-        width: 44px;
-        height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        z-index: 1000;
-    }
-
-    .locate-btn:hover {
-        background: #f5f5f5;
-    }
-
-    /* Toggle Button */
-    .toggle-btn {
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: white;
-        padding: 10px 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        cursor: pointer;
-        z-index: 1001;
-        font-weight: 500;
-        border: none;
-        font-size: 14px;
-    }
-
-    /* Learning Centers Grid - Responsive */
-    .learning-centers-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
-
-    .learning-center-card {
-        width: 100%;
-        max-width: none;
-    }
-
-    /* Card Meta - Responsive */
-    .card-meta {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .meta-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    /* Announcement Header */
-    .announcement-header {
-        display: flex;
-        flex-direction: row;
-        align-content: center;
-        align-items: center;
-    }
-
-    /* Dropdown Menus - Responsive */
-    .dropdown-container {
-        position: relative;
-    }
-
-    .dropdown-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        min-width: 200px;
-        z-index: 1000;
-    }
-
-    /* Info Window Content */
-    .info-content {
-        padding: 10px;
-        max-width: 250px;
-    }
-
-    .info-content img {
-        width: 100%;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 4px;
-        margin-bottom: 8px;
-    }
-
-    .info-title {
-        margin: 0 0 5px 0;
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-    .info-distance {
-        margin: 0 0 5px 0;
-        font-size: 13px;
-        color: #1976d2;
-        font-weight: 500;
-    }
-
-    .info-address {
-        margin: 0 0 10px 0;
-        font-size: 12px;
-        color: #666;
-    }
-
-    .info-btn {
-        display: inline-block;
-        padding: 8px 16px;
-        background-color: #4285f4;
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-        font-size: 14px;
-        margin-right: 5px;
-    }
-
-    .info-btn:hover {
-        background-color: #3367d6;
-    }
-
-    /* Scrollbar styling */
-    .search-results::-webkit-scrollbar,
-    .map-form::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .search-results::-webkit-scrollbar-thumb,
-    .map-form::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 3px;
-    }
-
-    /* MOBILE RESPONSIVE STYLES */
-    @media (max-width: 768px) {
-
-        /* Navigation */
-        .nav-links {
-            overflow-x: auto;
-            white-space: nowrap;
-            gap: 15px;
-            padding-bottom: 10px;
-        }
-
-        .nav-links li {
-            flex-shrink: 0;
-        }
-
-        /* Map Container Mobile */
-        #map-container.active {
-            max-height: 80vh;
-        }
-
-        #map {
-            height: 300px;
-        }
-
-        /* Map Form Mobile */
-        .map-form {
-            position: relative;
-            top: 0;
-            right: 0;
-            left: 0;
-            width: 100%;
-            max-width: none;
-            margin: 10px 0;
-            box-sizing: border-box;
-        }
-
-        /* Search Box Mobile */
-        .search-box {
-            position: relative;
-            top: 0;
-            left: 0;
-            width: 100%;
-            max-width: none;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-
-        /* Toggle Button Mobile */
-        .toggle-btn {
-            position: relative;
-            top: 0;
-            left: 0;
-            transform: none;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        /* Locate Button Mobile */
-        .locate-btn {
-            right: 15px;
-            bottom: 15px;
-            width: 50px;
-            height: 50px;
-            font-size: 22px;
-        }
-
-        /* Learning Centers Grid Mobile */
-        .learning-centers-grid {
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
-
-        /* Card Meta Mobile */
-        .card-meta {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .meta-item {
-            width: 100%;
-            justify-content: flex-start;
-        }
-
-        .meta-item p {
-            font-size: 14px;
-        }
-
-        /* Stars Mobile */
-        .favorite {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .favorite .stars {
-            font-size: 32px;
-            gap: 3px;
-        }
-
-        .favorite .result {
-            font-size: 20px;
-        }
-
-        /* Dropdown Mobile */
-        .dropdown-menu {
-            position: fixed;
-            top: auto;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            max-height: 50vh;
-            overflow-y: auto;
-            border-radius: 8px 8px 0 0;
-        }
-
-        /* Announcement Header Mobile */
-        .announcement-header {
-            flex-direction: row;
-            align-items: center;
-        }
-
-        .announcement-header img {
-            width: 1.5rem !important;
-            height: 1.5rem !important;
-            margin-right: 1rem !important;
-        }
-    }
-
-    /* TABLET RESPONSIVE STYLES */
-    @media (max-width: 1024px) and (min-width: 769px) {
-
-        /* Learning Centers Grid Tablet */
-        .learning-centers-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-        }
-
-        /* Map Form Tablet */
-        .map-form {
-            width: 280px;
-        }
-
-        /* Search Box Tablet */
-        .search-box {
-            width: 250px;
-            max-width: calc(100vw - 320px);
-        }
-
-        /* Navigation Tablet */
-        .nav-links {
-            gap: 18px;
-        }
-    }
-
-    /* LARGE DESKTOP STYLES */
-    @media (min-width: 1200px) {
-        .learning-centers-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .map-form {
-            width: 350px;
-        }
-
-        .search-box {
-            width: 320px;
-        }
-    }
-
-    /* EXTRA LARGE DESKTOP STYLES */
-    @media (min-width: 1400px) {
-        .learning-centers-grid {
-            grid-template-columns: repeat(4, 1fr);
-        }
-    }
-
-    /* SMALL MOBILE STYLES */
-    @media (max-width: 480px) {
-        .nav-links {
-            gap: 10px;
-            font-size: 14px;
-        }
-
-        .favorite .stars {
-            font-size: 28px;
-        }
-
-        .favorite .result {
-            font-size: 18px;
-        }
-
-        .meta-item p {
-            font-size: 13px;
-        }
-
-        #map {
-            height: 250px;
-        }
-
-        .map-form {
-            padding: 10px;
-        }
-
-        .search-box {
-            padding: 8px;
-        }
-    }
-</style>
-
-{{--
-    ============================================================
-    Xarita bo'yicha filter — Map Filter Component
-    - Google Maps API kaliti: env('MAP_API_KEY')
-    - Default: Samarqand (39.6542, 66.9597)
-    - Light/Dark mode + Mobile responsive
-    - Alpine.js x-data component
-    ============================================================
---}}
-
-{{-- ========== STYLES ========== --}}
-<style>
-    /* ---- TRIGGER BUTTON ---- */
-    .mf-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 18px;
-        border-radius: 12px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        border: none;
-        font-family: inherit;
-        white-space: nowrap;
-        transition: all .25s ease;
-        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
-        color: #fff;
-        box-shadow: 0 4px 14px rgba(99, 102, 241, .35);
-    }
-
-    .mf-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(99, 102, 241, .48);
-    }
-
-    .mf-btn:active {
-        transform: translateY(0);
-    }
-
-    .mf-chevron {
-        transition: transform .25s;
-    }
-
-    .mf-btn.is-open .mf-chevron {
-        transform: rotate(180deg);
-    }
-
-    /* ---- PANEL ---- */
-    .mf-panel {
-        position: absolute;
-        top: calc(100% + 10px);
-        left: 0;
-        width: 800px;
-        max-width: calc(100vw - 40px);
-        border-radius: 20px;
-        overflow: hidden;
-        z-index: 9999;
-        /* Light */
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, .18), 0 0 0 1px rgba(0, 0, 0, .04);
-    }
-
-    .dark .mf-panel {
-        background: #111827;
-        border-color: rgba(255, 255, 255, .08);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, .55);
-    }
-
-    /* ---- HEADER ---- */
-    .mf-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 14px 18px;
-        background: linear-gradient(135deg, #f5f6ff 0%, #eff0ff 100%);
-        border-bottom: 1px solid #e5e7eb;
-    }
-
-    .dark .mf-header {
-        background: linear-gradient(135deg, #1a1d2e 0%, #1e2140 100%);
-        border-bottom-color: rgba(255, 255, 255, .07);
-    }
-
-    .mf-hicon {
-        width: 34px;
-        height: 34px;
-        border-radius: 10px;
-        flex-shrink: 0;
-        background: linear-gradient(135deg, #4f46e5, #7c3aed);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .mf-htitle {
-        font-size: 14px;
-        font-weight: 700;
-        color: #111827;
-    }
-
-    .dark .mf-htitle {
-        color: #f9fafb;
-    }
-
-    .mf-hsub {
-        font-size: 11px;
-        color: #6b7280;
-        margin-top: 1px;
-    }
-
-    .dark .mf-hsub {
-        color: rgba(255, 255, 255, .45);
-    }
-
-    .mf-close-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: #9ca3af;
-        padding: 4px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background .15s, color .15s;
-    }
-
-    .mf-close-btn:hover {
-        background: rgba(0, 0, 0, .06);
-        color: #374151;
-    }
-
-    .dark .mf-close-btn:hover {
-        background: rgba(255, 255, 255, .1);
-        color: #f9fafb;
-    }
-
-    /* ---- MAP AREA ---- */
-    .mf-map-wrap {
-        position: relative;
-        height: 380px;
-    }
-
-    /* Desktop large screens - even bigger */
-    @media (min-width: 1280px) {
-        .mf-panel {
-            width: 900px;
-        }
-        .mf-map-wrap {
-            height: 450px;
-        }
-    }
-
-    #filterMapEl {
-        width: 100%;
-        height: 100%;
-    }
-
-    .mf-placeholder {
-        position: absolute;
-        inset: 0;
-        z-index: 5;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        color: #9ca3af;
-        font-size: 13px;
-        background: #f3f4f6;
-    }
-
-    .dark .mf-placeholder {
-        background: #1f2937;
-    }
-
-    .mf-locate-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 12px;
-        border-radius: 10px;
-        font-size: 12px;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-        font-family: inherit;
-        transition: all .2s;
-        backdrop-filter: blur(8px);
-        background: rgba(255, 255, 255, .92);
-        color: #374151;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, .18);
-    }
-
-    .dark .mf-locate-btn {
-        background: rgba(17, 24, 39, .88);
-        color: #f3f4f6;
-    }
-
-    .mf-locate-btn:hover {
-        background: #4f46e5;
-        color: #fff;
-        box-shadow: 0 4px 14px rgba(99, 102, 241, .4);
-    }
-
-    .mf-map-hint {
-        position: absolute;
-        bottom: 8px;
-        left: 8px;
-        z-index: 10;
-        padding: 5px 10px;
-        border-radius: 8px;
-        font-size: 11px;
-        background: rgba(0, 0, 0, .55);
-        color: rgba(255, 255, 255, .8);
-        backdrop-filter: blur(4px);
-        pointer-events: none;
-    }
-
-    /* ---- CONTROLS ---- */
-    .mf-controls {
-        padding: 16px 18px;
-        background: #fff;
-    }
-
-    .dark .mf-controls {
-        background: #111827;
-    }
-
-    .mf-loc-box {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 10px 12px;
-        border-radius: 12px;
-        margin-bottom: 14px;
-        background: #f9fafb;
-        border: 1px solid #e5e7eb;
-    }
-
-    .dark .mf-loc-box {
-        background: rgba(255, 255, 255, .04);
-        border-color: rgba(255, 255, 255, .08);
-    }
-
-    .mf-loc-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #6366f1;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, .2);
-        flex-shrink: 0;
-        margin-top: 4px;
-    }
-
-    .mf-loc-label {
-        font-size: 10px;
-        font-weight: 600;
-        color: #9ca3af;
-        letter-spacing: .04em;
-        text-transform: uppercase;
-        margin-bottom: 2px;
-    }
-
-    .mf-loc-text {
-        font-size: 13px;
-        color: #374151;
-        line-height: 1.4;
-    }
-
-    .dark .mf-loc-text {
-        color: #e5e7eb;
-    }
-
-    .mf-loc-coords {
-        font-size: 10px;
-        color: #9ca3af;
-        margin-top: 2px;
-        font-family: monospace;
-    }
-
-    .mf-radius-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 8px;
-    }
-
-    .mf-radius-lbl {
-        font-size: 12px;
-        font-weight: 600;
-        color: #374151;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .dark .mf-radius-lbl {
-        color: #d1d5db;
-    }
-
-    .mf-radius-badge {
-        font-size: 12px;
-        font-weight: 700;
-        padding: 3px 10px;
-        border-radius: 20px;
-        background: rgba(99, 102, 241, .12);
-        color: #4f46e5;
-        border: 1px solid rgba(99, 102, 241, .25);
-    }
-
-    .dark .mf-radius-badge {
-        color: #818cf8;
-        background: rgba(99, 102, 241, .18);
-    }
-
-    .mf-slider {
-        width: 100%;
-        height: 5px;
-        border-radius: 999px;
-        appearance: none;
-        -webkit-appearance: none;
-        cursor: pointer;
-        outline: none;
-        border: none;
-    }
-
-    .mf-slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: #4f46e5;
-        cursor: pointer;
-        border: 2.5px solid #fff;
-        box-shadow: 0 0 0 2px rgba(99, 102, 241, .3), 0 2px 6px rgba(0, 0, 0, .2);
-    }
-
-    .mf-slider-marks {
-        display: flex;
-        justify-content: space-between;
-        font-size: 10px;
-        color: #9ca3af;
-        margin-top: 4px;
-        padding: 0 2px;
-    }
-
-    .mf-quick {
-        display: flex;
-        gap: 6px;
-        margin-top: 8px;
-    }
-
-    .mf-qbtn {
-        flex: 1;
-        padding: 6px 0;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        font-family: inherit;
-        transition: all .15s;
-    }
-
-    .mf-qbtn-off {
-        background: #f3f4f6;
-        color: #6b7280;
-        border: 1px solid #e5e7eb;
-    }
-
-    .dark .mf-qbtn-off {
-        background: rgba(255, 255, 255, .06);
-        color: #9ca3af;
-        border-color: rgba(255, 255, 255, .08);
-    }
-
-    .mf-qbtn-off:hover {
-        background: rgba(99, 102, 241, .1);
-        color: #4f46e5;
-        border-color: rgba(99, 102, 241, .3);
-    }
-
-    .dark .mf-qbtn-off:hover {
-        background: rgba(99, 102, 241, .15);
-        color: #818cf8;
-    }
-
-    .mf-qbtn-on {
-        background: rgba(99, 102, 241, .15);
-        color: #4f46e5;
-        border: 1px solid #4f46e5;
-    }
-
-    .dark .mf-qbtn-on {
-        color: #818cf8;
-        border-color: #6366f1;
-        background: rgba(99, 102, 241, .2);
-    }
-
-    .mf-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 14px;
-    }
-
-    .mf-reset-btn {
-        padding: 10px 18px;
-        border-radius: 11px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        font-family: inherit;
-        transition: all .2s;
-        background: #f3f4f6;
-        color: #6b7280;
-        border: 1px solid #e5e7eb;
-    }
-
-    .dark .mf-reset-btn {
-        background: rgba(255, 255, 255, .06);
-        color: #9ca3af;
-        border-color: rgba(255, 255, 255, .08);
-    }
-
-    .mf-reset-btn:hover {
-        background: #fee2e2;
-        color: #ef4444;
-        border-color: #fca5a5;
-    }
-
-    .dark .mf-reset-btn:hover {
-        background: rgba(239, 68, 68, .12);
-        color: #f87171;
-        border-color: rgba(239, 68, 68, .3);
-    }
-
-    .mf-apply-btn {
-        flex: 1;
-        padding: 10px 20px;
-        border-radius: 11px;
-        font-size: 13px;
-        font-weight: 700;
-        cursor: pointer;
-        font-family: inherit;
-        border: none;
-        transition: all .2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        background: linear-gradient(135deg, #4f46e5, #6366f1);
-        color: #fff;
-        box-shadow: 0 4px 12px rgba(99, 102, 241, .35);
-    }
-
-    .mf-apply-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 18px rgba(99, 102, 241, .5);
-    }
-
-    .mf-apply-btn:active {
-        transform: translateY(0);
-    }
-
-    cle .mf-result {
-        text-align: center;
-        margin-top: 8px;
-        font-size: 12px;
-        color: #9ca3af;
-    }
-
-    .mf-result strong {
-        color: #4f46e5;
-    }
-
-    .dark .mf-result strong {
-        color: #818cf8;
-    }
-
-    /* ---- MOBILE ---- */
-    @media (max-width: 540px) {
-        .mf-panel {
-            position: fixed !important;
-            top: auto !important;
-            left: 0 !important;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            max-width: 100%;
-            border-radius: 20px 20px 0 0;
-            max-height: 88vh;
-            overflow-y: auto;
-        }
-
-        .mf-map-wrap {
-            height: 220px;
-        }
-    }
-
-    /* ---- RESIZE HANDLE ---- */
-    .mf-map-wrap {
-        position: relative;
-        min-height: 180px;
-        max-height: 70vh;
-        resize: vertical;
-        overflow: hidden;
-    }
-
-    /* Height expand/collapse buttons inside panel */
-    .mf-map-size-btns {
-        position: absolute;
-        bottom: 34px;
-        right: 10px;
-        z-index: 12;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-
-    .mf-sizebtn {
-        width: 28px;
-        height: 28px;
-        border-radius: 7px;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-        line-height: 1;
-        backdrop-filter: blur(6px);
-        background: rgba(255,255,255,0.88);
-        color: #374151;
-        box-shadow: 0 1px 6px rgba(0,0,0,0.18);
-        transition: background .15s;
-    }
-
-    .dark .mf-sizebtn {
-        background: rgba(17,24,39,0.88);
-        color: #e5e7eb;
-    }
-
-    .mf-sizebtn:hover {
-        background: #4f46e5;
-        color: #fff;
-    }
-
-    /* bigger panel when expanded */
-    .mf-panel.mf-expanded {
-        width: min(1100px, calc(100vw - 40px));
-    }
-
-    .mf-panel.mf-expanded .mf-map-wrap {
-        height: 600px;
-    }
-
-    @media (min-width: 1280px) {
-        .mf-panel.mf-expanded {
-            width: min(1200px, calc(100vw - 60px));
-        }
-        .mf-panel.mf-expanded .mf-map-wrap {
-            height: 700px;
-        }
-    }
-</style>
-
-
-<style>
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-</style>
-
-<!-- Leaflet CSS & JS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<!-- MarkerCluster CSS & JS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-
-<!-- Map Filter Component CSS -->
-<style>
-    #filterMapEl { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; width: 100%; height: 100%; }
-    .leaflet-tile { visibility: visible !important; }
-    .leaflet-container { background: #f0f0f0; }
-    .custom-cluster { background: transparent !important; border: none !important; }
-</style>
-
-<script>
-    function mapFilterComp() {
-        return {
-            map: null,
-            markerCluster: null,
-            circle: null,
-            userMarker: null,
-            mapReady: false,
-            isPanelOpen: false,
-            locating: false,
-            isFullscreen: false,
-            lat: null,
-            lng: null,
-            radius: 10,
-            addressText: '{{ __('centers.search_filter.no_location') }}',
-            isZooming: false,
-            pendingLoad: false,
-            loadingMarkers: false,
-            lastRequestId: 0,
-
-            boot() {
-                this.$watch('isPanelOpen', (value) => {
-                    if (value && !this.map) {
-                        this.$nextTick(() => {
-                            this.initMap();
-                        });
-                    } else if (value && this.map) {
-                        this.$nextTick(() => {
-                            setTimeout(() => {
-                                this.map.invalidateSize();
-                            }, 200);
-                        });
-                    }
-                });
-            },
-
-            toggle() {
-                this.isPanelOpen = !this.isPanelOpen;
-            },
-
-            initMap() {
-                const DEFAULT_LAT = 41.3111;
-                const DEFAULT_LNG = 69.2406;
-
-                const mapContainer = document.getElementById('filterMapEl');
-                if (!mapContainer) {
-                    console.error('Map container not found!');
-                    return;
-                }
-
-                if (mapContainer._leaflet_id) {
-                    console.log('Map already initialized');
-                    return;
-                }
-
-                this.map = L.map('filterMapEl', {
-                    zoomAnimation: true,
-                    markerZoomAnimation: true
-                }).setView([DEFAULT_LAT, DEFAULT_LNG], 7);
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap contributors',
-                    maxZoom: 18
-                }).addTo(this.map);
-
-                this.markerCluster = L.markerClusterGroup({
-                    chunkedLoading: true,
-                    maxClusterRadius: 60,
-                    spiderfyOnMaxZoom: true,
-                    showCoverageOnHover: true,
-                    zoomToBoundsOnClick: true,
-                    iconCreateFunction: (cluster) => {
-                        const count = cluster.getChildCount();
-                        let color = '#6366f1';
-                        let size = '36px';
-
-                        if (count < 10) {
-                            color = '#22c55e';
-                            size = '32px';
-                        } else if (count < 50) {
-                            color = '#6366f1';
-                            size = '36px';
-                        } else if (count < 100) {
-                            color = '#f97316';
-                            size = '40px';
-                        } else {
-                            color = '#ef4444';
-                            size = '44px';
-                        }
-
-                        return L.divIcon({
-                            html: `<div style="background:${color};width:${size};height:${size};border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:12px;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);">${count}</div>`,
-                            className: 'custom-cluster',
-                            iconSize: null
-                        });
-                    }
-                });
-
-                this.map.addLayer(this.markerCluster);
-
-                // Track zoom state
-                this.map.on('zoomstart', () => {
-                    this.isZooming = true;
-                });
-
-                this.map.on('zoomend', () => {
-                    this.isZooming = false;
-                    if (this.pendingLoad) {
-                        this.pendingLoad = false;
-                        this.loadMarkersByBounds();
-                    }
-                });
-
-                // Click to set location
-                this.map.on('click', (e) => {
-                    this.setLocation(e.latlng.lat, e.latlng.lng);
-                });
-
-                // Dynamic loading on move
-                let debounceTimer;
-                let isMoving = false;
-                this.map.on('moveend', () => {
-                    if (isMoving) return;
-                    isMoving = true;
-                    clearTimeout(debounceTimer);
-
-                    debounceTimer = setTimeout(() => {
-                        const zoom = this.map.getZoom();
-
-                        if (!this.mapReady || !zoom || zoom <= 0 || zoom > 20) {
-                            isMoving = false;
-                            return;
-                        }
-
-                        if (zoom < 6) {
-                            this.markerCluster.clearLayers();
-                            isMoving = false;
-                            return;
-                        }
-
-                        if (this.isZooming) {
-                            this.pendingLoad = true;
-                            isMoving = false;
-                            return;
-                        }
-
-                        this.loadMarkersByBounds();
-                        isMoving = false;
-                    }, 500);
-                });
-
-                // Ensure proper sizing before loading
-                setTimeout(() => {
-                    this.map.invalidateSize();
-                    setTimeout(() => {
-                        this.map.invalidateSize();
-                        this.mapReady = true;
-                        this.loadMarkersByBounds();
-                    }, 300);
-                }, 100);
-            },
-
-            async loadMarkersByBounds() {
-                if (this.loadingMarkers) return;
-
-                const zoom = this.map.getZoom();
-                if (!zoom || zoom <= 0 || zoom > 20) return;
-
-                this.loadingMarkers = true;
-                const requestId = ++this.lastRequestId;
-
-                try {
-                    const bounds = this.map.getBounds();
-                    const north = bounds.getNorth();
-                    const south = bounds.getSouth();
-                    const east = bounds.getEast();
-                    const west = bounds.getWest();
-
-                    console.log(`Loading markers: zoom=${zoom}`);
-
-                    // Simulate backend call - replace with actual endpoint
-                    const response = await fetch(`/api/centers/by-bounds?north=${north}&south=${south}&east=${east}&west=${west}&zoom=${zoom}`);
-                    const centers = await response.json();
-
-                    if (requestId !== this.lastRequestId) return;
-                    if (!Array.isArray(centers)) return;
-
-                    if (!this.isZooming) {
-                        this.updateMarkers(centers);
+    {{-- Centers JavaScript --}}
+    <script src="{{ asset('js/centers.js') }}"></script>
+
+    <script>
+        window._CENTERS = @json($centersForMap ?? []);
+        window.currentPage = @json($pagination['current_page'] ?? 1);
+        window.hasMorePages = @json(($pagination['has_more_pages'] ?? false) ? 'true' : 'false');
+
+        // Global dropdown registry
+        window.dropdowns = {};
+
+        // Dropdown Alpine.js component
+        function dropdown() {
+            return {
+                isOpen: false,
+                isMobile: false,
+                name: null,
+                init(name) {
+                    this.name = name;
+                    this.checkMobile();
+                    window.addEventListener('resize', () => this.checkMobile());
+                    // Register this dropdown
+                    window.dropdowns[name] = this;
+                },
+                checkMobile() {
+                    this.isMobile = window.innerWidth < 768;
+                },
+                toggle() {
+                    if (this.isOpen) {
+                        this.close();
                     } else {
-                        this.pendingLoad = true;
-                    }
-
-                } catch (error) {
-                    console.error('Error loading markers:', error);
-                } finally {
-                    if (requestId === this.lastRequestId) {
-                        this.loadingMarkers = false;
-                    }
-                }
-            },
-
-            updateMarkers(centers) {
-                if (!Array.isArray(centers) || centers.length === 0) {
-                    this.markerCluster.clearLayers();
-                    return;
-                }
-
-                const chunkSize = 100;
-                let index = 0;
-
-                this.markerCluster.clearLayers();
-
-                const processChunk = () => {
-                    const chunk = centers.slice(index, index + chunkSize);
-
-                    chunk.forEach(center => {
-                        if (!center.lat || !center.lng) return;
-
-                        const marker = L.marker([center.lat, center.lng]);
-
-                        marker.bindPopup(`
-                            <div style="padding:8px;min-width:200px;">
-                                <h3 style="font-weight:bold;font-size:14px;margin-bottom:4px;">${center.name}</h3>
-                                <p style="font-size:12px;color:#666;">${center.address || ''}</p>
-                                <p style="font-size:12px;color:#888;margin-top:4px;">${center.province || ''}, ${center.region || ''}</p>
-                            </div>
-                        `);
-
-                        marker.on('click', () => {
-                            this.setLocation(center.lat, center.lng);
+                        // Close all other dropdowns first
+                        Object.values(window.dropdowns).forEach(d => {
+                            if (d !== this) d.close();
                         });
-
-                        this.markerCluster.addLayer(marker);
-                    });
-
-                    index += chunkSize;
-                    if (index < centers.length) {
-                        requestAnimationFrame(processChunk);
+                        this.open();
                     }
-                };
-
-                processChunk();
-            },
-
-            setLocation(lat, lng) {
-                this.lat = lat;
-                this.lng = lng;
-
-                if (this.userMarker) {
-                    this.map.removeLayer(this.userMarker);
+                },
+                open() {
+                    this.isOpen = true;
+                },
+                close() {
+                    this.isOpen = false;
                 }
-                if (this.circle) {
-                    this.map.removeLayer(this.circle);
-                }
-
-                this.userMarker = L.marker([lat, lng], {
-                    icon: L.divIcon({
-                        html: '<div style="background:#ef4444;width:16px;height:16px;border-radius:50%;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>',
-                        className: 'user-location-marker',
-                        iconSize: [16, 16],
-                        iconAnchor: [8, 8]
-                    })
-                }).addTo(this.map);
-
-                this.circle = L.circle([lat, lng], {
-                    radius: this.radius * 1000,
-                    color: '#6366f1',
-                    fillColor: '#6366f1',
-                    fillOpacity: 0.1,
-                    weight: 2
-                }).addTo(this.map);
-
-                this.userMarker.bindPopup('Tanlangan joylashuv').openPopup();
-
-                // Update address text
-                this.reverseGeocode(lat, lng);
-
-                // Apply filter
-                this.applyFilter();
-            },
-
-            async reverseGeocode(lat, lng) {
-                try {
-                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
-                    const data = await response.json();
-                    if (data && data.display_name) {
-                        this.addressText = data.display_name.split(',')[0];
-                    }
-                } catch (e) {
-                    this.addressText = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-                }
-            },
-
-            locateMe() {
-                if (!navigator.geolocation) {
-                    alert('Geolocation qo\'llab-quvvatlanmaydi');
-                    return;
-                }
-
-                this.locating = true;
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        this.map.setView([lat, lng], 14);
-                        this.setLocation(lat, lng);
-                        this.locating = false;
-                    },
-                    (error) => {
-                        console.error('Geolocation error:', error);
-                        alert('Joylashuvni aniqlashda xatolik');
-                        this.locating = false;
-                    },
-                    { enableHighAccuracy: true, timeout: 10000 }
-                );
-            },
-
-            updateRadius() {
-                if (this.circle && this.lat && this.lng) {
-                    this.circle.setRadius(this.radius * 1000);
-                    this.applyFilter();
-                }
-            },
-
-            toggleFullscreen() {
-                this.isFullscreen = !this.isFullscreen;
-                const panel = document.querySelector('.mf-panel');
-                if (panel) {
-                    panel.classList.toggle('mf-expanded', this.isFullscreen);
-                }
-                this.$nextTick(() => {
-                    [0, 100, 300, 500].forEach(delay => {
-                        setTimeout(() => {
-                            if (this.map) {
-                                this.map.invalidateSize(true);
-                            }
-                        }, delay);
-                    });
-                });
-            },
-
-            applyFilter() {
-                // Dispatch custom event for the parent component
-                window.dispatchEvent(new CustomEvent('map-filter-changed', {
-                    detail: {
-                        lat: this.lat,
-                        lng: this.lng,
-                        radius: this.radius
-                    }
-                }));
-            },
-
-            resetFilter() {
-                this.lat = null;
-                this.lng = null;
-                this.radius = 10;
-                this.addressText = '{{ __('centers.search_filter.no_location') }}';
-
-                if (this.userMarker) {
-                    this.map.removeLayer(this.userMarker);
-                    this.userMarker = null;
-                }
-                if (this.circle) {
-                    this.map.removeLayer(this.circle);
-                    this.circle = null;
-                }
-
-                this.applyFilter();
             }
         }
-    }
-</script>
 
+        // Make dropdown function available globally for Alpine.js
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('dropdown', dropdown);
+        });
+    </script>
+
+    {{-- Map Styles with Resize and Responsive Support --}}
+    <style>
+        /* Fullscreen mode */
+        .mf-panel.mf-fullscreen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            max-height: none !important;
+            z-index: 9999 !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            inset: 0 !important;
+        }
+        
+        .mf-panel.mf-fullscreen .relative {
+            height: calc(100vh - 200px) !important;
+        }
+        
+        body.mf-fullscreen-open {
+            overflow: hidden !important;
+        }
+        
+        /* Map resize handle - desktop */
+        .mf-panel .cursor-nwse-resize {
+            cursor: nwse-resize;
+            transition: all 0.2s;
+        }
+        .mf-panel .cursor-nwse-resize:hover {
+            transform: scale(1.2);
+            color: #6366f1;
+        }
+        
+        /* Map resize handle - mobile */
+        .mf-panel .cursor-ns-resize {
+            cursor: ns-resize;
+            transition: all 0.2s;
+        }
+        .mf-panel .cursor-ns-resize:active {
+            background-color: #6366f1;
+        }
+        
+        /* Custom cluster styles */
+        .custom-cluster {
+            background: transparent !important;
+            border: none !important;
+        }
+        .custom-cluster div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 2px solid white;
+        }
+        
+        /* Pin styles */
+        .mf-pin {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        .mf-pin:hover {
+            transform: scale(1.1);
+        }
+        .mf-pin-dot {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+        .mf-pin-center .mf-pin-dot {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        }
+        .mf-pin-user .mf-pin-dot {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        /* Map popup styles */
+        .mf-popup .leaflet-popup-content-wrapper {
+            border-radius: 16px;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        .dark .mf-popup .leaflet-popup-content-wrapper {
+            background: #1f2937;
+        }
+        .mf-popup .leaflet-popup-content {
+            margin: 0;
+            width: 280px !important;
+        }
+        .mf-popup .leaflet-popup-tip {
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .dark .mf-popup .leaflet-popup-tip {
+            background: #1f2937;
+        }
+        
+        /* Popup Card Styles */
+        .mf-card {
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        
+        /* Image Section */
+        .mf-card-image {
+            position: relative;
+            width: 100%;
+            height: 140px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        }
+        .mf-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .mf-card-image:hover img {
+            transform: scale(1.05);
+        }
+        .mf-card-image--gradient {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        }
+        .mf-card-image-letter {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .mf-card-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.4), transparent 50%);
+        }
+        
+        /* Content Section */
+        .mf-card-content {
+            padding: 16px;
+        }
+        
+        /* Header with badges */
+        .mf-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 8px;
+        }
+        .mf-card-badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        /* Type Badge */
+        .mf-card-type {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            background: #eff6ff;
+            color: #3b82f6;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .dark .mf-card-type {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+        
+        /* Rating Badge */
+        .mf-card-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 20px;
+        }
+        .mf-card-star {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+        
+        /* Verified Badge */
+        .mf-card-verified {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .mf-card-verified svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        /* Name */
+        .mf-card-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 8px 0;
+            line-height: 1.4;
+        }
+        .dark .mf-card-name {
+            color: #f9fafb;
+        }
+        
+        /* Address */
+        .mf-card-address {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+        .dark .mf-card-address {
+            color: #9ca3af;
+        }
+        .mf-card-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            margin-top: 1px;
+            color: #9ca3af;
+        }
+        .dark .mf-card-icon {
+            color: #6b7280;
+        }
+        
+        /* Actions */
+        .mf-card-actions {
+            display: flex;
+            gap: 8px;
+            padding-top: 12px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .dark .mf-card-actions {
+            border-color: #374151;
+        }
+        
+        /* Buttons */
+        .mf-card-btn {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1.5px solid #e5e7eb;
+            background: white;
+            color: #374151;
+        }
+        .dark .mf-card-btn {
+            background: #374151;
+            border-color: #4b5563;
+            color: #e5e7eb;
+        }
+        .mf-card-btn:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            transform: translateY(-1px);
+        }
+        .dark .mf-card-btn:hover {
+            background: #4b5563;
+        }
+        
+        .mf-card-btn--primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
+        }
+        .mf-card-btn--primary:hover {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            box-shadow: 0 6px 8px -1px rgba(99, 102, 241, 0.4);
+            transform: translateY(-1px);
+        }
+        
+        .mf-card-btn-icon {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* Selected Location Popup */
+        .mf-selected-popup {
+            padding: 12px 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+        }
+        .dark .mf-selected-popup {
+            background: #1f2937;
+            color: #f9fafb;
+        }
+        .mf-selected-popup-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #111827;
+        }
+        .dark .mf-selected-popup-title {
+            color: #f9fafb;
+        }
+        .mf-selected-popup-coords {
+            font-size: 12px;
+            color: #6b7280;
+            font-family: monospace;
+        }
+        .dark .mf-selected-popup-coords {
+            color: #9ca3af;
+        }
+        
+        /* Dark mode map tiles */
+        .dark .leaflet-tile {
+            filter: brightness(0.75) contrast(1.1);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .mf-panel {
+                inset: 8px;
+                width: calc(100% - 16px);
+            }
+            .mf-panel.mf-fullscreen .relative {
+                height: calc(100vh - 180px) !important;
+            }
+        }
+        
+        /* Map loading animation */
+        @keyframes mf-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .mf-loading {
+            animation: mf-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</x-layout>

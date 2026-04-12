@@ -70,6 +70,11 @@ function applyFilter(type, value) {
     performSearch();
 }
 
+function removeFilter(type) {
+    window.currentFilters.delete(type);
+    performSearch();
+}
+
 function applyPriceFilter() {
     const minPrice = document.getElementById('minPriceInput').value;
     const maxPrice = document.getElementById('maxPriceInput').value;
@@ -358,7 +363,8 @@ function loadMorePages() {
                     tempDiv.innerHTML = data.html;
 
                     // Extract and append only the center cards
-                    const newCards = tempDiv.querySelectorAll('.bg-white.dark\\:bg-gray-800.rounded-xl');
+                    // The cards are wrapped in group containers with glow effect
+                    const newCards = tempDiv.querySelectorAll('.group.relative');
                     newCards.forEach(card => {
                         centersGrid.appendChild(card);
                     });
@@ -441,7 +447,7 @@ performSearch = function () {
 
 // Modern Leaflet Map UX (clustered markers + locate + fullscreen)
 
-// Alpine.js Map Filter Component
+// Alpine.js Map Filter Component - Enhanced Version
 document.addEventListener('alpine:init', () => {
     window.mapFilterComp = function () {
         return {
@@ -457,6 +463,8 @@ document.addEventListener('alpine:init', () => {
             addressText: 'Xaritada joylashuvni tanlang',
             resultShown: false,
             resultCount: 0,
+            mapHeight: 500, // Dynamic height
+            isResizing: false,
 
             /* private */
             _map: null,
@@ -465,6 +473,8 @@ document.addEventListener('alpine:init', () => {
             _centerMarkers: [],
             _escHandler: null,
             _resizeObserver: null,
+            _allCenters: [], // Store all centers
+            _centerBounds: null, // Store bounds for all centers
 
             boot() {
                 this.darkMode = document.documentElement.classList.contains('dark');
@@ -473,6 +483,12 @@ document.addEventListener('alpine:init', () => {
                 if (p.get('latitude')) this.lat = parseFloat(p.get('latitude'));
                 if (p.get('longitude')) this.lng = parseFloat(p.get('longitude'));
                 if (p.get('radius')) this.radius = parseFloat(p.get('radius'));
+
+                // Load all centers from window._CENTERS
+                this._allCenters = window._CENTERS || [];
+                
+                // Calculate bounds for all centers
+                this._calculateAllCenterBounds();
 
                 new MutationObserver(() => {
                     this.darkMode = document.documentElement.classList.contains('dark');
@@ -483,6 +499,66 @@ document.addEventListener('alpine:init', () => {
                     attributes: true,
                     attributeFilter: ['class']
                 });
+                
+                // Listen for window resize
+                window.addEventListener('resize', () => {
+                    if (this._map) {
+                        this._map.invalidateSize({ animate: false });
+                    }
+                });
+            },
+
+            _calculateAllCenterBounds() {
+                const validCenters = this._allCenters.filter(c => {
+                    const lat = parseFloat(c.lat);
+                    const lng = parseFloat(c.lng);
+                    return Number.isFinite(lat) && Number.isFinite(lng);
+                });
+                
+                if (validCenters.length === 0) {
+                    // Default to Uzbekistan bounds
+                    this._centerBounds = [[37.2, 55.9], [45.6, 73.2]];
+                    return;
+                }
+                
+                const lats = validCenters.map(c => parseFloat(c.lat));
+                const lngs = validCenters.map(c => parseFloat(c.lng));
+                
+                this._centerBounds = [
+                    [Math.min(...lats) - 0.5, Math.min(...lngs) - 0.5], // SW corner with padding
+                    [Math.max(...lats) + 0.5, Math.max(...lngs) + 0.5]  // NE corner with padding
+                ];
+            },
+
+            // Dynamic resize handlers
+            startResize(e) {
+                this.isResizing = true;
+                const startY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+                const startHeight = this.mapHeight;
+                
+                const handleMove = (moveEvent) => {
+                    if (!this.isResizing) return;
+                    const currentY = moveEvent.type === 'touchmove' ? moveEvent.touches[0].clientY : moveEvent.clientY;
+                    const deltaY = currentY - startY;
+                    this.mapHeight = Math.max(300, Math.min(900, startHeight + deltaY));
+                    
+                    this.$nextTick(() => {
+                        if (this._map) this._map.invalidateSize({ animate: false });
+                    });
+                };
+                
+                const handleEnd = () => {
+                    this.isResizing = false;
+                    document.removeEventListener('mousemove', handleMove);
+                    document.removeEventListener('mouseup', handleEnd);
+                    document.removeEventListener('touchmove', handleMove);
+                    document.removeEventListener('touchend', handleEnd);
+                };
+                
+                document.addEventListener('mousemove', handleMove);
+                document.addEventListener('mouseup', handleEnd);
+                document.addEventListener('touchmove', handleMove);
+                document.addEventListener('touchend', handleEnd);
             },
 
             toggle() {
@@ -612,12 +688,38 @@ document.addEventListener('alpine:init', () => {
 
                 this._applyTiles();
 
+                // Enhanced marker clustering similar to admin map
                 this._cluster = L.markerClusterGroup({
                     chunkedLoading: true,
-                    showCoverageOnHover: false,
+                    showCoverageOnHover: true,
                     spiderfyOnMaxZoom: true,
                     zoomToBoundsOnClick: true,
-                    maxClusterRadius: 55
+                    maxClusterRadius: 60,
+                    iconCreateFunction: (cluster) => {
+                        const count = cluster.getChildCount();
+                        let className = 'bg-indigo-600';
+                        let size = 'w-10 h-10';
+
+                        if (count < 10) {
+                            className = 'bg-green-500';
+                            size = 'w-8 h-8';
+                        } else if (count < 50) {
+                            className = 'bg-indigo-500';
+                            size = 'w-10 h-10';
+                        } else if (count < 100) {
+                            className = 'bg-orange-500';
+                            size = 'w-12 h-12';
+                        } else {
+                            className = 'bg-red-600';
+                            size = 'w-14 h-14';
+                        }
+
+                        return L.divIcon({
+                            html: `<div class="${className} ${size} text-white rounded-full flex items-center justify-center font-bold shadow-lg border-2 border-white">${count}</div>`,
+                            className: 'custom-cluster',
+                            iconSize: null
+                        });
+                    }
                 });
                 this._map.addLayer(this._cluster);
 
@@ -628,20 +730,34 @@ document.addEventListener('alpine:init', () => {
                     }
                 });
 
-                // When panel is resized (CSS resize), Leaflet needs invalidateSize.
+                // Enhanced resize observer for dynamic resizing
                 const panel = this.$root.querySelector('.mf-panel');
-                if (panel && !this._resizeObserver && typeof ResizeObserver !== 'undefined') {
+                const mapEl = this.$root.querySelector('#filterMapEl');
+                if (mapEl && !this._resizeObserver && typeof ResizeObserver !== 'undefined') {
                     this._resizeObserver = new ResizeObserver(() => {
                         if (this._map) this._map.invalidateSize({ animate: false });
                     });
-                    this._resizeObserver.observe(panel);
+                    this._resizeObserver.observe(mapEl);
                 }
 
+                // Render all centers
                 this._renderCenters(window._CENTERS || []);
+
+                // Set initial view to show all of Uzbekistan or all center bounds
+                if (this._centerBounds) {
+                    this._map.fitBounds(this._centerBounds, {
+                        padding: [50, 50],
+                        animate: true,
+                        duration: 0.6
+                    });
+                } else {
+                    // Default to Uzbekistan view
+                    this._map.setView([41.3775, 64.5853], 6, { animate: true });
+                }
 
                 // Only auto-detect once: if URL doesn't already have explicit coordinates
                 if (!Number.isFinite(this.lat) || !Number.isFinite(this.lng)) {
-                    this._detectUserLocation(false);
+                    // Don't auto-detect, keep the full country view
                 } else {
                     // If URL already contains a location, show it as selected
                     this._setSelectedLocation(this.lat, this.lng, false);
@@ -675,40 +791,77 @@ document.addEventListener('alpine:init', () => {
             _renderCenters(centers) {
                 if (!this._map || !this._cluster) return;
 
+                // Store centers for later use
+                if (centers && centers.length > 0) {
+                    this._allCenters = centers;
+                    this._calculateAllCenterBounds();
+                }
+
                 // Clear previous
                 this._cluster.clearLayers();
                 this._centerMarkers = [];
 
-                const bounds = [];
-
-                (centers || []).forEach((c) => {
+                const validCenters = (centers || []).filter(c => {
                     const lat = parseFloat(c.lat);
                     const lng = parseFloat(c.lng);
-                    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
-
-                    const marker = L.marker([lat, lng], {
-                        icon: this._centerIcon()
-                    });
-
-                    marker.bindPopup(this._popupHtml(c, lat, lng), {
-                        closeButton: false,
-                        maxWidth: 320,
-                        className: 'mf-popup'
-                    });
-
-                    this._cluster.addLayer(marker);
-                    this._centerMarkers.push(marker);
-                    bounds.push([lat, lng]);
+                    return Number.isFinite(lat) && Number.isFinite(lng);
                 });
 
-                if (bounds.length > 0) {
-                    this._map.fitBounds(bounds, {
-                        padding: [40, 40],
-                        animate: true,
-                        duration: 0.55
+                // Update center count for display
+                this.resultCount = validCenters.length;
+                this.resultShown = validCenters.length > 0;
+
+                // If no centers, show all centers from initial data
+                if (validCenters.length === 0 && this._allCenters.length > 0) {
+                    this._allCenters.forEach((c) => {
+                        const lat = parseFloat(c.lat);
+                        const lng = parseFloat(c.lng);
+                        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+                        const marker = L.marker([lat, lng], {
+                            icon: this._centerIcon()
+                        });
+
+                        marker.bindPopup(this._popupHtml(c, lat, lng), {
+                            closeButton: false,
+                            maxWidth: 320,
+                            className: 'mf-popup'
+                        });
+
+                        this._cluster.addLayer(marker);
+                        this._centerMarkers.push(marker);
                     });
                 } else {
-                    // fallback: Uzbekistan center
+                    // Show filtered centers
+                    validCenters.forEach((c) => {
+                        const lat = parseFloat(c.lat);
+                        const lng = parseFloat(c.lng);
+                        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+                        const marker = L.marker([lat, lng], {
+                            icon: this._centerIcon()
+                        });
+
+                        marker.bindPopup(this._popupHtml(c, lat, lng), {
+                            closeButton: false,
+                            maxWidth: 320,
+                            className: 'mf-popup'
+                        });
+
+                        this._cluster.addLayer(marker);
+                        this._centerMarkers.push(marker);
+                    });
+                }
+
+                // Fit bounds to show all markers or default to Uzbekistan
+                if (this._centerBounds) {
+                    this._map.fitBounds(this._centerBounds, {
+                        padding: [50, 50],
+                        animate: true,
+                        duration: 0.6
+                    });
+                } else {
+                    // fallback: Uzbekistan view
                     this._map.setView([41.3775, 64.5853], 6, { animate: true });
                 }
             },
@@ -738,25 +891,52 @@ document.addEventListener('alpine:init', () => {
                 const address = (center && center.address) ? String(center.address) : 'Manzil ko‘rsatilmagan';
                 const img = (center && center.image) ? String(center.image) : '';
                 const detailUrl = (center && center.detail_url) ? String(center.detail_url) : `/center/${center.slug || center.id}`;
+                const type = (center && center.type) ? String(center.type) : '';
+                const rating = (center && center.calculated_total_reyting) ? parseFloat(center.calculated_total_reyting).toFixed(1) : null;
+                const verified = (center && center.checked) ? true : false;
 
                 const gmaps = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(lat + ',' + lng)}`;
 
+                // Image section with gradient fallback
                 const imageHtml = img
-                    ? `<img src="${img}" alt="${name}" class="mf-card-img" loading="lazy">`
-                    : `<div class="mf-card-img mf-card-img--placeholder"></div>`;
+                    ? `<div class="mf-card-image"><img src="${img}" alt="${name}" loading="lazy"><div class="mf-card-image-overlay"></div></div>`
+                    : `<div class="mf-card-image mf-card-image--gradient"><div class="mf-card-image-overlay"></div><span class="mf-card-image-letter">${name.charAt(0).toUpperCase()}</span></div>`;
+
+                // Type badge
+                const typeBadge = type ? `<span class="mf-card-type">${type}</span>` : '';
+
+                // Rating badge
+                const ratingBadge = rating ? `<div class="mf-card-rating"><svg class="mf-card-star" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><span>${rating}</span></div>` : '';
+
+                // Verified badge
+                const verifiedBadge = verified ? `<div class="mf-card-verified"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div>` : '';
 
                 return `
                     <div class="mf-card">
-                        <div class="mf-card-top">
-                            ${imageHtml}
-                            <div class="mf-card-main">
-                                <div class="mf-card-title">${name}</div>
-                                <div class="mf-card-sub">${address}</div>
+                        ${imageHtml}
+                        <div class="mf-card-content">
+                            <div class="mf-card-header">
+                                <div class="mf-card-badges">
+                                    ${typeBadge}
+                                    ${ratingBadge}
+                                </div>
+                                ${verifiedBadge}
                             </div>
-                        </div>
-                        <div class="mf-card-actions">
-                            <a class="mf-card-btn mf-card-btn--primary" href="${detailUrl}">Batafsil</a>
-                            <a class="mf-card-btn" href="${gmaps}" target="_blank" rel="noopener">Yo‘nalish</a>
+                            <h3 class="mf-card-name">${name}</h3>
+                            <div class="mf-card-address">
+                                <svg class="mf-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span>${address}</span>
+                            </div>
+                            <div class="mf-card-actions">
+                                <a class="mf-card-btn mf-card-btn--primary" href="${detailUrl}">
+                                    <svg class="mf-card-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    Batafsil
+                                </a>
+                                <a class="mf-card-btn" href="${gmaps}" target="_blank" rel="noopener">
+                                    <svg class="mf-card-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                    Yo‘nalish
+                                </a>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -796,7 +976,22 @@ document.addEventListener('alpine:init', () => {
                     }
 
                     this._selectedMarker = L.marker([lat, lng], { icon: this._userIcon() })
-                        .bindPopup('<div class="mf-user-popup">Tanlangan joylashuv</div>', {
+                        .bindPopup(`
+                            <div class="mf-selected-popup">
+                                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                                    <div style="width:32px;height:32px;background:linear-gradient(135deg,#10b981,#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                        <svg width="18" height="18" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    </div>
+                                    <div>
+                                        <div class="mf-selected-popup-title">Tanlangan joylashuv</div>
+                                        <div class="mf-selected-popup-coords">${lat.toFixed(5)}, ${lng.toFixed(5)}</div>
+                                    </div>
+                                </div>
+                                <div style="padding-top:8px;border-top:1px solid #e5e7eb;font-size:12px;color:#6b7280;">
+                                    Radius: ${this.radius} km
+                                </div>
+                            </div>
+                        `, {
                             closeButton: false,
                             className: 'mf-popup mf-popup--user'
                         })

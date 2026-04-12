@@ -119,14 +119,14 @@
                         {{ $center->manager_name ?? 'Noma\'lum' }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <button wire:click="toggleVerification({{ $center->id }})" 
+                        <button wire:click="toggleVerification({{ $center->slug }})" 
                                 class="px-2 py-1 text-xs rounded-full cursor-pointer
                                 {{ $center->checked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
                             {{ $center->checked ? 'Ha' : 'Yo\'q' }}
                         </button>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <button wire:click="togglePremium({{ $center->id }})" 
+                        <button wire:click="togglePremium({{ $center->slug }})" 
                                 class="px-2 py-1 text-xs rounded-full cursor-pointer
                                 {{ $center->premium ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800' }}">
                             {{ $center->premium ? 'Ha' : 'Yo\'q' }}
@@ -134,9 +134,9 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $center->created_at->format('d.m.Y') }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="{{ route('admin.centers.show', $center->id) }}" class="text-blue-600 hover:text-blue-900 mr-3">Ko'rish</a>
-                        <a href="{{ route('admin.centers.edit', $center->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Tahrirlash</a>
-                        <button wire:click="delete({{ $center->id }})" 
+                        <a href="{{ route('admin.centers.show', $center->slug) }}" class="text-blue-600 hover:text-blue-900 mr-3">Ko'rish</a>
+                        <a href="{{ route('admin.centers.edit', $center->slug) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Tahrirlash</a>
+                        <button wire:click="delete({{ $center->slug }})" 
                                 wire:confirm="O'chirishni tasdiqlaysizmi?"
                                 class="text-red-600 hover:text-red-900">O'chirish</button>
                     </td>

@@ -21,8 +21,9 @@ class ImageController extends Controller
     }
     public function edit(LearningCenter $center)
     {
+        $center->load('user');
+        Gate::authorize('isOun', $center);
         $LearningCenter = $center;
-        Gate::authorize('isOun', $LearningCenter);
         return view('center.edit-image', compact('LearningCenter'));
     }
 
@@ -37,6 +38,9 @@ class ImageController extends Controller
     }
 
     public function store(Request $request, LearningCenter $center) {
+        $center->load('user');
+        Gate::authorize('isOun', $center);
+
         $validated = $request->validate([
             'images' => 'required|array',
             'images.*' => 'image|mimes:jpg,jpeg,png,gif,webp|max:2048',

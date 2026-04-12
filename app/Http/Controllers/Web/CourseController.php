@@ -40,7 +40,7 @@ class CourseController extends Controller
         // Get types from LearningCenter database and group them
         $types = LearningCenter::pluck('type')->filter()->unique()->sort()->values();
 
-        return view('center.create')
+        return view('user.center-create')
             ->with('types', $types);
     }
 
@@ -161,8 +161,8 @@ class CourseController extends Controller
         Cache::forget('popular_courses');
         Cache::forget('course_types');
 
-        return redirect()->route('center', $center->slug)
-            ->with('success', 'O‘quv markaz muvaffaqiyatli qo‘shildi.');
+        return redirect()->route('user.center.manage', $center->slug)
+            ->with('success', "O'quv markaz muvaffaqiyatli qo'shildi.");
     }
 
     public function show(LearningCenter $center)
@@ -185,19 +185,21 @@ class CourseController extends Controller
         $center->load([
             'images',
             'subjects',
-            'teachers'
+            'teachers',
+            'user'
         ]);
         Gate::authorize('isOun', $center);
 
         // Get types from LearningCenter database
         $types = LearningCenter::pluck('type')->filter()->unique()->sort()->values();
 
-        return view('center.edit', compact('center', 'types'));
+        return view('user.center-edit', compact('center', 'types'));
     }
 
 
     public function update(Request $request, LearningCenter $center)
     {
+        $center->load('user');
         Gate::authorize('isOun', $center);
 
         // Handle type validation - either from select or custom input
@@ -321,8 +323,8 @@ class CourseController extends Controller
 
         $center->update($validated);
 
-        return redirect()->route('center', $center->slug)
-            ->with('success', 'O‘quv markaz muvaffaqiyatli yangilandi.');
+        return redirect()->route('user.center.manage', $center->slug)
+            ->with('success', "O'quv markaz muvaffaqiyatli yangilandi.");
     }
 
 

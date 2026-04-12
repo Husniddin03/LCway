@@ -194,6 +194,7 @@ class CentralAsiaSeeder extends Seeder
             'ratings_total' => (int) ($c['ratings_total'] ?? 0),
             'status'     => $c['status'] ?? 'active',
             'updated_at' => now(),
+            'checked' => false,
         ];
 
         $existing = DB::table('learning_centers')

@@ -67,20 +67,6 @@ return new class extends Migration
         });
 
         // ==========================================================
-        // need_teacher table indexes
-        // ==========================================================
-        Schema::table('need_teacher', function (Blueprint $table) {
-            // Critical for EXISTS queries on needTeachers filter
-            $table->index(['learning_center_id', 'subject_name'], 'idx_nt_center_subject');
-            
-            // For sorting announcements by date
-            $table->index(['learning_center_id', 'created_at'], 'idx_nt_center_created');
-            
-            // Fulltext for subject name and description search
-            $table->fullText(['subject_name', 'description'], 'ft_nt_search');
-        });
-
-        // ==========================================================
         // teacher_subjects table indexes (for price filtering)
         // ==========================================================
         Schema::table('teacher_subjects', function (Blueprint $table) {
@@ -128,13 +114,6 @@ return new class extends Migration
         Schema::table('teachers', function (Blueprint $table) {
             $table->dropIndex('idx_teachers_center_name');
             $table->dropFullText('ft_teachers_name');
-        });
-
-        // need_teacher
-        Schema::table('need_teacher', function (Blueprint $table) {
-            $table->dropIndex('idx_nt_center_subject');
-            $table->dropIndex('idx_nt_center_created');
-            $table->dropFullText('ft_nt_search');
         });
 
         // teacher_subjects

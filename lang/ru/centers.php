@@ -6,8 +6,16 @@ return [
     
     // Hero Section
     'hero' => [
+        'badge' => 'Учебные центры',
         'title' => 'Учебные центры',
         'description' => 'Найдите лучшие учебные центры по всему Узбекистану и выберите подходящие вам курсы',
+    ],
+
+    // Search Section
+    'search' => [
+        'placeholder' => 'Поиск учебных центров...',
+        'button' => 'Поиск',
+        'hint' => 'Поиск по названию, типу или местоположению',
     ],
     
     // Search and Filter Section
@@ -35,13 +43,24 @@ return [
         'type' => 'Тип',
         'teacher_announcements' => 'Объявления учителей',
         'all_announcements' => 'Все объявления',
-        'results_count' => 'учебных центров найдено',
+        'results_count' => 'результатов',
         'searching' => 'Поиск...',
+        'expand' => 'Увеличить',
+        'apply' => 'Применить',
         'price' => 'Цена',
         'min_price' => 'Мин. цена',
         'max_price' => 'Макс. цена',
-        'apply' => 'Применить',
-        'example_price' => 'Например: :price',
+        'min_price_placeholder' => 'Например: 0',
+        'max_price_placeholder' => 'Например: 1000000',
+        'example_price' => 'напр. :price',
+        'subject_placeholder' => 'Поиск... (например: английский)',
+        'subject_count' => ' предметов',
+        'clear_button' => 'Очистить',
+        'no_results' => 'Ничего не найдено',
+        'click_map' => 'Нажмите на карту, чтобы выбрать местоположение',
+        'verified_only' => 'Только проверенные',
+        'unverified_only' => 'Только непроверенные',
+        'all_status' => 'Все статусы',
     ],
     
     // Learning Centers Grid
@@ -53,5 +72,9 @@ return [
         'no_announcements' => 'Пока нет объявлений!',
         'no_centers_found' => 'Учебные центры не найдены',
         'clear_filters' => 'Очистить фильтры',
+        'try_adjusting' => 'Попробуйте изменить поиск или фильтры',
+        'did_you_mean' => 'Вы имели в виду',
+        'loading_more' => 'Загрузка...',
+        'all_results' => 'Все результаты загружены',
     ],
 ];

@@ -137,17 +137,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // 12) need_teacher
-        Schema::create('need_teacher', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('learning_center_id');
-            $table->string('subject_name');
-            $table->string('subject_type')->nullable();
-            $table->text('description')->nullable();
-            $table->timestamps();
-
-            $table->foreign('learning_center_id')->references('id')->on('learning_centers')->onDelete('cascade');
-        });
     }
 
     /**
@@ -164,6 +153,5 @@ return new class extends Migration
         Schema::dropIfExists('learning_centers_images');
         Schema::dropIfExists('subjects_of_learning_centers');
         Schema::dropIfExists('learning_centers');
-        Schema::dropIfExists('need_teacher');
     }
 };

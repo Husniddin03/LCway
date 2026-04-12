@@ -6,10 +6,18 @@ return [
     
     // Hero Section
     'hero' => [
+        'badge' => 'Learning Centers',
         'title' => 'Learning Centers',
         'description' => 'Find the best learning centers across Uzbekistan and choose courses that suit you',
     ],
     
+    // Search Section
+    'search' => [
+        'placeholder' => 'Search learning centers...',
+        'button' => 'Search',
+        'hint' => 'Search by name, type, or location',
+    ],
+
     // Search and Filter Section
     'search_filter' => [
         'search_placeholder' => 'Search learning centers...',
@@ -35,15 +43,26 @@ return [
         'type' => 'Type',
         'teacher_announcements' => 'Teacher Announcements',
         'all_announcements' => 'All Announcements',
-        'results_count' => 'learning centers found',
+        'results_count' => 'results',
         'searching' => 'Searching...',
+        'expand' => 'Expand',
         'price' => 'Price',
         'min_price' => 'Min. price',
         'max_price' => 'Max. price',
-        'apply' => 'Apply',
+        'min_price_placeholder' => 'Example: 0',
+        'max_price_placeholder' => 'Example: 1000000',
         'example_price' => 'e.g. :price',
+        'subject_placeholder' => 'Search... (e.g.: english)',
+        'subject_count' => ' subjects',
+        'clear_button' => 'Clear',
+        'no_results' => 'No results found',
+        'click_map' => 'Click on map to select location',
+        'verified_only' => 'Verified Only',
+        'unverified_only' => 'Unverified Only',
+        'all_status' => 'All Status',
+        'apply' => 'Apply',
     ],
-    
+
     // Learning Centers Grid
     'centers_grid' => [
         'read_more' => 'Read More',
@@ -53,5 +72,9 @@ return [
         'no_announcements' => 'No announcements yet!',
         'no_centers_found' => 'No learning centers found',
         'clear_filters' => 'Clear Filters',
+        'try_adjusting' => 'Try adjusting your search or filters',
+        'did_you_mean' => 'Did you mean',
+        'loading_more' => 'Loading more...',
+        'all_results' => 'All results loaded',
     ],
 ];

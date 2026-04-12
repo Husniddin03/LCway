@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Log;
  *   - searchText   : refined/expanded search string (string|null)
  *   - type         : center type (string|null)
  *   - subject_name : standardized subject name (string|null)
- *   - needTeachers : teacher vacancy filter (string|null)
  *   - min_price    : minimum price in UZS (float|null)
  *   - max_price    : maximum price in UZS (float|null)
  *   - latitude     : user location lat (float|null)
@@ -87,7 +86,6 @@ OUTPUT FORMAT (STRICT JSON - include ALL fields):
   "searchText": "refined keywords or null",
   "type": "detected type or null",
   "subject_name": "standardized subject or null",
-  "needTeachers": "subject name if looking for teacher vacancy, else null",
   "min_price": null or number,
   "max_price": null or number,
   "latitude": null,
@@ -105,7 +103,6 @@ Output:
   "searchText": "it kurs",
   "type": "Course",
   "subject_name": "Programming",
-  "needTeachers": null,
   "min_price": null,
   "max_price": null,
   "latitude": null,
@@ -121,7 +118,6 @@ Output:
   "searchText": "ingliz tili",
   "type": null,
   "subject_name": "English",
-  "needTeachers": null,
   "min_price": null,
   "max_price": 200000,
   "latitude": null,
@@ -137,7 +133,6 @@ Output:
   "searchText": "Samarkand",
   "type": "Tutor",
   "subject_name": "Mathematics",
-  "needTeachers": null,
   "min_price": null,
   "max_price": null,
   "latitude": null,
@@ -153,7 +148,6 @@ Output:
   "searchText": "programming courses",
   "type": "Course",
   "subject_name": "Programming",
-  "needTeachers": null,
   "min_price": null,
   "max_price": null,
   "latitude": null,
@@ -266,7 +260,7 @@ PROMPT;
      */
     private function sanitizeFilters(array $raw): array
     {
-        $allowed = ['searchText', 'region', 'type', 'min_price', 'max_price', 'needTeachers'];
+        $allowed = ['searchText', 'region', 'type', 'min_price', 'max_price'];
         $clean   = [];
 
         foreach ($allowed as $key) {

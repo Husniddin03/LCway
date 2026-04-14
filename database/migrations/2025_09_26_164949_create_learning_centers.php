@@ -29,6 +29,7 @@ return new class extends Migration
             $table->integer('student_count')->default(0);
             $table->integer('total_reyting')->default(0);
             $table->string('status')->default('active');
+            $table->boolean('active')->default(true);
             $table->boolean('checked')->default(false);
             $table->string('tin')->unique()->nullable()->comment('STIR raqami');
             $table->text('legal_address')->nullable();

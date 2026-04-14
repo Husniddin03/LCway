@@ -41,6 +41,7 @@ class LearningCenter extends Model
         'phone_number',
         'email',
         'ifut_code',
+        'active'
     ];
 
     protected $casts = [
@@ -50,6 +51,7 @@ class LearningCenter extends Model
         'premium_until' => 'datetime',
         'license_registration_date' => 'date',
         'license_validity_period' => 'date',
+        'active' => 'boolean',
     ];
 
     public function user()

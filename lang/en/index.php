@@ -7,7 +7,7 @@ return [
     // Hero Section
     'hero' => [
         'greeting' => 'Welcome to',
-        'welcome' => 'Findora!',
+        'welcome' => '!',
         'description' => 'Here you can find the learning centers that suit you best. We provide you with the best service.',
         'browse_courses' => 'Browse Courses Now',
         'contact_info' => 'Contact us for any questions or suggestions',

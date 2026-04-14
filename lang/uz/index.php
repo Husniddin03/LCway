@@ -7,7 +7,7 @@ return [
     // Hero Section
     'hero' => [
         'greeting' => 'Assalomu alaykum,',
-        'welcome' => 'Findora ga xush kelibsiz!',
+        'welcome' => 'ga xush kelibsiz!',
         'description' => 'Bu yerda siz o\'zingizga mos bo\'lgan o\'quv markazlarni topishingiz mumkin. Biz sizga eng yaxshi xizmatni taqdim etamiz.',
         'browse_courses' => 'Hoziroq kurslarni tanlash',
         'contact_info' => 'Har qanday savol yoki taklif uchun biz bilan bog\'laning',

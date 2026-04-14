@@ -45,9 +45,9 @@ class NewDataSeeder extends Seeder
                 $region = $this->extractRegion($address);
 
                 // Determine status based on Status_from_web
-                $status = 'active';
+                $status = true;
                 if (isset($centerData['Status_from_web']) && $centerData['Status_from_web'] === 'Tugatilgan') {
-                    $status = 'inactive';
+                    $status = false;
                 }
 
                 // Check for duplicate TIN
@@ -79,6 +79,7 @@ class NewDataSeeder extends Seeder
                     'users_id' => $defaultUserId,
                     'status' => $status,
                     'checked' => true,
+                    'active' => $status,
                     'student_count' => 0,
                     'rating' => 0,
                     'ratings_total' => 0,

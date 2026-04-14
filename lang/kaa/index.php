@@ -7,7 +7,7 @@ return [
     // Hero Section
     'hero' => [
         'greeting' => 'Xosh keldin\'iz',
-        'welcome' => 'Findora!',
+        'welcome' => '!',
         'description' => 'Mında siz ózizge ma\'s bolǵan o\'qıw merkezlerin tabıwıńız múmkin. Biz sizge eń jaqsı xızmetni keltiriwimiz.',
         'browse_courses' => 'Dárejelerdi saylan',
         'contact_info' => 'Qanday da soraw yaki usnıs ushın biz menen baylanısıńız',

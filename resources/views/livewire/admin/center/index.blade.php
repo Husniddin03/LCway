@@ -95,6 +95,7 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">STIR</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Egasi</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tasdiqlangan</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Holati</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Premium</th>
                     <th wire:click="sortBy('created_at')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
                         Sana
@@ -123,6 +124,13 @@
                                 class="px-2 py-1 text-xs rounded-full cursor-pointer
                                 {{ $center->checked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
                             {{ $center->checked ? 'Ha' : 'Yo\'q' }}
+                        </button>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <button wire:click="toggleVerification({{ $center->slug }})" 
+                                class="px-2 py-1 text-xs rounded-full cursor-pointer
+                                {{ $center->active ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                            {{ $center->active ? 'Faol' : 'Nofaol' }}
                         </button>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">

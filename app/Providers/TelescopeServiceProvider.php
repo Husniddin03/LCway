@@ -10,6 +10,14 @@ use Laravel\Telescope\TelescopeApplicationServiceProvider;
 class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 {
     /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        parent::boot();
+    }
+
+    /**
      * Register any application services.
      */
     public function register(): void

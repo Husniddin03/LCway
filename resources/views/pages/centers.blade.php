@@ -70,9 +70,19 @@
                             </button>
                         </div>
                     </div>
-                    <p class="text-center text-sm text-gray-500 dark:text-gray-400 mt-3">
-                        {{ __('centers.search.hint') }}
-                    </p>
+                    <div class="flex items-center justify-center gap-4 mt-3">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ __('centers.search.hint') }}
+                        </p>
+                        @if(config('services.ai_search.enabled'))
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs font-medium rounded-full">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                AI
+                            </span>
+                        @endif
+                    </div>
                 </form>
             </div>
 

@@ -45,7 +45,7 @@ You must detect intent and extract structured filters.
 
 SUBJECT SYNONYM MAPPING:
 - "matematika", "math", "математика", "матем" → subject_name: "Mathematics"
-- "ingliz", "english", "ingiliz", "английский", "til" → subject_name: "English"
+- "ingliz", "english", "ingiliz", "английский" → subject_name: "English"
 - "rus", "ruskiy", "ruscha", "русский" → subject_name: "Russian"
 - "it", "dasturlash", "programming", "программирование", "coder" → subject_name: "Programming"
 - "fizika", "physics", "физика" → subject_name: "Physics"
@@ -67,14 +67,12 @@ QUALITY SIGNALS:
 - "yangi", "new", "newest", "новый" → sort: "created", order: "desc"
 - "arzon", "cheap" → sort: "name" (price inferred via max_price)
 
-TYPE DETECTION:
-- "kurs", "course", "kurslari" → type: "Course"
-- "til markaz", "language center", "til kursi" → type: "Language"
-- "maktab", "school", "школа" → type: "School"
-- "universitet", "university", "университет" → type: "University"
-- "repetitor", "tutor", "tutoring", "репетитор" → type: "Tutor"
-- "lisey", "lyceum", "лицей" → type: "Lyceum"
-- "kollej", "college", "колледж" → type: "College"
+TYPE DETECTION (use exact Uzbek database values):
+- "kurs", "course", "kurslari", "o'quv markaz" → type: "Boshqa ta'lim"
+- "til markaz", "language center", "til kursi", "ingliz tili", "russian" → type: "Qo\'shimcha ta\'lim"
+- "maktabgacha", "bolalar bog'chasi", "kindergarten" → type: "Maktabgacha ta'lim"
+- "maktab", "school", "школа", "litsey", "gimnaziya" → type: "Maktabgacha ta'lim"
+- "maxsus ta'lim", "invalidlar", "special education" → type: "Maxsus ta'lim"
 
 LOCATION & PROXIMITY:
 - "toshkent", "tashkent", "ташкент" → searchText includes "Toshkent"
@@ -101,7 +99,7 @@ Input: "eng yaxshi it kurslar yaqinimda"
 Output:
 {
   "searchText": "it kurs",
-  "type": "Course",
+  "type": "Boshqa ta'lim",
   "subject_name": "Programming",
   "min_price": null,
   "max_price": null,
@@ -112,11 +110,26 @@ Output:
   "order": "desc"
 }
 
+Input: "toshkentdagi til markazlar"
+Output:
+{
+  "searchText": "Toshkent",
+  "type": "Qo\'shimcha ta\'lim",
+  "subject_name": null,
+  "min_price": null,
+  "max_price": null,
+  "latitude": null,
+  "longitude": null,
+  "radius": null,
+  "sort": null,
+  "order": null
+}
+
 Input: "arzon ingliz tili 200 minggacha"
 Output:
 {
   "searchText": "ingliz tili",
-  "type": null,
+  "type": "Qo\'shimcha ta\'lim",
   "subject_name": "English",
   "min_price": null,
   "max_price": 200000,
@@ -131,7 +144,7 @@ Input: "math repetitor samarkand"
 Output:
 {
   "searchText": "Samarkand",
-  "type": "Tutor",
+  "type": "Boshqa ta'lim",
   "subject_name": "Mathematics",
   "min_price": null,
   "max_price": null,
@@ -146,7 +159,7 @@ Input: "top programming courses"
 Output:
 {
   "searchText": "programming courses",
-  "type": "Course",
+  "type": "Boshqa ta'lim",
   "subject_name": "Programming",
   "min_price": null,
   "max_price": null,
@@ -260,31 +273,30 @@ PROMPT;
      */
     private function sanitizeFilters(array $raw): array
     {
-        $allowed = ['searchText', 'region', 'type', 'min_price', 'max_price'];
-        $clean   = [];
+        // SYSTEM_PROMPT ichidagi hamma maydonlarni bu yerga qo'shing
+        $allowed = [
+            'searchText', 'type', 'subject_name', 'min_price', 
+            'max_price', 'latitude', 'longitude', 'radius', 'sort', 'order'
+        ];
+        $clean = [];
 
         foreach ($allowed as $key) {
-            if (!isset($raw[$key])) {
+            if (!isset($raw[$key]) || $raw[$key] === null) {
                 continue;
             }
 
             $value = $raw[$key];
 
-            // Numeric fields must be numeric
-            if (in_array($key, ['min_price', 'max_price'], true)) {
+            // Raqamli maydonlar uchun
+            if (in_array($key, ['min_price', 'max_price', 'latitude', 'longitude', 'radius'], true)) {
                 if (is_numeric($value)) {
                     $clean[$key] = (float) $value;
                 }
                 continue;
             }
 
-            // String fields: cast and limit length
-            if (is_string($value) || is_numeric($value)) {
-                $str = substr(trim((string) $value), 0, 255);
-                if ($str !== '') {
-                    $clean[$key] = $str;
-                }
-            }
+            // Matnli maydonlar uchun
+            $clean[$key] = substr(trim((string) $value), 0, 255);
         }
 
         return $clean;

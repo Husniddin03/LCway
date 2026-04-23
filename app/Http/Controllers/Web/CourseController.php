@@ -165,9 +165,9 @@ class CourseController extends Controller
             ->with('success', "O'quv markaz muvaffaqiyatli qo'shildi.");
     }
 
-    public function show(LearningCenter $center)
+    public function show(LearningCenter $course)
     {
-        $LearningCenter = $center->load([
+        $LearningCenter = $course->load([
             'user',
             'images',
             'subjects',
@@ -180,27 +180,27 @@ class CourseController extends Controller
     }
 
 
-    public function edit(LearningCenter $center)
+    public function edit(LearningCenter $course)
     {
-        $center->load([
+        $course->load([
             'images',
             'subjects',
             'teachers',
             'user'
         ]);
-        Gate::authorize('isOun', $center);
+        Gate::authorize('isOun', $course);
 
         // Get types from LearningCenter database
         $types = LearningCenter::pluck('type')->filter()->unique()->sort()->values();
 
-        return view('user.center-edit', compact('center', 'types'));
+        return view('user.center-edit', compact('course', 'types'));
     }
 
 
-    public function update(Request $request, LearningCenter $center)
+    public function update(Request $request, LearningCenter $course)
     {
-        $center->load('user');
-        Gate::authorize('isOun', $center);
+        $course->load('user');
+        Gate::authorize('isOun', $course);
 
         // Handle type validation - either from select or custom input
         $type = $request->type;
@@ -293,15 +293,15 @@ class CourseController extends Controller
             $path = $this->imageService->optimizeImage($request->file('logo'), 'uploads/logos');
             $validated['logo'] = $path;
             // Delete old logo
-            if ($center->logo && Storage::disk('public')->exists($center->logo)) {
-                Storage::disk('public')->delete($center->logo);
+            if ($course->logo && Storage::disk('public')->exists($course->logo)) {
+                Storage::disk('public')->delete($course->logo);
             }
         }
 
         // Handle images update - delete old images if new ones are uploaded
         if ($request->hasFile('images')) {
             // Delete old images
-            foreach ($center->images as $oldImage) {
+            foreach ($course->images as $oldImage) {
                 if ($oldImage->image && Storage::disk('public')->exists($oldImage->image)) {
                     Storage::disk('public')->delete($oldImage->image);
                 }
@@ -311,9 +311,9 @@ class CourseController extends Controller
             // Upload new images
             foreach ($request->file('images') as $image) {
                 $path = $this->imageService->optimizeImage($image, 'uploads/centers');
-                $center->images()->create([
+                $course->images()->create([
                     'image' => $path,
-                    'learning_centers_id' => $center->id
+                    'learning_centers_id' => $course->id
                 ]);
             }
         }
@@ -321,24 +321,24 @@ class CourseController extends Controller
         // Remove images from validated data to avoid database issues
         unset($validated['images']);
 
-        $center->update($validated);
+        $course->update($validated);
 
-        return redirect()->route('user.center.manage', $center->slug)
+        return redirect()->route('user.center.manage', $course->slug)
             ->with('success', "O'quv markaz muvaffaqiyatli yangilandi.");
     }
 
 
-    public function destroy(LearningCenter $center)
+    public function destroy(LearningCenter $course)
     {
-        Gate::authorize('isOun', $center);
+        Gate::authorize('isOun', $course);
 
         // Markaz logosi
-        if ($center->logo && Storage::disk('public')->exists($center->logo)) {
-            Storage::disk('public')->delete($center->logo);
+        if ($course->logo && Storage::disk('public')->exists($course->logo)) {
+            Storage::disk('public')->delete($course->logo);
         }
 
         // Markaz rasmlari
-        foreach ($center->images as $image) {
+        foreach ($course->images as $image) {
             if ($image->image && Storage::disk('public')->exists($image->image)) {
                 Storage::disk('public')->delete($image->image);
             }
@@ -347,7 +347,7 @@ class CourseController extends Controller
         }
 
         // O‘qituvchilar rasmlari
-        foreach ($center->teachers as $teacher) {
+        foreach ($course->teachers as $teacher) {
             if ($teacher->photo && Storage::disk('public')->exists($teacher->photo)) {
                 Storage::disk('public')->delete($teacher->photo);
             }
@@ -356,7 +356,7 @@ class CourseController extends Controller
         }
 
         // Markazni o‘chirish
-        $center->delete();
+        $course->delete();
 
         return redirect()->route('index')
             ->with('success', 'O‘quv markaz o‘chirildi.');

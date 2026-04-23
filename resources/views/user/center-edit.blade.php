@@ -1,7 +1,7 @@
 @extends('layouts.user-sidebar')
 
-@section('title', __('course-edit.header.title', ['name' => $center->name]))
-@section('header', $center->name)
+@section('title', __('course-edit.header.title', ['name' => $course->name]))
+@section('header', $course->name)
 
 @section('content')
     <style>
@@ -26,7 +26,7 @@
         </div>
 
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-                <form action="{{ route('course.update', $center->slug) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <form action="{{ route('course.update', $course->slug) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
                     @method('PUT')
 
@@ -78,11 +78,11 @@
                                     <input type="file" name="logo" id="logo" class="hidden" accept="image/*" onchange="previewLogo(this)">
                                     <div class="relative inline-block">
                                         <div id="logo-preview" class="w-24 h-24 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300">
-                                            @if($center->logo)
-                                                @if(str_starts_with($center->logo, 'http'))
-                                                    <img src="{{ $center->logo }}" class="w-full h-full object-cover" alt="Logo">
+                                            @if($course->logo)
+                                                @if(str_starts_with($course->logo, 'http'))
+                                                    <img src="{{ $course->logo }}" class="w-full h-full object-cover" alt="Logo">
                                                 @else
-                                                    <img src="{{ asset('storage/' . $center->logo) }}" class="w-full h-full object-cover" alt="Logo">
+                                                    <img src="{{ asset('storage/' . $course->logo) }}" class="w-full h-full object-cover" alt="Logo">
                                                 @endif
                                             @else
                                                 <svg class="w-10 h-10 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,7 +114,7 @@
                                 <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     {{ __('course-edit.basic_info.name_label') }} {{ __('course-edit.required') }}
                                 </label>
-                                <x-input type="text" name="name" id="name" value="{{ $center->name }}"
+                                <x-input type="text" name="name" id="name" value="{{ $course->name }}"
                                     placeholder="{{ __('course-edit.basic_info.name_placeholder') }}" required/>
                                 @error('name')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
@@ -129,12 +129,12 @@
                                 <select name="type" id="type"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required onchange="toggleCustomType(this.value)">
-                                    <option value="" disabled {{ !old('type', $center->type) ? 'selected' : '' }}>{{ __('course-edit.basic_info.type_placeholder') }}</option>
+                                    <option value="" disabled {{ !old('type', $course->type) ? 'selected' : '' }}>{{ __('course-edit.basic_info.type_placeholder') }}</option>
                                     
                                     @if($types->isNotEmpty())
                                         <!-- Types from database -->
                                         @foreach($types as $type)
-                                            <option value="{{ $type }}" {{ $center->type == $type ? 'selected' : '' }}>{{ $type }}</option>
+                                            <option value="{{ $type }}" {{ $course->type == $type ? 'selected' : '' }}>{{ $type }}</option>
                                         @endforeach
                                         
                                         <!-- Separator -->
@@ -150,7 +150,7 @@
                                     <input type="text" name="custom_type" id="custom_type" 
                                         class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="O'quv markaz turingizni kiriting..."
-                                        value="{{ old('custom_type') ?? $center->type }}">
+                                        value="{{ old('custom_type') ?? $course->type }}">
                                 </div>
                                 
                                 @error('type')
@@ -280,7 +280,7 @@
                                     @endphp
                                     
                                     // If current type is not in database types, show custom input
-                                    const currentType = @json($center->type);
+                                    const currentType = @json($course->type);
                                     const typesInDb = @json($types->toArray());
                                     if (currentType && !typesInDb.includes(currentType)) {
                                         const typeSelect = document.getElementById('type');
@@ -293,7 +293,7 @@
                                     }
                                     
                                     // If current country is not in database countries, show custom input
-                                    const currentCountry = @json($center->country);
+                                    const currentCountry = @json($course->country);
                                     const countriesInDb = @json($countries->toArray());
                                     if (currentCountry && !countriesInDb.includes(currentCountry)) {
                                         const countrySelect = document.getElementById('country');
@@ -307,7 +307,7 @@
                                     
                                     // If current province is not in the hardcoded list, show custom input
                                     const hardcodedProvinces = ["Toshkent","Sirdaryo","Jizzax","Samarqand","Buxoro","Navoiy","Qashqadaryo","Surxandaryo","Xorazm","Andijon","Namangan","Farg'ona","Qoraqalpog'iston"];
-                                    const currentProvince = @json($center->province);
+                                    const currentProvince = @json($course->province);
                                     if (currentProvince && !hardcodedProvinces.includes(currentProvince)) {
                                         const provinceSelect = document.getElementById('region');
                                         provinceSelect.value = 'custom';
@@ -319,7 +319,7 @@
                                     }
                                     
                                     // If current district is not in districtsByRegion, show custom input
-                                    const currentRegion = @json($center->region);
+                                    const currentRegion = @json($course->region);
                                     if (currentRegion && currentProvince) {
                                         const districtsForProvince = districtsByRegion[currentProvince] || [];
                                         if (!districtsForProvince.includes(currentRegion)) {
@@ -343,9 +343,9 @@
                                 <div class="relative">
                                     <textarea name="about" id="about" rows="4" maxlength="500"
                                         class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="{{ __('course-edit.basic_info.about_placeholder') }}">{{ $center->about }}</textarea>
+                                        placeholder="{{ __('course-edit.basic_info.about_placeholder') }}">{{ $course->about }}</textarea>
                                     <div class="absolute bottom-3 right-3 text-xs text-gray-500">
-                                        <span id="about-char-count">{{ strlen(old('about', $center->about) ?? '') }}</span>/500
+                                        <span id="about-char-count">{{ strlen(old('about', $course->about) ?? '') }}</span>/500
                                     </div>
                                 </div>
                                 @error('about')
@@ -367,11 +367,11 @@
                         </div>
 
                         <!-- Existing Images -->
-                        @if($center->images && $center->images->count() > 0)
+                        @if($course->images && $course->images->count() > 0)
                             <div class="mb-4">
                                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{{ __('user.center_create.existing_images') }}</p>
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                    @foreach($center->images as $image)
+                                    @foreach($course->images as $image)
                                         <div class="relative group">
                                             <img src="{{ asset('storage/' . $image->image) }}" alt="Markaz rasmi" class="w-full h-28 object-cover rounded-lg border border-gray-200 dark:border-gray-600">
                                         </div>
@@ -414,8 +414,8 @@
                             $existingLat = 39.6542; // Default fallback
                             $existingLng = 66.9757; // Default fallback
                             
-                            if ($center->location) {
-                                $coords = explode(',', $center->location);
+                            if ($course->location) {
+                                $coords = explode(',', $course->location);
                                 if (count($coords) == 2) {
                                     $existingLat = floatval($coords[0]);
                                     $existingLng = floatval($coords[1]);
@@ -505,7 +505,7 @@
                                     @if($countries->isNotEmpty())
                                         <!-- Countries from database -->
                                         @foreach($countries as $country)
-                                            <option value="{{ $country }}" {{ $center->country == $country ? 'selected' : '' }}>{{ $country }}</option>
+                                            <option value="{{ $country }}" {{ $course->country == $country ? 'selected' : '' }}>{{ $country }}</option>
                                         @endforeach
                                         
                                         <!-- Separator -->
@@ -521,7 +521,7 @@
                                     <input type="text" name="custom_country" id="custom_country" 
                                         class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="{{ __('user.center_create.custom_country_placeholder') }}"
-                                        value="{{ old('custom_country') ?? $center->country }}">
+                                        value="{{ old('custom_country') ?? $course->country }}">
                                 </div>
                                 
                                 @error('country')
@@ -542,7 +542,7 @@
                                     required onchange="toggleCustomProvince(this.value)">
                                     <option value="" disabled {{ !old('province') ? 'selected' : '' }}>{{ __('course-create.location.province_placeholder') }}</option>
                                     @foreach(["Toshkent","Sirdaryo","Jizzax","Samarqand","Buxoro","Navoiy","Qashqadaryo","Surxandaryo","Xorazm","Andijon","Namangan","Farg'ona","Qoraqalpog'iston"] as $p)
-                                        <option value="{{ $p }}" {{ $center->province == $p ? 'selected' : '' }}>{{ $p }}</option>
+                                        <option value="{{ $p }}" {{ $course->province == $p ? 'selected' : '' }}>{{ $p }}</option>
                                     @endforeach
                                     <option value="custom">📝 {{ __('user.center_create.custom_province') }}</option>
                                 </select>
@@ -552,7 +552,7 @@
                                     <input type="text" name="custom_province" id="custom_province" 
                                         class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="{{ __('user.center_create.custom_province_placeholder') }}"
-                                        value="{{ old('custom_province') ?? $center->province }}">
+                                        value="{{ old('custom_province') ?? $course->province }}">
                                 </div>
                                 
                                 @error('province')
@@ -571,9 +571,9 @@
                                 <select name="region" id="district"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required onchange="toggleCustomDistrict(this.value)">
-                                    <option value="" disabled {{ !$center->region ? 'selected' : '' }}>{{ __('course-create.location.district_placeholder') }}</option>
-                                    @if($center->region)
-                                        <option value="{{ $center->region }}" selected>{{ $center->region }}</option>
+                                    <option value="" disabled {{ !$course->region ? 'selected' : '' }}>{{ __('course-create.location.district_placeholder') }}</option>
+                                    @if($course->region)
+                                        <option value="{{ $course->region }}" selected>{{ $course->region }}</option>
                                     @endif
                                     <option value="custom">📝 {{ __('user.center_create.custom_district') }}</option>
                                 </select>
@@ -583,7 +583,7 @@
                                     <input type="text" name="custom_district" id="custom_district" 
                                         class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="{{ __('user.center_create.custom_district_placeholder') }}"
-                                        value="{{ old('custom_district') ?? $center->region }}">
+                                        value="{{ old('custom_district') ?? $course->region }}">
                                 </div>
                                 
                                 @error('region')
@@ -599,7 +599,7 @@
                                 <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     {{ __('course-create.location.address_label') }} {{ __('course-create.required') }}
                                 </label>
-                                <x-input type="text" name="address" id="address" value="{{ $center->address }}"
+                                <x-input type="text" name="address" id="address" value="{{ $course->address }}"
                                     placeholder="{{ __('course-create.location.address_placeholder') }}" required/>
                                 @error('address')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
@@ -629,7 +629,7 @@
                                 <label for="tin" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     {{ __('user.center_create.tin_label') }}
                                 </label>
-                                <x-input type="text" name="tin" id="tin" value="{{ old('tin', $center->tin) }}"
+                                <x-input type="text" name="tin" id="tin" value="{{ old('tin', $course->tin) }}"
                                     placeholder="{{ __('user.center_create.tin_placeholder') }}" maxlength="20"/>
                                 @error('tin')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
@@ -641,7 +641,7 @@
                                 <label for="license_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     {{ __('user.center_create.license_number_label') }}
                                 </label>
-                                <x-input type="text" name="license_number" id="license_number" value="{{ old('license_number', $center->license_number) }}"
+                                <x-input type="text" name="license_number" id="license_number" value="{{ old('license_number', $course->license_number) }}"
                                     placeholder="{{ __('user.center_create.license_number_placeholder') }}"/>
                                 @error('license_number')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
@@ -653,7 +653,7 @@
                                 <label for="license_registration_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     {{ __('user.center_create.license_date_label') }}
                                 </label>
-                                <x-input type="date" name="license_registration_date" id="license_registration_date" value="{{ old('license_registration_date', $center->license_registration_date ? $center->license_registration_date->format('Y-m-d') : '') }}"/>
+                                <x-input type="date" name="license_registration_date" id="license_registration_date" value="{{ old('license_registration_date', $course->license_registration_date ? $course->license_registration_date->format('Y-m-d') : '') }}"/>
                                 @error('license_registration_date')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                                 @enderror
@@ -664,7 +664,7 @@
                                 <label for="license_validity_period" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     {{ __('user.center_create.license_validity_label') }}
                                 </label>
-                                <x-input type="date" name="license_validity_period" id="license_validity_period" value="{{ old('license_validity_period', $center->license_validity_period ? $center->license_validity_period->format('Y-m-d') : '') }}"/>
+                                <x-input type="date" name="license_validity_period" id="license_validity_period" value="{{ old('license_validity_period', $course->license_validity_period ? $course->license_validity_period->format('Y-m-d') : '') }}"/>
                                 @error('license_validity_period')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                                 @enderror
@@ -675,7 +675,7 @@
                                 <label for="manager_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     {{ __('user.center_create.manager_name_label') }}
                                 </label>
-                                <x-input type="text" name="manager_name" id="manager_name" value="{{ old('manager_name', $center->manager_name) }}"
+                                <x-input type="text" name="manager_name" id="manager_name" value="{{ old('manager_name', $course->manager_name) }}"
                                     placeholder="{{ __('user.center_create.manager_name_placeholder') }}"/>
                                 @error('manager_name')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
@@ -687,7 +687,7 @@
                                 <label for="phone_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     {{ __('user.center_create.phone_label') }}
                                 </label>
-                                <x-input type="text" name="phone_number" id="phone_number" value="{{ old('phone_number', $center->phone_number) }}"
+                                <x-input type="text" name="phone_number" id="phone_number" value="{{ old('phone_number', $course->phone_number) }}"
                                     placeholder="{{ __('user.center_create.phone_placeholder') }}"/>
                                 @error('phone_number')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
@@ -699,7 +699,7 @@
                                 <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     {{ __('user.center_create.email_label') }}
                                 </label>
-                                <x-input type="email" name="email" id="email" value="{{ old('email', $center->email) }}"
+                                <x-input type="email" name="email" id="email" value="{{ old('email', $course->email) }}"
                                     placeholder="{{ __('user.center_create.email_placeholder') }}"/>
                                 @error('email')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
@@ -711,7 +711,7 @@
                                 <label for="ifut_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     {{ __('user.center_create.ifut_label') }}
                                 </label>
-                                <x-input type="text" name="ifut_code" id="ifut_code" value="{{ old('ifut_code', $center->ifut_code) }}"
+                                <x-input type="text" name="ifut_code" id="ifut_code" value="{{ old('ifut_code', $course->ifut_code) }}"
                                     placeholder="{{ __('user.center_create.ifut_placeholder') }}"/>
                                 @error('ifut_code')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
@@ -723,7 +723,7 @@
                                 <label for="territory" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     {{ __('user.center_create.territory_label') }}
                                 </label>
-                                <x-input type="text" name="territory" id="territory" value="{{ old('territory', $center->territory) }}"
+                                <x-input type="text" name="territory" id="territory" value="{{ old('territory', $course->territory) }}"
                                     placeholder="{{ __('user.center_create.territory_placeholder') }}"/>
                                 @error('territory')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
@@ -737,7 +737,7 @@
                                 </label>
                                 <textarea name="legal_address" id="legal_address" rows="3"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="{{ __('user.center_create.legal_address_placeholder') }}">{{ old('legal_address', $center->legal_address) }}</textarea>
+                                    placeholder="{{ __('user.center_create.legal_address_placeholder') }}">{{ old('legal_address', $course->legal_address) }}</textarea>
                                 @error('legal_address')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                                 @enderror
@@ -760,7 +760,7 @@
                                 {{ __('course-create.students.label') }}
                             </label>
                             <x-input type="number" name="student_count" id="studentCount"
-                                value="{{ $center->student_count }}" placeholder="{{ __('course-edit.students.placeholder') }}" min="0"/>
+                                value="{{ $course->student_count }}" placeholder="{{ __('course-edit.students.placeholder') }}" min="0"/>
                             @error('student_count')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400 animate-fade-in">{{ $message }}</p>
                             @enderror
@@ -769,7 +769,7 @@
 
                     <!-- Submit Buttons -->
                     <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-                        <a href="{{ route('center', $center->slug) }}"
+                        <a href="{{ route('center', $course->slug) }}"
                             class="flex-1 px-8 py-4 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold rounded-2xl transition-all duration-300 text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-3 group">
                             <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>

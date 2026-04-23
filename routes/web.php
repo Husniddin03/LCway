@@ -124,15 +124,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/quiz',                  [ChatController::class, 'quiz'])->name('chat.quiz');
     // course uchun route
     Route::resource('course', CourseController::class);
-    // teacher uchun route lar
-    Route::post('/teacher/store/{center}', [TeacherController::class, 'store'])->name('teacher.storeid');
-    Route::get('/teacher/announcement/{center}', [TeacherController::class, 'announcement'])->name('teacher.announcement');
-    Route::post('/teacher/add_announcement/{center}', [TeacherController::class, 'add_announcement'])->name('teacher.add_announcement');
-    Route::post('/teacher/delete_announcement/{center}', [TeacherController::class, 'delete_announcement'])->name('teacher.delete_announcement');
-    Route::resource('teacher', TeacherController::class);
-    // subject uchun route lar
-    Route::post('/subject/store/{center}', [SubjectController::class, 'store'])->name('subject.storeid');
-    Route::resource('subject', SubjectController::class);
+    // // teacher uchun route lar
+    // Route::post('/teacher/store/{center}', [TeacherController::class, 'store'])->name('teacher.storeid');
+    // Route::get('/teacher/announcement/{center}', [TeacherController::class, 'announcement'])->name('teacher.announcement');
+    // Route::post('/teacher/add_announcement/{center}', [TeacherController::class, 'add_announcement'])->name('teacher.add_announcement');
+    // Route::post('/teacher/delete_announcement/{center}', [TeacherController::class, 'delete_announcement'])->name('teacher.delete_announcement');
+    // Route::resource('teacher', TeacherController::class);
+    // // subject uchun route lar
+    // Route::post('/subject/store/{center}', [SubjectController::class, 'store'])->name('subject.storeid');
+    // Route::resource('subject', SubjectController::class);
     // comment uchun route lar
     Route::post('comment/store', [CommentController::class, 'store'])->name('comment.store');
     Route::post('comment/delete/{id}', [CommentController::class, 'delete'])->name('comment.delete');
@@ -147,9 +147,9 @@ Route::middleware('auth')->group(function () {
     Route::post('center/weekdayAdd/{center}', [WeekdaysController::class, 'add'])->name('course.weekdayAdd');
     Route::post('center/weekdayDelete/{id}', [WeekdaysController::class, 'delete'])->name('course.weekdayDelete');
     // connect uchun route lar
-    Route::get('connect/edit/{center}', [ConnectController::class, 'edit'])->name('connect.edit');
-    Route::post('connect/delete/{id}', [ConnectController::class, 'delete'])->name('connect.delete');
-    Route::post('connect/store/{center}', [ConnectController::class, 'store'])->name('connect.store');
+    // Route::get('connect/edit/{center}', [ConnectController::class, 'edit'])->name('connect.edit');
+    // Route::post('connect/delete/{id}', [ConnectController::class, 'delete'])->name('connect.delete');
+    // Route::post('connect/store/{center}', [ConnectController::class, 'store'])->name('connect.store');
     // logout uchun route
     Route::post('logout', [LogController::class, 'logout'])->name('logout');
 });

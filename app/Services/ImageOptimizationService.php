@@ -11,13 +11,20 @@ use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class ImageOptimizationService
 {
-    protected ImageManager $manager;
+    protected ?ImageManager $manager = null;
     protected $optimizerChain;
 
     public function __construct()
     {
-        $this->manager = new ImageManager(new Driver());
         $this->optimizerChain = OptimizerChainFactory::create();
+    }
+
+    protected function getManager(): ImageManager
+    {
+        if ($this->manager === null) {
+            $this->manager = new ImageManager(new Driver());
+        }
+        return $this->manager;
     }
 
     /**
@@ -35,7 +42,7 @@ class ImageOptimizationService
         }
 
         // Create image instance using read (Intervention Image v3)
-        $image = $this->manager->read($fullPath);
+        $image = $this->getManager()->read($fullPath);
 
         // Resize if width is greater than 1200px while maintaining aspect ratio
         if ($image->width() > 1200) {

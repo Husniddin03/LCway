@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 
+use App\Helpers\TextHelper;
+
 use App\Services\SearchService;
 use App\Services\AiSearchService;
 use App\Models\Favorite;

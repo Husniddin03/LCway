@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\LearningCenterController as AdminLearningCenterCo
 use App\Http\Controllers\Admin\SubjectController as AdminSubjectController;
 use App\Http\Controllers\Admin\TeacherController as AdminTeacherController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Api\CenterManageController;
 use App\Http\Controllers\Bot\TelegramBotController;
 use Illuminate\Support\Facades\Route;
 
@@ -68,33 +69,33 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->name('api.')->gro
     Route::put('/centers/{center}/subjects/{id}', [CenterManageController::class, 'updateSubject']);
     Route::delete('/centers/{center}/subjects/{id}', [CenterManageController::class, 'deleteSubject']);
 
-    // Teachers
-    Route::get('/teachers', [AdminTeacherController::class, 'index'])->name('teachers.index');
-    Route::post('/teachers', [AdminTeacherController::class, 'store'])->name('teachers.store');
-    Route::get('/teachers/{id}', [AdminTeacherController::class, 'show'])->name('teachers.show');
-    Route::put('/teachers/{id}', [AdminTeacherController::class, 'update'])->name('teachers.update');
-    Route::delete('/teachers/{id}', [AdminTeacherController::class, 'destroy'])->name('teachers.destroy');
-    Route::post('/teachers/bulk-delete', [AdminTeacherController::class, 'bulkDelete'])->name('teachers.bulk-delete');
-    Route::get('/teachers-statistics', [AdminTeacherController::class, 'statistics'])->name('teachers.statistics');
+    // // Teachers
+    // Route::get('/teachers', [AdminTeacherController::class, 'index'])->name('teachers.index');
+    // Route::post('/teachers', [AdminTeacherController::class, 'store'])->name('teachers.store');
+    // Route::get('/teachers/{id}', [AdminTeacherController::class, 'show'])->name('teachers.show');
+    // Route::put('/teachers/{id}', [AdminTeacherController::class, 'update'])->name('teachers.update');
+    // Route::delete('/teachers/{id}', [AdminTeacherController::class, 'destroy'])->name('teachers.destroy');
+    // Route::post('/teachers/bulk-delete', [AdminTeacherController::class, 'bulkDelete'])->name('teachers.bulk-delete');
+    // Route::get('/teachers-statistics', [AdminTeacherController::class, 'statistics'])->name('teachers.statistics');
 
-    // Subjects
-    Route::get('/subjects', [AdminSubjectController::class, 'index'])->name('subjects.index');
-    Route::post('/subjects', [AdminSubjectController::class, 'store'])->name('subjects.store');
-    Route::get('/subjects/{id}', [AdminSubjectController::class, 'show'])->name('subjects.show');
-    Route::put('/subjects/{id}', [AdminSubjectController::class, 'update'])->name('subjects.update');
-    Route::delete('/subjects/{id}', [AdminSubjectController::class, 'destroy'])->name('subjects.destroy');
-    Route::post('/subjects/bulk-delete', [AdminSubjectController::class, 'bulkDelete'])->name('subjects.bulk-delete');
-    Route::get('/subjects-statistics', [AdminSubjectController::class, 'statistics'])->name('subjects.statistics');
+    // // Subjects
+    // Route::get('/subjects', [AdminSubjectController::class, 'index'])->name('subjects.index');
+    // Route::post('/subjects', [AdminSubjectController::class, 'store'])->name('subjects.store');
+    // Route::get('/subjects/{id}', [AdminSubjectController::class, 'show'])->name('subjects.show');
+    // Route::put('/subjects/{id}', [AdminSubjectController::class, 'update'])->name('subjects.update');
+    // Route::delete('/subjects/{id}', [AdminSubjectController::class, 'destroy'])->name('subjects.destroy');
+    // Route::post('/subjects/bulk-delete', [AdminSubjectController::class, 'bulkDelete'])->name('subjects.bulk-delete');
+    // Route::get('/subjects-statistics', [AdminSubjectController::class, 'statistics'])->name('subjects.statistics');
 
-    // Comments
-    Route::get('/comments', [AdminCommentController::class, 'index'])->name('comments.index');
-    Route::get('/comments/{id}', [AdminCommentController::class, 'show'])->name('comments.show');
-    Route::put('/comments/{id}', [AdminCommentController::class, 'update'])->name('comments.update');
-    Route::delete('/comments/{id}', [AdminCommentController::class, 'destroy'])->name('comments.destroy');
-    Route::post('/comments/{id}/approve', [AdminCommentController::class, 'approve'])->name('comments.approve');
-    Route::post('/comments/{id}/reject', [AdminCommentController::class, 'reject'])->name('comments.reject');
-    Route::post('/comments/bulk-approve', [AdminCommentController::class, 'bulkApprove'])->name('comments.bulk-approve');
-    Route::post('/comments/bulk-delete', [AdminCommentController::class, 'bulkDelete'])->name('comments.bulk-delete');
-    Route::get('/comments-pending', [AdminCommentController::class, 'pending'])->name('comments.pending');
-    Route::get('/comments-statistics', [AdminCommentController::class, 'statistics'])->name('comments.statistics');
+    // // Comments
+    // Route::get('/comments', [AdminCommentController::class, 'index'])->name('comments.index');
+    // Route::get('/comments/{id}', [AdminCommentController::class, 'show'])->name('comments.show');
+    // Route::put('/comments/{id}', [AdminCommentController::class, 'update'])->name('comments.update');
+    // Route::delete('/comments/{id}', [AdminCommentController::class, 'destroy'])->name('comments.destroy');
+    // Route::post('/comments/{id}/approve', [AdminCommentController::class, 'approve'])->name('comments.approve');
+    // Route::post('/comments/{id}/reject', [AdminCommentController::class, 'reject'])->name('comments.reject');
+    // Route::post('/comments/bulk-approve', [AdminCommentController::class, 'bulkApprove'])->name('comments.bulk-approve');
+    // Route::post('/comments/bulk-delete', [AdminCommentController::class, 'bulkDelete'])->name('comments.bulk-delete');
+    // Route::get('/comments-pending', [AdminCommentController::class, 'pending'])->name('comments.pending');
+    // Route::get('/comments-statistics', [AdminCommentController::class, 'statistics'])->name('comments.statistics');
 });
